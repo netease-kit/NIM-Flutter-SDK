@@ -1,0 +1,43 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
+  return NIMAndroidSDKOptions(
+    appKey: json['appKey'] as String,
+    sdkRootDir: json['sdkRootDir'] as String?,
+    cdnTrackInterval: json['cdnTrackInterval'] as int?,
+    shouldSyncStickTopSessionInfos:
+        json['shouldSyncStickTopSessionInfos'] as bool?,
+    loginCustomTag: json['loginCustomTag'] as String?,
+    enableDatabaseBackup: json['enableDatabaseBackup'] as bool?,
+    shouldSyncUnreadCount: json['shouldSyncUnreadCount'] as bool?,
+    shouldConsiderRevokedMessageUnreadCount:
+        json['shouldConsiderRevokedMessageUnreadCount'] as bool?,
+    enableTeamMessageReadReceipt: json['enableTeamMessageReadReceipt'] as bool?,
+    shouldTeamNotificationMessageMarkUnread:
+        json['shouldTeamNotificationMessageMarkUnread'] as bool?,
+    enableAnimatedImageThumbnail: json['enableAnimatedImageThumbnail'] as bool?,
+    enablePreloadMessageAttachment:
+        json['enablePreloadMessageAttachment'] as bool?,
+  );
+}
+
+Map<String, dynamic> _$NIMAndroidSDKOptionsToJson(
+        NIMAndroidSDKOptions instance) =>
+    <String, dynamic>{
+      'appKey': instance.appKey,
+      'sdkRootDir': instance.sdkRootDir,
+      'cdnTrackInterval': instance.cdnTrackInterval,
+      'enableDatabaseBackup': instance.enableDatabaseBackup,
+      'loginCustomTag': instance.loginCustomTag,
+      'shouldSyncUnreadCount': instance.shouldSyncUnreadCount,
+      'shouldConsiderRevokedMessageUnreadCount':
+          instance.shouldConsiderRevokedMessageUnreadCount,
+      'enableTeamMessageReadReceipt': instance.enableTeamMessageReadReceipt,
+      'shouldTeamNotificationMessageMarkUnread':
+          instance.shouldTeamNotificationMessageMarkUnread,
+      'enableAnimatedImageThumbnail': instance.enableAnimatedImageThumbnail,
+      'enablePreloadMessageAttachment': instance.enablePreloadMessageAttachment,
+      'shouldSyncStickTopSessionInfos': instance.shouldSyncStickTopSessionInfos,
+    };
