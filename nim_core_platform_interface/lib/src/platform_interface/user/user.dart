@@ -11,12 +11,15 @@ part 'user.g.dart';
 class NIMUser {
   String? userId;
   String? nick;
-  String? avatar;
+  @JsonKey(name: "signature")
   String? sign;
+  String? avatar;
   NIMUserGenderEnum? gender;
   String? email;
+  @JsonKey(name: "birthday")
   String? birth;
   String? mobile;
+  @JsonKey(name: "extension")
   String? ext;
 
   NIMUser(

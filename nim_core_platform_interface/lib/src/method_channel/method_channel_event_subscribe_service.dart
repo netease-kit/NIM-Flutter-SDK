@@ -38,11 +38,14 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
       EventSubscribeRequest request) async {
     Map<String, dynamic> replyMap = await invokeMethod('registerEventSubscribe',
         arguments: request.toMap());
-    return NIMResult.fromMap(replyMap);
+    return NIMResult.fromMap(replyMap,convert: (map) {
+      var resultList = map['resultList'] as List<dynamic>?;
+      return resultList?.map((e) => e as String).toList();
+    });
   }
 
   @override
-  Future<NIMResult<bool>> batchUnSubscribeEvent(
+  Future<NIMResult<void>> batchUnSubscribeEvent(
       EventSubscribeRequest request) async {
     Map<String, dynamic> replyMap =
         await invokeMethod('batchUnSubscribeEvent', arguments: request.toMap());
@@ -50,7 +53,7 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
   }
 
   @override
-  Future<NIMResult<bool>> unregisterEventSubscribe(
+  Future<NIMResult<void>> unregisterEventSubscribe(
       EventSubscribeRequest request) async {
     Map<String, dynamic> replyMap = await invokeMethod(
         'unregisterEventSubscribe',
@@ -59,7 +62,7 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
   }
 
   @override
-  Future<NIMResult<bool>> publishEvent(Event event) async {
+  Future<NIMResult<void>> publishEvent(Event event) async {
     Map<String, dynamic> replyMap =
         await invokeMethod('publishEvent', arguments: event.toMap());
     return NIMResult.fromMap(replyMap);
@@ -70,6 +73,13 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
       EventSubscribeRequest request) async {
     Map<String, dynamic> replyMap =
         await invokeMethod('querySubscribeEvent', arguments: request.toMap());
-    return NIMResult.fromMap(replyMap);
+
+    return NIMResult.fromMap(replyMap, convert: (map) {
+      var eventSubscribeResultList = map['eventSubscribeResultList'] as List<dynamic>;
+      return eventSubscribeResultList
+          .map(
+              (e) => EventSubscribeResult.fromMap(Map<String, dynamic>.from(e)))
+          .toList();
+    });
   }
 }

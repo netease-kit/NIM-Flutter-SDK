@@ -11,25 +11,25 @@ NIMUser _$NIMUserFromJson(Map<String, dynamic> json) {
     userId: json['userId'] as String?,
     nick: json['nick'] as String?,
     avatar: json['avatar'] as String?,
-    sign: json['sign'] as String?,
+    sign: json['signature'] as String?,
     gender: _$enumDecodeNullable(_$NIMUserGenderEnumEnumMap, json['gender']),
     email: json['email'] as String?,
-    birth: json['birth'] as String?,
+    birth: json['birthday'] as String?,
     mobile: json['mobile'] as String?,
-    ext: json['ext'] as String?,
+    ext: json['extension'] as String?,
   );
 }
 
 Map<String, dynamic> _$NIMUserToJson(NIMUser instance) => <String, dynamic>{
       'userId': instance.userId,
       'nick': instance.nick,
+      'signature': instance.sign,
       'avatar': instance.avatar,
-      'sign': instance.sign,
       'gender': _$NIMUserGenderEnumEnumMap[instance.gender],
       'email': instance.email,
-      'birth': instance.birth,
+      'birthday': instance.birth,
       'mobile': instance.mobile,
-      'ext': instance.ext,
+      'extension': instance.ext,
     };
 
 K _$enumDecode<K, V>(

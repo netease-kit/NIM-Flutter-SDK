@@ -11,6 +11,9 @@ import 'package:nim_core_platform_interface/src/platform_interface/chatroom/chat
 
 part 'message.g.dart';
 
+typedef MessageAction = Future Function(NIMMessage message);
+typedef ChatroomMessageAction = Future Function(NIMChatroomMessage message);
+
 /// 消息
 @JsonSerializable()
 class NIMMessage {
@@ -61,8 +64,8 @@ class NIMMessage {
   NIMMessageAttachment? messageAttachment;
 
   /// 消息附件下载状态 仅针对收到的消息
-  @JsonKey(unknownEnumValue: NIMMessageAttachmentDownloadState.needDownload)
-  NIMMessageAttachmentDownloadState? attachmentDownloadState;
+  @JsonKey(unknownEnumValue: NIMMessageAttachmentStatus.transferred)
+  NIMMessageAttachmentStatus? attachmentStatus;
 
   /// 消息UUID
   final String? uuid;
@@ -173,7 +176,7 @@ class NIMMessage {
 
   /// 判断自己发送的消息对方是否已读
   /// 只有当当前消息为 [NIMSessionType.p2p] 消息且 [NIMMessageDirection.outgoing] 为 `true`
-  final bool? isRemoteRead;
+  bool? isRemoteRead;
 
   @visibleForTesting
   NIMMessage(
@@ -188,7 +191,7 @@ class NIMMessage {
       this.content,
       required this.timestamp,
       this.messageAttachment,
-      this.attachmentDownloadState,
+      this.attachmentStatus,
       this.uuid,
       this.serverId,
       this.config,
@@ -234,7 +237,7 @@ class NIMMessage {
       sessionId: sessionId,
       sessionType: sessionType,
       messageAttachment: null,
-      attachmentDownloadState: NIMMessageAttachmentDownloadState.downloaded,
+      attachmentStatus: NIMMessageAttachmentStatus.transferred,
     );
   }
 
@@ -321,7 +324,7 @@ class NIMMessage {
         sessionId: sessionId,
         sessionType: sessionType,
         messageAttachment: locationAttachment,
-        attachmentDownloadState: NIMMessageAttachmentDownloadState.downloaded);
+        attachmentStatus: NIMMessageAttachmentStatus.transferred);
   }
 
   factory NIMMessage.videoEmptyMessage(
@@ -491,13 +494,18 @@ abstract class NIMMessageAttachment {
       case NIMMessageType.custom:
         return NIMCustomMessageAttachment(data: map);
       case NIMMessageType.notification:
-        final int type = map['type'] as int;
+        final type = map['type'] as int?;
+        if (type == null) return null;
         if (type >= NIMChatroomNotificationTypes.chatRoomMemberIn &&
             type <= NIMChatroomNotificationTypes.chatRoomQueueBatchChange) {
           return NIMChatroomNotificationAttachment
               .createChatroomNotificationAttachment(map);
         } else if (type >= NIMTeamNotificationTypes.inviteMember &&
             type <= NIMTeamNotificationTypes.muteTeamMember) {
+          return NIMTeamNotificationAttachment.createTeamNotificationAttachment(
+              map);
+        }else if (type >= NIMSuperTeamNotificationTypes.invite &&
+            type <= NIMSuperTeamNotificationTypes.inviteAccept) {
           return NIMTeamNotificationAttachment.createTeamNotificationAttachment(
               map);
         }
@@ -532,11 +540,11 @@ class NIMCustomMessageAttachment extends NIMMessageAttachment {
 @JsonSerializable()
 class NIMFileAttachment extends NIMMessageAttachment {
   /// 文件路径
-  @JsonKey(name: 'path')
+  @JsonKey(name: 'path', includeIfNull: false)
   final String? path;
 
   /// 文件下载地址
-  @JsonKey(name: 'url')
+  @JsonKey(name: 'url', includeIfNull: false)
   final String? url;
 
   /// 文件大小
@@ -544,7 +552,7 @@ class NIMFileAttachment extends NIMMessageAttachment {
   final int? size;
 
   ///文件内容的MD5
-  @JsonKey(name: 'md5')
+  @JsonKey(name: 'md5', includeIfNull: false)
   final String? md5;
 
   /// 文件显示名
@@ -696,9 +704,11 @@ class NIMVideoAttachment extends NIMFileAttachment {
 @JsonSerializable()
 class NIMImageAttachment extends NIMFileAttachment {
   /// 缩略本地路径
+  @JsonKey(includeIfNull: false)
   final String? thumbPath;
 
   /// 缩略远程路径
+  @JsonKey(includeIfNull: false)
   final String? thumbUrl;
 
   /// 图片宽度
@@ -809,14 +819,16 @@ class NIMTeamMessageReceipt {
   Map<String, dynamic> toMap() => _$NIMTeamMessageReceiptToJson(this);
 }
 
-/// 附件上传进度
+/// 附件上传/下载进度
 @JsonSerializable()
 class NIMAttachmentProgress {
-  final String uuid;
-  final int? transferred;
-  final int? total;
+  /// 消息uuid
+  final String id;
 
-  NIMAttachmentProgress({required this.uuid, this.transferred, this.total});
+  /// 进度
+  final double? progress;
+
+  NIMAttachmentProgress({required this.id, this.progress});
 
   factory NIMAttachmentProgress.fromMap(Map<String, dynamic> map) =>
       _$NIMAttachmentProgressFromJson(map);
@@ -998,9 +1010,11 @@ class NIMMessageThreadOption {
 @JsonSerializable()
 class NIMChatroomMessage extends NIMMessage {
   /// 该消息是否要保存到服务器
+  @JsonKey(defaultValue: true)
   bool enableHistory;
 
   /// 是否是高优先级消息
+  @JsonKey(defaultValue: false)
   bool isHighPriorityMessage;
 
   /// 消息扩展
@@ -1025,7 +1039,7 @@ class NIMChatroomMessage extends NIMMessage {
     String? content,
     required int timestamp,
     NIMMessageAttachment? messageAttachment,
-    NIMMessageAttachmentDownloadState? attachmentDownloadState,
+    NIMMessageAttachmentStatus? attachmentStatus,
     String? uuid,
     int? serverId,
     Map<String, dynamic>? remoteExtension,
@@ -1063,7 +1077,7 @@ class NIMChatroomMessage extends NIMMessage {
           content: content,
           timestamp: timestamp,
           messageAttachment: messageAttachment,
-          attachmentDownloadState: attachmentDownloadState,
+          attachmentStatus: attachmentStatus,
           uuid: uuid,
           serverId: serverId,
           remoteExtension: remoteExtension,
@@ -1167,7 +1181,7 @@ class NIMSession {
   final NIMMessageAttachment? lastMessageAttachment;
 
   /// 获取该联系人的未读消息条数
-  final int unreadCount;
+  final int? unreadCount;
 
   /// 扩展字段
   @JsonKey(fromJson: castPlatformMapToDartMap)
@@ -1255,6 +1269,21 @@ class NIMTeamMessageAckInfo {
 /// 客户端拦截：命中后，开发者不应发送此消息 <p>
 /// 服务器处理：开发者将消息相应属性配置为已命中服务端拦截库，再将消息发送给服务器（发送者能看到该消息发送，但是云信服务器不会投递该消息，接收者不会收到该消息），配置方法请见下文描述。
 class NIMLocalAntiSpamResult {
+  /// 未命中
+  static const int pass = 0;
+
+  /// 客户端替换。
+  /// 将命中反垃圾的词语替换成指定的文本，再将替换后的消息发送给服务器
+  static const int clientReplace = 1;
+
+  /// 客户端拦截。
+  /// 命中后，开发者不应发送此消息
+  static const int clientIntercept = 2;
+
+  /// 服务端拦截。
+  /// 开发者将消息相应属性配置为已命中服务端拦截库，再将消息发送给服务器（发送者能看到该消息发送，但是云信服务器不会投递该消息，接收者不会收到该消息）
+  static const int serverIntercept = 3;
+
   /// 命中的垃圾词操作类型，0：未命中；1：客户端替换；2：客户端拦截；3：服务器拦截；
   final int operator;
 
@@ -1268,5 +1297,40 @@ class NIMLocalAntiSpamResult {
       map['operator'] as int? ?? 0,
       map['content'] as String?,
     );
+  }
+}
+
+@JsonSerializable()
+class NIMMessageKey {
+  final NIMSessionType? sessionType;
+  final String? fromAccount;
+  final String? toAccount;
+  final int? time;
+  final int? serverId;
+  final String? uuid;
+
+  NIMMessageKey(
+      {this.sessionType,
+      this.fromAccount,
+      this.toAccount,
+      this.time,
+      this.serverId,
+      this.uuid});
+
+  factory NIMMessageKey.fromMap(Map<String, dynamic> param) {
+    return NIMMessageKey(
+      sessionType:
+          NIMSessionTypeConverter().fromValue(param['sessionType'] as String),
+      fromAccount: param['fromAccount'] as String?,
+      toAccount: param['toAccount'] as String?,
+      time: param['time'] as int?,
+      serverId: param['serverId'] as int?,
+      uuid: param['uuid'] as String?,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'NIMMessageKey{sessionType: $sessionType, fromAccount: $fromAccount, toAccount: $toAccount, time: $time, serverId: $serverId, uuid: $uuid}';
   }
 }

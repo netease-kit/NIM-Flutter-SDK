@@ -14,7 +14,7 @@ class MethodChannelNOSService extends NOSServicePlatform {
     return NIMResult.fromMap(replyMap, convert: (map) => NIMUser.fromMap(map));
   }
 
-  Future<NIMResult<void>> upload(
+  Future<NIMResult<String>> upload(
       {required String filePath, String? mimeType, String? sceneKey}) async {
     Map<String, dynamic> argument = {
       'filePath': filePath,
@@ -23,6 +23,13 @@ class MethodChannelNOSService extends NOSServicePlatform {
     };
     Map<String, dynamic> replyMap =
         await invokeMethod('upload', arguments: argument);
+    return NIMResult.fromMap(replyMap);
+  }
+
+  Future<NIMResult<void>> download({required String url, String? path}) async {
+    Map<String, dynamic> argument = {'url': url, 'path': path};
+    Map<String, dynamic> replyMap =
+        await invokeMethod('download', arguments: argument);
     return NIMResult.fromMap(replyMap);
   }
 
@@ -38,7 +45,8 @@ class MethodChannelNOSService extends NOSServicePlatform {
         break;
 
       case 'onNOSTransferStatus':
-        var transferStatus = NIMNOSTransferStatus.fromMap(arguments);
+        var transferStatus = NIMNOSTransferStatus.fromMap(
+            Map<String, dynamic>.from(arguments as Map));
         NOSServicePlatform.instance.onNOSTransferStatus.add(transferStatus);
         break;
     }

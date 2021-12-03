@@ -42,6 +42,7 @@ NIMIOSSDKOptions _$NIMIOSSDKOptionsFromJson(Map<String, dynamic> json) {
     enableAnimatedImageThumbnail: json['enableAnimatedImageThumbnail'] as bool?,
     enablePreloadMessageAttachment:
         json['enablePreloadMessageAttachment'] as bool?,
+    useAssetServerAddressConfig: json['useAssetServerAddressConfig'] as bool?,
     autoLoginInfo: loginInfoFromMap(json['autoLoginInfo'] as Map?),
     nosSceneConfig: nosSceneConfigFromMap(json['nosSceneConfig'] as Map?),
   )..disableTraceroute = json['disableTraceroute'] as bool?;
@@ -64,6 +65,7 @@ Map<String, dynamic> _$NIMIOSSDKOptionsToJson(NIMIOSSDKOptions instance) {
     'enablePreloadMessageAttachment': instance.enablePreloadMessageAttachment,
     'shouldSyncStickTopSessionInfos': instance.shouldSyncStickTopSessionInfos,
     'enableReportLogAutomatically': instance.enableReportLogAutomatically,
+    'useAssetServerAddressConfig': instance.useAssetServerAddressConfig,
   };
 
   void writeNotNull(String key, dynamic value) {

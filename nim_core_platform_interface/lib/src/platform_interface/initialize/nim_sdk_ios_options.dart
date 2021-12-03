@@ -46,7 +46,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
   bool? enabledHttpsForMessage;
 
   /// 自动登录重试次数
-  ///  @discusssion 默认为 0。即默认情况下，自动登录将无限重试。设置成大于 0 的值后，在没有登录成功前，自动登录将重试最多 maxAutoLoginRetryTimes 次，如果失败，则抛出错误 (NIMLocalErrorCodeAutoLoginRetryLimit)。
+  ///  @discusssion 默认为 0。即默认情况下，自动登录将无限重试。设置成大于 0 的值后，在没有登录成功前，自动登录将重试最多 maxAutoLoginRetryTimes 次。
   int? maxAutoLoginRetryTimes;
 
   ///  本地 log 存活期
@@ -67,7 +67,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
 
   /// 是否开启异步读取最近会话，默认NO，不开启
   /// @discussion 对于最近会话比较多的用户，初始读取数据库时，可能影响到启动速度，用户可以选择开启该选项，开启异步读取最近会话，
-  ///  allRecentSessions会优先返回一部分最近会话，等到全部读取完成时，通过回调通知用户刷新UI。
+  ///  querySessionList会优先返回一部分最近会话，等到全部读取完成时，通过回调通知用户刷新UI。
   bool? enableAsyncLoadRecentSession;
 
   bool? linkQuickSwitch;
@@ -104,6 +104,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
     bool? shouldTeamNotificationMessageMarkUnread,
     bool? enableAnimatedImageThumbnail,
     bool? enablePreloadMessageAttachment,
+    bool? useAssetServerAddressConfig,
     NIMLoginInfo? autoLoginInfo,
     Map<NIMNosScene, int>? nosSceneConfig,
   }) : super(
@@ -125,6 +126,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
               shouldTeamNotificationMessageMarkUnread,
           enableAnimatedImageThumbnail: enableAnimatedImageThumbnail,
           enablePreloadMessageAttachment: enablePreloadMessageAttachment,
+          useAssetServerAddressConfig: useAssetServerAddressConfig,
 
           /// iOS => 是否在收到消息后自动下载附件 (群和个人)
           /// 默认为YES,SDK会在第一次收到消息是直接下载消息附件,上层开发可以根据自己的需要进行设置

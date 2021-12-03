@@ -7,11 +7,36 @@ import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart
 import 'package:nim_core_platform_interface/src/platform_interface/user/platform_interface_user_service.dart';
 
 class MethodChannelUserService extends UserServicePlatform {
+
+  @override
   Future<NIMResult<NIMUser>> getUserInfo(String userId) async {
     Map<String, String> argument = {'userId': userId};
     Map<String, dynamic> replyMap =
         await invokeMethod('getUserInfo', arguments: argument);
     return NIMResult.fromMap(replyMap, convert: (map) => NIMUser.fromMap(map));
+  }
+
+  @override
+  Future<NIMResult<List<NIMUser>>> getUserInfoListAndroid(List<String> userIdList) async {
+    Map<String, dynamic> argument = {'userIdList': userIdList.map((e) => e.toString()).toList()};
+    Map<String, dynamic> replyMap = await invokeMethod('getUserInfoList', arguments: argument);
+    return NIMResult.fromMap(replyMap, convert: (map) {
+      var userInfoList = map['userInfoList'] as List<dynamic>?;
+      return userInfoList?.map((e) {
+        return NIMUser.fromMap(Map<String, dynamic>.from(e));
+      }).toList();
+    });
+  }
+
+  @override
+  Future<NIMResult<List<NIMUser>>> getAllUserInfoAndroid() async {
+    Map<String, dynamic> replyMap = await invokeMethod('getAllUserInfo');
+    return NIMResult.fromMap(replyMap, convert: (map) {
+      var userInfoList = map['userInfoList'] as List<dynamic>?;
+      return userInfoList?.map((e) {
+        return NIMUser.fromMap(Map<String, dynamic>.from(e));
+      }).toList();
+    });
   }
 
   @override
@@ -63,9 +88,10 @@ class MethodChannelUserService extends UserServicePlatform {
 
   @override
   Future<NIMResult<void>> addFriend(
-      String userId, NIMVerifyType verifyType) async {
+      String userId, String? message, NIMVerifyType verifyType) async {
     Map<String, dynamic> argument = {
       'userId': userId,
+      'message': message,
       'verifyType': verifyType.index
     };
     Map<String, dynamic> replyMap =
@@ -84,6 +110,45 @@ class MethodChannelUserService extends UserServicePlatform {
   @override
   Future<NIMResult<List<NIMFriend>>> getFriendList() async {
     Map<String, dynamic> resultMap = await invokeMethod('getFriendList');
+    return NIMResult.fromMap(resultMap, convert: (map) {
+      var friendList = map['friendList'] as List<dynamic>?;
+      return friendList
+          ?.map((e) => NIMFriend.fromMap(Map<String, dynamic>.from(e)))
+          .toList();
+    });
+  }
+
+  @override
+  Future<NIMResult<NIMFriend>> getFriend(String userId) async {
+    Map<String, String> argument = {'userId': userId};
+    Map<String, dynamic> replyMap =
+    await invokeMethod('getFriend', arguments: argument);
+    return NIMResult.fromMap(replyMap, convert: (map) => NIMFriend.fromMap(map));
+  }
+
+  @override
+  Future<NIMResult<List<String>>> getFriendAccountsAndroid() async {
+    Map<String, dynamic> resultMap = await invokeMethod('getFriendAccounts');
+    return NIMResult.fromMap(resultMap, convert: (map) {
+      var userIdList = map['userIdList'] as List<dynamic>?;
+      return userIdList?.map((e) => e as String).toList();
+    });
+  }
+
+  @override
+  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(String alias) async {
+    Map<String, String> argument = {'alias': alias};
+    Map<String, dynamic> resultMap = await invokeMethod('searchAccountByAlias',arguments: argument);
+    return NIMResult.fromMap(resultMap, convert: (map) {
+      var userIdList = map['userIdList'] as List<dynamic>?;
+      return userIdList?.map((e) => e as String).toList();
+    });
+  }
+
+  @override
+  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(String keyword) async {
+    Map<String, String> argument = {'keyword': keyword};
+    Map<String, dynamic> resultMap = await invokeMethod('searchFriendsByKeyword',arguments: argument);
     return NIMResult.fromMap(resultMap, convert: (map) {
       var friendList = map['friendList'] as List<dynamic>?;
       return friendList
@@ -212,6 +277,10 @@ class MethodChannelUserService extends UserServicePlatform {
 
       case 'onBlackListChanged':
         UserServicePlatform.instance.onBlackListChanged.add(null);
+        break;
+
+      case 'onMuteListChanged':
+        UserServicePlatform.instance.onMuteListChanged.add(null);
         break;
     }
     return Future.value(null);

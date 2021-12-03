@@ -90,6 +90,17 @@ enum NIMAuthStatus {
 
   /// 被同时在线的其他端主动踢掉
   kickOutByOtherClient,
+
+  /// 数据同步开始
+  /// 
+  /// 同步开始时，SDK 数据库中的数据可能还是旧数据。
+  ///（如果是首次登录，那么 SDK 数据库中还没有数据，
+  /// 重新登录时 SDK 数据库中还是上一次退出时保存的数据）
+  /// 在同步过程中，SDK 数据的更新会通过相应的监听接口发出数据变更通知。
+  dataSyncStart,
+
+  /// 数据同步完成
+  dataSyncFinish,
 }
 
 extension NIMAuthStatusToString on NIMAuthStatus {
@@ -124,6 +135,13 @@ class NIMKickOutByOtherClientEvent extends NIMAuthStatusEvent {
     this.customClientType,
   ) : super(status);
 }
+
+/// 数据同步状态变更事件，可监听数据同步开始、结束
+class NIMDataSyncStatusEvent extends NIMAuthStatusEvent {
+
+  NIMDataSyncStatusEvent(NIMAuthStatus status): super(status);
+
+} 
 
 /// 当前在线端信息
 @JsonSerializable()

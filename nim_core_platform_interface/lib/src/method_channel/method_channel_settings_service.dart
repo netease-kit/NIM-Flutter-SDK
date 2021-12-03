@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:typed_data';
+
 import 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_android_options.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/settings/platform_interface_settings_service.dart';
@@ -27,19 +29,19 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> enableNotification({
+  Future<NIMResult<void>> enableNotificationAndroid({
     required bool enableRegularNotification,
     required bool enableRevokeMessageNotification,
   }) async {
     return NIMResult(-1, null, 'Support Android platform only');
   }
 
-  Future<NIMResult<void>> updateNotificationConfig(
+  Future<NIMResult<void>> updateNotificationConfigAndroid(
       NIMStatusBarNotificationConfig config) async {
     return NIMResult(-1, null, 'Support Android platform only');
   }
 
-  Future<NIMResult<void>> enablePushService(bool enable) async {
+  Future<NIMResult<void>> enablePushServiceAndroid(bool enable) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'enablePushService',
@@ -50,7 +52,7 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
     );
   }
 
-  Future<NIMResult<bool>> isPushServiceEnabled() async {
+  Future<NIMResult<bool>> isPushServiceEnabledAndroid() async {
     return NIMResult.fromMap(
       await invokeMethod(
         'isPushServiceEnabled',
@@ -93,6 +95,66 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
         'enablePushShowDetail',
         arguments: {
           'enable': enable,
+        },
+      ),
+    );
+  }
+
+  /// 更新iOS deviceToken
+  @override
+  Future<NIMResult<void>> updateAPNSTokenIOS(
+      Uint8List token, String? customContentKey) async {
+    return NIMResult(-1, null, 'Support iOS platform only');
+  }
+
+  @override
+  Future<NIMResult<String>> archiveLogs() async {
+    return NIMResult(-1, null, 'Support mobile platform only');
+  }
+
+  @override
+  Future<NIMResult<String>> uploadLogs({
+    String? chatroomId,
+    String? comment,
+    bool partial = true,
+  }) async {
+    return NIMResult.fromMap(await invokeMethod(
+      'uploadLogs',
+      arguments: {
+        'chatroomId': chatroomId ?? '',
+        'comment': comment ?? '',
+        'partial': partial,
+      },
+    ));
+  }
+
+  @override
+  Future<NIMResult<void>> clearDirCache(
+      List<NIMDirCacheFileType> fileTypes, int startTime, int endTime) async {
+    return NIMResult.fromMap(
+      await invokeMethod(
+        'clearDirCache',
+        arguments: {
+          'fileTypes':
+              fileTypes.map((e) => stringifyDirCacheFileTypeName(e)).toList(),
+          'startTime': startTime,
+          'endTime': endTime,
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<NIMResult<int>> getSizeOfDirCache(
+      List<NIMDirCacheFileType> fileTypes, int startTime, int endTime) async {
+    return NIMResult.fromMap(
+      await invokeMethod(
+        'getSizeOfDirCache',
+        arguments: {
+          'fileTypes':
+              fileTypes.map((e) => stringifyDirCacheFileTypeName(e)).toList(),
+          'startTime': startTime,
+          'endTime': endTime,
         },
       ),
     );

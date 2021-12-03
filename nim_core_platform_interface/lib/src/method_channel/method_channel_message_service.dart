@@ -7,9 +7,12 @@ import 'package:nim_core_platform_interface/src/platform_interface/message/messa
 import 'package:nim_core_platform_interface/src/platform_interface/message/message_search_option.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/platform_interface_message_service.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/query_direction_enum.dart';
+import 'package:nim_core_platform_interface/src/platform_interface/message/talk_ext.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/thread_talk_history.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 import 'package:nim_core_platform_interface/src/utils/converter.dart';
+
+import '../../nim_core_platform_interface.dart';
 
 class MethodChannelMessageService extends MessageServicePlatform {
   @override
@@ -54,7 +57,6 @@ class MethodChannelMessageService extends MessageServicePlatform {
       {required NIMMessage message}) async {
     Map<String, dynamic> replyMap =
         await invokeMethod('createMessage', arguments: message.toMap());
-    print("createMessage reply json : " + replyMap.toString());
     return NIMResult.fromMap(replyMap,
         convert: (map) => NIMMessage.fromMap(map));
   }
@@ -119,7 +121,6 @@ class MethodChannelMessageService extends MessageServicePlatform {
     Map<String, dynamic> replyMap = await invokeMethod(
         'fetchTeamMessageReceiptDetail',
         arguments: arguments);
-    print("fetchTeamMessageReceiptDetail reply json : " + replyMap.toString());
     return NIMResult.fromMap(replyMap,
         convert: (map) => NIMTeamMessageAckInfo.fromMap(map));
   }
@@ -131,7 +132,6 @@ class MethodChannelMessageService extends MessageServicePlatform {
     Map<String, dynamic> replyMap = await invokeMethod(
         'queryTeamMessageReceiptDetail',
         arguments: arguments);
-    print("queryTeamMessageReceiptDetail reply json : " + replyMap.toString());
     return NIMResult.fromMap(replyMap,
         convert: (map) => NIMTeamMessageAckInfo.fromMap(map));
   }
@@ -180,11 +180,14 @@ class MethodChannelMessageService extends MessageServicePlatform {
         MessageServicePlatform.instance.onMessageStatus.add(message);
         break;
       case 'onMessageReceipt':
-        var messageReceiptList = arguments['messageReceiptList'] as List<dynamic>?;
+        var messageReceiptList =
+            arguments['messageReceiptList'] as List<dynamic>?;
         List<NIMMessageReceipt>? list = messageReceiptList
-            ?.map((e) => NIMMessageReceipt.fromMap(Map<String, dynamic>.from(e)))
+            ?.map(
+                (e) => NIMMessageReceipt.fromMap(Map<String, dynamic>.from(e)))
             .toList();
-        if (list != null) MessageServicePlatform.instance.onMessageReceipt.add(list);
+        if (list != null)
+          MessageServicePlatform.instance.onMessageReceipt.add(list);
         break;
       case 'onTeamMessageReceipt':
         var receipt =
@@ -221,6 +224,60 @@ class MethodChannelMessageService extends MessageServicePlatform {
         final session =
             NIMSession.fromMap(Map<String, dynamic>.from(arguments));
         MessageServicePlatform.instance.onSessionDelete.add(session);
+        break;
+      case 'onMessagePinAdded':
+        MessageServicePlatform.instance.onMessagePinNotify.add(
+          NIMMessagePinAddedEvent(NIMMessagePin.fromMap(Map<String, dynamic>.from(arguments)))
+        );
+        break;
+      case 'onMessagePinRemoved':
+        MessageServicePlatform.instance.onMessagePinNotify.add(
+            NIMMessagePinRemovedEvent(NIMMessagePin.fromMap(Map<String, dynamic>.from(arguments)))
+        );
+        break;
+      case 'onMessagePinUpdated':
+        MessageServicePlatform.instance.onMessagePinNotify.add(
+            NIMMessagePinUpdatedEvent(NIMMessagePin.fromMap(Map<String, dynamic>.from(arguments)))
+        );
+        break;
+      case 'onMySessionUpdate':
+        final session =
+        RecentSession.fromMap(Map<String, dynamic>.from(arguments));
+        MessageServicePlatform.instance.onMySessionUpdate.add(session);
+        break;
+      case 'onQuickCommentAdd':
+        final comment =
+        NIMHandleQuickCommentOption.fromMap(Map<String, dynamic>.from(arguments));
+        MessageServicePlatform.instance.onQuickCommentAdd.add(comment);
+        break;
+      case 'onQuickCommentRemove':
+        final comment =
+        NIMHandleQuickCommentOption.fromMap(Map<String, dynamic>.from(arguments));
+        MessageServicePlatform.instance.onQuickCommentRemove.add(comment);
+        break;
+      case 'onSyncStickTopSession':
+        final data = arguments["data"] as List?;
+        if (data != null) {
+          final list = data.whereType<Map>().map((e) {
+            return NIMStickTopSessionInfo.fromMap(Map<String, dynamic>.from(e));
+          }).toList();
+          MessageServicePlatform.instance.onSyncStickTopSession.add(list);
+        }
+        break;
+      case 'onStickTopSessionAdd':
+        final sessionInfo =
+        NIMStickTopSessionInfo.fromMap(Map<String, dynamic>.from(arguments));
+        MessageServicePlatform.instance.onStickTopSessionAdd.add(sessionInfo);
+        break;
+      case 'onStickTopSessionRemove':
+        final sessionInfo =
+        NIMStickTopSessionInfo.fromMap(Map<String, dynamic>.from(arguments));
+        MessageServicePlatform.instance.onStickTopSessionRemove.add(sessionInfo);
+        break;
+      case 'onStickTopSessionUpdate':
+        final sessionInfo =
+        NIMStickTopSessionInfo.fromMap(Map<String, dynamic>.from(arguments));
+        MessageServicePlatform.instance.onStickTopSessionUpdate.add(sessionInfo);
         break;
       default:
         throw UnimplementedError('$method has not been implemented');
@@ -680,6 +737,147 @@ class MethodChannelMessageService extends MessageServicePlatform {
     );
   }
 
+  @override
+  Future<NIMResult<NIMCollectInfo>> addCollect({
+    required int type,
+    required String data,
+    String? ext,
+    String? uniqueId,
+  }) async {
+    return NIMResult<NIMCollectInfo>.fromMap(
+      await invokeMethod(
+        'addCollect',
+        arguments: {
+          'type': type,
+          'data': data,
+          if(ext != null) 'ext': ext,
+          if(uniqueId != null) 'uniqueId': uniqueId,
+        },
+      ),
+      convert: (map) {
+        return NIMCollectInfo.fromMap(map);
+      },
+    );
+  }
+
+  @override
+  Future<NIMResult<int>> removeCollect(List<NIMCollectInfo> collects) async {
+    return NIMResult<int>.fromMap(
+      await invokeMethod(
+        'removeCollect',
+        arguments: {
+          'collects': collects.map((e) => e.toMap()).toList(),
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<NIMResult<NIMCollectInfo>> updateCollect(NIMCollectInfo info) async {
+    return NIMResult<NIMCollectInfo>.fromMap(
+      await invokeMethod(
+        'updateCollect',
+        arguments: info.toMap(),
+      ),
+      convert: (map) {
+        return NIMCollectInfo.fromMap(map);
+      },
+    );
+  }
+
+  @override
+  Future<NIMResult<NIMCollectInfoQueryResult>> queryCollect({
+    NIMCollectInfo? anchor,
+    int toTime = 0,
+    int? type,
+    int limit = 100,
+    QueryDirection direction = QueryDirection.QUERY_OLD,
+  }) async {
+    return NIMResult<NIMCollectInfoQueryResult>.fromMap(
+      await invokeMethod(
+        'queryCollect',
+        arguments: {
+          if(anchor != null) 'anchor': anchor.toMap(),
+          'toTime': toTime,
+          if (type != null) 'type': type,
+          'limit': limit,
+          'direction': direction.index,
+        },
+      ),
+      convert: (map) {
+        return NIMCollectInfoQueryResult(
+          totalCount: map['totalCount'] as int,
+          collectList: (map['collects'] as List?)
+              ?.map((e) => castPlatformMapToDartMap(e as Map))
+              .map((e) {
+            return NIMCollectInfo.fromMap(e!);
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> addMessagePin(NIMMessage message, String? ext) async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod(
+        'addMessagePin',
+        arguments: {
+          'message': message.toMap(),
+          if (ext != null) 'ext': ext,
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> updateMessagePin(NIMMessage message, String? ext) async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod(
+        'updateMessagePin',
+        arguments: {
+          'message': message.toMap(),
+          if (ext != null) 'ext': ext,
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> removeMessagePin(NIMMessage message, String? ext) async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod(
+        'removeMessagePin',
+        arguments: {
+          'message': message.toMap(),
+          if (ext != null) 'ext': ext,
+        },
+      ),
+    );
+  }
+
+  @override
+  Future<NIMResult<List<NIMMessagePin>>> queryMessagePinForSession(
+    String sessionId,
+    NIMSessionType sessionType,
+  ) async {
+    return NIMResult<List<NIMMessagePin>>.fromMap(
+      await invokeMethod(
+        'queryMessagePinForSession',
+        arguments: {
+          'sessionId': sessionId,
+          'sessionType': NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+        },
+      ),
+      convert: (map) {
+        return (map['pinList'] as List?)
+              ?.cast<Map>()
+              .map((e) => NIMMessagePin.fromMap(e.cast<String, dynamic>()))
+              .toList();
+      },
+    );
+  }
+
   Future<NIMResult<int>> queryReplyCountInThreadTalkBlock(
       NIMMessage msg) async {
     return NIMResult<int>.fromMap(
@@ -730,4 +928,140 @@ class MethodChannelMessageService extends MessageServicePlatform {
       convert: (map) => NIMLocalAntiSpamResult.fromMap(map),
     );
   }
+
+  @override
+  Future<NIMResult<RecentSessionList>> queryMySessionList(int minTimestamp,
+      int maxTimestamp, int needLastMsg, int limit, int hasMore) async {
+    return NIMResult.fromMap(
+      await invokeMethod('queryMySessionList', arguments: {
+        'minTimestamp': minTimestamp,
+        'maxTimestamp': maxTimestamp,
+        'needLastMsg': needLastMsg,
+        'limit': limit,
+        'hasMore': hasMore,
+      }),
+      convert: (map) => RecentSessionList.fromMap(Map<String,dynamic>.from(map['mySessionList'] as Map)),
+    );
+  }
+
+  @override
+  Future<NIMResult<RecentSession>> queryMySession(String sessionId,NIMSessionType sessionType) async {
+    return NIMResult.fromMap(
+      await invokeMethod('queryMySession', arguments: {
+        'sessionId': sessionId,
+        'sessionType': NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+      }),
+      convert: (map) => RecentSession.fromMap(Map<String,dynamic>.from(map['recentSession'] as Map)),
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> updateMySession(String sessionId,NIMSessionType sessionType,String ext) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('updateMySession', arguments: {
+      'sessionId': sessionId,
+      'sessionType': NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+      'ext': ext,
+    }));
+  }
+
+  @override
+  Future<NIMResult<void>> deleteMySession(List<NIMMySessionKey> sessionList) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('deleteMySession', arguments: {
+          'sessionList': sessionList.map((e) => e.toMap()).toList(),
+        }));
+  }
+
+
+  @override
+  Future<NIMResult<int>> addQuickComment(NIMMessage msg, int replyType, String ext, bool needPush, bool needBadge, String pushTitle, String pushContent, Map<String, Object> pushPayload) async {
+    return NIMResult<int>.fromMap(
+        await invokeMethod('addQuickComment', arguments: {
+          'msg': msg.toMap(),
+          'replyType': replyType,
+          'ext': ext,
+          'needPush': needPush,
+          'needBadge': needBadge,
+          'pushTitle': pushTitle,
+          'pushContent': pushContent,
+          'pushPayload': pushPayload,
+    }),convert: (map) => map['result'] as int);
+  }
+
+  @override
+  Future<NIMResult<void>> removeQuickComment(NIMMessage msg, int replyType, String ext, bool needPush, bool needBadge, String pushTitle, String pushContent, Map<String, Object> pushPayload) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('removeQuickComment', arguments: {
+          'msg': msg.toMap(),
+          'replyType': replyType,
+          'needPush': needPush,
+          'needBadge': needBadge,
+          'ext': ext,
+          'pushTitle': pushTitle,
+          'pushContent': pushContent,
+          'pushPayload': pushPayload,
+    }));
+  }
+
+  @override
+  Future<NIMResult<List<NIMQuickCommentOptionWrapper>>> queryQuickComment(List<NIMMessage> msgList) async {
+    return NIMResult.fromMap(
+        await invokeMethod('queryQuickComment', arguments: {
+            'msgList': msgList.map((e) => e.toMap()).toList(),
+    }),
+    convert: (map) {
+      return (map['quickCommentOptionWrapperList'] as List?)
+          ?.map((e) =>
+      NIMQuickCommentOptionWrapper.fromMap(Map<String, dynamic>.from(e as Map)))
+          .toList();
+    },
+    );
+  }
+
+  @override
+  Future<NIMResult<NIMStickTopSessionInfo>> addStickTopSession(String sessionId, NIMSessionType sessionType, String ext) async {
+    return NIMResult.fromMap(
+      await invokeMethod('addStickTopSession', arguments: {
+        'sessionId': sessionId,
+        'sessionType': NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+        'ext': ext,
+      }),
+      convert: (map) => NIMStickTopSessionInfo.fromMap(Map<String,dynamic>.from(map['stickTopSessionInfo'] as Map)),
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> removeStickTopSession(String sessionId, NIMSessionType sessionType, String ext) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('removeStickTopSession', arguments: {
+          'sessionId': sessionId,
+          'sessionType': NIMSessionTypeConverter(sessionType:sessionType).toValue(),
+          'ext': ext,
+    }));
+  }
+
+  @override
+  Future<NIMResult<void>> updateStickTopSession(String sessionId, NIMSessionType sessionType, String ext) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('updateStickTopSession', arguments: {
+          'sessionId': sessionId,
+          'sessionType': NIMSessionTypeConverter(sessionType:sessionType).toValue(),
+          'ext': ext,
+    }),convert: (map) => NIMStickTopSessionInfo.fromMap(Map<String,dynamic>.from(map['stickTopSessionInfo'] as Map)),);
+  }
+
+  @override
+  Future<NIMResult<List<NIMStickTopSessionInfo>>> queryStickTopSession() async {
+    return NIMResult.fromMap(
+        await invokeMethod('queryStickTopSession'),
+    convert: (map) {
+      return (map['stickTopSessionInfoList'] as List?)
+          ?.map((e) =>
+      NIMStickTopSessionInfo.fromMap(Map<String, dynamic>.from(e as Map)))
+          .toList();
+    },
+    );
+  }
+
 }

@@ -51,7 +51,7 @@ class NIMCreateTeamOptions {
 
   NIMCreateTeamOptions({
     this.name,
-    this.teamType,
+    this.teamType = NIMTeamTypeEnum.normal,
     this.avatarUrl,
     this.introduce,
     this.announcement,

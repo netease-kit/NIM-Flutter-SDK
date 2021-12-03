@@ -24,12 +24,12 @@ class NIMNOSTransferProgress {
 @JsonSerializable()
 class NIMNOSTransferStatus {
   final NIMNOSTransferType? transferType;
-  final int? path;
-  final int? md5;
-  final int? url;
+  final String? path;
+  final String? md5;
+  final String? url;
   final int? size;
   final NIMNosTransferStatus? status;
-  final int? extension;
+  final String? extension;
 
   NIMNOSTransferStatus(
       {this.transferType,

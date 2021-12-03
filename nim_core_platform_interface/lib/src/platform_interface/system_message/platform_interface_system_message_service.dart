@@ -41,13 +41,29 @@ abstract class SystemMessageServicePlatform extends Service {
   final StreamController<CustomNotification> onCustomNotification =
       StreamController<CustomNotification>.broadcast();
 
-  Future<NIMResult<List<SystemMessage>>> querySystemMessages(int limit) async {
-    throw UnimplementedError('querySystemMessages() is not implemented');
+  Future<NIMResult<List<SystemMessage>>> querySystemMessagesAndroid(
+      int offset, int limit) async {
+    throw UnimplementedError('querySystemMessagesAndroid() is not implemented');
   }
 
-  Future<NIMResult<List<SystemMessage>>> querySystemMessageByType(
+  Future<NIMResult<List<SystemMessage>>> querySystemMessagesIOSAndDesktop(
+      SystemMessage? systemMessage, int limit) async {
+    throw UnimplementedError(
+        'querySystemMessagesIOSAndDesktop() is not implemented');
+  }
+
+  Future<NIMResult<List<SystemMessage>>> querySystemMessageByTypeAndroid(
       List<SystemMessageType> types, int offset, int limit) async {
-    throw UnimplementedError('querySystemMessageByType() is not implemented');
+    throw UnimplementedError(
+        'querySystemMessageByTypeAndroid() is not implemented');
+  }
+
+  Future<NIMResult<List<SystemMessage>>> querySystemMessageByTypeIOSAndDesktop(
+      SystemMessage? systemMessage,
+      List<SystemMessageType> types,
+      int limit) async {
+    throw UnimplementedError(
+        'querySystemMessageByTypeIOSAndDesktop() is not implemented');
   }
 
   //获取未读系统通知

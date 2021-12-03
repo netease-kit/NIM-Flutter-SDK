@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/message.dart';
+import 'package:nim_core_platform_interface/src/utils/converter.dart';
 
 part 'team.g.dart';
 
@@ -30,12 +32,12 @@ class NIMTeam {
   final int memberCount;
 
   /// 获取群组的成员人数上限
-  final String? memberLimit;
+  final int memberLimit;
 
   /// 获取申请加入群组时的验证类型
   final NIMVerifyTypeEnum verifyType;
 
-  /// 获取群组的创建时间
+  /// 获取群组的创建时间，单位为毫秒
   final num createTime;
 
   /// 获取自己是否在这个群里
@@ -77,7 +79,7 @@ class NIMTeam {
     this.introduce,
     this.creator,
     required this.memberCount,
-    this.memberLimit,
+    required this.memberLimit,
     required this.verifyType,
     required this.createTime,
     this.isMyTeam,
@@ -105,7 +107,7 @@ enum NIMVerifyTypeEnum {
   apply,
 
   ///私有群，不接受申请，仅能通过邀请方式入群
-  Private,
+  private,
 }
 
 enum NIMTeamMessageNotifyTypeEnum {
@@ -118,6 +120,12 @@ enum NIMTeamMessageNotifyTypeEnum {
   /// 群所有消息不提醒
   mute,
 }
+
+const NIMTeamMessageNotifyTypeEnumEnumMap = {
+  NIMTeamMessageNotifyTypeEnum.all: 'all',
+  NIMTeamMessageNotifyTypeEnum.manager: 'manager',
+  NIMTeamMessageNotifyTypeEnum.mute: 'mute',
+};
 
 enum NIMTeamInviteModeEnum {
   ///只有管理员可以邀请其他人入群（默认）
@@ -136,13 +144,13 @@ enum NIMTeamBeInviteModeEnum {
 }
 enum NIMTeamAllMuteModeEnum {
   /// 取消全员禁言
-  Cancel,
+  cancel,
 
   ///全员禁言，不包括管理员
-  MuteNormal,
+  muteNormal,
 
   /// 全员禁言，包括群组和管理员
-  MuteALL,
+  muteAll,
 }
 
 enum NIMTeamExtensionUpdateModeEnum {
@@ -164,11 +172,13 @@ enum NIMTeamUpdateModeEnum {
 /// TeamTypeEnum属性	说明
 /// [advanced]	高级群，有完善的权限管理功能
 /// [normal]	讨论组，仅具有基本的权限管理功能，所有人都能加入，
+/// [superTeam]	超大群
 /// 仅群主可以踢人
 
 enum NIMTeamTypeEnum {
   advanced,
   normal,
+  superTeam,
 }
 
 ///TeamFieldEnum属性	说明	数据类型
@@ -185,9 +195,11 @@ enum NIMTeamTypeEnum {
 /// [verifyType]	申请加入群组的验证模式
 
 enum NIMTeamFieldEnum {
+  undefined,
   announcement,
   beInviteMode,
   extension,
+  serverExtension,
   icon,
   introduce,
   inviteMode,
@@ -199,9 +211,11 @@ enum NIMTeamFieldEnum {
 }
 
 const NIMTeamFieldEnumEnumMap = {
+  NIMTeamFieldEnum.undefined: 'undefined',
   NIMTeamFieldEnum.announcement: 'announcement',
   NIMTeamFieldEnum.beInviteMode: 'beInviteMode',
   NIMTeamFieldEnum.extension: 'extension',
+  NIMTeamFieldEnum.serverExtension: 'serverExtension',
   NIMTeamFieldEnum.icon: 'icon',
   NIMTeamFieldEnum.introduce: 'introduce',
   NIMTeamFieldEnum.inviteMode: 'inviteMode',
@@ -212,6 +226,64 @@ const NIMTeamFieldEnumEnumMap = {
   NIMTeamFieldEnum.verifyType: 'verifyType',
 };
 
+class NIMTeamUpdateFieldRequest {
+  final _updatedFields = <String, dynamic>{};
+
+  Map<String, dynamic> toMap() {
+    return _updatedFields.isEmpty
+        ? {}
+        : {
+            'requestList': _updatedFields.keys.toList(),
+            ..._updatedFields,
+          };
+  }
+
+  setAnnouncement(String? announcement) {
+    _updatedFields["announcement"] = announcement;
+  }
+
+  setBeInviteMode(NIMTeamBeInviteModeEnum beInviteMode) {
+    _updatedFields["beInviteMode"] = beInviteMode.index;
+  }
+
+  setExtension(String? extension) {
+    _updatedFields["extension"] = extension;
+  }
+
+  setIcon(String? icon) {
+    _updatedFields["icon"] = icon;
+  }
+
+  setIntroduce(String? introduce) {
+    _updatedFields['introduce'] = introduce;
+  }
+
+  setInviteMode(NIMTeamInviteModeEnum inviteMode) {
+    _updatedFields['inviteMode'] = inviteMode.index;
+  }
+
+  setMaxMemberCount(int maxMemberCount) {
+    _updatedFields['maxMemberCount'] = maxMemberCount;
+  }
+
+  setName(String? name) {
+    _updatedFields['name'] = name;
+  }
+
+  setTeamExtensionUpdateMode(
+      NIMTeamExtensionUpdateModeEnum teamExtensionUpdateMode) {
+    _updatedFields['teamExtensionUpdateMode'] = teamExtensionUpdateMode.index;
+  }
+
+  setTeamUpdateMode(NIMTeamUpdateModeEnum teamUpdateMode) {
+    _updatedFields['teamUpdateMode'] = teamUpdateMode.index;
+  }
+
+  setVerifyType(NIMVerifyTypeEnum verifyType) {
+    _updatedFields['verifyType'] = verifyType.index;
+  }
+}
+
 /// 群组通知消息附件
 @JsonSerializable()
 class NIMTeamNotificationAttachment extends NIMMessageAttachment {
@@ -219,6 +291,7 @@ class NIMTeamNotificationAttachment extends NIMMessageAttachment {
   final int type;
 
   /// 扩展字段
+  @JsonKey(fromJson: castPlatformMapToDartMap)
   final Map<String, dynamic>? extension;
 
   NIMTeamNotificationAttachment({required this.type, this.extension});
@@ -234,14 +307,25 @@ class NIMTeamNotificationAttachment extends NIMMessageAttachment {
       case NIMTeamNotificationTypes.transferOwner:
       case NIMTeamNotificationTypes.passTeamApply:
       case NIMTeamNotificationTypes.removeTeamManager:
+      case NIMSuperTeamNotificationTypes.invite:
+      case NIMSuperTeamNotificationTypes.changeOwner:
+      case NIMSuperTeamNotificationTypes.addManager:
+      case NIMSuperTeamNotificationTypes.removeManager:
+      case NIMSuperTeamNotificationTypes.applyPass:
+      case NIMSuperTeamNotificationTypes.inviteAccept:
+      case NIMSuperTeamNotificationTypes.kick:
         return NIMMemberChangeAttachment.fromMap(map);
       case NIMTeamNotificationTypes.dismissTeam:
+      case NIMSuperTeamNotificationTypes.dismiss:
         return NIMDismissAttachment.fromMap(map);
       case NIMTeamNotificationTypes.leaveTeam:
+      case NIMSuperTeamNotificationTypes.leave:
         return NIMLeaveTeamAttachment.fromMap(map);
       case NIMTeamNotificationTypes.muteTeamMember:
+      case NIMSuperTeamNotificationTypes.muteList:
         return NIMMuteMemberAttachment.fromMap(map);
       case NIMTeamNotificationTypes.updateTeam:
+      case NIMSuperTeamNotificationTypes.updateInfo:
         return NIMUpdateTeamAttachment.fromMap(map);
       default:
         return NIMTeamNotificationAttachment.fromMap(map);
@@ -311,10 +395,18 @@ class NIMLeaveTeamAttachment extends NIMTeamNotificationAttachment {
 
 @JsonSerializable()
 class NIMMuteMemberAttachment extends NIMTeamNotificationAttachment {
+
+  /// 是否静音
+  @JsonKey(defaultValue: false)
   final bool mute;
+
+  /// 被操作的成员帐号列表
+  final List<String>? targets;
+
   NIMMuteMemberAttachment({
     required this.mute,
     required int type,
+    this.targets,
     Map<String, dynamic>? extension,
   }) : super(
           type: type,
@@ -328,20 +420,68 @@ class NIMMuteMemberAttachment extends NIMTeamNotificationAttachment {
   Map<String, dynamic> toMap() => _$NIMMuteMemberAttachmentToJson(this);
 }
 
+/// 群更新字段
+@JsonSerializable()
+class NIMTeamUpdatedFields {
+  final String? updatedAnnouncement;
+  final NIMTeamBeInviteModeEnum? updatedBeInviteMode;
+  final String? updatedExtension;
+  final String? updatedServerExtension;
+  final String? updatedIcon;
+  final String? updatedIntroduce;
+  final NIMTeamInviteModeEnum? updatedInviteMode;
+  final int? updatedMaxMemberCount;
+  final String? updatedName;
+  final NIMTeamExtensionUpdateModeEnum? updatedExtensionUpdateMode;
+  final NIMTeamUpdateModeEnum? updatedUpdateMode;
+  final NIMVerifyTypeEnum? updatedVerifyType;
+  final NIMTeamAllMuteModeEnum? updatedAllMuteMode;
+
+  NIMTeamUpdatedFields({
+    this.updatedAnnouncement,
+    this.updatedBeInviteMode,
+    this.updatedExtension,
+    this.updatedServerExtension,
+    this.updatedIcon,
+    this.updatedIntroduce,
+    this.updatedInviteMode,
+    this.updatedMaxMemberCount,
+    this.updatedName,
+    this.updatedExtensionUpdateMode,
+    this.updatedUpdateMode,
+    this.updatedVerifyType,
+    this.updatedAllMuteMode,
+  });
+
+  factory NIMTeamUpdatedFields.fromMap(Map map) =>
+      _$NIMTeamUpdatedFieldsFromJson(map.cast());
+}
+
+NIMTeamUpdatedFields _updatedFieldsFromJson(Map? map) {
+  if (map != null) {
+    return NIMTeamUpdatedFields.fromMap(map);
+  }
+  return NIMTeamUpdatedFields();
+}
+
+/// 群组更新消息附件
 @JsonSerializable()
 class NIMUpdateTeamAttachment extends NIMTeamNotificationAttachment {
-  final Map<NIMTeamFieldEnum, Object> updatedFields;
+
+  @JsonKey(fromJson: _updatedFieldsFromJson)
+  final NIMTeamUpdatedFields updatedFields;
+
   NIMUpdateTeamAttachment({
-    required this.updatedFields,
     required int type,
     Map<String, dynamic>? extension,
+    required this.updatedFields,
   }) : super(
           type: type,
           extension: extension,
         );
 
-  factory NIMUpdateTeamAttachment.fromMap(Map<String, dynamic> map) =>
-      _$NIMUpdateTeamAttachmentFromJson(map);
+  factory NIMUpdateTeamAttachment.fromMap(Map map) =>
+      _$NIMUpdateTeamAttachmentFromJson(map.cast());
 
   @override
   Map<String, dynamic> toMap() => _$NIMUpdateTeamAttachmentToJson(this);

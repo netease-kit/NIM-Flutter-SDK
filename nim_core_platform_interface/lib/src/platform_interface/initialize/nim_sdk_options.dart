@@ -5,7 +5,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 
-/// 基础配置
+/// 初始化基础配置
 abstract class NIMSDKOptions {
   /// app key
   final String appKey;
@@ -17,12 +17,13 @@ abstract class NIMSDKOptions {
   final int? customClientType;
 
   /// cdn统计回调触发间隔。触发cdn拉流前设置，触发拉流后改动将不生效
+  /// windows&macos 暂不支持
   final int? cdnTrackInterval;
 
   /// 是否开启数据库备份功能，默认关闭
   final bool? enableDatabaseBackup;
 
-  /// 登录时的自定义字段，登陆成功后会同步给其他端
+  /// 登录时的自定义字段，登陆成功后会同步给其他端
   final String? loginCustomTag;
 
   /// 是否开启会话已读多端同步，支持多端同步会话未读数，默认关闭
@@ -56,7 +57,11 @@ abstract class NIMSDKOptions {
   /// 是否开启IM日志自动上报，默认关闭
   final bool? enableReportLogAutomatically;
 
+  /// 是否使用自定义服务器地址配置文件
+  final bool? useAssetServerAddressConfig;
+
   /// 自动登录账号信息
+  /// windows&macos 暂不支持自动登录
   @JsonKey(
     toJson: loginInfoToMap,
     fromJson: loginInfoFromMap,
@@ -92,6 +97,7 @@ abstract class NIMSDKOptions {
     this.shouldTeamNotificationMessageMarkUnread,
     this.enableAnimatedImageThumbnail,
     this.enablePreloadMessageAttachment,
+    this.useAssetServerAddressConfig,
     this.autoLoginInfo,
     this.nosSceneConfig,
   });

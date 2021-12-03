@@ -32,8 +32,12 @@ abstract class NOSServicePlatform extends Service {
   final StreamController<NIMNOSTransferStatus> onNOSTransferStatus =
       StreamController<NIMNOSTransferStatus>.broadcast();
 
-  Future<NIMResult<void>> upload(
+  Future<NIMResult<String>> upload(
       {required String filePath, String? mimeType, String? sceneKey}) async {
     throw UnimplementedError('upload() is not implemented');
+  }
+
+  Future<NIMResult<void>> download({required String url, String? path}) async {
+    throw UnimplementedError('download() is not implemented');
   }
 }

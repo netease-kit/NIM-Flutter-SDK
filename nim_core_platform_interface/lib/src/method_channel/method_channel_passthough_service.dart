@@ -8,9 +8,14 @@ class MethodChannelPassThroughService extends PassThroughServicePlatform {
   Future onEvent(String method, arguments) {
     switch (method) {
       case 'onPassthrough':
-        PassThroughServicePlatform.instance.onPassThroughNotifyData.add(
+        final data = arguments['passthroughNotifyData'];
+        if (data is Map) {
+          PassThroughServicePlatform.instance.onPassThroughNotifyData.add(
             NIMPassThroughNotifyData.fromMap(
-                Map<String, dynamic>.from(arguments as Map)));
+                Map<String, dynamic>.from(data)
+            ),
+          );
+        }
         break;
     }
     return Future.value(null);
