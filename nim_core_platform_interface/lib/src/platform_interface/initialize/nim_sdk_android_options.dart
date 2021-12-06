@@ -60,6 +60,25 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   @JsonKey(defaultValue: 2000)
   final int fetchServerTimeInterval;
 
+  ///
+  /// 离线推送不显示详情时，要显示的文案对应的类型名称
+  ///
+  final String? customPushContentType;
+
+  ///
+  /// 数据库加密秘钥，用于消息数据库加密。<br/>
+  /// 如果不设置，数据库处于明文状态；
+  /// 设置后，数据库会加密保存数据，之前明文保存的历史数据会被转为加密保存；
+  /// 一旦开启过加密功能后，不支持退回明文保存状态。
+  ///
+  final String? databaseEncryptKey;
+
+ ///
+ /// 消息缩略图的尺寸。<br>
+ /// 该值为最长边的大小。下载的缩略图最长边不会超过该值。
+ ///
+  final int thumbnailSize;
+
   /// 第三方推送配置
   @JsonKey(toJson: _mixPushConfigToMap, fromJson: _mixPushConfigFromMap)
   final NIMMixPushConfig? mixPushConfig;
@@ -76,7 +95,10 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.reducedIM = false,
     this.checkManifestConfig = false,
     this.disableAwake = false,
+    this.databaseEncryptKey,
+    this.thumbnailSize = 350,
     this.fetchServerTimeInterval = 2000,
+    this.customPushContentType,
     this.mixPushConfig,
     this.notificationConfig,
 
@@ -95,6 +117,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     bool? shouldTeamNotificationMessageMarkUnread,
     bool? enableAnimatedImageThumbnail,
     bool? enablePreloadMessageAttachment,
+    bool? useAssetServerAddressConfig,
     NIMLoginInfo? autoLoginInfo,
     Map<NIMNosScene, int>? nosSceneConfig,
   }) : super(
@@ -114,6 +137,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
               shouldTeamNotificationMessageMarkUnread,
           enableAnimatedImageThumbnail: enableAnimatedImageThumbnail,
           enablePreloadMessageAttachment: enablePreloadMessageAttachment,
+          useAssetServerAddressConfig: useAssetServerAddressConfig,
           autoLoginInfo: autoLoginInfo,
           nosSceneConfig: nosSceneConfig,
         );

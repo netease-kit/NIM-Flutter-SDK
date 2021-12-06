@@ -13,8 +13,10 @@ NIMMessage _$NIMMessageFromJson(Map<String, dynamic> json) {
     sessionType: _$enumDecodeNullable(
         _$NIMSessionTypeEnumMap, json['sessionType'],
         unknownValue: NIMSessionType.p2p),
-    messageType: _$enumDecode(_$NIMMessageTypeEnumMap, json['messageType'],
-        unknownValue: NIMMessageType.undef),
+    messageType: _$enumDecodeNullable(
+            _$NIMMessageTypeEnumMap, json['messageType'],
+            unknownValue: NIMMessageType.undef) ??
+        NIMMessageType.undef,
     messageSubType: _$enumDecodeNullable(
         _$NIMMessageTypeEnumMap, json['messageSubType'],
         unknownValue: NIMMessageType.undef),
@@ -28,10 +30,9 @@ NIMMessage _$NIMMessageFromJson(Map<String, dynamic> json) {
     timestamp: json['timestamp'] as int,
     messageAttachment:
         NIMMessageAttachment._fromMap(json['messageAttachment'] as Map?),
-    attachmentDownloadState: _$enumDecodeNullable(
-        _$NIMMessageAttachmentDownloadStateEnumMap,
-        json['attachmentDownloadState'],
-        unknownValue: NIMMessageAttachmentDownloadState.needDownload),
+    attachmentStatus: _$enumDecodeNullable(
+        _$NIMMessageAttachmentStatusEnumMap, json['attachmentStatus'],
+        unknownValue: NIMMessageAttachmentStatus.transferred),
     uuid: json['uuid'] as String?,
     serverId: json['serverId'] as int?,
     config: NIMCustomMessageConfig._fromMap(json['config'] as Map?),
@@ -81,8 +82,8 @@ Map<String, dynamic> _$NIMMessageToJson(NIMMessage instance) =>
       'timestamp': instance.timestamp,
       'messageAttachment':
           NIMMessageAttachment._toMap(instance.messageAttachment),
-      'attachmentDownloadState': _$NIMMessageAttachmentDownloadStateEnumMap[
-          instance.attachmentDownloadState],
+      'attachmentStatus':
+          _$NIMMessageAttachmentStatusEnumMap[instance.attachmentStatus],
       'uuid': instance.uuid,
       'serverId': instance.serverId,
       'config': NIMCustomMessageConfig._toMap(instance.config),
@@ -191,12 +192,12 @@ const _$NIMMessageDirectionEnumMap = {
   NIMMessageDirection.received: 'received',
 };
 
-const _$NIMMessageAttachmentDownloadStateEnumMap = {
-  NIMMessageAttachmentDownloadState.needDownload: 'needDownload',
-  NIMMessageAttachmentDownloadState.failed: 'failed',
-  NIMMessageAttachmentDownloadState.downloading: 'downloading',
-  NIMMessageAttachmentDownloadState.downloaded: 'downloaded',
-  NIMMessageAttachmentDownloadState.cancel: 'cancel',
+const _$NIMMessageAttachmentStatusEnumMap = {
+  NIMMessageAttachmentStatus.initial: 'initial',
+  NIMMessageAttachmentStatus.failed: 'failed',
+  NIMMessageAttachmentStatus.transferring: 'transferring',
+  NIMMessageAttachmentStatus.transferred: 'transferred',
+  NIMMessageAttachmentStatus.cancel: 'cancel',
 };
 
 const _$NIMClientTypeEnumMap = {
@@ -251,18 +252,26 @@ NIMFileAttachment _$NIMFileAttachmentFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$NIMFileAttachmentToJson(NIMFileAttachment instance) =>
-    <String, dynamic>{
-      'path': instance.path,
-      'url': instance.url,
-      'size': instance.size,
-      'md5': instance.md5,
-      'name': instance.displayName,
-      'ext': instance.extension,
-      'expire': instance.expire,
-      'sen': instance.nosScene,
-      'force_upload': instance.forceUpload,
-    };
+Map<String, dynamic> _$NIMFileAttachmentToJson(NIMFileAttachment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('path', instance.path);
+  writeNotNull('url', instance.url);
+  val['size'] = instance.size;
+  writeNotNull('md5', instance.md5);
+  val['name'] = instance.displayName;
+  val['ext'] = instance.extension;
+  val['expire'] = instance.expire;
+  val['sen'] = instance.nosScene;
+  val['force_upload'] = instance.forceUpload;
+  return val;
+}
 
 NIMAudioAttachment _$NIMAudioAttachmentFromJson(Map<String, dynamic> json) {
   return NIMAudioAttachment(
@@ -281,21 +290,29 @@ NIMAudioAttachment _$NIMAudioAttachmentFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$NIMAudioAttachmentToJson(NIMAudioAttachment instance) =>
-    <String, dynamic>{
-      'path': instance.path,
-      'url': instance.url,
-      'size': instance.size,
-      'md5': instance.md5,
-      'name': instance.displayName,
-      'ext': instance.extension,
-      'expire': instance.expire,
-      'sen': instance.nosScene,
-      'force_upload': instance.forceUpload,
-      'dur': instance.duration,
-      'autoTransform': instance.autoTransform,
-      'text': instance.text,
-    };
+Map<String, dynamic> _$NIMAudioAttachmentToJson(NIMAudioAttachment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('path', instance.path);
+  writeNotNull('url', instance.url);
+  val['size'] = instance.size;
+  writeNotNull('md5', instance.md5);
+  val['name'] = instance.displayName;
+  val['ext'] = instance.extension;
+  val['expire'] = instance.expire;
+  val['sen'] = instance.nosScene;
+  val['force_upload'] = instance.forceUpload;
+  val['dur'] = instance.duration;
+  val['autoTransform'] = instance.autoTransform;
+  val['text'] = instance.text;
+  return val;
+}
 
 NIMVideoAttachment _$NIMVideoAttachmentFromJson(Map<String, dynamic> json) {
   return NIMVideoAttachment(
@@ -316,23 +333,31 @@ NIMVideoAttachment _$NIMVideoAttachmentFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$NIMVideoAttachmentToJson(NIMVideoAttachment instance) =>
-    <String, dynamic>{
-      'path': instance.path,
-      'url': instance.url,
-      'size': instance.size,
-      'md5': instance.md5,
-      'name': instance.displayName,
-      'ext': instance.extension,
-      'expire': instance.expire,
-      'sen': instance.nosScene,
-      'force_upload': instance.forceUpload,
-      'dur': instance.duration,
-      'w': instance.width,
-      'h': instance.height,
-      'thumbPath': instance.thumbPath,
-      'thumbUrl': instance.thumbUrl,
-    };
+Map<String, dynamic> _$NIMVideoAttachmentToJson(NIMVideoAttachment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('path', instance.path);
+  writeNotNull('url', instance.url);
+  val['size'] = instance.size;
+  writeNotNull('md5', instance.md5);
+  val['name'] = instance.displayName;
+  val['ext'] = instance.extension;
+  val['expire'] = instance.expire;
+  val['sen'] = instance.nosScene;
+  val['force_upload'] = instance.forceUpload;
+  val['dur'] = instance.duration;
+  val['w'] = instance.width;
+  val['h'] = instance.height;
+  val['thumbPath'] = instance.thumbPath;
+  val['thumbUrl'] = instance.thumbUrl;
+  return val;
+}
 
 NIMImageAttachment _$NIMImageAttachmentFromJson(Map<String, dynamic> json) {
   return NIMImageAttachment(
@@ -352,22 +377,30 @@ NIMImageAttachment _$NIMImageAttachmentFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$NIMImageAttachmentToJson(NIMImageAttachment instance) =>
-    <String, dynamic>{
-      'path': instance.path,
-      'url': instance.url,
-      'size': instance.size,
-      'md5': instance.md5,
-      'name': instance.displayName,
-      'ext': instance.extension,
-      'expire': instance.expire,
-      'sen': instance.nosScene,
-      'force_upload': instance.forceUpload,
-      'thumbPath': instance.thumbPath,
-      'thumbUrl': instance.thumbUrl,
-      'w': instance.width,
-      'h': instance.height,
-    };
+Map<String, dynamic> _$NIMImageAttachmentToJson(NIMImageAttachment instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('path', instance.path);
+  writeNotNull('url', instance.url);
+  val['size'] = instance.size;
+  writeNotNull('md5', instance.md5);
+  val['name'] = instance.displayName;
+  val['ext'] = instance.extension;
+  val['expire'] = instance.expire;
+  val['sen'] = instance.nosScene;
+  val['force_upload'] = instance.forceUpload;
+  writeNotNull('thumbPath', instance.thumbPath);
+  writeNotNull('thumbUrl', instance.thumbUrl);
+  val['w'] = instance.width;
+  val['h'] = instance.height;
+  return val;
+}
 
 NIMLocationAttachment _$NIMLocationAttachmentFromJson(
     Map<String, dynamic> json) {
@@ -421,18 +454,16 @@ Map<String, dynamic> _$NIMTeamMessageReceiptToJson(
 NIMAttachmentProgress _$NIMAttachmentProgressFromJson(
     Map<String, dynamic> json) {
   return NIMAttachmentProgress(
-    uuid: json['uuid'] as String,
-    transferred: json['transferred'] as int?,
-    total: json['total'] as int?,
+    id: json['id'] as String,
+    progress: (json['progress'] as num?)?.toDouble(),
   );
 }
 
 Map<String, dynamic> _$NIMAttachmentProgressToJson(
         NIMAttachmentProgress instance) =>
     <String, dynamic>{
-      'uuid': instance.uuid,
-      'transferred': instance.transferred,
-      'total': instance.total,
+      'id': instance.id,
+      'progress': instance.progress,
     };
 
 NIMRevokeMessage _$NIMRevokeMessageFromJson(Map<String, dynamic> json) {
@@ -553,16 +584,18 @@ Map<String, dynamic> _$NIMMessageThreadOptionToJson(
 
 NIMChatroomMessage _$NIMChatroomMessageFromJson(Map<String, dynamic> json) {
   return NIMChatroomMessage(
-    enableHistory: json['enableHistory'] as bool,
-    isHighPriorityMessage: json['isHighPriorityMessage'] as bool,
+    enableHistory: json['enableHistory'] as bool? ?? true,
+    isHighPriorityMessage: json['isHighPriorityMessage'] as bool? ?? false,
     extension: _chatroomMessageExtensionFromMap(json['extension'] as Map?),
     messageId: json['messageId'] as String? ?? '-1',
     sessionId: json['sessionId'] as String?,
     sessionType: _$enumDecodeNullable(
         _$NIMSessionTypeEnumMap, json['sessionType'],
         unknownValue: NIMSessionType.p2p),
-    messageType: _$enumDecode(_$NIMMessageTypeEnumMap, json['messageType'],
-        unknownValue: NIMMessageType.undef),
+    messageType: _$enumDecodeNullable(
+            _$NIMMessageTypeEnumMap, json['messageType'],
+            unknownValue: NIMMessageType.undef) ??
+        NIMMessageType.undef,
     messageSubType: _$enumDecodeNullable(
         _$NIMMessageTypeEnumMap, json['messageSubType'],
         unknownValue: NIMMessageType.undef),
@@ -576,10 +609,9 @@ NIMChatroomMessage _$NIMChatroomMessageFromJson(Map<String, dynamic> json) {
     timestamp: json['timestamp'] as int,
     messageAttachment:
         NIMMessageAttachment._fromMap(json['messageAttachment'] as Map?),
-    attachmentDownloadState: _$enumDecodeNullable(
-        _$NIMMessageAttachmentDownloadStateEnumMap,
-        json['attachmentDownloadState'],
-        unknownValue: NIMMessageAttachmentDownloadState.needDownload),
+    attachmentStatus: _$enumDecodeNullable(
+        _$NIMMessageAttachmentStatusEnumMap, json['attachmentStatus'],
+        unknownValue: NIMMessageAttachmentStatus.transferred),
     uuid: json['uuid'] as String?,
     serverId: json['serverId'] as int?,
     remoteExtension: castPlatformMapToDartMap(json['remoteExtension'] as Map?),
@@ -628,8 +660,8 @@ Map<String, dynamic> _$NIMChatroomMessageToJson(NIMChatroomMessage instance) =>
       'timestamp': instance.timestamp,
       'messageAttachment':
           NIMMessageAttachment._toMap(instance.messageAttachment),
-      'attachmentDownloadState': _$NIMMessageAttachmentDownloadStateEnumMap[
-          instance.attachmentDownloadState],
+      'attachmentStatus':
+          _$NIMMessageAttachmentStatusEnumMap[instance.attachmentStatus],
       'uuid': instance.uuid,
       'serverId': instance.serverId,
       'config': NIMCustomMessageConfig._toMap(instance.config),
@@ -694,7 +726,7 @@ NIMSession _$NIMSessionFromJson(Map<String, dynamic> json) {
     lastMessageTime: json['lastMessageTime'] as int?,
     lastMessageAttachment:
         NIMMessageAttachment._fromMap(json['lastMessageAttachment'] as Map?),
-    unreadCount: json['unreadCount'] as int,
+    unreadCount: json['unreadCount'] as int?,
     extension: castPlatformMapToDartMap(json['extension'] as Map?),
     tag: json['tag'] as int?,
   );
@@ -740,4 +772,26 @@ Map<String, dynamic> _$NIMTeamMessageAckInfoToJson(
       'msgId': instance.msgId,
       'ackAccountList': instance.ackAccountList,
       'unAckAccountList': instance.unAckAccountList,
+    };
+
+NIMMessageKey _$NIMMessageKeyFromJson(Map<String, dynamic> json) {
+  return NIMMessageKey(
+    sessionType:
+        _$enumDecodeNullable(_$NIMSessionTypeEnumMap, json['sessionType']),
+    fromAccount: json['fromAccount'] as String?,
+    toAccount: json['toAccount'] as String?,
+    time: json['time'] as int?,
+    serverId: json['serverId'] as int?,
+    uuid: json['uuid'] as String?,
+  );
+}
+
+Map<String, dynamic> _$NIMMessageKeyToJson(NIMMessageKey instance) =>
+    <String, dynamic>{
+      'sessionType': _$NIMSessionTypeEnumMap[instance.sessionType],
+      'fromAccount': instance.fromAccount,
+      'toAccount': instance.toAccount,
+      'time': instance.time,
+      'serverId': instance.serverId,
+      'uuid': instance.uuid,
     };

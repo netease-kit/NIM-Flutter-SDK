@@ -11,11 +11,15 @@ part 'friend.g.dart';
 class NIMFriend {
   final String? userId;
   final String? alias;
+  @JsonKey(name: "extension")
+  final String? ext;
+  @JsonKey(name: "serverExtension")
   final String? serverExt;
 
-  NIMFriend({this.userId, this.alias, this.serverExt});
+  NIMFriend({this.userId, this.alias, this.ext, this.serverExt});
 
   Map<String, dynamic> toMap() => _$NIMFriendToJson(this);
+
   factory NIMFriend.fromMap(Map<String, dynamic> map) =>
       _$NIMFriendFromJson(map);
 }

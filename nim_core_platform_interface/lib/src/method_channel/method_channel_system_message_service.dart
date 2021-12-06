@@ -15,7 +15,6 @@ class MethodChannelSystemMessageService extends SystemMessageServicePlatform {
 
   @override
   Future onEvent(String method, arguments) {
-    print('onEvent method = $method arguments = $arguments');
     Map<String, dynamic> paramMap = Map<String, dynamic>.from(arguments);
     switch (method) {
       case 'onReceiveSystemMsg':
@@ -59,16 +58,30 @@ class MethodChannelSystemMessageService extends SystemMessageServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<SystemMessage>>> querySystemMessages(int limit) async {
+  Future<NIMResult<List<SystemMessage>>> querySystemMessagesAndroid(
+      int offset, int limit) async {
     Map<String, dynamic> arguments = Map();
     arguments["limit"] = limit;
+    arguments["offset"] = offset;
     Map<String, dynamic> replyMap =
-        await invokeMethod('querySystemMessages', arguments: arguments);
+        await invokeMethod('querySystemMessagesAndroid', arguments: arguments);
     return notifyMessageListResult(replyMap);
   }
 
   @override
-  Future<NIMResult<List<SystemMessage>>> querySystemMessageByType(
+  Future<NIMResult<List<SystemMessage>>> querySystemMessagesIOSAndDesktop(
+      SystemMessage? systemMessage, int limit) async {
+    Map<String, dynamic> arguments = Map();
+    arguments["limit"] = limit;
+    arguments["systemMessage"] = systemMessage?.toMap();
+    Map<String, dynamic> replyMap = await invokeMethod(
+        'querySystemMessagesIOSAndDesktop',
+        arguments: arguments);
+    return notifyMessageListResult(replyMap);
+  }
+
+  @override
+  Future<NIMResult<List<SystemMessage>>> querySystemMessageByTypeAndroid(
       List<SystemMessageType> types, int offset, int limit) async {
     Map<String, dynamic> arguments = Map();
     arguments["systemMessageTypeList"] = types
@@ -76,8 +89,26 @@ class MethodChannelSystemMessageService extends SystemMessageServicePlatform {
         .toList();
     arguments["offset"] = offset;
     arguments["limit"] = limit;
-    Map<String, dynamic> replyMap =
-        await invokeMethod('querySystemMessageByType', arguments: arguments);
+    Map<String, dynamic> replyMap = await invokeMethod(
+        'querySystemMessageByTypeAndroid',
+        arguments: arguments);
+    return notifyMessageListResult(replyMap);
+  }
+
+  @override
+  Future<NIMResult<List<SystemMessage>>> querySystemMessageByTypeIOSAndDesktop(
+      SystemMessage? systemMessage,
+      List<SystemMessageType> types,
+      int limit) async {
+    Map<String, dynamic> arguments = Map();
+    arguments["systemMessageTypeList"] = types
+        .map((e) => SystemMessageTypeConverter(type: e).toValue())
+        .toList();
+    arguments["systemMessage"] = systemMessage?.toMap();
+    arguments["limit"] = limit;
+    Map<String, dynamic> replyMap = await invokeMethod(
+        'querySystemMessageByTypeIOSAndDesktop',
+        arguments: arguments);
     return notifyMessageListResult(replyMap);
   }
 
@@ -182,7 +213,7 @@ class MethodChannelSystemMessageService extends SystemMessageServicePlatform {
     Map<String, dynamic> arguments = Map();
     arguments["customNotification"] = notification.toMap();
     Map<String, dynamic> replyMap =
-        await invokeMethod('setSystemMessageStatus', arguments: arguments);
+        await invokeMethod('sendCustomNotification', arguments: arguments);
     return NIMResult.fromMap(replyMap);
   }
 }

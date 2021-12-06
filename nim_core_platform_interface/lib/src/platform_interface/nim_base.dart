@@ -103,6 +103,8 @@ class NIMResult<T> {
 
   NIMResult(this.code, this.data, this.errorDetails);
 
+  NIMResult.failure({int code = -1, String? message}): this(code, null, message);
+
   NIMResult.success({String? message, dynamic data}) : this(0, data, message);
 
   factory NIMResult.fromMap(Map<String, dynamic> map,
@@ -123,14 +125,20 @@ class NIMResult<T> {
     }
   }
 
-  bool get isSuccess => code == 0;
+  bool get isSuccess => code == 0 || code == 200;
 
   Map<String, dynamic> toMap() {
+    if (_sourceMap != null) return _sourceMap!;
     return {
       'code': code,
-      'data': _sourceMap != null ? _sourceMap! : data,
+      'data': data,
       'msg': errorDetails,
     };
+  }
+
+  @override
+  String toString() {
+    return 'NIMResult{code: $code, data: $data, errorDetails: $errorDetails}';
   }
 }
 
@@ -187,21 +195,21 @@ class NIMNosScenes {
   static const int expireTimeNever = 0;
 }
 
-/// 消息附件下载状态
-enum NIMMessageAttachmentDownloadState {
-  /// 附件需要进行下载 (有附件但并没有下载过)
-  needDownload,
+/// 消息附件接收/发送状态
+enum NIMMessageAttachmentStatus {
+  /// 初始状态，需要上传或下载
+  initial,
 
-  /// 附件收取失败 (尝试下载过一次并失败)
+  /// 上传/下载失败
   failed,
 
-  /// 附件下载中
-  downloading,
+  /// 上传/下载中
+  transferring,
 
-  /// 附件下载成功/无附件
-  downloaded,
+  /// 附件上传/下载成功/无附件
+  transferred,
 
-  /// 下载取消
+  /// 取消
   cancel
 }
 

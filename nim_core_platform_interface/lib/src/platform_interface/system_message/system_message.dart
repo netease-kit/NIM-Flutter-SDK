@@ -55,6 +55,19 @@ class SystemMessage {
       customInfo: param["customInfo"] as String?,
     );
   }
+
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    "messageId": messageId,
+    if(type != null) "type": SystemMessageTypeConverter(type: type).toValue(),
+    "fromAccount": fromAccount,
+    "targetId": targetId,
+    "time": time,
+    if(status != null)  "status": SystemMessageStatusConverter(status: status).toValue(),
+    "content": content,
+    "attach": attach,
+    "unread": unread,
+    "customInfo": customInfo
+  };
 }
 
 enum SystemMessageType {

@@ -9,7 +9,7 @@ part 'chatroom_models.g.dart';
 
 /// 加入聊天室请求
 @JsonSerializable()
-class NIMChatRoomEnterRequest {
+class NIMChatroomEnterRequest {
   /// 聊天室ID
   final String roomId;
 
@@ -20,11 +20,14 @@ class NIMChatRoomEnterRequest {
   /// 进入聊天室后展示的头像
   final String? avatar;
 
-  /// 进入聊天室后展示的扩展字段，长度限制4K
+  /// 进入聊天室后展示的扩展字段，长度限制4K。在设置后：
+  /// - 可以从聊天室成员信息对象的 [NIMChatroomMember.extension] 获取该字段；
+  /// - 在收到聊天室消息时，可以从 [NIMChatroomMessage.extension.senderExtension] 获取该字段；
   @JsonKey(fromJson: castPlatformMapToDartMap)
   final Map<String, dynamic>? extension;
 
-  /// 进入聊天室通知开发者扩展字段，长度限制2K
+  /// 进入聊天室通知开发者扩展字段，长度限制2K。
+  /// - 在接收到**聊天室通知消息**时，可以通过 [NIMChatroomNotificationAttachment.extension] 获取该字段；
   @JsonKey(fromJson: castPlatformMapToDartMap)
   final Map<String, dynamic>? notifyExtension;
 
@@ -37,21 +40,111 @@ class NIMChatRoomEnterRequest {
   /// 重试加入聊天室的次数
   final int? retryCount;
 
-  NIMChatRoomEnterRequest({
-    required this.roomId,
-    this.nickname,
-    this.avatar,
-    this.extension,
-    this.notifyExtension,
-    this.tags,
-    this.notifyTargetTags,
-    this.retryCount,
+  /// 聊天室独立模式配置
+  @JsonKey(
+      toJson: _chatRoomIndependentModeConfigToJson,
+      fromJson: _chatRoomIndependentModeConfigFromJson)
+  final NIMChatroomIndependentModeConfig? independentModeConfig;
+
+  /// Windows & macOS聊天室独立模式配置
+  @JsonKey(
+      toJson: _chatRoomIndependentModeConfigDesktopToJson,
+      fromJson: _chatRoomIndependentModeConfigDesktopFromJson)
+  final NIMChatroomIndependentModeConfigDesktop? desktopIndependentModeConfig;
+
+  NIMChatroomEnterRequest(
+      {required this.roomId,
+      this.nickname,
+      this.avatar,
+      this.extension,
+      this.notifyExtension,
+      this.tags,
+      this.notifyTargetTags,
+      this.retryCount,
+      this.independentModeConfig,
+      this.desktopIndependentModeConfig});
+
+  factory NIMChatroomEnterRequest.fromMap(Map<String, dynamic> map) =>
+      _$NIMChatroomEnterRequestFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMChatroomEnterRequestToJson(this);
+}
+
+Map? _chatRoomIndependentModeConfigToJson(
+        NIMChatroomIndependentModeConfig? config) =>
+    config?.toJson();
+
+NIMChatroomIndependentModeConfig? _chatRoomIndependentModeConfigFromJson(
+    Map? json) {
+  return json != null
+      ? NIMChatroomIndependentModeConfig.fromMap(Map.castFrom(json))
+      : null;
+}
+
+Map? _chatRoomIndependentModeConfigDesktopToJson(
+        NIMChatroomIndependentModeConfigDesktop? config) =>
+    config?.toJson();
+
+NIMChatroomIndependentModeConfigDesktop?
+    _chatRoomIndependentModeConfigDesktopFromJson(Map? json) {
+  return json != null
+      ? NIMChatroomIndependentModeConfigDesktop.fromMap(Map.castFrom(json))
+      : null;
+}
+
+/// 独立模式聊天室配置信息
+@JsonSerializable()
+class NIMChatroomIndependentModeConfig {
+  /// 独立模式聊天室 AppKey
+  final String appKey;
+
+  /// 独立模式登录的账号，为空即为匿名登录
+  ///
+  /// 匿名登录时，聊天室的昵称会使用 [NIMChatroomEnterRequest.nickname]
+  final String? account;
+
+  /// 独立模式登录的token
+  final String? token;
+
+  NIMChatroomIndependentModeConfig({
+    required this.appKey,
+    this.account,
+    this.token,
   });
 
-  factory NIMChatRoomEnterRequest.fromMap(Map<String, dynamic> map) =>
-      _$NIMChatRoomEnterRequestFromJson(map);
+  factory NIMChatroomIndependentModeConfig.fromMap(Map<String, dynamic> map) =>
+      _$NIMChatroomIndependentModeConfigFromJson(map);
 
-  Map<String, dynamic> toJson() => _$NIMChatRoomEnterRequestToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$NIMChatroomIndependentModeConfigToJson(this);
+}
+
+/// Windows & macOS独立模式聊天室配置信息
+@JsonSerializable()
+class NIMChatroomIndependentModeConfigDesktop
+    extends NIMChatroomIndependentModeConfig {
+  /// 聊天室地址,Windows & macOS可用
+  ///
+  /// 独立模式由于不依赖IM连接，SDK无法自动获取聊天室服务器的地址，需要客户端向SDK提供该地址
+  final List<String> linkAddresses;
+
+  NIMChatroomIndependentModeConfigDesktop({
+    required this.linkAddresses,
+    required appKey,
+    String? token,
+    String? account,
+  }) : super(
+          appKey: appKey,
+          account: account,
+          token: token,
+        );
+
+  factory NIMChatroomIndependentModeConfigDesktop.fromMap(
+          Map<String, dynamic> map) =>
+      _$NIMChatroomIndependentModeConfigDesktopFromJson(map);
+
+  Map<String, dynamic> toJson() =>
+      _$NIMChatroomIndependentModeConfigDesktopToJson(this);
 }
 
 /// 加入聊天室响应
@@ -117,9 +210,6 @@ class NIMChatroomInfo {
   @JsonKey(fromJson: castPlatformMapToDartMap)
   final Map<String, dynamic>? extension;
 
-  /// 第三方扩展字段，长度限制4K(iOS)
-  final String? ext;
-
   /// 队列管理权限，如是否有权限提交他人key和信息到队列中
   @JsonKey(unknownEnumValue: NIMChatroomQueueModificationLevel.anyone)
   final NIMChatroomQueueModificationLevel queueModificationLevel;
@@ -134,7 +224,6 @@ class NIMChatroomInfo {
     this.onlineUserCount = 0,
     this.mute = 0,
     this.extension,
-    this.ext,
     this.queueModificationLevel = NIMChatroomQueueModificationLevel.anyone,
   });
 
@@ -191,9 +280,6 @@ class NIMChatroomMember {
   @JsonKey(fromJson: castPlatformMapToDartMap)
   final Map<String, dynamic>? extension;
 
-  /// (iOS)聊天室内预留给开发者的扩展字段，由用户进聊天室时提交。
-  final String? roomExt;
-
   /// 成员是否处于在线状态，仅特殊成员才可能离线，对游客/匿名用户而言只能是在线。
   final bool isOnline;
 
@@ -210,7 +296,7 @@ class NIMChatroomMember {
   final int? tempMuteDuration;
 
   /// 记录有效标记为
-  final bool isValid;
+  final bool? isValid;
 
   /// 进入聊天室的时间点,对于离线成员该字段为空
   final int? enterTime;
@@ -231,7 +317,6 @@ class NIMChatroomMember {
     required this.nickname,
     this.avatar,
     this.extension,
-    this.roomExt,
     this.isOnline = true,
     this.isInBlackList = false,
     this.isMuted = false,
@@ -389,6 +474,8 @@ class NIMChatroomKickOutEvent extends NIMChatroomEvent {
 /// 聊天室通知类型
 class NIMChatroomNotificationTypes {
   /// 成员进入聊天室
+  ///
+  /// [NIMChatroomMemberInAttachment]
   static const int chatRoomMemberIn = 301;
 
   /// 成员离开聊天室
@@ -428,15 +515,21 @@ class NIMChatroomNotificationTypes {
   static const int chatRoomMemberKicked = 313;
 
   /// 新增临时禁言
+  ///
+  /// [NIMChatroomTempMuteAttachment]
   static const int chatRoomMemberTempMuteAdd = 314;
 
   /// 主动解除临时禁言
+  ///
+  /// [NIMChatroomTempMuteAttachment]
   static const int chatRoomMemberTempMuteRemove = 315;
 
   /// 成员主动更新了聊天室内的角色信息(仅指nick/avator/ext)
   static const int chatRoomMyRoomRoleUpdated = 316;
 
   /// 队列中有变更
+  ///
+  /// [NIMChatroomQueueChangeAttachment]
   static const int chatRoomQueueChange = 317;
 
   /// 聊天室被禁言了,只有管理员可以发言,其他人都处于禁言状态
@@ -446,6 +539,8 @@ class NIMChatroomNotificationTypes {
   static const int chatRoomRoomDeMuted = 319;
 
   /// 队列批量变更
+  ///
+  /// [NIMChatroomQueueChangeAttachment]
   static const int chatRoomQueueBatchChange = 320;
 
   static String typeToString(int type) {
@@ -502,19 +597,20 @@ class NIMChatroomNotificationAttachment extends NIMMessageAttachment {
   /// 通知类型，参考 [NIMChatroomNotificationTypes]
   final int type;
 
-  /// 被操作的成员
+  /// 获取该操作的承受者的账号列表
   final List<String>? targets;
 
-  /// 被操作的成员昵称列表
+  /// 获取该操作的承受者的昵称列表
   final List<String>? targetNicks;
 
-  /// 操作者
+  /// 获取该操作的发起者的账号
   final String? operator;
 
-  /// 操作者昵称
+  /// 获取该操作的发起者的昵称
   final String? operatorNick;
 
-  /// 扩展字段
+  /// 获取聊天室通知扩展字段
+  /// 该字段对应 [NIMChatroomEnterRequest.notifyExtension]
   @JsonKey(fromJson: castPlatformMapToDartMap)
   final Map<String, dynamic>? extension;
 
@@ -563,7 +659,7 @@ class NIMChatroomMemberInAttachment extends NIMChatroomNotificationAttachment {
   @JsonKey(defaultValue: false)
   final bool tempMuted;
 
-  /// 临时禁言时长
+  /// 临时禁言时长，单位为秒
   @JsonKey(defaultValue: 0)
   final int tempMutedDuration;
 
@@ -595,7 +691,7 @@ class NIMChatroomMemberInAttachment extends NIMChatroomNotificationAttachment {
 /// 聊天室新增临时禁言通知消息附件
 @JsonSerializable()
 class NIMChatroomTempMuteAttachment extends NIMChatroomNotificationAttachment {
-  /// 临时禁言时长
+  /// 临时禁言时长，单位为秒
   final int duration;
 
   factory NIMChatroomTempMuteAttachment.fromMap(Map<String, dynamic> map) =>
@@ -632,8 +728,12 @@ class NIMChatroomTempMuteAttachment extends NIMChatroomNotificationAttachment {
 class NIMChatroomQueueChangeAttachment
     extends NIMChatroomNotificationAttachment {
   @JsonKey(fromJson: castMapToTypeOfStringString)
+
+  /// 当用户掉线或退出聊天室时，返回用户使用 updateQueueEx 接口，并设置 isTransient 参数为true 时，加入或更新的元素
   final Map<String, String>? contentMap;
 
+  /// 队列变更类型
+  /// [NIMChatroomQueueChangeType]
   final NIMChatroomQueueChangeType queueChangeType;
 
   final String? key;

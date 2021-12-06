@@ -8,11 +8,11 @@ import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart
 
 class MethodChannelInitializeService extends InitializeServicePlatform {
   @override
-  Future<NIMResult<void>> initialize(NIMSDKOptions options) async {
+  Future<NIMResult<void>> initialize(NIMSDKOptions options, [Map<String, dynamic>? extras]) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'initialize',
-        arguments: options.toMap(),
+        arguments: options.toMap()..['extras'] = extras ?? {},
       ),
     );
   }

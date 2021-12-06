@@ -20,7 +20,7 @@ class CustomNotification {
 
   final String? apnsText;
 
-  final Map<String, Object>? pushPayload;
+  final Map<String, dynamic>? pushPayload;
 
   final CustomNotificationConfig? config;
 
@@ -49,7 +49,7 @@ class CustomNotification {
       time: param["time"] as int?,
       content: param["content"] as String?,
       apnsText: param["apnsText"] as String?,
-      pushPayload: param["pushPayload"] as Map<String, Object>?,
+      pushPayload: castPlatformMapToDartMap(param["pushPayload"] as Map?),
       config: CustomNotificationConfig.fromMap(
           (param["config"] as Map?)?.cast<String, dynamic>()),
       // antiSpamOption: NIMAntiSpamOption.fromMap(param["antiSpamOption"] as Map<String,dynamic>?) ,

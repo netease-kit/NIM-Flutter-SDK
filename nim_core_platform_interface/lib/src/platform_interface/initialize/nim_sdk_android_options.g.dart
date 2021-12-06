@@ -14,7 +14,10 @@ NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
     reducedIM: json['reducedIM'] as bool? ?? false,
     checkManifestConfig: json['checkManifestConfig'] as bool? ?? false,
     disableAwake: json['disableAwake'] as bool? ?? false,
+    databaseEncryptKey: json['databaseEncryptKey'] as String?,
+    thumbnailSize: json['thumbnailSize'] as int,
     fetchServerTimeInterval: json['fetchServerTimeInterval'] as int? ?? 2000,
+    customPushContentType: json['customPushContentType'] as String?,
     mixPushConfig: _mixPushConfigFromMap(json['mixPushConfig'] as Map?),
     notificationConfig:
         _notificationConfigFromMap(json['notificationConfig'] as Map?),
@@ -36,6 +39,7 @@ NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
     enableAnimatedImageThumbnail: json['enableAnimatedImageThumbnail'] as bool?,
     enablePreloadMessageAttachment:
         json['enablePreloadMessageAttachment'] as bool?,
+    useAssetServerAddressConfig: json['useAssetServerAddressConfig'] as bool?,
     autoLoginInfo: loginInfoFromMap(json['autoLoginInfo'] as Map?),
     nosSceneConfig: nosSceneConfigFromMap(json['nosSceneConfig'] as Map?),
   );
@@ -60,6 +64,7 @@ Map<String, dynamic> _$NIMAndroidSDKOptionsToJson(
     'enablePreloadMessageAttachment': instance.enablePreloadMessageAttachment,
     'shouldSyncStickTopSessionInfos': instance.shouldSyncStickTopSessionInfos,
     'enableReportLogAutomatically': instance.enableReportLogAutomatically,
+    'useAssetServerAddressConfig': instance.useAssetServerAddressConfig,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -76,6 +81,9 @@ Map<String, dynamic> _$NIMAndroidSDKOptionsToJson(
   val['checkManifestConfig'] = instance.checkManifestConfig;
   val['disableAwake'] = instance.disableAwake;
   val['fetchServerTimeInterval'] = instance.fetchServerTimeInterval;
+  val['customPushContentType'] = instance.customPushContentType;
+  val['databaseEncryptKey'] = instance.databaseEncryptKey;
+  val['thumbnailSize'] = instance.thumbnailSize;
   val['mixPushConfig'] = _mixPushConfigToMap(instance.mixPushConfig);
   val['notificationConfig'] =
       _notificationConfigToMap(instance.notificationConfig);

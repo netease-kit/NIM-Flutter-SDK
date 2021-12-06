@@ -2,13 +2,20 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-enum QueryDirection { QUERY_OLD, QUERY_NEW }
+enum QueryDirection {
+
+  /// 查询比锚点时间更早的消息
+  QUERY_OLD,
+
+  /// 查询比锚点时间更晚的消
+  QUERY_NEW
+}
 
 enum SearchOrder {
-  // 从新消息往旧消息查
+  /// 从新消息往旧消息查
   DESC,
 
-  //从旧消息往新消息查
+  /// 从旧消息往新消息查
   ASC
 }
 

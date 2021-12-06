@@ -6,9 +6,9 @@ part of 'chatroom_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NIMChatRoomEnterRequest _$NIMChatRoomEnterRequestFromJson(
+NIMChatroomEnterRequest _$NIMChatroomEnterRequestFromJson(
     Map<String, dynamic> json) {
-  return NIMChatRoomEnterRequest(
+  return NIMChatroomEnterRequest(
     roomId: json['roomId'] as String,
     nickname: json['nickname'] as String?,
     avatar: json['avatar'] as String?,
@@ -17,11 +17,15 @@ NIMChatRoomEnterRequest _$NIMChatRoomEnterRequestFromJson(
     tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
     notifyTargetTags: json['notifyTargetTags'] as String?,
     retryCount: json['retryCount'] as int?,
+    independentModeConfig: _chatRoomIndependentModeConfigFromJson(
+        json['independentModeConfig'] as Map?),
+    desktopIndependentModeConfig: _chatRoomIndependentModeConfigDesktopFromJson(
+        json['desktopIndependentModeConfig'] as Map?),
   );
 }
 
-Map<String, dynamic> _$NIMChatRoomEnterRequestToJson(
-        NIMChatRoomEnterRequest instance) =>
+Map<String, dynamic> _$NIMChatroomEnterRequestToJson(
+        NIMChatroomEnterRequest instance) =>
     <String, dynamic>{
       'roomId': instance.roomId,
       'nickname': instance.nickname,
@@ -31,6 +35,50 @@ Map<String, dynamic> _$NIMChatRoomEnterRequestToJson(
       'tags': instance.tags,
       'notifyTargetTags': instance.notifyTargetTags,
       'retryCount': instance.retryCount,
+      'independentModeConfig':
+          _chatRoomIndependentModeConfigToJson(instance.independentModeConfig),
+      'desktopIndependentModeConfig':
+          _chatRoomIndependentModeConfigDesktopToJson(
+              instance.desktopIndependentModeConfig),
+    };
+
+NIMChatroomIndependentModeConfig _$NIMChatroomIndependentModeConfigFromJson(
+    Map<String, dynamic> json) {
+  return NIMChatroomIndependentModeConfig(
+    appKey: json['appKey'] as String,
+    account: json['account'] as String?,
+    token: json['token'] as String?,
+  );
+}
+
+Map<String, dynamic> _$NIMChatroomIndependentModeConfigToJson(
+        NIMChatroomIndependentModeConfig instance) =>
+    <String, dynamic>{
+      'appKey': instance.appKey,
+      'account': instance.account,
+      'token': instance.token,
+    };
+
+NIMChatroomIndependentModeConfigDesktop
+    _$NIMChatroomIndependentModeConfigDesktopFromJson(
+        Map<String, dynamic> json) {
+  return NIMChatroomIndependentModeConfigDesktop(
+    appKey: json['appKey'] as String,
+    linkAddresses: (json['linkAddresses'] as List<dynamic>)
+        .map((e) => e as String)
+        .toList(),
+    account: json['account'] as String?,
+    token: json['token'] as String?,
+  );
+}
+
+Map<String, dynamic> _$NIMChatroomIndependentModeConfigDesktopToJson(
+        NIMChatroomIndependentModeConfigDesktop instance) =>
+    <String, dynamic>{
+      'appKey': instance.appKey,
+      'linkAddresses': instance.linkAddresses,
+      'account': instance.account,
+      'token': instance.token,
     };
 
 NIMChatroomEnterResult _$NIMChatroomEnterResultFromJson(
@@ -61,7 +109,6 @@ NIMChatroomInfo _$NIMChatroomInfoFromJson(Map<String, dynamic> json) {
     onlineUserCount: json['onlineUserCount'] as int? ?? 0,
     mute: json['mute'] as int? ?? 0,
     extension: castPlatformMapToDartMap(json['extension'] as Map?),
-    ext: json['ext'] as String?,
     queueModificationLevel: _$enumDecode(
         _$NIMChatroomQueueModificationLevelEnumMap,
         json['queueModificationLevel'],
@@ -80,7 +127,6 @@ Map<String, dynamic> _$NIMChatroomInfoToJson(NIMChatroomInfo instance) =>
       'onlineUserCount': instance.onlineUserCount,
       'mute': instance.mute,
       'extension': instance.extension,
-      'ext': instance.ext,
       'queueModificationLevel': _$NIMChatroomQueueModificationLevelEnumMap[
           instance.queueModificationLevel],
     };
@@ -125,13 +171,12 @@ NIMChatroomMember _$NIMChatroomMemberFromJson(Map<String, dynamic> json) {
     nickname: json['nickname'] as String?,
     avatar: json['avatar'] as String?,
     extension: castPlatformMapToDartMap(json['extension'] as Map?),
-    roomExt: json['roomExt'] as String?,
     isOnline: json['isOnline'] as bool,
     isInBlackList: json['isInBlackList'] as bool,
     isMuted: json['isMuted'] as bool,
     isTempMuted: json['isTempMuted'] as bool,
     tempMuteDuration: json['tempMuteDuration'] as int?,
-    isValid: json['isValid'] as bool,
+    isValid: json['isValid'] as bool?,
     enterTime: json['enterTime'] as int?,
     tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
     notifyTargetTags: json['notifyTargetTags'] as String?,
@@ -146,7 +191,6 @@ Map<String, dynamic> _$NIMChatroomMemberToJson(NIMChatroomMember instance) =>
       'nickname': instance.nickname,
       'avatar': instance.avatar,
       'extension': instance.extension,
-      'roomExt': instance.roomExt,
       'isOnline': instance.isOnline,
       'isInBlackList': instance.isInBlackList,
       'isMuted': instance.isMuted,

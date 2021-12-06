@@ -35,7 +35,7 @@ class NIMTeamMember {
   /// true表示处于被禁言状态；false表示处于未被禁言状态
   final bool isMute;
 
-  /// 获取群成员入群时间
+  /// 获取群成员入群时间, 单位毫秒
   final int joinTime;
 
   /// 获取入群邀请人，为空表示主动加入群

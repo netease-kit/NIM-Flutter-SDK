@@ -23,6 +23,8 @@ class MethodChannelAuthService extends AuthServicePlatform {
         return onAuthStatusChanged(arguments);
       case 'onOnlineClientsUpdated':
         return onOnlineClientsUpdated(arguments);
+      case 'getDynamicToken':
+        return onGetDynamicToken(arguments);
       default:
         throw UnimplementedError();
     }
@@ -84,6 +86,9 @@ class MethodChannelAuthService extends AuthServicePlatform {
           arguments['clientType'] as int?,
           arguments['customClientType'] as int?,
         );
+      } else if (status == NIMAuthStatus.dataSyncStart
+        || status == NIMAuthStatus.dataSyncFinish) {
+        event = NIMDataSyncStatusEvent(status);
       } else {
         event = NIMAuthStatusEvent(status);
       }
@@ -103,5 +108,16 @@ class MethodChannelAuthService extends AuthServicePlatform {
       _onlineClientsController.add([]);
     }
     return Future.value();
+  }
+
+  Future<String?> onGetDynamicToken(arguments) async {
+    assert(arguments is Map);
+    final tokenProvider = dynamicTokenProvider;
+    final account = arguments['account'] as String?;
+    assert(dynamicTokenProvider != null);
+    assert(account != null);
+    if (tokenProvider == null || account == null)
+      return null;
+    return await tokenProvider(account);
   }
 }

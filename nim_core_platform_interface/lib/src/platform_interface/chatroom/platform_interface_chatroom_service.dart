@@ -21,9 +21,15 @@ abstract class ChatroomServicePlatform extends Service {
     _instance = instance;
   }
 
+  /// 设置聊天室独立模式link地址提供者。
+  /// 独立模式由于不依赖IM连接，SDK无法自动获取聊天室服务器的地址，需要客户端向SDK提供该地址。
+  /// 独立模式下需要设置该字段，否则无法进入聊天室
+  NIMChatroomIndependentModeLinkAddressProvider? independentModeLinkAddressProvider;
+
   /// 加入聊天室
+  /// [request] 加入请求
   Future<NIMResult<NIMChatroomEnterResult>> enterChatroom(
-      NIMChatRoomEnterRequest request);
+      NIMChatroomEnterRequest request);
 
   /// 退出聊天室
   Future<NIMResult<void>> exitChatroom(String roomId);
@@ -44,9 +50,17 @@ abstract class ChatroomServicePlatform extends Service {
       NIMChatroomMessage message,
       [bool resend = false]);
 
-  /// 聊天室消息
+  /// 接收到聊天室消息
   ///
   Stream<List<NIMChatroomMessage>> get onMessageReceived;
+
+  /// 聊天室消息状态变更
+  ///
+  Stream<NIMChatroomMessage> get onMessageStatusChanged;
+
+  /// 聊天室消息附件上传/下载进度通知，以 [NIMMessage.uuid] 作为key
+  ///
+  Stream<NIMAttachmentProgress> get onMessageAttachmentProgressUpdate;
 
   /// 下载聊天室消息附件
   Future<NIMResult<void>> downloadAttachment(NIMChatroomMessage message,
@@ -81,7 +95,7 @@ abstract class ChatroomServicePlatform extends Service {
     required String roomId,
     required NIMChatroomUpdateRequest request,
     bool needNotify = true,
-    Map<String, Object>? notifyExtension,
+    Map<String, dynamic>? notifyExtension,
   }) async {
     throw UnimplementedError('updateChatroomInfo is not implemented');
   }
@@ -89,14 +103,14 @@ abstract class ChatroomServicePlatform extends Service {
   /// 获取当前聊天室成员
   ///
   /// [roomId]    聊天室id <p>
-  /// [startTime] 时间戳，单位毫秒, 设置为 0 会使用当前服务器时间 <p>
-  /// [limit]     可拉取的消息数量 <p>
   /// [queryType] 查询的类型, [NIMChatroomMemberQueryType]
+  /// [limit]     可拉取的消息数量 <p>
+  /// [lastMemberAccount] 最后一位成员锚点，不包括此成员。填nil会使用当前服务器最新时间开始查询，即第一页。 <p>
   Future<NIMResult<List<NIMChatroomMember>>> fetchChatroomMembers({
     required String roomId,
     required NIMChatroomMemberQueryType queryType,
     required int limit,
-    int startTime = 0,
+    String? lastMemberAccount,
   }) async {
     throw UnimplementedError('fetchChatroomMembers is not implemented');
   }
@@ -213,7 +227,7 @@ abstract class ChatroomServicePlatform extends Service {
     required String roomId,
     required List<NIMChatroomQueueEntry> entryList,
     bool needNotify = true,
-    Map<String, Object>? notifyExtension,
+    Map<String, dynamic>? notifyExtension,
   });
 
   /// 从列表中删除某个元素
@@ -226,3 +240,6 @@ abstract class ChatroomServicePlatform extends Service {
   /// 清空聊天室队列
   Future<NIMResult<void>> clearChatroomQueue(String roomId);
 }
+
+typedef NIMChatroomIndependentModeLinkAddressProvider = Future<List<String>> Function(String roomId, String? account);
+

@@ -18,15 +18,20 @@ abstract class AuthServicePlatform extends Service {
 
   static AuthServicePlatform get instance => _instance;
 
+  /// 动态token提供者。当登录模式为[NIMAuthType.authTypeDynamic]时，需要设置该提供者。
+  NIMDynamicTokenProvider? dynamicTokenProvider;
+
   static set instance(AuthServicePlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
 
-  /// 登录状态变更事件
+  /// 登录状态变更事件。
+  /// 包含 [NIMAuthStatusEvent] 与 [NIMKickOutByOtherClientEvent]
   Stream<NIMAuthStatusEvent> get authStatus;
 
   /// 在线客户端列表变更事件
+  /// [NIMOnlineClient]
   Stream<List<NIMOnlineClient>> get onlineClients;
 
   /// 踢掉其他在线端
@@ -42,3 +47,5 @@ abstract class AuthServicePlatform extends Service {
     throw UnimplementedError('logout() is not implemented');
   }
 }
+
+typedef NIMDynamicTokenProvider = Future<String> Function(String account);

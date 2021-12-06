@@ -71,7 +71,7 @@ class Event {
         publisherClientType: json?['publisherClientType'] as int?,
         multiClientConfig: json?['multiClientConfig'] as String?,
         multiClientConfigMap:
-            json?['multiClientConfigMap'] as Map<int, String>?,
+        (json?['multiClientConfigMap'] as Map?)?.cast<int,String>(),
         nimConfig: json?['nimConfig'] as String?);
   }
 

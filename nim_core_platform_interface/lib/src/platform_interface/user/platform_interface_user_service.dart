@@ -40,8 +40,20 @@ abstract class UserServicePlatform extends Service {
   final StreamController<void> onBlackListChanged =
       StreamController<void>.broadcast();
 
+  // ignore: close_sinks
+  final StreamController<void> onMuteListChanged =
+      StreamController<void>.broadcast();
+
   Future<NIMResult<NIMUser>> getUserInfo(String userId) async {
     throw UnimplementedError('getUserInfo() is not implemented');
+  }
+
+  Future<NIMResult<List<NIMUser>>> getUserInfoListAndroid(List<String> userId) async {
+    throw UnimplementedError('getUserInfoListAndroid() is not implemented');
+  }
+
+  Future<NIMResult<List<NIMUser>>> getAllUserInfoAndroid() async {
+    throw UnimplementedError('getAllUserInfoAndroid() is not implemented');
   }
 
   Future<NIMResult<List<NIMUser>>> fetchUserInfoList(
@@ -64,7 +76,7 @@ abstract class UserServicePlatform extends Service {
   }
 
   Future<NIMResult<void>> addFriend(
-      String userId, NIMVerifyType verifyType) async {
+      String userId, String? message, NIMVerifyType verifyType) async {
     throw UnimplementedError('addFriend() is not implemented');
   }
 
@@ -74,6 +86,22 @@ abstract class UserServicePlatform extends Service {
 
   Future<NIMResult<List<NIMFriend>>> getFriendList() async {
     throw UnimplementedError('getFriendList() is not implemented');
+  }
+
+  Future<NIMResult<NIMFriend>> getFriend(String userId) async {
+    throw UnimplementedError('getFriend() is not implemented');
+  }
+
+  Future<NIMResult<List<String>>> getFriendAccountsAndroid() async {
+    throw UnimplementedError('getFriendAccountsAndroid() is not implemented');
+  }
+
+  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(String alias) async {
+    throw UnimplementedError('searchAccountByAliasAndroid() is not implemented');
+  }
+
+  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(String keyword) async {
+    throw UnimplementedError('searchFriendsByKeywordAndroid() is not implemented');
   }
 
   Future<NIMResult<void>> deleteFriend(String userId, bool includeAlias) async {

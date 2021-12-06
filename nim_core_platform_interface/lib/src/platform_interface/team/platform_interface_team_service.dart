@@ -138,27 +138,14 @@ abstract class TeamServicePlatform extends Service {
     throw UnimplementedError('muteAllTeamMember() is not implemented');
   }
 
-  Future<NIMResult<void>> updateTeam(
-      String teamId, NIMTeamFieldEnum field, String value) async {
-    throw UnimplementedError('updateTeam() is not implemented');
-  }
-
   Future<NIMResult<void>> updateTeamFields(
-      String teamId, Map<NIMTeamFieldEnum, String> fields) async {
+      String teamId, NIMTeamUpdateFieldRequest request) async {
     throw UnimplementedError('updateTeamFields() is not implemented');
   }
 
-  /// 群资料变动观察者通知。新建群和群更新的通知都通过该接口传递
-  /// observer 观察者, 参数为有更新的群资料列表
-  /// register true为注册，false为注销
-  // ignore: close_sinks
   final StreamController<List<NIMTeam>> onTeamListUpdate =
       StreamController<List<NIMTeam>>.broadcast();
 
-  /// 移除群的观察者通知。自己退群，群被解散，自己被踢出群时，会收到该通知
-  /// observer 观察者, 参数为被移除的群资料，此时群的isMyTeam接口返回false
-  /// register true为注册，false为注销
-  // ignore: close_sinks
   final StreamController<List<NIMTeam>> onTeamListRemove =
       StreamController<List<NIMTeam>>.broadcast();
 
@@ -184,7 +171,9 @@ abstract class TeamServicePlatform extends Service {
       StreamController<List<NIMMessageReceipt>>.broadcast();
 
   Future<NIMResult<void>> muteTeam(
-      String teamId, NIMTeamMessageNotifyTypeEnum notifyType);
+      String teamId, NIMTeamMessageNotifyTypeEnum notifyType) async {
+    throw UnimplementedError('muteTeam() is not implemented');
+  }
 
   Future<NIMResult<List<String>>> searchTeamIdByName(String name) async {
     throw UnimplementedError('searchTeamIdByName() is not implemented');

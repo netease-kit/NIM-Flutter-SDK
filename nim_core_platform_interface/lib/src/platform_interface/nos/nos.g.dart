@@ -27,12 +27,12 @@ NIMNOSTransferStatus _$NIMNOSTransferStatusFromJson(Map<String, dynamic> json) {
   return NIMNOSTransferStatus(
     transferType:
         _$enumDecodeNullable(_$NIMNOSTransferTypeEnumMap, json['transferType']),
-    path: json['path'] as int?,
-    md5: json['md5'] as int?,
-    url: json['url'] as int?,
+    path: json['path'] as String?,
+    md5: json['md5'] as String?,
+    url: json['url'] as String?,
     size: json['size'] as int?,
     status: _$enumDecodeNullable(_$NIMNosTransferStatusEnumMap, json['status']),
-    extension: json['extension'] as int?,
+    extension: json['extension'] as String?,
   );
 }
 

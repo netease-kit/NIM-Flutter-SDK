@@ -19,6 +19,13 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
   // ignore: close_sinks
   final _messageStream = StreamController<List<NIMChatroomMessage>>.broadcast();
 
+  // ignore: close_sinks
+  final _messageStatusStream = StreamController<NIMChatroomMessage>.broadcast();
+
+  // ignore: close_sinks
+  final _messageAttachmentProgressStream =
+      StreamController<NIMAttachmentProgress>.broadcast();
+
   @override
   Future onEvent(String method, arguments) {
     switch (method) {
@@ -39,6 +46,18 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
           return NIMChatroomMessage.fromMap(Map<String, dynamic>.from(e));
         }).toList());
         break;
+      case 'onMessageStatusChanged':
+        assert(arguments is Map);
+        _messageStatusStream.add(
+            NIMChatroomMessage.fromMap(Map<String, dynamic>.from(arguments)));
+        break;
+      case 'onMessageAttachmentProgressUpdate':
+        assert(arguments is Map);
+        _messageAttachmentProgressStream.add(NIMAttachmentProgress.fromMap(
+            Map<String, dynamic>.from(arguments)));
+        break;
+      case 'getIndependentModeLinkAddress':
+        return onGetIndependentModeLinkAddress(arguments);
       default:
         throw UnimplementedError();
     }
@@ -50,7 +69,7 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
 
   @override
   Future<NIMResult<NIMChatroomEnterResult>> enterChatroom(
-      NIMChatRoomEnterRequest request) async {
+      NIMChatroomEnterRequest request) async {
     return NIMResult<NIMChatroomEnterResult>.fromMap(
       await invokeMethod('enterChatroom', arguments: request.toJson()),
       convert: (json) => NIMChatroomEnterResult.fromMap(json),
@@ -72,6 +91,12 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
 
   Stream<List<NIMChatroomMessage>> get onMessageReceived =>
       _messageStream.stream;
+
+  Stream<NIMChatroomMessage> get onMessageStatusChanged =>
+      _messageStatusStream.stream;
+
+  Stream<NIMAttachmentProgress> get onMessageAttachmentProgressUpdate =>
+      _messageAttachmentProgressStream.stream;
 
   @override
   Future<NIMResult<NIMChatroomMessage>> sendChatroomMessage(
@@ -159,7 +184,7 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
     bool needNotify = true,
     Map<String, dynamic>? notifyExtension,
   }) async {
-    return NIMResult<NIMChatroomInfo>.fromMap(
+    return NIMResult<void>.fromMap(
       await invokeMethod(
         'updateChatroomInfo',
         arguments: {
@@ -177,13 +202,13 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
     required String roomId,
     required NIMChatroomMemberQueryType queryType,
     required int limit,
-    int startTime = 0,
+    String? lastMemberAccount,
   }) async {
     final result = await invokeMethod('fetchChatroomMembers', arguments: {
       'roomId': roomId,
-      'startTime': startTime,
-      'limit': limit,
       'queryType': queryType.index,
+      'limit': limit,
+      'lastMemberAccount': lastMemberAccount,
     });
     return NIMResult<List<NIMChatroomMember>>.fromMap(result, convert: (map) {
       // assert(map['memberList'] is List);
@@ -335,7 +360,7 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
     required String roomId,
     required List<NIMChatroomQueueEntry> entryList,
     bool needNotify = true,
-    Map<String, Object>? notifyExtension,
+    Map<String, dynamic>? notifyExtension,
   }) async {
     return NIMResult<List<String>>.fromMap(
       await invokeMethod(
@@ -413,5 +438,16 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
         },
       ),
     );
+  }
+
+  Future<List<String>?> onGetIndependentModeLinkAddress(arguments) async {
+    assert(arguments is Map);
+    final linkAddressProvider = independentModeLinkAddressProvider;
+    final roomId = arguments['roomId'] as String;
+    final account = arguments['account'] as String?;
+    assert(linkAddressProvider != null);
+    if (linkAddressProvider == null)
+      return null;
+    return await linkAddressProvider(roomId, account);
   }
 }

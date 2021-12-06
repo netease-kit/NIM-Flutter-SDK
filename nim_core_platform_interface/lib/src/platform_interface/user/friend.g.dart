@@ -10,12 +10,14 @@ NIMFriend _$NIMFriendFromJson(Map<String, dynamic> json) {
   return NIMFriend(
     userId: json['userId'] as String?,
     alias: json['alias'] as String?,
-    serverExt: json['serverExt'] as String?,
+    ext: json['extension'] as String?,
+    serverExt: json['serverExtension'] as String?,
   );
 }
 
 Map<String, dynamic> _$NIMFriendToJson(NIMFriend instance) => <String, dynamic>{
       'userId': instance.userId,
       'alias': instance.alias,
-      'serverExt': instance.serverExt,
+      'extension': instance.ext,
+      'serverExtension': instance.serverExt,
     };

@@ -4,15 +4,20 @@
 
 import 'dart:async';
 
+import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_message_service.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/message.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/message_keyword_search_config.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/message_search_option.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/query_direction_enum.dart';
+import 'package:nim_core_platform_interface/src/platform_interface/message/quick_comment.dart';
+import 'package:nim_core_platform_interface/src/platform_interface/message/stick_top_session.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/thread_talk_history.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+import 'recent_session_list.dart';
 
 abstract class MessageServicePlatform extends Service {
   MessageServicePlatform() : super(token: _token);
@@ -64,6 +69,39 @@ abstract class MessageServicePlatform extends Service {
   final StreamController<NIMSession> onSessionDelete =
       StreamController<NIMSession>.broadcast();
 
+  // ignore: close_sinks, never closed
+  final StreamController<NIMMessagePinEvent> onMessagePinNotify =
+  StreamController<NIMMessagePinEvent>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<RecentSession> onMySessionUpdate =
+  StreamController<RecentSession>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<NIMHandleQuickCommentOption> onQuickCommentAdd =
+  StreamController<NIMHandleQuickCommentOption>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<NIMHandleQuickCommentOption> onQuickCommentRemove =
+  StreamController<NIMHandleQuickCommentOption>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<List<NIMStickTopSessionInfo>> onSyncStickTopSession =
+  StreamController<List<NIMStickTopSessionInfo>>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<NIMStickTopSessionInfo> onStickTopSessionAdd =
+  StreamController<NIMStickTopSessionInfo>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<NIMStickTopSessionInfo> onStickTopSessionRemove =
+  StreamController<NIMStickTopSessionInfo>.broadcast();
+
+  // ignore: close_sinks, never closed
+  final StreamController<NIMStickTopSessionInfo> onStickTopSessionUpdate =
+  StreamController<NIMStickTopSessionInfo>.broadcast();
+
+
   Future<NIMResult<NIMMessage>> sendMessage(
       {required NIMMessage message, bool resend = false}) async {
     throw UnimplementedError('sendMessage() is not implemented');
@@ -82,7 +120,7 @@ abstract class MessageServicePlatform extends Service {
 
   Future<NIMResult<NIMMessage>> saveMessage(
       {required NIMMessage message, required String fromAccount}) async {
-    throw UnimplementedError('sendMessage() is not implemented');
+    throw UnimplementedError('saveMessage() is not implemented');
   }
 
   Future<NIMResult<NIMMessage>> createMessage(
@@ -335,7 +373,7 @@ abstract class MessageServicePlatform extends Service {
     throw UnimplementedError('queryTotalUnreadCount() is not implemented');
   }
 
-  /// 设置当前会话
+  /// 设置当前会话，Android平台可用
   /// 调用以下接口重置当前会话，SDK会自动管理消息的未读数。
   /// 该接口会自动调用clearUnreadCount(String, SessionTypeEnum)将正在聊天对象的未读数清零。
   /// 如果有新消息到达，且消息来源是正在聊天的对象，其未读数也不会递增。
@@ -391,6 +429,100 @@ abstract class MessageServicePlatform extends Service {
     throw UnimplementedError('replyMessage() is not implemented');
   }
 
+  /// 添加一条收藏
+  ///
+  /// [type] 收藏类型
+  /// [date] 收藏内容，最大20k
+  /// [ext] 扩展字段，最大1k
+  /// [uniqueId] 去重唯一ID
+  Future<NIMResult<NIMCollectInfo>> addCollect({
+    required int type,
+    required String data,
+    String? ext,
+    String? uniqueId,
+  }) {
+    throw UnimplementedError('addCollect() is not implemented');
+  }
+
+  /// 批量移除收藏
+  ///
+  /// [collects] 要移除的收藏的请求
+  ///
+  /// [NIMCollectInfo] 中 [id] 和 [createTime] 为必填字段
+  Future<NIMResult<int>> removeCollect(List<NIMCollectInfo> collects) {
+    throw UnimplementedError('removeCollect() is not implemented');
+  }
+
+  ///
+  /// 更新一个收藏的扩展字段
+  ///
+  /// 如果 [info.ext] 为空，表示删除ext字段
+  ///
+  Future<NIMResult<NIMCollectInfo>> updateCollect(NIMCollectInfo info) {
+    throw UnimplementedError('updateCollect() is not implemented');
+  }
+
+  ///
+  /// 从服务端分页查询收藏列表
+  ///
+  /// [anchor] 结束查询的最后一条收藏(不包含在查询结果中)
+  /// [type] 查询类型，如果为空则返回所有类型
+  /// [toTime] 结束时间点单位毫秒
+  /// [limit] 本次查询的消息条数上限(最多100条)
+  /// [direction] 查询方向
+  ///
+  Future<NIMResult<NIMCollectInfoQueryResult>> queryCollect({
+    NIMCollectInfo? anchor,
+    int toTime = 0,
+    int? type,
+    int limit = 100,
+    QueryDirection direction = QueryDirection.QUERY_OLD,
+  }) {
+    throw UnimplementedError('queryCollect() is not implemented');
+  }
+
+  ///
+  /// PIN一条消息
+  ///
+  /// [message] 被PIN的消息
+  /// [ext] 扩展字段
+  ///
+  Future<NIMResult<void>> addMessagePin(NIMMessage message, String? ext) {
+    throw UnimplementedError('addMessagePin() is not implemented');
+  }
+
+  ///
+  /// 更新一条消息的PIN
+  ///
+  /// [message] 被PIN的消息
+  /// [ext] 扩展字段
+  ///
+  Future<NIMResult<void>> updateMessagePin(NIMMessage message, String? ext) {
+    throw UnimplementedError('updateMessagePin() is not implemented');
+  }
+
+  ///
+  /// 删除一条消息的PIN
+  ///
+  /// [message] 被PIN的消息
+  /// [ext] 扩展字段
+  ///
+  Future<NIMResult<void>> removeMessagePin(NIMMessage message, String? ext) {
+    throw UnimplementedError('removeMessagePin() is not implemented');
+  }
+
+  /// 查询会话所有的 PIN
+  ///
+  /// [sessionId] 会话ID
+  ///
+  /// [sessionType] 会话类型
+  Future<NIMResult<List<NIMMessagePin>>> queryMessagePinForSession(
+    String sessionId,
+    NIMSessionType sessionType,
+  ) {
+    throw UnimplementedError('queryMessagePinForSession() is not implemented');
+  }
+
   Future<NIMResult<NIMThreadTalkHistory>> queryThreadTalkHistory(
       {required NIMMessage anchor,
       required int fromTime,
@@ -412,5 +544,83 @@ abstract class MessageServicePlatform extends Service {
   Future<NIMResult<int>> queryReplyCountInThreadTalkBlock(NIMMessage msg) {
     throw UnimplementedError(
         'queryReplyCountInThreadTalkBlock() is not implemented');
+  }
+
+  ///【会话服务】增量获取会话列表，增量+翻页
+  /// <p>[minTimestamp] 最小时间戳，作为请求参数时表示增量获取Session列表，传0表示全量获取
+  /// <p>[maxTimestamp] 最大时间戳，翻页时使用
+  /// <p>[needLastMsg]  是否需要lastMsg，0或者1，默认1
+  /// <p>[limit] 结果集limit，最大100，默认100
+  /// <p>[hasMore] 结果集是否完整，0或者1
+  Future<NIMResult<RecentSessionList>> queryMySessionList(
+      int minTimestamp,int maxTimestamp,int needLastMsg,int limit,int hasMore){
+    throw UnimplementedError(
+        'queryMySessionList() is not implemented');
+  }
+
+  ///【会话服务】获取某一个会话
+  /// <p>[sessionId] 分为p2p/team/superTeam，格式分别是：p2p|accid、team|tid、super_team|tid
+  /// <p>[sessionType] 会话类型
+  Future<NIMResult<RecentSession>> queryMySession(String sessionId,NIMSessionType sessionType){
+    throw UnimplementedError(
+        'queryMySession() is not implemented');
+  }
+
+  ///【会话服务】更新某一个会话，主要是设置会话的ext字段，如果会话不存在，则会创建出来，此时会话没有lastMsg
+  ///  <p>[sessionId] 分为p2p/team/superTeam，格式分别是：p2p|accid、team|tid、super_team|tid
+  ///  <p>[sessionType] 会话类型
+  ///  <p>[ext] 会话的扩展字段，仅自己可见
+  Future<NIMResult<void>> updateMySession(String sessionId,NIMSessionType sessionType,String ext){
+    throw UnimplementedError(
+        'updateMySession() is not implemented');
+  }
+
+  ///【会话服务】删除会话
+  /// <p>[sessionList] NIMSession列表
+  Future<NIMResult<void>> deleteMySession(List<NIMMySessionKey> sessionList){
+    throw UnimplementedError(
+        'deleteMySession() is not implemented');
+  }
+
+  ///增加一条快捷评论
+  Future<NIMResult<int>> addQuickComment(NIMMessage msg, int replyType, String ext, bool needPush, bool needBadge, String pushTitle, String pushContent, Map<String, Object> pushPayload){
+    throw UnimplementedError(
+        'addQuickComment() is not implemented');
+  }
+
+  ///删除一条快捷评论
+  Future<NIMResult<void>> removeQuickComment(NIMMessage msg, int replyType, String ext, bool needPush, bool needBadge, String pushTitle, String pushContent, Map<String, Object> pushPayload){
+    throw UnimplementedError(
+        'removeQuickComment() is not implemented');
+  }
+
+  ///获取快捷评论列表
+  Future<NIMResult<List<NIMQuickCommentOptionWrapper>>> queryQuickComment(List<NIMMessage> msgList){
+    throw UnimplementedError(
+        'queryQuickComment() is not implemented');
+  }
+
+  ///添加一个置顶会话
+  Future<NIMResult<NIMStickTopSessionInfo>> addStickTopSession(String sessionId, NIMSessionType sessionType, String ext){
+    throw UnimplementedError(
+        'addStickTopSession() is not implemented');
+  }
+
+  ///删除一个置顶会话
+  Future<NIMResult<void>> removeStickTopSession(String sessionId, NIMSessionType sessionType, String ext){
+    throw UnimplementedError(
+        'removeStickTopSession() is not implemented');
+  }
+
+  ///更新一个会话在置顶上的扩展字段
+  Future<NIMResult<void>> updateStickTopSession(String sessionId, NIMSessionType sessionType, String ext){
+    throw UnimplementedError(
+        'updateStickTopSession() is not implemented');
+  }
+
+  ///获取置顶会话信息的列表
+  Future<NIMResult<List<NIMStickTopSessionInfo>>> queryStickTopSession(){
+    throw UnimplementedError(
+        'queryStickTopSession() is not implemented');
   }
 }

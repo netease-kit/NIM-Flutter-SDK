@@ -101,3 +101,19 @@ Map<String, String>? castMapToTypeOfStringString(Map? map) {
 Map<String, int>? castMapToTypeOfStringInt(Map? map) {
   return map?.cast<String, int>();
 }
+
+K? enumDecode<K, V>(
+    Map<K, V> enumValues,
+    Object? source, {
+      K? unknownValue,
+    }) {
+  if (source != null) {
+
+  }
+
+  final entries = enumValues.entries.where((element) {
+    return element.value == source;
+  }).toList();
+
+  return entries.length > 0 ? entries.first.key : unknownValue;
+}

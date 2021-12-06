@@ -23,5 +23,5 @@ See https://flutter.dev/go/platform-interface-breaking-changes for a discussion
 on why a less-clean interface is preferable to a breaking change.
 
 [1]: ../nim_core
-[2]: lib/src/nim_core_platform_interface.dart
+[2]: ./lib/src/nim_core_platform_interface.dart
 

@@ -86,12 +86,13 @@ K? _$enumDecodeNullable<K, V>(
 const _$NIMTeamTypeEnumEnumMap = {
   NIMTeamTypeEnum.advanced: 'advanced',
   NIMTeamTypeEnum.normal: 'normal',
+  NIMTeamTypeEnum.superTeam: 'superTeam',
 };
 
 const _$NIMVerifyTypeEnumEnumMap = {
   NIMVerifyTypeEnum.free: 'free',
   NIMVerifyTypeEnum.apply: 'apply',
-  NIMVerifyTypeEnum.Private: 'Private',
+  NIMVerifyTypeEnum.private: 'private',
 };
 
 const _$NIMTeamInviteModeEnumEnumMap = {

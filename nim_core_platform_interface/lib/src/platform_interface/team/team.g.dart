@@ -16,7 +16,7 @@ NIMTeam _$NIMTeamFromJson(Map<String, dynamic> json) {
     introduce: json['introduce'] as String?,
     creator: json['creator'] as String?,
     memberCount: json['memberCount'] as int,
-    memberLimit: json['memberLimit'] as String?,
+    memberLimit: json['memberLimit'] as int,
     verifyType: _$enumDecode(_$NIMVerifyTypeEnumEnumMap, json['verifyType']),
     createTime: json['createTime'] as num,
     isMyTeam: json['isMyTeam'] as bool?,
@@ -94,12 +94,13 @@ K _$enumDecode<K, V>(
 const _$NIMTeamTypeEnumEnumMap = {
   NIMTeamTypeEnum.advanced: 'advanced',
   NIMTeamTypeEnum.normal: 'normal',
+  NIMTeamTypeEnum.superTeam: 'superTeam',
 };
 
 const _$NIMVerifyTypeEnumEnumMap = {
   NIMVerifyTypeEnum.free: 'free',
   NIMVerifyTypeEnum.apply: 'apply',
-  NIMVerifyTypeEnum.Private: 'Private',
+  NIMVerifyTypeEnum.private: 'private',
 };
 
 const _$NIMTeamMessageNotifyTypeEnumEnumMap = {
@@ -129,16 +130,16 @@ const _$NIMTeamExtensionUpdateModeEnumEnumMap = {
 };
 
 const _$NIMTeamAllMuteModeEnumEnumMap = {
-  NIMTeamAllMuteModeEnum.Cancel: 'Cancel',
-  NIMTeamAllMuteModeEnum.MuteNormal: 'MuteNormal',
-  NIMTeamAllMuteModeEnum.MuteALL: 'MuteALL',
+  NIMTeamAllMuteModeEnum.cancel: 'cancel',
+  NIMTeamAllMuteModeEnum.muteNormal: 'muteNormal',
+  NIMTeamAllMuteModeEnum.muteAll: 'muteAll',
 };
 
 NIMTeamNotificationAttachment _$NIMTeamNotificationAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMTeamNotificationAttachment(
     type: json['type'] as int,
-    extension: json['extension'] as Map<String, dynamic>?,
+    extension: castPlatformMapToDartMap(json['extension'] as Map?),
   );
 }
 
@@ -155,7 +156,7 @@ NIMMemberChangeAttachment _$NIMMemberChangeAttachmentFromJson(
     type: json['type'] as int,
     targets:
         (json['targets'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    extension: json['extension'] as Map<String, dynamic>?,
+    extension: castPlatformMapToDartMap(json['extension'] as Map?),
   );
 }
 
@@ -170,7 +171,7 @@ Map<String, dynamic> _$NIMMemberChangeAttachmentToJson(
 NIMDismissAttachment _$NIMDismissAttachmentFromJson(Map<String, dynamic> json) {
   return NIMDismissAttachment(
     type: json['type'] as int,
-    extension: json['extension'] as Map<String, dynamic>?,
+    extension: castPlatformMapToDartMap(json['extension'] as Map?),
   );
 }
 
@@ -185,7 +186,7 @@ NIMLeaveTeamAttachment _$NIMLeaveTeamAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMLeaveTeamAttachment(
     type: json['type'] as int,
-    extension: json['extension'] as Map<String, dynamic>?,
+    extension: castPlatformMapToDartMap(json['extension'] as Map?),
   );
 }
 
@@ -199,9 +200,11 @@ Map<String, dynamic> _$NIMLeaveTeamAttachmentToJson(
 NIMMuteMemberAttachment _$NIMMuteMemberAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMMuteMemberAttachment(
-    mute: json['mute'] as bool,
+    mute: json['mute'] as bool? ?? false,
     type: json['type'] as int,
-    extension: json['extension'] as Map<String, dynamic>?,
+    targets:
+        (json['targets'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    extension: castPlatformMapToDartMap(json['extension'] as Map?),
   );
 }
 
@@ -211,17 +214,75 @@ Map<String, dynamic> _$NIMMuteMemberAttachmentToJson(
       'type': instance.type,
       'extension': instance.extension,
       'mute': instance.mute,
+      'targets': instance.targets,
     };
+
+NIMTeamUpdatedFields _$NIMTeamUpdatedFieldsFromJson(Map<String, dynamic> json) {
+  return NIMTeamUpdatedFields(
+    updatedAnnouncement: json['updatedAnnouncement'] as String?,
+    updatedBeInviteMode: _$enumDecodeNullable(
+        _$NIMTeamBeInviteModeEnumEnumMap, json['updatedBeInviteMode']),
+    updatedExtension: json['updatedExtension'] as String?,
+    updatedServerExtension: json['updatedServerExtension'] as String?,
+    updatedIcon: json['updatedIcon'] as String?,
+    updatedIntroduce: json['updatedIntroduce'] as String?,
+    updatedInviteMode: _$enumDecodeNullable(
+        _$NIMTeamInviteModeEnumEnumMap, json['updatedInviteMode']),
+    updatedMaxMemberCount: json['updatedMaxMemberCount'] as int?,
+    updatedName: json['updatedName'] as String?,
+    updatedExtensionUpdateMode: _$enumDecodeNullable(
+        _$NIMTeamExtensionUpdateModeEnumEnumMap,
+        json['updatedExtensionUpdateMode']),
+    updatedUpdateMode: _$enumDecodeNullable(
+        _$NIMTeamUpdateModeEnumEnumMap, json['updatedUpdateMode']),
+    updatedVerifyType: _$enumDecodeNullable(
+        _$NIMVerifyTypeEnumEnumMap, json['updatedVerifyType']),
+    updatedAllMuteMode: _$enumDecodeNullable(
+        _$NIMTeamAllMuteModeEnumEnumMap, json['updatedAllMuteMode']),
+  );
+}
+
+Map<String, dynamic> _$NIMTeamUpdatedFieldsToJson(
+        NIMTeamUpdatedFields instance) =>
+    <String, dynamic>{
+      'updatedAnnouncement': instance.updatedAnnouncement,
+      'updatedBeInviteMode':
+          _$NIMTeamBeInviteModeEnumEnumMap[instance.updatedBeInviteMode],
+      'updatedExtension': instance.updatedExtension,
+      'updatedServerExtension': instance.updatedServerExtension,
+      'updatedIcon': instance.updatedIcon,
+      'updatedIntroduce': instance.updatedIntroduce,
+      'updatedInviteMode':
+          _$NIMTeamInviteModeEnumEnumMap[instance.updatedInviteMode],
+      'updatedMaxMemberCount': instance.updatedMaxMemberCount,
+      'updatedName': instance.updatedName,
+      'updatedExtensionUpdateMode': _$NIMTeamExtensionUpdateModeEnumEnumMap[
+          instance.updatedExtensionUpdateMode],
+      'updatedUpdateMode':
+          _$NIMTeamUpdateModeEnumEnumMap[instance.updatedUpdateMode],
+      'updatedVerifyType':
+          _$NIMVerifyTypeEnumEnumMap[instance.updatedVerifyType],
+      'updatedAllMuteMode':
+          _$NIMTeamAllMuteModeEnumEnumMap[instance.updatedAllMuteMode],
+    };
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
 
 NIMUpdateTeamAttachment _$NIMUpdateTeamAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMUpdateTeamAttachment(
-    updatedFields: (json['updatedFields'] as Map<String, dynamic>).map(
-      (k, e) =>
-          MapEntry(_$enumDecode(_$NIMTeamFieldEnumEnumMap, k), e as Object),
-    ),
     type: json['type'] as int,
-    extension: json['extension'] as Map<String, dynamic>?,
+    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    updatedFields: _updatedFieldsFromJson(json['updatedFields'] as Map?),
   );
 }
 
@@ -230,20 +291,5 @@ Map<String, dynamic> _$NIMUpdateTeamAttachmentToJson(
     <String, dynamic>{
       'type': instance.type,
       'extension': instance.extension,
-      'updatedFields': instance.updatedFields
-          .map((k, e) => MapEntry(_$NIMTeamFieldEnumEnumMap[k], e)),
+      'updatedFields': instance.updatedFields,
     };
-
-const _$NIMTeamFieldEnumEnumMap = {
-  NIMTeamFieldEnum.announcement: 'announcement',
-  NIMTeamFieldEnum.beInviteMode: 'beInviteMode',
-  NIMTeamFieldEnum.extension: 'extension',
-  NIMTeamFieldEnum.icon: 'icon',
-  NIMTeamFieldEnum.introduce: 'introduce',
-  NIMTeamFieldEnum.inviteMode: 'inviteMode',
-  NIMTeamFieldEnum.maxMemberCount: 'maxMemberCount',
-  NIMTeamFieldEnum.name: 'name',
-  NIMTeamFieldEnum.teamExtensionUpdateMode: 'teamExtensionUpdateMode',
-  NIMTeamFieldEnum.teamUpdateMode: 'teamUpdateMode',
-  NIMTeamFieldEnum.verifyType: 'verifyType',
-};

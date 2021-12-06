@@ -147,8 +147,8 @@ class MethodChannelTeamService extends TeamServicePlatform {
         arguments: arguments,
       ),
       convert: (map) {
-        var teamMemberExList = map['teamMemberExList'] as List<String>?;
-        return teamMemberExList?.map((e) => e).toList();
+        var teamMemberExList = map['teamMemberExList'] as List<dynamic>?;
+        return teamMemberExList?.map((e) => e as String).toList();
       },
     );
   }
@@ -365,7 +365,7 @@ class MethodChannelTeamService extends TeamServicePlatform {
         arguments: arguments,
       ),
       convert: (map) {
-        var teamMemberList = map as List<dynamic>?;
+        var teamMemberList = map['teamMemberList'] as List<dynamic>?;
         return teamMemberList?.map((e) {
           return NIMTeamMember.fromMap(Map<String, dynamic>.from(e));
         }).toList();
@@ -374,30 +374,12 @@ class MethodChannelTeamService extends TeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> updateTeam(
-      String teamId, NIMTeamFieldEnum field, String value) async {
-    final arguments = <String, dynamic>{};
-    arguments
-      ..['teamId'] = teamId
-      ..['field'] = NIMTeamFieldEnumEnumMap[field.index]
-      ..['value'] = value;
-    return NIMResult<void>.fromMap(await invokeMethod(
-      'updateTeam',
-      arguments: arguments,
-    ));
-  }
-
-  @override
   Future<NIMResult<void>> updateTeamFields(
-      String teamId, Map<NIMTeamFieldEnum, String> fields) async {
+      String teamId, NIMTeamUpdateFieldRequest request) async {
     final arguments = <String, dynamic>{};
-    final _fields = <int, dynamic>{};
-    fields.keys.forEach((element) {
-      _fields[element.index] = fields[element];
-    });
     arguments
       ..['teamId'] = teamId
-      ..['fields'] = _fields;
+      ..['request'] = request.toMap();
     return NIMResult<void>.fromMap(await invokeMethod(
       'updateTeamFields',
       arguments: arguments,
@@ -410,7 +392,7 @@ class MethodChannelTeamService extends TeamServicePlatform {
     final arguments = <String, dynamic>{};
     arguments
       ..['teamId'] = teamId
-      ..['notifyType'] = notifyType.index;
+      ..['notifyType'] = NIMTeamMessageNotifyTypeEnumEnumMap[notifyType];
     return NIMResult<Map<String, String>>.fromMap(await invokeMethod(
       'muteTeam',
       arguments: arguments,
@@ -427,8 +409,8 @@ class MethodChannelTeamService extends TeamServicePlatform {
         arguments: arguments,
       ),
       convert: (map) {
-        var teamList = map['teamNameList'] as List<String>?;
-        return teamList?.map((e) => e).toList();
+        var teamList = map['teamNameList'] as List<dynamic>?;
+        return teamList?.map((e) => e as String).toList();
       },
     );
   }
