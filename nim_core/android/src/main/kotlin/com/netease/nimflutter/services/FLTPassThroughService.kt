@@ -1,14 +1,23 @@
+/*
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
+ * Use of this source code is governed by a MIT license that can be
+ * found in the LICENSE file.
+ */
+
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
-import com.netease.nimlib.sdk.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.toMap
+import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.Observer
+import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.passthrough.PassthroughService
 import com.netease.nimlib.sdk.passthrough.PassthroughServiceObserve
 import com.netease.nimlib.sdk.passthrough.model.PassthroughNotifyData
 import com.netease.nimlib.sdk.passthrough.model.PassthroughProxyData
-import com.netease.nimlib.sdk.team.TeamServiceObserver
-import com.netease.nimlib.sdk.team.model.Team
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -18,10 +27,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-
 class FLTPassThroughService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private val tag = "FLTPassThroughService"
@@ -33,7 +41,7 @@ class FLTPassThroughService(
 
     init {
         registerFlutterMethodCalls(
-            "httpProxy" to ::httpProxy,
+            "httpProxy" to ::httpProxy
         )
         nimCore.onInitialized {
             observePassthroughServiceEvent()
@@ -60,10 +68,11 @@ class FLTPassThroughService(
                 method = "onPassthrough",
                 arguments = mapOf(
                     "passthroughNotifyData" to event.toMap()
-                ),
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
+
     private suspend fun httpProxy(arguments: Map<String, *>): NimResult<PassthroughProxyData> {
         val options = arguments["passThroughProxyData"] as? Map<*, *>
         val zone = options?.get("zone") as String?
@@ -71,12 +80,21 @@ class FLTPassThroughService(
         val method = options?.get("method") as Int?
         val header = options?.get("header") as String?
         val body = options?.get("body") as String?
-        val passThroughProxyData = method?.let { PassthroughProxyData(zone, path, it, header, body) }
+        val passThroughProxyData =
+            method?.let { PassthroughProxyData(zone, path, it, header, body) }
         return suspendCancellableCoroutine { cont ->
             passThroughService.httpProxy(passThroughProxyData)
                 .setCallback(object : RequestCallback<PassthroughProxyData> {
                     override fun onSuccess(param: PassthroughProxyData) =
-                        cont.resumeWith(Result.success(NimResult(code = 0, data = param, convert = { it.toMap() })))
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param,
+                                    convert = { it.toMap() }
+                                )
+                            )
+                        )
 
                     override fun onFailed(code: Int) =
                         cont.resumeWith(Result.success(NimResult(code = code)))
@@ -86,6 +104,4 @@ class FLTPassThroughService(
                 })
         }
     }
-
-
 }

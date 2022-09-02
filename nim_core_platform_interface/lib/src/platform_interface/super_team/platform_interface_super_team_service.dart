@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -6,13 +6,7 @@ import 'dart:async';
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_super_team_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team_member.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/team.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
 
 abstract class SuperTeamServicePlatform extends Service {
   SuperTeamServicePlatform() : super(token: _token);
@@ -34,7 +28,8 @@ abstract class SuperTeamServicePlatform extends Service {
   }
 
   ///根据群id列表批量查询群信息
-  Future<NIMResult<List<NIMSuperTeam>>> queryTeamListById(List<String> idList) async {
+  Future<NIMResult<List<NIMSuperTeam>>> queryTeamListById(
+      List<String> idList) async {
     throw UnimplementedError('queryTeamListById() is not implemented');
   }
 
@@ -63,13 +58,14 @@ abstract class SuperTeamServicePlatform extends Service {
 
   ///拒绝用户的入群申请
   /// 仅管理员和拥有者有此权限
-  Future<NIMResult<void>> rejectApply(String teamId, String account,String reason) async {
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) async {
     throw UnimplementedError('rejectApply() is not implemented');
   }
 
   ///邀请成员
-  Future<NIMResult<List<String>>> addMembers(String teamId,
-      List<String> accountList, String msg) async {
+  Future<NIMResult<List<String>>> addMembers(
+      String teamId, List<String> accountList, String msg) async {
     throw UnimplementedError('addMembers() is not implemented');
   }
 
@@ -79,7 +75,8 @@ abstract class SuperTeamServicePlatform extends Service {
   }
 
   ///拒绝入群邀请
-  Future<NIMResult<void>> declineInvite(String teamId, String inviter,String reaseon) async {
+  Future<NIMResult<void>> declineInvite(
+      String teamId, String inviter, String reaseon) async {
     throw UnimplementedError('declineInvite() is not implemented');
   }
 
@@ -95,7 +92,8 @@ abstract class SuperTeamServicePlatform extends Service {
   }
 
   ///获取群组成员列表
-  Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberList(String teamId) async {
+  Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberList(
+      String teamId) async {
     throw UnimplementedError('queryMemberList() is not implemented');
   }
 
@@ -107,7 +105,7 @@ abstract class SuperTeamServicePlatform extends Service {
 
   ///分页获取群组成员（Windows & macOS暂不支持）
   Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberListByPage(
-      String teamId, int offset,int limit) async {
+      String teamId, int offset, int limit) async {
     throw UnimplementedError('queryMemberListByPage() is not implemented');
   }
 
@@ -119,8 +117,7 @@ abstract class SuperTeamServicePlatform extends Service {
   }
 
   /// 群修改自己的群昵称
-  Future<NIMResult<void>> updateMyTeamNick(
-      String teamId, String nick) async {
+  Future<NIMResult<void>> updateMyTeamNick(String teamId, String nick) async {
     throw UnimplementedError('updateMyTeamNick() is not implemented');
   }
 
@@ -134,13 +131,15 @@ abstract class SuperTeamServicePlatform extends Service {
   /// 上层APP如果管理了群成员资料的缓存，可通过此接口更新缓存。
   /// observer 观察者, 参数为有更新的群成员资料列表
   /// [register] true为注册，false为注销
+  //ignore: close_sinks
   final StreamController<List<NIMSuperTeamMember>> onMemberUpdate =
-  StreamController<List<NIMSuperTeamMember>>.broadcast();
+      StreamController<List<NIMSuperTeamMember>>.broadcast();
 
   /// 移除群成员的观察者通知。
   /// observer 观察者, 参数为被移除的群成员
+  //ignore: close_sinks
   final StreamController<List<NIMSuperTeamMember>> onMemberRemove =
-  StreamController<List<NIMSuperTeamMember>>.broadcast();
+      StreamController<List<NIMSuperTeamMember>>.broadcast();
 
   ///拥有者将群的拥有者权限转给另外一个人，转移后，另外一个人成为拥有者
   ///原拥有者变成普通成员。若参数quit为true，原拥有者直接退出该群
@@ -182,7 +181,6 @@ abstract class SuperTeamServicePlatform extends Service {
     throw UnimplementedError('queryMutedTeamMembers() is not implemented');
   }
 
-
   ///编辑多个资料
   Future<NIMResult<void>> updateTeamFields(
       String teamId, NIMTeamUpdateFieldRequest request) async {
@@ -190,12 +188,14 @@ abstract class SuperTeamServicePlatform extends Service {
   }
 
   ///监听群资料变化
+  //ignore: close_sinks
   final StreamController<List<NIMSuperTeam>> onSuperTeamUpdate =
-  StreamController<List<NIMSuperTeam>>.broadcast();
+      StreamController<List<NIMSuperTeam>>.broadcast();
 
   ///监听移除群的变化
+  //ignore: close_sinks
   final StreamController<NIMSuperTeam> onSuperTeamRemove =
-  StreamController<NIMSuperTeam>.broadcast();
+      StreamController<NIMSuperTeam>.broadcast();
 
   ///群消息免打扰
   ///设置指定群消息通知类型
@@ -203,7 +203,6 @@ abstract class SuperTeamServicePlatform extends Service {
       String teamId, NIMTeamMessageNotifyTypeEnum notifyType) async {
     throw UnimplementedError('muteTeam() is not implemented');
   }
-
 
   ///用户可以查询到具有指定群名称的群ID的列表（Windows & macOS暂不支持）
   Future<NIMResult<List<String>>> searchTeamIdByName(String name) async {
@@ -214,7 +213,8 @@ abstract class SuperTeamServicePlatform extends Service {
   /// 通过群名称反查群组ID
   /// name 群组名称
   /// 群ID列表
-  Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(String keyword) async {
+  Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(
+      String keyword) async {
     throw UnimplementedError('searchTeamsByKeyword() is not implemented');
   }
 }

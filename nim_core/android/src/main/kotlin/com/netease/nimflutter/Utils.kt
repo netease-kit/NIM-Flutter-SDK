@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -16,8 +16,7 @@ object Utils {
             jsonObjectToMap(JSONObject(json!!))
         }.getOrDefault(mapOf())
 
-
-     private fun jsonObjectToMap(jsonObject: JSONObject): Map<String, Any?> {
+    private fun jsonObjectToMap(jsonObject: JSONObject): Map<String, Any?> {
         val map: MutableMap<String, Any> = HashMap()
         val keys = jsonObject.keys()
         while (keys.hasNext()) {

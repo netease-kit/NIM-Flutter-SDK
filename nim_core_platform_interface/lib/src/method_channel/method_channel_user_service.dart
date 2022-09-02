@@ -1,13 +1,10 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/user/platform_interface_user_service.dart';
 
 class MethodChannelUserService extends UserServicePlatform {
-
   @override
   Future<NIMResult<NIMUser>> getUserInfo(String userId) async {
     Map<String, String> argument = {'userId': userId};
@@ -17,9 +14,13 @@ class MethodChannelUserService extends UserServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<NIMUser>>> getUserInfoListAndroid(List<String> userIdList) async {
-    Map<String, dynamic> argument = {'userIdList': userIdList.map((e) => e.toString()).toList()};
-    Map<String, dynamic> replyMap = await invokeMethod('getUserInfoList', arguments: argument);
+  Future<NIMResult<List<NIMUser>>> getUserInfoListAndroid(
+      List<String> userIdList) async {
+    Map<String, dynamic> argument = {
+      'userIdList': userIdList.map((e) => e.toString()).toList()
+    };
+    Map<String, dynamic> replyMap =
+        await invokeMethod('getUserInfoList', arguments: argument);
     return NIMResult.fromMap(replyMap, convert: (map) {
       var userInfoList = map['userInfoList'] as List<dynamic>?;
       return userInfoList?.map((e) {
@@ -122,8 +123,9 @@ class MethodChannelUserService extends UserServicePlatform {
   Future<NIMResult<NIMFriend>> getFriend(String userId) async {
     Map<String, String> argument = {'userId': userId};
     Map<String, dynamic> replyMap =
-    await invokeMethod('getFriend', arguments: argument);
-    return NIMResult.fromMap(replyMap, convert: (map) => NIMFriend.fromMap(map));
+        await invokeMethod('getFriend', arguments: argument);
+    return NIMResult.fromMap(replyMap,
+        convert: (map) => NIMFriend.fromMap(map));
   }
 
   @override
@@ -136,9 +138,11 @@ class MethodChannelUserService extends UserServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(String alias) async {
+  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(
+      String alias) async {
     Map<String, String> argument = {'alias': alias};
-    Map<String, dynamic> resultMap = await invokeMethod('searchAccountByAlias',arguments: argument);
+    Map<String, dynamic> resultMap =
+        await invokeMethod('searchAccountByAlias', arguments: argument);
     return NIMResult.fromMap(resultMap, convert: (map) {
       var userIdList = map['userIdList'] as List<dynamic>?;
       return userIdList?.map((e) => e as String).toList();
@@ -146,9 +150,11 @@ class MethodChannelUserService extends UserServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(String keyword) async {
+  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(
+      String keyword) async {
     Map<String, String> argument = {'keyword': keyword};
-    Map<String, dynamic> resultMap = await invokeMethod('searchFriendsByKeyword',arguments: argument);
+    Map<String, dynamic> resultMap =
+        await invokeMethod('searchFriendsByKeyword', arguments: argument);
     return NIMResult.fromMap(resultMap, convert: (map) {
       var friendList = map['friendList'] as List<dynamic>?;
       return friendList

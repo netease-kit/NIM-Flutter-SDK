@@ -1,10 +1,9 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/robot/robot_message_type.dart';
 
 part 'robot_message_attachment.g.dart';
 

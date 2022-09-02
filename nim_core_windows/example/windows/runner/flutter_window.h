@@ -1,5 +1,5 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 #ifndef RUNNER_FLUTTER_WINDOW_H_

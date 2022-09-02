@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
- * Use of this source code is governed by a MIT license that can be
- * found in the LICENSE file.
+ * Copyright (c) 2022 NetEase, Inc.  All rights reserved.
+ * Use of this source code is governed by a MIT license that can be found in the LICENSE file.
  */
 
 group 'com.netease.nimflutter'
@@ -41,7 +40,7 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
     }
     packagingOptions {
         pickFirst 'lib/x86/libc++_shared.so'
@@ -56,7 +55,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
     implementation 'com.netease.yunxin.kit:alog:1.0.2'
 
-    def nimLibVer = '8.6.5'
+    def nimLibVer = '8.11.12'
     implementation "com.netease.nimlib.flutter:basesdk:$nimLibVer"
     implementation "com.netease.nimlib.flutter:chatroom:$nimLibVer"
     implementation "com.netease.nimlib.flutter:push:$nimLibVer"

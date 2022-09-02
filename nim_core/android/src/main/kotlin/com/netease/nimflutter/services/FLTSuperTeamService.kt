@@ -1,14 +1,32 @@
+/*
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
+ * Use of this source code is governed by a MIT license that can be
+ * found in the LICENSE file.
+ */
+
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultContinuationCallback
+import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
+import com.netease.nimflutter.stringToTeamFieldEnumTypeMap
+import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.superteam.SuperTeam
 import com.netease.nimlib.sdk.superteam.SuperTeamMember
 import com.netease.nimlib.sdk.superteam.SuperTeamService
 import com.netease.nimlib.sdk.superteam.SuperTeamServiceObserver
-import com.netease.nimlib.sdk.team.constant.*
+import com.netease.nimlib.sdk.team.constant.TeamBeInviteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamExtensionUpdateModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamFieldEnum
+import com.netease.nimlib.sdk.team.constant.TeamInviteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum
+import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum
+import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum
 import com.netease.nimlib.sdk.team.model.TeamMember
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,9 +38,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.Serializable
 
-class FLTSuperTeamService (
+class FLTSuperTeamService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private val tag = "SuperTeamService"
@@ -61,7 +79,7 @@ class FLTSuperTeamService (
             "updateTeamFields" to ::updateTeamFields,
             "muteTeam" to ::muteTeam,
             "searchTeamIdByName" to ::searchTeamIdByName,
-            "searchTeamsByKeyword" to ::searchTeamsByKeyword,
+            "searchTeamsByKeyword" to ::searchTeamsByKeyword
         )
 
         nimCore.onInitialized {
@@ -92,7 +110,7 @@ class FLTSuperTeamService (
                 method = "onSuperTeamMemberUpdate",
                 arguments = hashMapOf(
                     "teamMemberList" to event.map { it.toMap() }.toList()
-                ),
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -117,7 +135,7 @@ class FLTSuperTeamService (
                 method = "onSuperTeamMemberRemove",
                 arguments = hashMapOf(
                     "teamMemberList" to event.map { it.toMap() }.toList()
-                ),
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -142,7 +160,7 @@ class FLTSuperTeamService (
                 method = "onSuperTeamUpdate",
                 arguments = hashMapOf(
                     "teamList" to event.map { it.toMap() }.toList()
-                ),
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -167,7 +185,7 @@ class FLTSuperTeamService (
                 method = "onSuperTeamRemove",
                 arguments = hashMapOf(
                     "team" to event.toMap()
-                ),
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -175,13 +193,15 @@ class FLTSuperTeamService (
     private suspend fun queryTeamList(arguments: Map<String, *>): NimResult<List<SuperTeam>?> {
         return suspendCancellableCoroutine { cont ->
             superTeamService.queryTeamList()
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) }
+                        )
+                    }
+                )
         }
     }
 
@@ -189,13 +209,15 @@ class FLTSuperTeamService (
         return suspendCancellableCoroutine { cont ->
             val teamIdList = arguments["teamIdList"] as List<String>
             superTeamService.queryTeamListById(teamIdList)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) }
+                        )
+                    }
+                )
         }
     }
 
@@ -203,13 +225,15 @@ class FLTSuperTeamService (
         val teamId = arguments["teamId"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.queryTeam(teamId)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { it.toMap() },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
@@ -217,13 +241,15 @@ class FLTSuperTeamService (
         val teamId = arguments["teamId"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.searchTeam(teamId)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { it.toMap() },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
@@ -232,13 +258,15 @@ class FLTSuperTeamService (
         val postscript = arguments["postscript"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.applyJoinTeam(teamId, postscript)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { it.toMap() },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
@@ -256,7 +284,7 @@ class FLTSuperTeamService (
         val account = arguments["account"] as? String
         val reason = arguments["reason"] as? String
         return suspendCancellableCoroutine { cont ->
-            superTeamService.rejectApply(teamId, account,reason)
+            superTeamService.rejectApply(teamId, account, reason)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -267,13 +295,15 @@ class FLTSuperTeamService (
         val msg = arguments["msg"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.addMembers(teamId, accountList, msg)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamMemberList" to it?.toList()) },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { mapOf("teamMemberList" to it?.toList()) }
+                        )
+                    }
+                )
         }
     }
 
@@ -291,7 +321,7 @@ class FLTSuperTeamService (
         val inviter = arguments["inviter"] as? String
         val reason = arguments["reason"] as? String
         return suspendCancellableCoroutine { cont ->
-            superTeamService.declineInvite(teamId, inviter,reason)
+            superTeamService.declineInvite(teamId, inviter, reason)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -318,13 +348,17 @@ class FLTSuperTeamService (
         val teamId = arguments["teamId"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.queryMemberList(teamId)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = {
+                                mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList())
+                            }
+                        )
+                    }
+                )
         }
     }
 
@@ -333,30 +367,38 @@ class FLTSuperTeamService (
         val account = arguments["account"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.queryTeamMember(teamId, account)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { it.toMap() },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
     private suspend fun queryMemberListByPage(arguments: Map<String, *>): NimResult<List<SuperTeamMember>> {
         val teamId = arguments["teamId"] as? String
-        val offset = (arguments.getOrDefault("offset"){0} as Number).toInt()
-        val limit = (arguments.getOrDefault("limit"){0} as Number).toInt()
+        val offset = (arguments.getOrDefault("offset") { 0 } as Number).toInt()
+        val limit = (arguments.getOrDefault("limit") { 0 } as Number).toInt()
         return suspendCancellableCoroutine { cont ->
-            superTeamService.queryMemberListByPage(teamId, offset,limit)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamMemberList" to it.map { msg -> msg.toMap() }
-                            .toList())  }
-                    )
-                })
+            superTeamService.queryMemberListByPage(teamId, offset, limit)
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = {
+                                mapOf(
+                                    "teamMemberList" to it.map { msg -> msg.toMap() }
+                                        .toList()
+                                )
+                            }
+                        )
+                    }
+                )
         }
     }
 
@@ -365,7 +407,7 @@ class FLTSuperTeamService (
         val account = arguments["account"] as? String
         val nick = arguments["nick"] as? String
         return suspendCancellableCoroutine { cont ->
-            superTeamService.updateMemberNick(teamId, account,nick)
+            superTeamService.updateMemberNick(teamId, account, nick)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -393,29 +435,38 @@ class FLTSuperTeamService (
         val account = arguments["account"] as? String
         val quit = arguments["quit"] as Boolean
         return suspendCancellableCoroutine { cont ->
-            superTeamService.transferTeam(teamId, account,quit)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) }
-                    )
-                })
+            superTeamService.transferTeam(teamId, account, quit)
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = {
+                                mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList())
+                            }
+                        )
+                    }
+                )
         }
     }
+
     @Suppress("UNCHECKED_CAST")
     private suspend fun addManagers(arguments: Map<String, *>): NimResult<List<SuperTeamMember>?> {
         val teamId = arguments["teamId"] as? String
         val accountList = arguments["accountList"] as? List<String>
         return suspendCancellableCoroutine { cont ->
             superTeamService.addManagers(teamId, accountList)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) }
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = {
+                                mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList())
+                            }
+                        )
+                    }
+                )
         }
     }
 
@@ -425,13 +476,17 @@ class FLTSuperTeamService (
         val accountList = arguments["accountList"] as? List<String>
         return suspendCancellableCoroutine { cont ->
             superTeamService.removeManagers(teamId, accountList)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) }
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = {
+                                mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList())
+                            }
+                        )
+                    }
+                )
         }
     }
 
@@ -440,7 +495,7 @@ class FLTSuperTeamService (
         val accountList = arguments["accountList"] as? ArrayList<String>
         val mute = arguments["mute"] as Boolean
         return suspendCancellableCoroutine { cont ->
-            superTeamService.muteTeamMembers(teamId, accountList,mute)
+            superTeamService.muteTeamMembers(teamId, accountList, mute)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -459,8 +514,15 @@ class FLTSuperTeamService (
         return if (teamId.isNullOrEmpty()) {
             NimResult(code = -1, null)
         } else {
-            NimResult(code = 0,
-                convert = { mapOf("teamMemberList" to superTeamService.queryMutedTeamMembers(teamId)?.map { msg -> msg.toMap() }?.toList()) },)
+            NimResult(
+                code = 0,
+                convert = {
+                    mapOf(
+                        "teamMemberList" to superTeamService.queryMutedTeamMembers(teamId)
+                            ?.map { msg -> msg.toMap() }?.toList()
+                    )
+                }
+            )
         }
     }
 
@@ -469,7 +531,7 @@ class FLTSuperTeamService (
         val field = stringToTeamFieldEnumTypeMap(arguments["field"] as? String)
         val value = arguments["value"] as String
         return suspendCancellableCoroutine { cont ->
-            superTeamService.updateTeam(teamId, field,value)
+            superTeamService.updateTeam(teamId, field, value)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -479,20 +541,24 @@ class FLTSuperTeamService (
         val request = arguments["request"] as Map<String, *>?
         val newFields = mutableMapOf<TeamFieldEnum, Serializable?>()
         request?.forEach { (key, value) ->
-            if (key == "announcement" || key == "name" || key == "icon" || key == "introduce"
-                || key == "extension"){
+            if (key == "announcement" || key == "name" || key == "icon" || key == "introduce" ||
+                key == "extension"
+            ) {
                 newFields[stringToTeamFieldEnumTypeMap(key)] = value as String?
-            }else if (key == "verifyType"){
+            } else if (key == "verifyType") {
                 newFields[TeamFieldEnum.VerifyType] = VerifyTypeEnum.typeOfValue(value as Int)
-            }else if (key == "beInviteMode"){
-                newFields[TeamFieldEnum.BeInviteMode] = TeamBeInviteModeEnum.typeOfValue(value as Int)
-            }else if (key == "inviteMode"){
+            } else if (key == "beInviteMode") {
+                newFields[TeamFieldEnum.BeInviteMode] =
+                    TeamBeInviteModeEnum.typeOfValue(value as Int)
+            } else if (key == "inviteMode") {
                 newFields[TeamFieldEnum.InviteMode] = TeamInviteModeEnum.typeOfValue(value as Int)
-            }else if (key == "teamExtensionUpdateMode"){
-                newFields[TeamFieldEnum.TeamExtensionUpdateMode] = TeamExtensionUpdateModeEnum.typeOfValue(value as Int)
-            }else if (key == "teamUpdateMode"){
-                newFields[TeamFieldEnum.TeamUpdateMode] = TeamUpdateModeEnum.typeOfValue(value as Int)
-            }else if (key == "maxMemberCount"){
+            } else if (key == "teamExtensionUpdateMode") {
+                newFields[TeamFieldEnum.TeamExtensionUpdateMode] =
+                    TeamExtensionUpdateModeEnum.typeOfValue(value as Int)
+            } else if (key == "teamUpdateMode") {
+                newFields[TeamFieldEnum.TeamUpdateMode] =
+                    TeamUpdateModeEnum.typeOfValue(value as Int)
+            } else if (key == "maxMemberCount") {
                 newFields[TeamFieldEnum.MaxMemberCount] = value as Int
             }
         }
@@ -510,17 +576,20 @@ class FLTSuperTeamService (
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
+
     private suspend fun searchTeamIdByName(arguments: Map<String, *>): NimResult<List<String>?> {
         val name = arguments["name"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.searchTeamIdByName(name)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamNameList" to it?.toList()) }
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { mapOf("teamNameList" to it?.toList()) }
+                        )
+                    }
+                )
         }
     }
 
@@ -528,14 +597,15 @@ class FLTSuperTeamService (
         val keyword = arguments["keyword"] as? String
         return suspendCancellableCoroutine { cont ->
             superTeamService.searchTeamsByKeyword(keyword)
-                .setCallback(NimResultContinuationCallback(cont){ result ->
-                    NimResult(
-                        code = 0,
-                        data = result,
-                        convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) }
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) }
+                        )
+                    }
+                )
         }
     }
-
 }

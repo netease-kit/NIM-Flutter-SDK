@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import '../../../nim_core_platform_interface.dart';
 
 class NIMQuickCommentOptionWrapper {
@@ -11,26 +15,28 @@ class NIMQuickCommentOptionWrapper {
 
   factory NIMQuickCommentOptionWrapper.fromMap(Map<String, dynamic> param) {
     return NIMQuickCommentOptionWrapper(
-        key: NIMMessageKey.fromMap(Map<String, dynamic>.from(param['key'] as Map)),
+        key: NIMMessageKey.fromMap(
+            Map<String, dynamic>.from(param['key'] as Map)),
         quickCommentList: (param['quickCommentList'] as List<dynamic>?)
-            ?.map((e) => NIMQuickCommentOption.fromMap(Map<String, dynamic>.from(e as Map)))
+            ?.map((e) => NIMQuickCommentOption.fromMap(
+                Map<String, dynamic>.from(e as Map)))
             .toList(),
         modify: param['modify'] as bool?,
         time: param['time'] as int?);
   }
 }
 
-class NIMHandleQuickCommentOption{
+class NIMHandleQuickCommentOption {
   final NIMMessageKey? key;
   final NIMQuickCommentOption? commentOption;
 
-  NIMHandleQuickCommentOption({this.key,this.commentOption});
+  NIMHandleQuickCommentOption({this.key, this.commentOption});
 
   factory NIMHandleQuickCommentOption.fromMap(Map<String, dynamic> param) {
     return NIMHandleQuickCommentOption(
         key: NIMMessageKey.fromMap((param['key'] as Map).cast()),
-        commentOption:NIMQuickCommentOption.fromMap((param['commentOption'] as Map).cast())
-    );
+        commentOption: NIMQuickCommentOption.fromMap(
+            (param['commentOption'] as Map).cast()));
   }
 
   @override
@@ -71,7 +77,7 @@ class NIMQuickCommentOption {
       needBadge: param['needBadge'] as bool?,
       pushTitle: param['pushTitle'] as String?,
       pushContent: param['pushContent'] as String?,
-      pushPayload: (param['pushPayload'] as Map?)?.cast<String,dynamic>(),
+      pushPayload: (param['pushPayload'] as Map?)?.cast<String, dynamic>(),
     );
   }
 

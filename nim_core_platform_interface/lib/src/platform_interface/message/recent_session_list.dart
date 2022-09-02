@@ -1,5 +1,10 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
+
 class RecentSessionList {
   @JsonKey(defaultValue: false)
   final bool hasMore;
@@ -12,7 +17,8 @@ class RecentSessionList {
     return RecentSessionList(
       hasMore: param['hasMore'] as bool,
       sessionList: (param['sessionList'] as List<dynamic>?)
-          ?.map((e) => RecentSession.fromMap(Map<String,dynamic>.from(e as Map)))
+          ?.map(
+              (e) => RecentSession.fromMap(Map<String, dynamic>.from(e as Map)))
           .toList(),
     );
   }
@@ -47,11 +53,14 @@ class RecentSession {
       ext: param['ext'] as String?,
       lastMsg: param['lastMsg'] as String?,
       lastMsgType: param['lastMsgType'] as int?,
-      recentSession: NIMSession.fromMap(Map<String,dynamic>.from(param['recentSession'] as Map)),
+      recentSession: NIMSession.fromMap(
+          Map<String, dynamic>.from(param['recentSession'] as Map)),
       sessionType: NIMSessionTypeConverter().fromValue(param['sessionType']),
       sessionTypePair: param['sessionTypePair'] as String?,
-      revokeNotification: param['revokeNotification'] == null ? null : NIMRevokeMessage.fromMap(
-          Map<String, dynamic>.from(param['revokeNotification'] as Map)),
+      revokeNotification: param['revokeNotification'] == null
+          ? null
+          : NIMRevokeMessage.fromMap(
+              Map<String, dynamic>.from(param['revokeNotification'] as Map)),
     );
   }
 }

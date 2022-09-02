@@ -1,8 +1,6 @@
-/*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
- * Use of this source code is governed by a MIT license that can be
- * found in the LICENSE file.
- */
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
 
 #import "NimCorePlugin.h"
 #if __has_include(<nim_core/nim_core-Swift.h>)
@@ -17,7 +15,7 @@
 #import <NIMSDK/NIMMessage.h>
 
 @implementation NimCorePlugin
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   [SwiftNimCorePlugin registerWithRegistrar:registrar];
 }
 @end

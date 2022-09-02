@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -40,6 +40,9 @@ class NIMWINDOWSSDKOptions extends NIMSDKOptions {
   /// 在进行重新登录前是否先刷新一下lbs,对于切换网络的场景适用
   bool? needUpdateLbsBeforeRelogin;
 
+  /// 是否使用私有化配置
+  bool? useAssetServerConfig;
+
   NIMWINDOWSSDKOptions({
     /// windows configurations
     this.databaseEncryptKey,
@@ -51,6 +54,7 @@ class NIMWINDOWSSDKOptions extends NIMSDKOptions {
     this.preloadImageNameTemplate,
     this.preloadImageQuality,
     this.preloadImageResize,
+    this.useAssetServerConfig,
 
     /// common configurations
     required String appKey,

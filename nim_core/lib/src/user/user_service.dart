@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -78,13 +78,16 @@ class UserService {
   }
 
   /// 添加好友
-  Future<NIMResult<void>> addFriend({required String userId, String? message,
-    required NIMVerifyType verifyType}) async {
+  Future<NIMResult<void>> addFriend(
+      {required String userId,
+      String? message,
+      required NIMVerifyType verifyType}) async {
     return _platform.addFriend(userId, message, verifyType);
   }
 
   /// 确认添加好友
-  Future<NIMResult<void>> ackAddFriend({required String userId, bool isAgree = true}) async {
+  Future<NIMResult<void>> ackAddFriend(
+      {required String userId, bool isAgree = true}) async {
     return _platform.ackAddFriend(userId, isAgree);
   }
 
@@ -94,10 +97,9 @@ class UserService {
   }
 
   /// 获取好友
-  Future<NIMResult<NIMFriend>> getFriend(String userId) async{
+  Future<NIMResult<NIMFriend>> getFriend(String userId) async {
     return _platform.getFriend(userId);
   }
-
 
   ///获取所有的好友帐号
   Future<NIMResult<List<String>>> getFriendAccountsAndroid() async {
@@ -105,18 +107,20 @@ class UserService {
   }
 
   ///根据备注反查账号
-  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(String alias) async {
+  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(
+      String alias) async {
     return _platform.searchAccountByAliasAndroid(alias);
   }
 
   ///搜索与关键字匹配的所有好友
-  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(String keyword) async {
+  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(
+      String keyword) async {
     return _platform.searchFriendsByKeywordAndroid(keyword);
   }
 
-
   /// 删除好友
-  Future<NIMResult<void>> deleteFriend({required String userId, bool includeAlias = true}) async {
+  Future<NIMResult<void>> deleteFriend(
+      {required String userId, bool includeAlias = true}) async {
     return _platform.deleteFriend(userId, includeAlias);
   }
 
@@ -124,7 +128,8 @@ class UserService {
     return _platform.isMyFriend(userId);
   }
 
-  Future<NIMResult<void>> updateFriend({required String userId, required String alias}) async {
+  Future<NIMResult<void>> updateFriend(
+      {required String userId, required String alias}) async {
     return _platform.updateFriend(userId, alias);
   }
 
@@ -148,7 +153,8 @@ class UserService {
     return _platform.getMuteList();
   }
 
-  Future<NIMResult<void>> setMute({required String userId, required isMute}) async {
+  Future<NIMResult<void>> setMute(
+      {required String userId, required isMute}) async {
     return _platform.setMute(userId, isMute);
   }
 

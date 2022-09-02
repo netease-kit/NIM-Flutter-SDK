@@ -1,16 +1,15 @@
-// Copyright (c) 2014-2021 NetEase, Inc.
-// All right reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 
 part 'talk_ext.g.dart';
 
 /// 收藏信息
 @JsonSerializable()
 class NIMCollectInfo {
-
   /// 此收藏的ID，由服务端生成，具有唯一性
   final int id;
 
@@ -51,7 +50,6 @@ class NIMCollectInfo {
 
 /// 收藏信息查询结果
 class NIMCollectInfoQueryResult {
-
   final int totalCount;
 
   final List<NIMCollectInfo>? collectList;
@@ -65,7 +63,6 @@ class NIMCollectInfoQueryResult {
 /// 消息PIN
 @JsonSerializable()
 class NIMMessagePin {
-
   /// 会话ID
   final String sessionId;
 
@@ -156,35 +153,33 @@ class NIMMessagePin {
 
 /// 消息PIN事件类
 abstract class NIMMessagePinEvent {
+  final NIMMessagePin pin;
 
- final NIMMessagePin pin;
+  NIMMessagePinEvent(this.pin);
 
- NIMMessagePinEvent(this.pin);
-
- @override
+  @override
   String toString() {
     return '$runtimeType{pin: $pin}';
- }
+  }
 }
 
 ///  消息PIN 添加事件
 class NIMMessagePinAddedEvent extends NIMMessagePinEvent {
-  NIMMessagePinAddedEvent(NIMMessagePin pin): super(pin);
+  NIMMessagePinAddedEvent(NIMMessagePin pin) : super(pin);
 }
 
 ///  消息PIN 移除事件
 class NIMMessagePinRemovedEvent extends NIMMessagePinEvent {
-  NIMMessagePinRemovedEvent(NIMMessagePin pin): super(pin);
+  NIMMessagePinRemovedEvent(NIMMessagePin pin) : super(pin);
 }
 
 ///  消息PIN 更新事件
 class NIMMessagePinUpdatedEvent extends NIMMessagePinEvent {
-  NIMMessagePinUpdatedEvent(NIMMessagePin pin): super(pin);
+  NIMMessagePinUpdatedEvent(NIMMessagePin pin) : super(pin);
 }
 
 /// 服务端会话Key，包含 sessionId 与 sessionType
 class NIMMySessionKey {
-
   /// 会话ID
   final String sessionId;
 
@@ -196,8 +191,9 @@ class NIMMySessionKey {
     required this.sessionType,
   });
 
-  Map<String,dynamic> toMap() => {
-    'sessionId': sessionId,
-    'sessionType': NIMSessionTypeConverter(sessionType: sessionType).toValue(),
-  };
+  Map<String, dynamic> toMap() => {
+        'sessionId': sessionId,
+        'sessionType':
+            NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+      };
 }

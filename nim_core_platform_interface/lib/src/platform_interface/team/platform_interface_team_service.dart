@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -6,14 +6,7 @@ import 'dart:async';
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_team_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/team.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/team_member.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-import 'create_team_options.dart';
-import 'create_team_result.dart';
 
 abstract class TeamServicePlatform extends Service {
   TeamServicePlatform() : super(token: _token);
@@ -71,6 +64,11 @@ abstract class TeamServicePlatform extends Service {
 
   Future<NIMResult<void>> acceptInvite(String teamId, String inviter) async {
     throw UnimplementedError('acceptInvite() is not implemented');
+  }
+
+  Future<NIMResult<void>> declineInvite(
+      String teamId, String inviter, String reason) async {
+    throw UnimplementedError('declineInvite() is not implemented');
   }
 
   Future<NIMResult<Map<String, String>>> getMemberInvitor(
@@ -143,9 +141,11 @@ abstract class TeamServicePlatform extends Service {
     throw UnimplementedError('updateTeamFields() is not implemented');
   }
 
+  //ignore: close_sinks
   final StreamController<List<NIMTeam>> onTeamListUpdate =
       StreamController<List<NIMTeam>>.broadcast();
 
+  //ignore: close_sinks
   final StreamController<List<NIMTeam>> onTeamListRemove =
       StreamController<List<NIMTeam>>.broadcast();
 

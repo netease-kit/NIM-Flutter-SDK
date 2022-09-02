@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -6,9 +6,6 @@ import 'dart:async';
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_nos_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 abstract class NOSServicePlatform extends Service {
@@ -28,6 +25,7 @@ abstract class NOSServicePlatform extends Service {
   // ignore: close_sinks
   final StreamController<double> onNOSTransferProgress =
       StreamController<double>.broadcast();
+
   // ignore: close_sinks
   final StreamController<NIMNOSTransferStatus> onNOSTransferStatus =
       StreamController<NIMNOSTransferStatus>.broadcast();

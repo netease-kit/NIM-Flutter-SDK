@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -40,6 +40,7 @@ class SettingsService {
   }
 
   /// 配置消息提醒，仅支持 Android 平台，iOS平台请关闭通知权限。
+  /// 配置 [updateNotificationConfigAndroid] 才能生效
   ///
   /// <p>[enableRegularNotification] - 普通消息提醒开关
   /// <p>[enableRevokeMessageNotification] - 消息撤回是否提醒
@@ -107,9 +108,9 @@ class SettingsService {
 
   /// 打包日志文件并上传，返回日志文件的 url 地址
   ///
-  /// [chatroomId] 聊天室ID 如果没有 <br>
+  /// [chatroomId] 聊天室ID 如果没有传空 <br>
   /// [comment] 日志评论, 可选, 最长4096字符 <br>
-  /// [partial] true：上传全部/ false: 上传全部。 **Android可用**
+  /// [partial] true：上传部分/ false: 上传全部。 **Android可用**
   ///
   Future<NIMResult<String>> uploadLogs({
     String? chatroomId,

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -6,10 +6,7 @@ import 'dart:async';
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_system_message_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-import 'custom_notification.dart';
 
 abstract class SystemMessageServicePlatform extends Service {
   SystemMessageServicePlatform() : super(token: _token);

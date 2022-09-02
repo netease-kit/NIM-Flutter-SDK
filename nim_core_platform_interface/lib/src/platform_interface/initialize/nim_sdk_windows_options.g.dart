@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'nim_sdk_windows_options.dart';
@@ -18,6 +22,7 @@ NIMWINDOWSSDKOptions _$NIMWINDOWSSDKOptionsFromJson(Map<String, dynamic> json) {
     preloadImageNameTemplate: json['preloadImageNameTemplate'] as String?,
     preloadImageQuality: json['preloadImageQuality'] as int?,
     preloadImageResize: json['preloadImageResize'] as String?,
+    useAssetServerConfig: json['useAssetServerConfig'] as bool?,
     appKey: json['appKey'] as String,
     sdkRootDir: json['sdkRootDir'] as String?,
     customClientType: json['customClientType'] as int?,
@@ -78,5 +83,6 @@ Map<String, dynamic> _$NIMWINDOWSSDKOptionsToJson(
       instance.shouldVchatMissMessageMarkUnread;
   val['enableClientAntispam'] = instance.enableClientAntispam;
   val['needUpdateLbsBeforeRelogin'] = instance.needUpdateLbsBeforeRelogin;
+  val['useAssetServerConfig'] = instance.useAssetServerConfig;
   return val;
 }

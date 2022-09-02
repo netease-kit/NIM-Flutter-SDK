@@ -1,13 +1,14 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'dart:io';
+//import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:integration_test/integration_test.dart';
-import 'package:yunxin_integration_test/yunxin_integration_test.dart';
-import '../../../nim_core/example/integration_test/main_test.dart';
+//import 'package:flutter_test/flutter_test.dart';
+//import 'package:integration_test/integration_test.dart';
+//import 'package:netease_auto_test_kit/netease_auto_test_kit.dart';
+
+//import '../../../nim_core/example/integration_test/main_test.dart';
 
 /// 配置case用例地址： https://g.hz.netease.com/yunxin-app/kit_automation_test/-/tree/release/integration_case
 /// case模板，模板代码的class需要在 [nim_core_test.dart] 中注册。
@@ -16,27 +17,27 @@ import '../../../nim_core/example/integration_test/main_test.dart';
 /// flutter drive --driver=test_driver/integration_test.dart --target=integration_test/main_test.dart  --keep-app-running
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group(
-    'im flutter',
-    () => test('im flutter test', () async {
-      // await IntegratedPermissionHelper.requestPermissions(
-      //     IntegratedConfig.permissions);
-      await IntegratedManager.instance.init(
-          // localHost: '10.242.148.84',
-          // isDispatch: true, //默认设备配置内部调度
-          applicationName: 'nimflutter',
-          // platform: 'flutter',
-          version: '1.0.0',
-          // deviceIdMap: 'your case need devices',
-          // tag: 'release/integration_case',
-          // selectPartNameList: ['nim_collect'],
-          packageId:
-              /*Platform.isAndroid
-              ? 'com.netease.nimflutter.nim_core_example'
-              : 'com.netease.nimflutter.nimCoreExample'*/
-              '',
-          caseList: caseList);
-    }, timeout: Timeout(Duration(minutes: 15))),
-  );
+  //IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  // group(
+  //   'im flutter',
+  //   () => test('im flutter test', () async {
+  //     // await IntegratedPermissionHelper.requestPermissions(
+  //     //     IntegratedConfig.permissions);
+  //     await IntegratedManager.instance.init(
+  //         // localHost: '10.242.148.84',
+  //         // isDispatch: true, //默认设备配置内部调度
+  //         applicationName: 'nimflutter',
+  //         // platform: 'flutter',
+  //         version: '1.0.0',
+  //         // deviceIdMap: 'your case need devices',
+  //         // tag: 'release/integration_case',
+  //         // selectPartNameList: ['nim_collect'],
+  //         packageId:
+  //             /*Platform.isAndroid
+  //             ? 'com.netease.nimflutter.nim_core_example'
+  //             : 'com.netease.nimflutter.nimCoreExample'*/
+  //             '',
+  //         caseList: caseList);
+  //   }, timeout: Timeout(Duration(minutes: 15))),
+  // );
 }

@@ -1,8 +1,9 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
+
 part 'record_info.g.dart';
 
 @JsonSerializable()
@@ -28,7 +29,7 @@ class RecordInfo {
         : AudioOutputFormat.AAC;
     return RecordInfo(
         recordState: covertState(map["recordState"]),
-        filePath: map["path"],
+        filePath: map["filePath"],
         fileSize: map["fileSize"],
         recordType: format,
         duration: map["duration"],

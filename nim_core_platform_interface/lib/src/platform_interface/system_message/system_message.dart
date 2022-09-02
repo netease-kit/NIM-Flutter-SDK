@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -57,17 +57,19 @@ class SystemMessage {
   }
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-    "messageId": messageId,
-    if(type != null) "type": SystemMessageTypeConverter(type: type).toValue(),
-    "fromAccount": fromAccount,
-    "targetId": targetId,
-    "time": time,
-    if(status != null)  "status": SystemMessageStatusConverter(status: status).toValue(),
-    "content": content,
-    "attach": attach,
-    "unread": unread,
-    "customInfo": customInfo
-  };
+        "messageId": messageId,
+        if (type != null)
+          "type": SystemMessageTypeConverter(type: type).toValue(),
+        "fromAccount": fromAccount,
+        "targetId": targetId,
+        "time": time,
+        if (status != null)
+          "status": SystemMessageStatusConverter(status: status).toValue(),
+        "content": content,
+        "attach": attach,
+        "unread": unread,
+        "customInfo": customInfo
+      };
 }
 
 enum SystemMessageType {

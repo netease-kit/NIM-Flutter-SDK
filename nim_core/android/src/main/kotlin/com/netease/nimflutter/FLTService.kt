@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -14,20 +14,26 @@ import kotlinx.coroutines.launch
 typealias FlutterMethodCall<T> = suspend (arguments: Map<String, *>) -> NimResult<T>
 
 abstract class FLTService(
-     val applicationContext: Context,
-     val nimCore: NimCore
+    val applicationContext: Context,
+    val nimCore: NimCore
 ) {
     abstract val serviceName: String
 
-    private val flutterMethodCallRegistry = hashMapOf<String,FlutterMethodCall<*>>()
+    private val flutterMethodCallRegistry = hashMapOf<String, FlutterMethodCall<*>>()
 
-    fun registerFlutterMethodCalls(vararg methods: Pair<String,FlutterMethodCall<*>>) =
+    fun registerFlutterMethodCalls(vararg methods: Pair<String, FlutterMethodCall<*>>) =
         flutterMethodCallRegistry.putAll(methods)
 
     @Deprecated("replace with registerFlutterMethodCalls")
-    open fun onMethodCalled(method: String, arguments: Map<String, *>, safeResult: SafeResult) {}
+    open fun onMethodCalled(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
+        safeResult.notImplemented()
+    }
 
-    fun dispatchFlutterMethodCall(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
+    fun dispatchFlutterMethodCall(
+        method: String,
+        arguments: Map<String, *>,
+        safeResult: SafeResult
+    ) {
         flutterMethodCallRegistry[method]?.let { func ->
             nimCore.lifeCycleScope.launch {
                 runCatching {
@@ -52,42 +58,55 @@ abstract class FLTService(
         }
     }
 
-    protected fun notifyEvent(method: String, arguments: Map<String, Any?>, callback: MethodChannel.Result? = null) {
-        println("$serviceName notifyEvent method = $method arguments = $arguments")
-        nimCore.methodChannel?.invokeMethod(
-            method,
-            arguments.toMutableMap().also { args -> args["serviceName"] = serviceName },
-            callback
-        ) ?: ALog.e("${serviceName}_K", "notify $method event error due to method channel is null!")
+    protected fun notifyEvent(
+        method: String,
+        arguments: Map<String, Any?>,
+        callback: MethodChannel.Result? = null
+    ) {
+        ALog.i("${serviceName}_K", "notifyEvent method = $method arguments = $arguments")
+        val params = arguments.toMutableMap().also { args -> args["serviceName"] = serviceName }
+        nimCore.methodChannel.forEach { channel ->
+            channel.invokeMethod(
+                method,
+                params,
+                callback
+            )
+        }
     }
 
     protected fun <T> onFailed(
-        funcName: String, code: Int, resultCallback:
-        ResultCallback<T>
+        funcName: String,
+        code: Int,
+        resultCallback:
+            ResultCallback<T>
     ) {
         println("$serviceName $funcName onFailed code = $code")
         ALog.d(serviceName, "$funcName onFailed code = $code")
         resultCallback.result(
             NimResult(
-                code = -1, errorDetails = "$funcName " +
-                        "but onFailed code = $code!"
+                code = -1,
+                errorDetails = "$funcName " +
+                    "but onFailed code = $code!"
             )
         )
     }
 
     protected fun <T> onException(
-        funcName: String, exception: Throwable?, resultCallback:
-        ResultCallback<T>
+        funcName: String,
+        exception: Throwable?,
+        resultCallback:
+            ResultCallback<T>
     ) {
-        println("$serviceName $funcName onFailed exception = ${exception?.message}");
+        println("$serviceName $funcName onFailed exception = ${exception?.message}")
         ALog.d(
             serviceName,
             "$funcName onFailed exception = ${exception?.message}"
         )
         resultCallback.result(
             NimResult(
-                code = -1, errorDetails = "$funcName " +
-                        "but onException exception = ${exception?.message}!"
+                code = -1,
+                errorDetails = "$funcName " +
+                    "but onException exception = ${exception?.message}!"
             )
         )
     }

@@ -1,7 +1,12 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/message/message.dart';
-import 'package:nim_core_platform_interface/src/utils/converter.dart';
 
 part 'team.g.dart';
 
@@ -142,6 +147,7 @@ enum NIMTeamBeInviteModeEnum {
   /// 不需要被邀请方同意
   noAuth,
 }
+
 enum NIMTeamAllMuteModeEnum {
   /// 取消全员禁言
   cancel,
@@ -284,6 +290,20 @@ class NIMTeamUpdateFieldRequest {
   }
 }
 
+String? _parseExtension(dynamic extension) {
+  if (extension is Map && Platform.isAndroid && extension.containsKey('ext')) {
+    return extension['ext'] as String?;
+  } else if (extension is String) {
+    return extension;
+  } else {
+    try {
+      return jsonEncode(extension);
+    } catch (e) {
+      return null;
+    }
+  }
+}
+
 /// 群组通知消息附件
 @JsonSerializable()
 class NIMTeamNotificationAttachment extends NIMMessageAttachment {
@@ -291,8 +311,8 @@ class NIMTeamNotificationAttachment extends NIMMessageAttachment {
   final int type;
 
   /// 扩展字段
-  @JsonKey(fromJson: castPlatformMapToDartMap)
-  final Map<String, dynamic>? extension;
+  @JsonKey(fromJson: _parseExtension)
+  final String? extension;
 
   NIMTeamNotificationAttachment({required this.type, this.extension});
 
@@ -346,7 +366,7 @@ class NIMMemberChangeAttachment extends NIMTeamNotificationAttachment {
   NIMMemberChangeAttachment({
     required int type,
     this.targets,
-    Map<String, dynamic>? extension,
+    String? extension,
   }) : super(
           type: type,
           extension: extension,
@@ -363,7 +383,7 @@ class NIMMemberChangeAttachment extends NIMTeamNotificationAttachment {
 class NIMDismissAttachment extends NIMTeamNotificationAttachment {
   NIMDismissAttachment({
     required int type,
-    Map<String, dynamic>? extension,
+    String? extension,
   }) : super(
           type: type,
           extension: extension,
@@ -380,7 +400,7 @@ class NIMDismissAttachment extends NIMTeamNotificationAttachment {
 class NIMLeaveTeamAttachment extends NIMTeamNotificationAttachment {
   NIMLeaveTeamAttachment({
     required int type,
-    Map<String, dynamic>? extension,
+    String? extension,
   }) : super(
           type: type,
           extension: extension,
@@ -395,7 +415,6 @@ class NIMLeaveTeamAttachment extends NIMTeamNotificationAttachment {
 
 @JsonSerializable()
 class NIMMuteMemberAttachment extends NIMTeamNotificationAttachment {
-
   /// 是否静音
   @JsonKey(defaultValue: false)
   final bool mute;
@@ -407,7 +426,7 @@ class NIMMuteMemberAttachment extends NIMTeamNotificationAttachment {
     required this.mute,
     required int type,
     this.targets,
-    Map<String, dynamic>? extension,
+    String? extension,
   }) : super(
           type: type,
           extension: extension,
@@ -455,6 +474,8 @@ class NIMTeamUpdatedFields {
 
   factory NIMTeamUpdatedFields.fromMap(Map map) =>
       _$NIMTeamUpdatedFieldsFromJson(map.cast());
+
+  Map<String, dynamic> toMap() => _$NIMTeamUpdatedFieldsToJson(this);
 }
 
 NIMTeamUpdatedFields _updatedFieldsFromJson(Map? map) {
@@ -467,13 +488,12 @@ NIMTeamUpdatedFields _updatedFieldsFromJson(Map? map) {
 /// 群组更新消息附件
 @JsonSerializable()
 class NIMUpdateTeamAttachment extends NIMTeamNotificationAttachment {
-
   @JsonKey(fromJson: _updatedFieldsFromJson)
   final NIMTeamUpdatedFields updatedFields;
 
   NIMUpdateTeamAttachment({
     required int type,
-    Map<String, dynamic>? extension,
+    String? extension,
     required this.updatedFields,
   }) : super(
           type: type,

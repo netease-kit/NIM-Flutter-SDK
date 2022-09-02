@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,20 +7,44 @@
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
-import com.netease.nimlib.sdk.*
+import com.netease.nimflutter.EnumTypeMappingRegistry
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.MethodChannelSuspendResult
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultContinuationCallback
+import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
+import com.netease.nimflutter.convertToQueryDirectionEnum
+import com.netease.nimflutter.stringToMsgTypeEnum
+import com.netease.nimflutter.stringToNimNosSceneKeyConstant
+import com.netease.nimflutter.toMap
+import com.netease.nimlib.sdk.InvocationFuture
+import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
+import com.netease.nimlib.sdk.RequestCallback
+import com.netease.nimlib.sdk.StatusCode
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder
 import com.netease.nimlib.sdk.chatroom.ChatRoomService
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver
 import com.netease.nimlib.sdk.chatroom.constant.MemberQueryType
 import com.netease.nimlib.sdk.chatroom.constant.MemberType
-import com.netease.nimlib.sdk.chatroom.model.*
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomIndependentCallback
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomKickOutEvent
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMember
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMemberUpdate
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomStatusChangeData
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomUpdateInfo
+import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomData
+import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData
+import com.netease.nimlib.sdk.chatroom.model.MemberOption
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.model.AttachmentProgress
 import com.netease.nimlib.sdk.robot.model.RobotMsgType
 import com.netease.nimlib.sdk.util.Entry
 import com.netease.yunxin.kit.alog.ALog
+import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
@@ -32,10 +56,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
 
-
 class FLTChatroomService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     override val serviceName = "ChatroomService"
@@ -67,7 +90,7 @@ class FLTChatroomService(
             "clearChatroomQueue" to ::clearChatroomQueue,
             "batchUpdateChatroomQueue" to ::batchUpdateChatroomQueue,
             "pollChatroomQueueEntry" to ::pollChatroomQueueEntry,
-            "updateChatroomQueueEntry" to ::updateChatroomQueueEntry,
+            "updateChatroomQueueEntry" to ::updateChatroomQueueEntry
         )
         nimCore.onInitialized {
             observeOnlineStatusEvent()
@@ -84,7 +107,10 @@ class FLTChatroomService(
             nick = arguments["nickname"] as? String
             avatar = arguments["avatar"] as? String
             extension = arguments["extension"] as? Map<String, Any?>
-            tags = (arguments["tags"] as? List<String>)?.joinToString(prefix = "[", postfix = "]") { "\"$it\"" }
+            tags = (arguments["tags"] as? List<String>)?.joinToString(
+                prefix = "[",
+                postfix = "]"
+            ) { "\"$it\"" }
             notifyExtension = arguments["notifyExtension"] as? Map<String, Any?>
             notifyTargetTags = arguments["notifyTargetTags"] as? String
             val independentModeConfig = arguments["independentModeConfig"] as? Map<String, Any?>
@@ -93,7 +119,7 @@ class FLTChatroomService(
                 val account = independentModeConfig["account"] as String?
                 val token = independentModeConfig["token"] as String?
                 val callback = ChatRoomIndependentCallback { id, acc ->
-                    if (id != null)
+                    if (id != null) {
                         runBlocking {
                             suspendCancellableCoroutine<Any?> { continuation ->
                                 notifyEvent(
@@ -103,17 +129,23 @@ class FLTChatroomService(
                                 )
                             } as? List<String>
                         }
-                    else
+                    } else {
                         emptyList()
+                    }
                 }
                 setIndependentMode(callback, account, token)
             }
         }.let {
             suspendCancellableCoroutine { cont ->
-                chatroomService.enterChatRoomEx(it, (arguments.getOrElse(key = "retryCount") { 0 } as Number).toInt())
-                    .setCallback(NimResultContinuationCallback(cont){ data ->
-                        NimResult(code = 0, data) { it.toMap() }
-                    })
+                chatroomService.enterChatRoomEx(
+                    it,
+                    (arguments.getOrElse(key = "retryCount") { 0 } as Number).toInt()
+                )
+                    .setCallback(
+                        NimResultContinuationCallback(cont) { data ->
+                            NimResult(code = 0, data) { it.toMap() }
+                        }
+                    )
             }
         }
     }
@@ -160,7 +192,7 @@ class FLTChatroomService(
                 arguments = hashMapOf(
                     "roomId" to event.roomId,
                     "code" to chatroomService.getEnterErrorCode(event.roomId),
-                    "status" to when(event.status) {
+                    "status" to when (event.status) {
                         StatusCode.CONNECTING,
                         StatusCode.LOGINING -> "connecting"
                         StatusCode.LOGINED -> "connected"
@@ -204,7 +236,7 @@ class FLTChatroomService(
                         else -> "unknown"
                     },
                     "extension" to event.extension
-                ),
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -218,31 +250,56 @@ class FLTChatroomService(
         val nosScene = stringToNimNosSceneKeyConstant(arguments["nosScene"] as? String)
         return when (stringToMsgTypeEnum(arguments["messageType"] as? String)) {
             MsgTypeEnum.text -> {
-                ChatRoomMessageBuilder.createChatRoomTextMessage(roomId, arguments["text"] as String)
+                ChatRoomMessageBuilder.createChatRoomTextMessage(
+                    roomId,
+                    arguments["text"] as String
+                )
             }
             MsgTypeEnum.image -> {
-                require(filePath.isNullOrEmpty().not()) { "create message error: file path is empty" }
+                require(
+                    filePath.isNullOrEmpty().not()
+                ) { "create message error: file path is empty" }
                 ChatRoomMessageBuilder.createChatRoomImageMessage(
-                    roomId, File(filePath!!), displayName, nosScene,
+                    roomId,
+                    File(filePath!!),
+                    displayName,
+                    nosScene
                 )
             }
             MsgTypeEnum.audio -> {
-                require(filePath.isNullOrEmpty().not()) { "create message error: file path is empty" }
+                require(
+                    filePath.isNullOrEmpty().not()
+                ) { "create message error: file path is empty" }
                 ChatRoomMessageBuilder.createChatRoomAudioMessage(
-                    roomId, File(filePath!!), duration?.toLong() ?: 0, nosScene,
+                    roomId,
+                    File(filePath!!),
+                    duration?.toLong() ?: 0,
+                    nosScene
                 )
             }
             MsgTypeEnum.video -> {
-                require(filePath.isNullOrEmpty().not()) { "create message error: file path is empty" }
+                require(
+                    filePath.isNullOrEmpty().not()
+                ) { "create message error: file path is empty" }
                 ChatRoomMessageBuilder.createChatRoomVideoMessage(
-                    roomId, File(filePath!!), duration?.toLong() ?: 0,
-                    arguments["width"] as Int, arguments["height"] as Int, displayName, nosScene,
+                    roomId,
+                    File(filePath!!),
+                    duration?.toLong() ?: 0,
+                    arguments["width"] as Int,
+                    arguments["height"] as Int,
+                    displayName,
+                    nosScene
                 )
             }
             MsgTypeEnum.file -> {
-                require(filePath.isNullOrEmpty().not()) { "create message error: file path is empty" }
+                require(
+                    filePath.isNullOrEmpty().not()
+                ) { "create message error: file path is empty" }
                 ChatRoomMessageBuilder.createChatRoomFileMessage(
-                    roomId, File(filePath!!), displayName, nosScene,
+                    roomId,
+                    File(filePath!!),
+                    displayName,
+                    nosScene
                 )
             }
             MsgTypeEnum.location -> {
@@ -250,7 +307,7 @@ class FLTChatroomService(
                     roomId,
                     (arguments["latitude"] as Number).toDouble(),
                     (arguments["longitude"] as Number).toDouble(),
-                    arguments["address"] as String?,
+                    arguments["address"] as String?
                 )
             }
             MsgTypeEnum.tip -> {
@@ -265,20 +322,24 @@ class FLTChatroomService(
                     roomId,
                     arguments["robotAccount"] as String,
                     text,
-                    EnumTypeMappingRegistry.enumFromValueOrDefault(arguments["robotMessageType"], fallback = RobotMsgType.TEXT),
+                    EnumTypeMappingRegistry.enumFromValueOrDefault(
+                        arguments["robotMessageType"],
+                        fallback = RobotMsgType.TEXT
+                    ),
                     content,
                     target,
-                    params,
+                    params
                 )
             }
             MsgTypeEnum.custom -> {
                 val attachmentArguments = arguments["attachment"] as? Map<String, Any?>
                 ChatRoomMessageBuilder.createChatRoomCustomMessage(
                     roomId,
-                    if (attachmentArguments != null)
+                    if (attachmentArguments != null) {
                         AttachmentHelper.attachmentFromMap(MsgTypeEnum.custom, attachmentArguments)
-                    else
+                    } else {
                         null
+                    }
                 )
             }
             else -> null
@@ -288,7 +349,11 @@ class FLTChatroomService(
                 code = if (success) 0 else -1,
                 data = message,
                 errorDetails = if (success) null else "create message error!",
-                convert = if (success) {{ it.toMap() }} else null,
+                convert = if (success) {
+                    { it.toMap() }
+                } else {
+                    null
+                }
             )
         }
     }
@@ -299,7 +364,7 @@ class FLTChatroomService(
                 MessageHelper.convertChatroomMessage(arguments["message"] as Map<String, *>)
             chatroomService.sendMessage(
                 message,
-                arguments.getOrElse("resend") { false } as Boolean,
+                arguments.getOrElse("resend") { false } as Boolean
             ).setCallback(object : RequestCallback<Void> {
                 override fun onSuccess(param: Void?) {
                     cont.resumeWith(Result.success(NimResult(code = 0, message) { it.toMap() }))
@@ -334,7 +399,27 @@ class FLTChatroomService(
                 method = "onMessageReceived",
                 arguments = hashMapOf(
                     "messageList" to messages.map { it.toMap() }.toList()
-                )
+                ),
+                callback = object : MethodChannel.Result {
+                    override fun success(result: Any?) {
+                        // do nothing
+                    }
+
+                    override fun error(
+                        errorCode: String,
+                        errorMessage: String?,
+                        errorDetails: Any?
+                    ) {
+                        ALog.e(
+                            serviceName,
+                            "onMessageReceived invoke error code = $errorCode errorMessage = $errorMessage errorDetails = $errorDetails"
+                        )
+                    }
+
+                    override fun notImplemented() {
+                        ALog.e(serviceName, "onMessageReceived invoke notImplemented")
+                    }
+                }
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -344,7 +429,10 @@ class FLTChatroomService(
         callbackFlow {
             val observer = Observer<ChatRoomMessage> { message ->
                 if (message != null) {
-                    ALog.i(serviceName, "onChatroomMessagesStatusChanged: ${message.uuid} ${message.status}")
+                    ALog.i(
+                        serviceName,
+                        "onChatroomMessagesStatusChanged: ${message.uuid} ${message.status}"
+                    )
                     trySend(message).onFailure {
                         ALog.i(serviceName, "send message status fail: ${it?.message}")
                     }
@@ -359,7 +447,7 @@ class FLTChatroomService(
         }.onEach { message ->
             notifyEvent(
                 method = "onMessageStatusChanged",
-                arguments = message.toMap().toMutableMap(),
+                arguments = message.toMap().toMutableMap()
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -368,7 +456,10 @@ class FLTChatroomService(
     private fun observeChatroomMessageAttachmentProgress() {
         callbackFlow<AttachmentProgress> {
             val observer = Observer<AttachmentProgress> { progress ->
-                ALog.i(serviceName, "onChatroomMessageAttachmentProgressUpdate: ${progress.uuid} ${progress.total} ${progress.transferred}")
+                ALog.i(
+                    serviceName,
+                    "onChatroomMessageAttachmentProgressUpdate: ${progress.uuid} ${progress.total} ${progress.transferred}"
+                )
                 trySend(progress).onFailure {
                     ALog.i(serviceName, "send message list fail: ${it?.message}")
                 }
@@ -382,24 +473,24 @@ class FLTChatroomService(
         }.onEach { progress ->
             notifyEvent(
                 method = "onMessageAttachmentProgressUpdate",
-                arguments = progress.toMap().toMutableMap(),
+                arguments = progress.toMap().toMutableMap()
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
 
     private suspend fun downloadAttachment(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             chatroomService.downloadAttachment(
                 MessageHelper.convertChatroomMessage(arguments["message"] as Map<String, *>),
-                arguments.getOrElse("thumb") { false } as Boolean,
+                arguments.getOrElse("thumb") { false } as Boolean
             ).setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 
     private suspend fun fetchMessageHistory(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<List<ChatRoomMessage>> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
@@ -407,40 +498,51 @@ class FLTChatroomService(
             val startTime: Long by args
             val limit: Int by args
             val direction = convertToQueryDirectionEnum(arguments["direction"] as Int)
-            val messageTypes = (arguments["messageTypeList"] as? List<String>)?.map { stringToMsgTypeEnum(it) }?.toSet()?.toTypedArray()
+            val messageTypes =
+                (arguments["messageTypeList"] as? List<String>)?.map { stringToMsgTypeEnum(it) }
+                    ?.toSet()?.toTypedArray()
             if (messageTypes == null || messageTypes.isEmpty()) {
                 chatroomService.pullMessageHistoryEx(roomId, startTime, limit, direction)
             } else {
-                chatroomService.pullMessageHistoryExType(roomId, startTime, limit, direction, messageTypes)
-            }.setCallback(NimResultContinuationCallback(cont) { data ->
-                NimResult(
-                    code = 0,
-                    data = data ?: listOf(),
-                    convert = { mapOf("messageList" to it.map { msg -> msg.toMap() }.toList()) },
+                chatroomService.pullMessageHistoryExType(
+                    roomId,
+                    startTime,
+                    limit,
+                    direction,
+                    messageTypes
                 )
-            })
+            }.setCallback(
+                NimResultContinuationCallback(cont) { data ->
+                    NimResult(
+                        code = 0,
+                        data = data ?: listOf(),
+                        convert = { mapOf("messageList" to it.map { msg -> msg.toMap() }.toList()) }
+                    )
+                }
+            )
         }
     }
 
     private suspend fun fetchChatroomInfo(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<ChatRoomInfo> {
         return suspendCancellableCoroutine { cont ->
             val roomId = arguments["roomId"] as String
             chatroomService.fetchRoomInfo(roomId)
-                .setCallback(NimResultContinuationCallback(cont) { data ->
-                    NimResult(
-                        code = if (data != null) 0 else -1,
-                        data = data,
-                        convert = { it.toMap() },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { data ->
+                        NimResult(
+                            code = if (data != null) 0 else -1,
+                            data = data,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
-
     private suspend fun updateChatroomInfo(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
@@ -452,15 +554,20 @@ class FLTChatroomService(
                 announcement = request["announcement"] as? String
                 broadcastUrl = request["broadcastUrl"] as? String
                 extension = request["extension"] as? Map<String, Any?>
-                queueLevel = if("manager" == request["queueModificationLevel"] as? String) 1 else 0
+                queueLevel = if ("manager" == request["queueModificationLevel"] as? String) 1 else 0
             }
-            chatroomService.updateRoomInfo(roomId, updateInfo, needNotify, arguments["notifyExtension"] as? Map<String,Any?>)
+            chatroomService.updateRoomInfo(
+                roomId,
+                updateInfo,
+                needNotify,
+                arguments["notifyExtension"] as? Map<String, Any?>
+            )
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 
     private suspend fun fetchChatroomMembers(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<List<ChatRoomMember>> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
@@ -472,34 +579,42 @@ class FLTChatroomService(
                 MemberQueryType.NORMAL,
                 MemberQueryType.ONLINE_NORMAL,
                 MemberQueryType.GUEST_DESC,
-                MemberQueryType.GUEST_ASC,
+                MemberQueryType.GUEST_ASC
             )
+
             fun realFetchMembers(lastMember: ChatRoomMember?) {
-                ALog.i(serviceName, "real fetchRoomMembers with last member: ${lastMember?.account} ${lastMember?.memberType}")
+                ALog.i(
+                    serviceName,
+                    "real fetchRoomMembers with last member: ${lastMember?.account} ${lastMember?.memberType}"
+                )
                 val startTime = when (lastMember?.memberType) {
                     null, MemberType.UNKNOWN -> 0
                     MemberType.GUEST, MemberType.ANONYMOUS -> lastMember.enterTime
                     else -> lastMember.updateTime
                 }
                 chatroomService.fetchRoomMembers(roomId, queryTypes[queryType], startTime, limit)
-                    .setCallback(NimResultContinuationCallback(cont){ resultList ->
-                        NimResult(
-                            code = 0,
-                            data = resultList,
-                            convert = { list ->
-                                mapOf("memberList" to list.map { it.toMap() }.toList())
-                            },
-                        )
-                    })
+                    .setCallback(
+                        NimResultContinuationCallback(cont) { resultList ->
+                            NimResult(
+                                code = 0,
+                                data = resultList,
+                                convert = { list ->
+                                    mapOf("memberList" to list.map { it.toMap() }.toList())
+                                }
+                            )
+                        }
+                    )
             }
             when {
                 lastMemberAccount == null -> {
                     realFetchMembers(null)
                 }
                 lastMemberAccount?.isEmpty() == true ||
-                        lastMemberAccount?.isBlank() == true -> {
-                    cont.resumeWith(Result.success(
-                        NimResult(code = -1, errorDetails = "last member account empty"))
+                    lastMemberAccount?.isBlank() == true -> {
+                    cont.resumeWith(
+                        Result.success(
+                            NimResult(code = -1, errorDetails = "last member account empty")
+                        )
                     )
                 }
                 else -> {
@@ -508,8 +623,13 @@ class FLTChatroomService(
                             override fun onSuccess(param: MutableList<ChatRoomMember>?) {
                                 val lastMember = param?.firstOrNull()
                                 if (lastMember == null) {
-                                    cont.resumeWith(Result.success(
-                                        NimResult(code = -1, errorDetails = "last member not found"))
+                                    cont.resumeWith(
+                                        Result.success(
+                                            NimResult(
+                                                code = -1,
+                                                errorDetails = "last member not found"
+                                            )
+                                        )
                                     )
                                 } else {
                                     realFetchMembers(lastMember)
@@ -517,57 +637,67 @@ class FLTChatroomService(
                             }
 
                             override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(
-                                    NimResult(code = code, errorDetails = "fetch last member error"))
+                                cont.resumeWith(
+                                    Result.success(
+                                        NimResult(
+                                            code = code,
+                                            errorDetails = "fetch last member error"
+                                        )
+                                    )
                                 )
 
                             override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(
-                                    NimResult(code = -1, errorDetails = "fetch last member exception: ${exception?.message}")
-                                ))
-
+                                cont.resumeWith(
+                                    Result.success(
+                                        NimResult(
+                                            code = -1,
+                                            errorDetails = "fetch last member exception: ${exception?.message}"
+                                        )
+                                    )
+                                )
                         })
                 }
             }
         }
     }
 
-
     private suspend fun fetchChatroomMembersByAccount(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<List<ChatRoomMember>> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val roomId: String by args
             val accountList: List<String> by args
             chatroomService.fetchRoomMembersByIds(roomId, accountList)
-                .setCallback(NimResultContinuationCallback(cont){ resultList ->
-                    NimResult(
-                        code = 0,
-                        data = resultList,
-                        convert = { list ->
-                            mapOf("memberList" to list.map { it.toMap() }.toList())
-                        },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { resultList ->
+                        NimResult(
+                            code = 0,
+                            data = resultList,
+                            convert = { list ->
+                                mapOf("memberList" to list.map { it.toMap() }.toList())
+                            }
+                        )
+                    }
+                )
         }
     }
 
     private suspend fun updateChatroomMyMemberInfo(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val roomId: String by args
-            val request: Map<String,Any?> by args
+            val request: Map<String, Any?> by args
             val update = ChatRoomMemberUpdate().apply {
                 nick = request["nickname"] as String?
                 avatar = request["avatar"] as String?
-                extension = request["extension"] as Map<String,Any?>?
+                extension = request["extension"] as Map<String, Any?>?
                 isNeedSave = request["needSave"] as Boolean? ?: false
             }
             val needNotify: Boolean by args
-            val notifyExtension: Map<String,Any?>? by args
+            val notifyExtension: Map<String, Any?>? by args
             chatroomService
                 .updateMyRoomRole(roomId, update, needNotify, notifyExtension)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
@@ -575,33 +705,37 @@ class FLTChatroomService(
     }
 
     private suspend fun kickChatroomMember(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val roomId: String by args
             val account: String by args
-            val notifyExtension: Map<String,Any?>? by args
+            val notifyExtension: Map<String, Any?>? by args
             chatroomService.kickMember(roomId, account, notifyExtension)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 
     private suspend fun markChatroomMemberTempMuted(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val needNotify: Boolean by args
             val duration: Number by args
-            val options: Map<String,Any?> by args
-            chatroomService.markChatRoomTempMute(needNotify, duration.toLong() / 1000, memberOptionFromMap(options))
+            val options: Map<String, Any?> by args
+            chatroomService.markChatRoomTempMute(
+                needNotify,
+                duration.toLong() / 1000,
+                memberOptionFromMap(options)
+            )
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 
     private suspend fun markChatroomMemberBeManager(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<ChatRoomMember> {
         return markChatroomMemberWithAction(arguments) { isAdd, option ->
             chatroomService.markChatRoomManager(isAdd, option)
@@ -609,7 +743,7 @@ class FLTChatroomService(
     }
 
     private suspend fun markChatroomMemberBeNormal(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<ChatRoomMember> {
         return markChatroomMemberWithAction(arguments) { isAdd, option ->
             chatroomService.markNormalMember(isAdd, option)
@@ -617,7 +751,7 @@ class FLTChatroomService(
     }
 
     private suspend fun markChatroomMemberInBlackList(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<ChatRoomMember> {
         return markChatroomMemberWithAction(arguments) { isAdd, option ->
             chatroomService.markChatRoomBlackList(isAdd, option)
@@ -625,7 +759,7 @@ class FLTChatroomService(
     }
 
     private suspend fun markChatroomMemberMuted(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<ChatRoomMember> {
         return markChatroomMemberWithAction(arguments) { isAdd, option ->
             chatroomService.markChatRoomMutedList(isAdd, option)
@@ -641,13 +775,15 @@ class FLTChatroomService(
             val isAdd: Boolean by args
             val options: Map<String, Any?> by args
             action(isAdd, memberOptionFromMap(options))
-                .setCallback(NimResultContinuationCallback(cont){ data ->
-                    NimResult(
-                        code = if (data != null) 0 else -1,
-                        data = data,
-                        convert = { it.toMap() },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { data ->
+                        NimResult(
+                            code = if (data != null) 0 else -1,
+                            data = data,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
@@ -655,34 +791,42 @@ class FLTChatroomService(
         val args = arguments.withDefault { null }
         val roomId: String by args
         val account: String by args
-        val notifyExtension: Map<String,Any?>? by args
+        val notifyExtension: Map<String, Any?>? by args
         return MemberOption(roomId, account).apply {
             setNotifyExtension(notifyExtension)
         }
     }
 
     private suspend fun fetchChatroomQueue(
-        arguments: Map<String, *>,
-    ): NimResult<List<Entry<String,String>>> {
+        arguments: Map<String, *>
+    ): NimResult<List<Entry<String, String>>> {
         return suspendCancellableCoroutine { cont ->
             val roomId = arguments["roomId"] as String
             chatroomService.fetchQueue(roomId)
-                .setCallback(NimResultContinuationCallback(cont){ data ->
-                    NimResult(
-                        code = 0,
-                        data = data,
-                        convert = { entryList ->
-                            mapOf("entryList" to
-                                    entryList.map { mapOf("key" to it.key, "value" to it.value) }.toList()
-                            )
-                        },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { data ->
+                        NimResult(
+                            code = 0,
+                            data = data,
+                            convert = { entryList ->
+                                mapOf(
+                                    "entryList" to
+                                        entryList.map {
+                                            mapOf(
+                                                "key" to it.key,
+                                                "value" to it.value
+                                            )
+                                        }.toList()
+                                )
+                            }
+                        )
+                    }
+                )
         }
     }
 
     private suspend fun clearChatroomQueue(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val roomId = arguments["roomId"] as String
@@ -692,50 +836,60 @@ class FLTChatroomService(
     }
 
     private suspend fun batchUpdateChatroomQueue(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<List<String>> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val roomId: String by args
-            val entryList: List<Map<String,Any?>> by args
+            val entryList: List<Map<String, Any?>> by args
             val needNotify: Boolean by args
-            val notifyExtension: Map<String,Any?>? by args
-            chatroomService.batchUpdateQueue(roomId, entryList.map { Entry<String, String>(it["key"] as String, it["value"] as String?) }.toList(), needNotify, notifyExtension)
-                .setCallback(NimResultContinuationCallback(cont){ data ->
-                    NimResult(
-                        code = 0,
-                        data = data,
-                        convert = { mapOf("missingKeys" to it) },
-                    )
-                })
+            val notifyExtension: Map<String, Any?>? by args
+            chatroomService.batchUpdateQueue(
+                roomId,
+                entryList.map { Entry<String, String>(it["key"] as String, it["value"] as String?) }
+                    .toList(),
+                needNotify,
+                notifyExtension
+            )
+                .setCallback(
+                    NimResultContinuationCallback(cont) { data ->
+                        NimResult(
+                            code = 0,
+                            data = data,
+                            convert = { mapOf("missingKeys" to it) }
+                        )
+                    }
+                )
         }
     }
 
     private suspend fun pollChatroomQueueEntry(
-        arguments: Map<String, *>,
-    ): NimResult<Entry<String,String>> {
+        arguments: Map<String, *>
+    ): NimResult<Entry<String, String>> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val roomId: String by args
             val key: String? by args
             chatroomService.pollQueue(roomId, key)
-                .setCallback(NimResultContinuationCallback(cont){ data ->
-                    NimResult(
-                        code = 0,
-                        data = data,
-                        convert = { mapOf("key" to it.key, "value" to it.value) },
-                    )
-                })
+                .setCallback(
+                    NimResultContinuationCallback(cont) { data ->
+                        NimResult(
+                            code = 0,
+                            data = data,
+                            convert = { mapOf("key" to it.key, "value" to it.value) }
+                        )
+                    }
+                )
         }
     }
 
     private suspend fun updateChatroomQueueEntry(
-        arguments: Map<String, *>,
+        arguments: Map<String, *>
     ): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val args = arguments.withDefault { null }
             val roomId: String by args
-            val entry: Map<String,Any?> by args
+            val entry: Map<String, Any?> by args
             val key = entry["key"] as String
             val value = entry["value"] as String?
             val isTransient = arguments.getOrElse("isTransient") { false } as Boolean
@@ -743,5 +897,4 @@ class FLTChatroomService(
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
-
 }

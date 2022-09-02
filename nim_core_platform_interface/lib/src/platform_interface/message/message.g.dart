@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'message.dart';
@@ -772,26 +776,4 @@ Map<String, dynamic> _$NIMTeamMessageAckInfoToJson(
       'msgId': instance.msgId,
       'ackAccountList': instance.ackAccountList,
       'unAckAccountList': instance.unAckAccountList,
-    };
-
-NIMMessageKey _$NIMMessageKeyFromJson(Map<String, dynamic> json) {
-  return NIMMessageKey(
-    sessionType:
-        _$enumDecodeNullable(_$NIMSessionTypeEnumMap, json['sessionType']),
-    fromAccount: json['fromAccount'] as String?,
-    toAccount: json['toAccount'] as String?,
-    time: json['time'] as int?,
-    serverId: json['serverId'] as int?,
-    uuid: json['uuid'] as String?,
-  );
-}
-
-Map<String, dynamic> _$NIMMessageKeyToJson(NIMMessageKey instance) =>
-    <String, dynamic>{
-      'sessionType': _$NIMSessionTypeEnumMap[instance.sessionType],
-      'fromAccount': instance.fromAccount,
-      'toAccount': instance.toAccount,
-      'time': instance.time,
-      'serverId': instance.serverId,
-      'uuid': instance.uuid,
     };

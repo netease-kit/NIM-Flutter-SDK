@@ -1,15 +1,8 @@
 .DS_Store
 .dart_tool/
-.idea/
 
 .packages
 .pub/
 
 build/
 pubspec.lock
-
-**/Podfile.lock
-**/Runner.xcworkspace/
-**/.symlinks/
-
-**/*.iml

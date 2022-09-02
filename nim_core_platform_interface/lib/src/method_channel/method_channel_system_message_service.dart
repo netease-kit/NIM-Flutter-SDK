@@ -1,11 +1,6 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
-
-import 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/system_message/platform_interface_system_message_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
-import 'package:nim_core_platform_interface/src/utils/converter.dart';
 
 import '../../nim_core_platform_interface.dart';
 

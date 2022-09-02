@@ -6,14 +6,16 @@ set(PLUGIN_NAME "${PROJECT_NAME}_plugin")
 
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /Zc:threadSafeInit-")
+  SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Gm- /Zi")
+  SET(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG /OPT:REF /OPT:ICF")
 endif()
 add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 set(PCH_HEADER_FILE ${CMAKE_CURRENT_LIST_DIR}/src/common/stable.h)
 
 # third_party_libs
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party_libs/alog/include")
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party_libs/alog/lib/x64/${CMAKE_BUILD_TYPE}")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/include")
+link_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/lib/x64/${CMAKE_BUILD_TYPE}")
 
 # nim_sdk
 set(NIM_SDK_URL "https://yx-web-nosdn.netease.im/package/nim-win32-x64-refs-tags-8.8.0.459-build.567.tar.gz?download=nim-win32-x64-refs-tags-8.8.0.459-build.567.tar.gz")

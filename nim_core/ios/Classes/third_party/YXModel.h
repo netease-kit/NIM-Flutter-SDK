@@ -1,6 +1,6 @@
 //
-//  YXModel.h
-//  YXModel <https://github.com/ibireme/YXModel>
+//  YYModel.h
+//  YYModel <https://github.com/ibireme/YYModel>
 //
 //  Created by ibireme on 15/5/10.
 //  Copyright (c) 2015 ibireme.

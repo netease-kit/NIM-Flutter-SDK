@@ -1,11 +1,11 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import 'dart:async';
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_passthough_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_notifydata.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_proxydata.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 abstract class PassThroughServicePlatform extends Service {
@@ -29,6 +29,7 @@ abstract class PassThroughServicePlatform extends Service {
     throw UnimplementedError('httpProxy() is not implemented');
   }
 
+  //ignore: close_sinks
   final StreamController<NIMPassThroughNotifyData> onPassThroughNotifyData =
       StreamController<NIMPassThroughNotifyData>.broadcast();
 }

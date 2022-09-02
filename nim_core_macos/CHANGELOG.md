@@ -1,39 +1,17 @@
-## 1.0.0-rc.19
+# v1.0.2(Sep 1, 2022)
 
-- Add SuperTeamService
+### Bug Fixes
 
-## 1.0.0-rc.17
+* Fix addMembersEx error
 
-- Update TeamService#updateTeamFields
+# v1.0.1(Aug 15, 2022)
 
-## 1.0.0-rc.16
+### Bug Fixes
 
-- Fix some bugs.
+* Fix queryTotalUnreadCount error
 
-## 1.0.0-rc.15
+# v1.0.0(Jul 13, 2022)
 
-- Fix some bugs.
+### New Features
 
-## 1.0.0-rc.14
-
-- Fix some bugs.
-
-## 1.0.0-rc.13
-
-- Fix some bugs.
-
-## 1.0.0-rc.12
-
-- Fix some bugs.
-
-## 1.0.0-beta.2
-
-- Fix some bugs.
-
-## 1.0.0-beta.1
-
-- Fix some bugs.
-
-## 1.0.0-beta.0
-
-- Initial macOS implementation of `nim_core_macos`.
+* first release version

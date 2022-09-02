@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'converter.dart';
@@ -5,20 +9,6 @@ part of 'converter.dart';
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
-
-NIMMessageTypeConverter _$NIMMessageTypeConverterFromJson(
-    Map<String, dynamic> json) {
-  return NIMMessageTypeConverter(
-    messageType:
-        _$enumDecodeNullable(_$NIMMessageTypeEnumMap, json['messageType']),
-  );
-}
-
-Map<String, dynamic> _$NIMMessageTypeConverterToJson(
-        NIMMessageTypeConverter instance) =>
-    <String, dynamic>{
-      'messageType': _$NIMMessageTypeEnumMap[instance.messageType],
-    };
 
 K _$enumDecode<K, V>(
   Map<K, V> enumValues,
@@ -46,17 +36,6 @@ K _$enumDecode<K, V>(
   ).key;
 }
 
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
-
 const _$NIMMessageTypeEnumMap = {
   NIMMessageType.undef: 'undef',
   NIMMessageType.text: 'text',
@@ -75,20 +54,6 @@ const _$NIMMessageTypeEnumMap = {
   NIMMessageType.qiyuCustom: 'qiyuCustom',
 };
 
-NIMSessionTypeConverter _$NIMSessionTypeConverterFromJson(
-    Map<String, dynamic> json) {
-  return NIMSessionTypeConverter(
-    sessionType:
-        _$enumDecodeNullable(_$NIMSessionTypeEnumMap, json['sessionType']),
-  );
-}
-
-Map<String, dynamic> _$NIMSessionTypeConverterToJson(
-        NIMSessionTypeConverter instance) =>
-    <String, dynamic>{
-      'sessionType': _$NIMSessionTypeEnumMap[instance.sessionType],
-    };
-
 const _$NIMSessionTypeEnumMap = {
   NIMSessionType.none: 'none',
   NIMSessionType.p2p: 'p2p',
@@ -98,19 +63,6 @@ const _$NIMSessionTypeEnumMap = {
   NIMSessionType.ysf: 'ysf',
   NIMSessionType.chatRoom: 'chatRoom',
 };
-
-SystemMessageStatusConverter _$SystemMessageStatusConverterFromJson(
-    Map<String, dynamic> json) {
-  return SystemMessageStatusConverter(
-    status: _$enumDecodeNullable(_$SystemMessageStatusEnumMap, json['status']),
-  );
-}
-
-Map<String, dynamic> _$SystemMessageStatusConverterToJson(
-        SystemMessageStatusConverter instance) =>
-    <String, dynamic>{
-      'status': _$SystemMessageStatusEnumMap[instance.status],
-    };
 
 const _$SystemMessageStatusEnumMap = {
   SystemMessageStatus.init: 'init',
@@ -124,19 +76,6 @@ const _$SystemMessageStatusEnumMap = {
   SystemMessageStatus.extension4: 'extension4',
   SystemMessageStatus.extension5: 'extension5',
 };
-
-SystemMessageTypeConverter _$SystemMessageTypeConverterFromJson(
-    Map<String, dynamic> json) {
-  return SystemMessageTypeConverter(
-    type: _$enumDecodeNullable(_$SystemMessageTypeEnumMap, json['type']),
-  );
-}
-
-Map<String, dynamic> _$SystemMessageTypeConverterToJson(
-        SystemMessageTypeConverter instance) =>
-    <String, dynamic>{
-      'type': _$SystemMessageTypeEnumMap[instance.type],
-    };
 
 const _$SystemMessageTypeEnumMap = {
   SystemMessageType.undefined: 'undefined',

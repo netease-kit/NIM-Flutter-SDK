@@ -1,6 +1,6 @@
-import 'package:nim_core_platform_interface/src/platform_interface/super_team/platform_interface_super_team_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team_member.dart';
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
 
 import '../../nim_core_platform_interface.dart';
 
@@ -11,7 +11,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
       case 'onSuperTeamMemberUpdate':
         var teamList = arguments['teamMemberList'] as List<dynamic>?;
         List<NIMSuperTeamMember>? list = teamList
-            ?.map((e) => NIMSuperTeamMember.fromMap(Map<String, dynamic>.from(e)))
+            ?.map(
+                (e) => NIMSuperTeamMember.fromMap(Map<String, dynamic>.from(e)))
             .toList();
         if (list != null)
           SuperTeamServicePlatform.instance.onMemberUpdate.add(list);
@@ -19,7 +20,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
       case 'onSuperTeamMemberRemove':
         var teamList = arguments['teamMemberList'] as List<dynamic>?;
         List<NIMSuperTeamMember>? list = teamList
-            ?.map((e) => NIMSuperTeamMember.fromMap(Map<String, dynamic>.from(e)))
+            ?.map(
+                (e) => NIMSuperTeamMember.fromMap(Map<String, dynamic>.from(e)))
             .toList();
         if (list != null)
           SuperTeamServicePlatform.instance.onMemberRemove.add(list);
@@ -35,7 +37,7 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
         break;
       case 'onSuperTeamRemove':
         var team = NIMSuperTeam.fromMap(arguments['team']);
-          SuperTeamServicePlatform.instance.onSuperTeamRemove.add(team);
+        SuperTeamServicePlatform.instance.onSuperTeamRemove.add(team);
         break;
     }
     return Future.value(null);
@@ -60,7 +62,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<NIMSuperTeam>>> queryTeamListById(List<String> idList) async {
+  Future<NIMResult<List<NIMSuperTeam>>> queryTeamListById(
+      List<String> idList) async {
     final arguments = <String, dynamic>{};
     arguments..['teamIdList'] = idList.map((e) => e.toString()).toList();
     return NIMResult<List<NIMSuperTeam>>.fromMap(
@@ -131,7 +134,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> rejectApply(String teamId, String account,String reason) async {
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) async {
     final arguments = <String, dynamic>{};
     arguments
       ..['teamId'] = teamId
@@ -144,8 +148,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<String>>> addMembers(String teamId,
-      List<String> accountList, String msg) async {
+  Future<NIMResult<List<String>>> addMembers(
+      String teamId, List<String> accountList, String msg) async {
     final arguments = <String, dynamic>{};
     arguments
       ..['teamId'] = teamId
@@ -176,7 +180,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> declineInvite(String teamId, String inviter,String reason) async {
+  Future<NIMResult<void>> declineInvite(
+      String teamId, String inviter, String reason) async {
     final arguments = <String, dynamic>{};
     arguments
       ..['teamId'] = teamId
@@ -212,7 +217,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberList(String teamId) async {
+  Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberList(
+      String teamId) async {
     final arguments = <String, dynamic>{};
     arguments..['teamId'] = teamId;
 
@@ -247,7 +253,7 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
 
   @override
   Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberListByPage(
-      String teamId, int offset,int limit) async {
+      String teamId, int offset, int limit) async {
     final arguments = <String, dynamic>{};
     arguments
       ..['teamId'] = teamId
@@ -257,13 +263,12 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
         await invokeMethod(
           'queryMemberListByPage',
           arguments: arguments,
-        ),
-        convert: (map) {
-          var teamMemberList = map['teamMemberList'] as List<dynamic>?;
-          return teamMemberList?.map((e) {
-            return NIMSuperTeamMember.fromMap(Map<String, dynamic>.from(e));
-          }).toList();
-        });
+        ), convert: (map) {
+      var teamMemberList = map['teamMemberList'] as List<dynamic>?;
+      return teamMemberList?.map((e) {
+        return NIMSuperTeamMember.fromMap(Map<String, dynamic>.from(e));
+      }).toList();
+    });
   }
 
   @override
@@ -281,8 +286,7 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> updateMyTeamNick(
-      String teamId, String nick) async {
+  Future<NIMResult<void>> updateMyTeamNick(String teamId, String nick) async {
     final arguments = <String, dynamic>{};
     arguments
       ..['teamId'] = teamId
@@ -458,7 +462,8 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(String keyword) async {
+  Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(
+      String keyword) async {
     final arguments = <String, dynamic>{};
     arguments..['keyword'] = keyword;
     return NIMResult<List<NIMSuperTeam>>.fromMap(
@@ -474,5 +479,4 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
       },
     );
   }
-
 }

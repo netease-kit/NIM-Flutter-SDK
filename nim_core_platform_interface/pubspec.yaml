@@ -1,6 +1,6 @@
 name: nim_core_platform_interface
 description: A common platform interface for the nim_core plugin.
-version: 1.0.0-rc.21
+version: 1.0.0
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 repository: https://github.com/netease-kit/NIM-Flutter-SDK
 
@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.1
-  json_annotation: '>=4.0.0 <4.1.0'
+  json_annotation: ^4.0.0
 
 dev_dependencies:
   flutter_test:

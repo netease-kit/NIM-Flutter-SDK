@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -13,7 +13,7 @@ part 'nim_sdk_macos_options.g.dart';
 @JsonSerializable()
 class NIMMACOSSDKOptions extends NIMWINDOWSSDKOptions {
   /// define macos options here
-  
+
   /// 云信后台配置的推送证书名称
   String? pushCertName;
 
@@ -35,10 +35,11 @@ class NIMMACOSSDKOptions extends NIMWINDOWSSDKOptions {
     bool? enabledHttps = true,
     bool? needUpdateLbsBeforeRelogin = false,
     bool? shouldVchatMissMessageMarkUnread = false,
-    int?  maxAutoLoginRetryTimes = 0,
+    int? maxAutoLoginRetryTimes = 0,
     String? preloadImageNameTemplate,
     int? preloadImageQuality,
     String? preloadImageResize,
+    bool? useAssetServerConfig = false,
 
     /// common configurations
     required String appKey,
@@ -67,6 +68,7 @@ class NIMMACOSSDKOptions extends NIMWINDOWSSDKOptions {
           preloadImageNameTemplate: preloadImageNameTemplate,
           preloadImageQuality: preloadImageQuality,
           preloadImageResize: preloadImageResize,
+          useAssetServerConfig: useAssetServerConfig,
           appKey: appKey,
           autoLoginInfo: autoLoginInfo,
           nosSceneConfig: nosSceneConfig,

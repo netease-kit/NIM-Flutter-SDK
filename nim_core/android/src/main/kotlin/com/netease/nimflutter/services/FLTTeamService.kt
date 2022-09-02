@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,13 +7,32 @@
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultContinuationCallback
+import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
+import com.netease.nimflutter.stringToTeamBeInviteModeEnumMap
+import com.netease.nimflutter.stringToTeamExtensionUpdateModeEnumMap
+import com.netease.nimflutter.stringToTeamFieldEnumTypeMap
+import com.netease.nimflutter.stringToTeamInviteModeEnumMap
+import com.netease.nimflutter.stringToTeamTypeEnumMap
+import com.netease.nimflutter.stringToTeamUpdateModeEnumMap
+import com.netease.nimflutter.stringToVerifyTypeEnumMap
+import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.team.TeamService
 import com.netease.nimlib.sdk.team.TeamServiceObserver
-import com.netease.nimlib.sdk.team.constant.*
+import com.netease.nimlib.sdk.team.constant.TeamBeInviteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamExtensionUpdateModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamFieldEnum
+import com.netease.nimlib.sdk.team.constant.TeamInviteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum
+import com.netease.nimlib.sdk.team.constant.TeamTypeEnum
+import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum
+import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum
 import com.netease.nimlib.sdk.team.model.CreateTeamResult
 import com.netease.nimlib.sdk.team.model.Team
 import com.netease.nimlib.sdk.team.model.TeamMember
@@ -28,8 +47,8 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.Serializable
 
 class FLTTeamService(
-        applicationContext: Context,
-        nimCore: NimCore,
+    applicationContext: Context,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private val tag = "FLTTeamService"
@@ -41,31 +60,34 @@ class FLTTeamService(
 
     init {
         registerFlutterMethodCalls(
-                "createTeam" to ::createTeam,
-                "queryTeamList" to ::queryTeamList,
-                "queryTeam" to ::queryTeam,
-                "searchTeam" to ::searchTeam,
-                "dismissTeam" to ::dismissTeam,
-                "passApply" to ::passApply,
-                "addMembersEx" to ::addMembersEx,
-                "acceptInvite" to ::acceptInvite,
-                "getMemberInvitor" to ::getMemberInvitor,
-                "removeMembers" to ::removeMembers,
-                "quitTeam" to ::quitTeam,
-                "queryMemberList" to ::queryMemberList,
-                "queryTeamMember" to ::queryTeamMember,
-                "updateMemberNick" to ::updateMemberNick,
-                "transferTeam" to ::transferTeam,
-                "addManagers" to ::addManagers,
-                "removeManagers" to ::removeManagers,
-                "muteTeamMember" to ::muteTeamMember,
-                "muteAllTeamMember" to ::muteAllTeamMember,
-                "queryMutedTeamMembers" to ::queryMutedTeamMembers,
-                "updateTeam" to ::updateTeam,
-                "updateTeamFields" to ::updateTeamFields,
-                "muteTeam" to ::muteTeam,
-                "searchTeamIdByName" to ::searchTeamIdByName,
-                "searchTeamsByKeyword" to ::searchTeamsByKeyword,
+            "createTeam" to ::createTeam,
+            "queryTeamList" to ::queryTeamList,
+            "queryTeam" to ::queryTeam,
+            "searchTeam" to ::searchTeam,
+            "dismissTeam" to ::dismissTeam,
+            "applyJoinTeam" to ::applyJoinTeam,
+            "passApply" to ::passApply,
+            "addMembersEx" to ::addMembersEx,
+            "acceptInvite" to ::acceptInvite,
+            "declineInvite" to ::declineInvite,
+            "getMemberInvitor" to ::getMemberInvitor,
+            "removeMembers" to ::removeMembers,
+            "quitTeam" to ::quitTeam,
+            "queryMemberList" to ::queryMemberList,
+            "queryTeamMember" to ::queryTeamMember,
+            "updateMemberNick" to ::updateMemberNick,
+            "transferTeam" to ::transferTeam,
+            "addManagers" to ::addManagers,
+            "removeManagers" to ::removeManagers,
+            "muteTeamMember" to ::muteTeamMember,
+            "muteAllTeamMember" to ::muteAllTeamMember,
+            "queryMutedTeamMembers" to ::queryMutedTeamMembers,
+            "updateTeam" to ::updateTeam,
+            "updateTeamFields" to ::updateTeamFields,
+            "muteTeam" to ::muteTeam,
+            "searchTeamIdByName" to ::searchTeamIdByName,
+            "searchTeamsByKeyword" to ::searchTeamsByKeyword,
+            "updateMyMemberExtension" to ::updateMyMemberExtension
         )
 
         nimCore.onInitialized {
@@ -91,10 +113,10 @@ class FLTTeamService(
             }
         }.onEach { event ->
             notifyEvent(
-                    method = "onTeamListUpdate",
-                    arguments = hashMapOf(
-                            "teamList" to event.map { it.toMap() }.toList()
-                    ),
+                method = "onTeamListUpdate",
+                arguments = hashMapOf(
+                    "teamList" to event.map { it.toMap() }.toList()
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -116,10 +138,10 @@ class FLTTeamService(
             }
         }.onEach { event ->
             notifyEvent(
-                    method = "onTeamListRemove",
-                    arguments = hashMapOf(
-                            "team" to event.toMap()
-                    ),
+                method = "onTeamListRemove",
+                arguments = hashMapOf(
+                    "team" to event.toMap()
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -160,21 +182,25 @@ class FLTTeamService(
             teamService.run {
                 ALog.i(serviceName, "createTeam fields newFields: $newFields ")
                 createTeam(newFields, type, postscript, members)
-                        .setCallback(object : RequestCallback<CreateTeamResult> {
-                            override fun onSuccess(param: CreateTeamResult?) {
-                                cont.resumeWith(Result.success(NimResult(
+                    .setCallback(object : RequestCallback<CreateTeamResult> {
+                        override fun onSuccess(param: CreateTeamResult?) {
+                            cont.resumeWith(
+                                Result.success(
+                                    NimResult(
                                         code = 0,
                                         data = param,
-                                        convert = { it.toMap() },
-                                )))
-                            }
+                                        convert = { it.toMap() }
+                                    )
+                                )
+                            )
+                        }
 
-                            override fun onFailed(code: Int) =
-                                    cont.resumeWith(Result.success(NimResult(code = code)))
+                        override fun onFailed(code: Int) =
+                            cont.resumeWith(Result.success(NimResult(code = code)))
 
-                            override fun onException(exception: Throwable?) =
-                                    cont.resumeWith(Result.success(NimResult.failure(exception)))
-                        })
+                        override fun onException(exception: Throwable?) =
+                            cont.resumeWith(Result.success(NimResult.failure(exception)))
+                    })
             }
         }
     }
@@ -182,20 +208,29 @@ class FLTTeamService(
     private suspend fun queryTeamList(arguments: Map<String, *>): NimResult<List<Team>?> {
         return suspendCancellableCoroutine { cont ->
             teamService.queryTeamList()
-                    .setCallback(object : RequestCallback<List<Team>?> {
-                        override fun onSuccess(param: List<Team>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0,
-                                        data = param ?: listOf(),
-                                        convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<Team>?> {
+                    override fun onSuccess(param: List<Team>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = {
+                                        mapOf(
+                                            "teamList" to it?.map { msg -> msg.toMap() }
+                                                ?.toList()
+                                        )
+                                    }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -203,16 +238,24 @@ class FLTTeamService(
         val teamId = arguments["teamId"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.queryTeam(teamId)
-                    .setCallback(object : RequestCallback<Team> {
-                        override fun onSuccess(param: Team) =
-                                cont.resumeWith(Result.success(NimResult(code = 0, data = param, convert = { it.toMap() })))
+                .setCallback(object : RequestCallback<Team> {
+                    override fun onSuccess(param: Team) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param,
+                                    convert = { it.toMap() }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -220,18 +263,24 @@ class FLTTeamService(
         val teamId = arguments["teamId"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.searchTeam(teamId)
-                    .setCallback(object : RequestCallback<Team> {
-                        override fun onSuccess(param: Team) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0, data = param, convert = { it.toMap() },
-                                )))
+                .setCallback(object : RequestCallback<Team> {
+                    override fun onSuccess(param: Team) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param,
+                                    convert = { it.toMap() }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -240,6 +289,23 @@ class FLTTeamService(
         return suspendCancellableCoroutine { cont ->
             teamService.dismissTeam(teamId)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
+        }
+    }
+
+    private suspend fun applyJoinTeam(arguments: Map<String, *>): NimResult<Team> {
+        val teamId = arguments["teamId"] as? String
+        val postscript = arguments["postscript"] as? String
+        return suspendCancellableCoroutine { cont ->
+            teamService.applyJoinTeam(teamId, postscript)
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 
@@ -259,20 +325,24 @@ class FLTTeamService(
         val customInfo = arguments["customInfo"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.addMembersEx(teamId, accounts, msg, customInfo)
-                    .setCallback(object : RequestCallback<List<String>?> {
-                        override fun onSuccess(param: List<String>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0,
-                                        data = param ?: listOf(),
-                                        convert = { mapOf("teamMemberExList" to it?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<String>?> {
+                    override fun onSuccess(param: List<String>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = { mapOf("teamMemberExList" to it?.toList()) }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -285,22 +355,32 @@ class FLTTeamService(
         }
     }
 
+    private suspend fun declineInvite(arguments: Map<String, *>): NimResult<Nothing> {
+        val teamId = arguments["teamId"] as? String
+        val inviter = arguments["inviter"] as? String
+        val reason = arguments["reason"] as? String
+        return suspendCancellableCoroutine { cont ->
+            teamService.declineInvite(teamId, inviter, reason)
+                .setCallback(NimResultContinuationCallbackOfNothing(cont))
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     private suspend fun getMemberInvitor(arguments: Map<String, *>): NimResult<Map<String, String>> {
         val teamId = arguments["teamId"] as? String
         val accids = arguments["accids"] as? List<String>
         return suspendCancellableCoroutine { cont ->
             teamService.getMemberInvitor(teamId, accids)
-                    .setCallback(object : RequestCallback<Map<String, String>> {
-                        override fun onSuccess(param: Map<String, String>) =
-                                cont.resumeWith(Result.success(NimResult(code = 0, data = param)))
+                .setCallback(object : RequestCallback<Map<String, String>> {
+                    override fun onSuccess(param: Map<String, String>) =
+                        cont.resumeWith(Result.success(NimResult(code = 0, data = param)))
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -326,19 +406,29 @@ class FLTTeamService(
         val teamId = arguments["teamId"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.queryMemberList(teamId)
-                    .setCallback(object : RequestCallback<List<TeamMember>?> {
-                        override fun onSuccess(param: List<TeamMember>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0, data = param ?: listOf(),
-                                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<TeamMember>?> {
+                    override fun onSuccess(param: List<TeamMember>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = {
+                                        mapOf(
+                                            "teamMemberList" to it?.map { msg -> msg.toMap() }
+                                                ?.toList()
+                                        )
+                                    }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -347,20 +437,24 @@ class FLTTeamService(
         val account = arguments["account"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.queryTeamMember(teamId, account)
-                    .setCallback(object : RequestCallback<TeamMember> {
-                        override fun onSuccess(param: TeamMember?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0,
-                                        data = param,
-                                        convert = { it.toMap() },
-                                )))
+                .setCallback(object : RequestCallback<TeamMember> {
+                    override fun onSuccess(param: TeamMember?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param,
+                                    convert = { it.toMap() }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -369,51 +463,72 @@ class FLTTeamService(
         val account = arguments["account"] as? String
         val nick = arguments["nick"] as? String
         return suspendCancellableCoroutine { cont ->
-            teamService.updateMemberNick(teamId, account,nick)
+            teamService.updateMemberNick(teamId, account, nick)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
+
     private suspend fun transferTeam(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
         val teamId = arguments["teamId"] as? String
         val account = arguments["account"] as? String
         val quit = arguments["quit"] as Boolean
         return suspendCancellableCoroutine { cont ->
-            teamService.transferTeam(teamId, account,quit)
-                    .setCallback(object : RequestCallback<List<TeamMember>?> {
-                        override fun onSuccess(param: List<TeamMember>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0, data = param ?: listOf(),
-                                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                                )))
+            teamService.transferTeam(teamId, account, quit)
+                .setCallback(object : RequestCallback<List<TeamMember>?> {
+                    override fun onSuccess(param: List<TeamMember>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = {
+                                        mapOf(
+                                            "teamMemberList" to it?.map { msg -> msg.toMap() }
+                                                ?.toList()
+                                        )
+                                    }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
+
     @Suppress("UNCHECKED_CAST")
     private suspend fun addManagers(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
         val teamId = arguments["teamId"] as? String
         val accounts = arguments["accounts"] as? List<String>
         return suspendCancellableCoroutine { cont ->
             teamService.addManagers(teamId, accounts)
-                    .setCallback(object : RequestCallback<List<TeamMember>?> {
-                        override fun onSuccess(param: List<TeamMember>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0,
-                                        data = param ?: listOf(),
-                                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<TeamMember>?> {
+                    override fun onSuccess(param: List<TeamMember>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = {
+                                        mapOf(
+                                            "teamMemberList" to it?.map { msg -> msg.toMap() }
+                                                ?.toList()
+                                        )
+                                    }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -423,19 +538,29 @@ class FLTTeamService(
         val accounts = arguments["managers"] as? List<String>
         return suspendCancellableCoroutine { cont ->
             teamService.removeManagers(teamId, accounts)
-                    .setCallback(object : RequestCallback<List<TeamMember>?> {
-                        override fun onSuccess(param: List<TeamMember>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0, data = param ?: listOf(),
-                                        convert = { mapOf("teamMemberList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<TeamMember>?> {
+                    override fun onSuccess(param: List<TeamMember>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = {
+                                        mapOf(
+                                            "teamMemberList" to it?.map { msg -> msg.toMap() }
+                                                ?.toList()
+                                        )
+                                    }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -444,7 +569,7 @@ class FLTTeamService(
         val account = arguments["account"] as? String
         val mute = arguments["mute"] as Boolean
         return suspendCancellableCoroutine { cont ->
-            teamService.muteTeamMember(teamId, account,mute)
+            teamService.muteTeamMember(teamId, account, mute)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -463,8 +588,26 @@ class FLTTeamService(
         return if (teamId.isNullOrEmpty()) {
             NimResult(code = -1, null)
         } else {
-            NimResult(code = 0,
-                convert = { mapOf("teamMemberList" to teamService.queryMutedTeamMembers(teamId)?.map { msg -> msg.toMap() }?.toList()) },)
+            NimResult(
+                code = 0,
+                data = teamService.queryMutedTeamMembers(teamId),
+                convert = {
+                    mapOf(
+                        "teamMemberList" to it
+                            ?.map { msg -> msg.toMap() }?.toList()
+                    )
+                }
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private suspend fun updateMyMemberExtension(arguments: Map<String, *>): NimResult<Nothing> {
+        val teamId = arguments["teamId"] as? String
+        val extension = arguments["extension"] as? Map<String, Any?>
+        return suspendCancellableCoroutine { cont ->
+            teamService.updateMyMemberExtension(teamId, extension)
+                .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 
@@ -473,7 +616,7 @@ class FLTTeamService(
         val field = stringToTeamFieldEnumTypeMap(arguments["field"] as? String)
         val value = arguments["value"] as String
         return suspendCancellableCoroutine { cont ->
-            teamService.updateTeam(teamId, field,value)
+            teamService.updateTeam(teamId, field, value)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -483,20 +626,24 @@ class FLTTeamService(
         val request = arguments["request"] as Map<String, *>?
         val newFields = mutableMapOf<TeamFieldEnum, Serializable?>()
         request?.forEach { (key, value) ->
-            if (key == "announcement" || key == "name" || key == "icon" || key == "introduce"
-                || key == "extension"){
+            if (key == "announcement" || key == "name" || key == "icon" || key == "introduce" ||
+                key == "extension"
+            ) {
                 newFields[stringToTeamFieldEnumTypeMap(key)] = value as String?
-            }else if (key == "verifyType"){
+            } else if (key == "verifyType") {
                 newFields[TeamFieldEnum.VerifyType] = VerifyTypeEnum.typeOfValue(value as Int)
-            }else if (key == "beInviteMode"){
-                newFields[TeamFieldEnum.BeInviteMode] = TeamBeInviteModeEnum.typeOfValue(value as Int)
-            }else if (key == "inviteMode"){
+            } else if (key == "beInviteMode") {
+                newFields[TeamFieldEnum.BeInviteMode] =
+                    TeamBeInviteModeEnum.typeOfValue(value as Int)
+            } else if (key == "inviteMode") {
                 newFields[TeamFieldEnum.InviteMode] = TeamInviteModeEnum.typeOfValue(value as Int)
-            }else if (key == "teamExtensionUpdateMode"){
-                newFields[TeamFieldEnum.TeamExtensionUpdateMode] = TeamExtensionUpdateModeEnum.typeOfValue(value as Int)
-            }else if (key == "teamUpdateMode"){
-                newFields[TeamFieldEnum.TeamUpdateMode] = TeamUpdateModeEnum.typeOfValue(value as Int)
-            }else if (key == "maxMemberCount"){
+            } else if (key == "teamExtensionUpdateMode") {
+                newFields[TeamFieldEnum.TeamExtensionUpdateMode] =
+                    TeamExtensionUpdateModeEnum.typeOfValue(value as Int)
+            } else if (key == "teamUpdateMode") {
+                newFields[TeamFieldEnum.TeamUpdateMode] =
+                    TeamUpdateModeEnum.typeOfValue(value as Int)
+            } else if (key == "maxMemberCount") {
                 newFields[TeamFieldEnum.MaxMemberCount] = value as Int
             }
         }
@@ -508,29 +655,39 @@ class FLTTeamService(
 
     private suspend fun muteTeam(arguments: Map<String, *>): NimResult<Nothing> {
         val teamId = arguments["teamId"] as? String
-        val notifyType = TeamMessageNotifyTypeEnum.typeOfValue(arguments["notifyType"] as? Int ?: 0)
+        val notifyType = when (arguments["notifyType"] as? String) {
+            "manager" -> TeamMessageNotifyTypeEnum.Manager
+            "mute" -> TeamMessageNotifyTypeEnum.Mute
+            else -> TeamMessageNotifyTypeEnum.All
+        }
         return suspendCancellableCoroutine { cont ->
             teamService.muteTeam(teamId, notifyType)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
+
     private suspend fun searchTeamIdByName(arguments: Map<String, *>): NimResult<List<String>?> {
         val name = arguments["name"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.searchTeamIdByName(name)
-                    .setCallback(object : RequestCallback<List<String>?> {
-                        override fun onSuccess(param: List<String>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0, data = param ?: listOf(),
-                                        convert = { mapOf("teamNameList" to it?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<String>?> {
+                    override fun onSuccess(param: List<String>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = { mapOf("teamNameList" to it?.toList()) }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
 
@@ -538,23 +695,29 @@ class FLTTeamService(
         val keyword = arguments["keyword"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.searchTeamsByKeyword(keyword)
-                    .setCallback(object : RequestCallback<List<Team>?> {
-                        override fun onSuccess(param: List<Team>?) =
-                                cont.resumeWith(Result.success(NimResult(
-                                        code = 0,
-                                        data = param ?: listOf(),
-                                        convert = { mapOf("teamList" to it?.map { msg -> msg.toMap() }?.toList()) },
-                                )))
+                .setCallback(object : RequestCallback<List<Team>?> {
+                    override fun onSuccess(param: List<Team>?) =
+                        cont.resumeWith(
+                            Result.success(
+                                NimResult(
+                                    code = 0,
+                                    data = param ?: listOf(),
+                                    convert = {
+                                        mapOf(
+                                            "teamList" to it?.map { msg -> msg.toMap() }
+                                                ?.toList()
+                                        )
+                                    }
+                                )
+                            )
+                        )
 
-                        override fun onFailed(code: Int) =
-                                cont.resumeWith(Result.success(NimResult(code = code)))
+                    override fun onFailed(code: Int) =
+                        cont.resumeWith(Result.success(NimResult(code = code)))
 
-                        override fun onException(exception: Throwable?) =
-                                cont.resumeWith(Result.success(NimResult.failure(exception)))
-                    })
+                    override fun onException(exception: Throwable?) =
+                        cont.resumeWith(Result.success(NimResult.failure(exception)))
+                })
         }
     }
-
-
 }
-

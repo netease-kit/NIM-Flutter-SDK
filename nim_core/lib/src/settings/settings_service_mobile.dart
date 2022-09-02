@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 part of nim_core;
@@ -126,7 +126,8 @@ class _SettingsServiceMobile extends SettingsServicePlatform {
 
   /// 更新iOS deviceToken
   @override
-  Future<NIMResult<void>> updateAPNSTokenIOS(Uint8List token, String? customContentKey) async{
+  Future<NIMResult<void>> updateAPNSTokenIOS(
+      Uint8List token, String? customContentKey) async {
     if (Platform.isIOS) {
       return NIMResult.fromMap(
         await invokeMethod(

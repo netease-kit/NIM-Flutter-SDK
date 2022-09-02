@@ -1,13 +1,12 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/hzlichengda/develop/flutter_sdk"
-export "FLUTTER_APPLICATION_PATH=/Users/hzlichengda/workspace/code/yunxin-sdk-flutter/packages/nim_core/nim_core/example"
+export "FLUTTER_ROOT=/Users/houchengdong/flutter/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/houchengdong/AndroidProjects/gitlab/flutter/xkit-flutter/nim_core/nim_core/example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"
-export "EXCLUDED_ARCHS=arm64"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=false"
 export "TREE_SHAKE_ICONS=false"
-export "PACKAGE_CONFIG=.packages"
+export "PACKAGE_CONFIG=.dart_tool/package_config.json"

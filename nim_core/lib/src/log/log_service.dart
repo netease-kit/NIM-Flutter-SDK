@@ -1,12 +1,12 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:yunxin_alog/yunxin_alog.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:yunxin_alog/yunxin_alog.dart';
 
 extension ALogLevelExtension on ALogLevel {
   static ALogLevel get(int? mode) {
@@ -124,7 +124,8 @@ class ALogService {
     } else if (Platform.isMacOS) {
       directory = await getApplicationDocumentsDirectory();
     } else {
-      throw UnsupportedError('Unsupported platform: ${Platform.operatingSystem}');
+      throw UnsupportedError(
+          'Unsupported platform: ${Platform.operatingSystem}');
     }
     return '${directory.path}/log/';
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -11,26 +11,71 @@ import com.netease.nimflutter.services.CustomAttachment
 import com.netease.nimflutter.services.MessageHelper
 import com.netease.nimlib.chatroom.model.ChatRoomMessageImpl
 import com.netease.nimlib.sdk.chatroom.constant.MemberType
-import com.netease.nimlib.sdk.chatroom.model.*
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMember
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomNotificationAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomPartClearAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomQueueChangeAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomRoomMemberInAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomTempMuteAddAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomTempMuteRemoveAttachment
+import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData
 import com.netease.nimlib.sdk.event.model.Event
 import com.netease.nimlib.sdk.event.model.EventSubscribeResult
 import com.netease.nimlib.sdk.friend.model.Friend
-import com.netease.nimlib.sdk.msg.attachment.*
+import com.netease.nimlib.sdk.msg.attachment.AudioAttachment
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment
+import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
+import com.netease.nimlib.sdk.msg.attachment.LocationAttachment
+import com.netease.nimlib.sdk.msg.attachment.NotificationAttachmentWithExtension
+import com.netease.nimlib.sdk.msg.attachment.VideoAttachment
 import com.netease.nimlib.sdk.msg.constant.ChatRoomQueueChangeType
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
-import com.netease.nimlib.sdk.msg.model.*
+import com.netease.nimlib.sdk.msg.model.AttachmentProgress
+import com.netease.nimlib.sdk.msg.model.BroadcastMessage
+import com.netease.nimlib.sdk.msg.model.CollectInfo
+import com.netease.nimlib.sdk.msg.model.CustomMessageConfig
+import com.netease.nimlib.sdk.msg.model.CustomNotification
+import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig
+import com.netease.nimlib.sdk.msg.model.HandleQuickCommentOption
+import com.netease.nimlib.sdk.msg.model.IMMessage
+import com.netease.nimlib.sdk.msg.model.MemberPushOption
+import com.netease.nimlib.sdk.msg.model.MessageKey
+import com.netease.nimlib.sdk.msg.model.MessageReceipt
+import com.netease.nimlib.sdk.msg.model.MsgPinDbOption
+import com.netease.nimlib.sdk.msg.model.MsgPinSyncResponseOption
+import com.netease.nimlib.sdk.msg.model.MsgThreadOption
+import com.netease.nimlib.sdk.msg.model.NIMAntiSpamOption
+import com.netease.nimlib.sdk.msg.model.QuickCommentOption
+import com.netease.nimlib.sdk.msg.model.QuickCommentOptionWrapper
+import com.netease.nimlib.sdk.msg.model.RecentContact
+import com.netease.nimlib.sdk.msg.model.RecentSession
+import com.netease.nimlib.sdk.msg.model.RecentSessionList
+import com.netease.nimlib.sdk.msg.model.RevokeMsgNotification
+import com.netease.nimlib.sdk.msg.model.StickTopSessionInfo
+import com.netease.nimlib.sdk.msg.model.SystemMessage
+import com.netease.nimlib.sdk.msg.model.TeamMessageReceipt
+import com.netease.nimlib.sdk.msg.model.TeamMsgAckInfo
+import com.netease.nimlib.sdk.msg.model.ThreadTalkHistory
 import com.netease.nimlib.sdk.nos.model.NosTransferInfo
 import com.netease.nimlib.sdk.nos.model.NosTransferProgress
 import com.netease.nimlib.sdk.passthrough.model.PassthroughNotifyData
 import com.netease.nimlib.sdk.passthrough.model.PassthroughProxyData
 import com.netease.nimlib.sdk.superteam.SuperTeam
 import com.netease.nimlib.sdk.superteam.SuperTeamMember
-import com.netease.nimlib.sdk.team.model.*
+import com.netease.nimlib.sdk.team.model.CreateTeamResult
+import com.netease.nimlib.sdk.team.model.DismissAttachment
+import com.netease.nimlib.sdk.team.model.LeaveTeamAttachment
+import com.netease.nimlib.sdk.team.model.MemberChangeAttachment
+import com.netease.nimlib.sdk.team.model.MuteMemberAttachment
+import com.netease.nimlib.sdk.team.model.Team
+import com.netease.nimlib.sdk.team.model.TeamMember
+import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.netease.nimlib.session.IMMessageImpl
 import org.json.JSONArray
-import org.json.JSONObject
 import java.util.Objects.requireNonNull
 
 fun IMMessage.toMap(): Map<String, Any?> {
@@ -57,7 +102,7 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "attachmentStatus" to stringFromAttachStatusEnum(attachStatus),
         "uuid" to uuid,
         "serverId" to serverId,
-        //"attachString" to attachStr, // String
+        // "attachString" to attachStr, // String
         "config" to config?.toMap(), // Map<String, Any?>
         // "configString" to configStr, // 通过 Config 转换 Json
         "remoteExtension" to remoteExtension, // Map<String, Any?>
@@ -66,14 +111,14 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "pushPayload" to pushPayload, // Map<String, Any?>
         "pushContent" to pushContent, // String
         "memberPushOption" to memberPushOption?.toMap(), // Map<String, Any?>
-        //"memberPushOptionString" to memberPushOptionStr, // 通过 MemberPushOption 转换 Json
+        // "memberPushOptionString" to memberPushOptionStr, // 通过 MemberPushOption 转换 Json
         "senderClientType" to stringFromClientTypeEnum(fromClientType),
         "antiSpamOption" to nimAntiSpamOption?.toMap(), // Map<String, Any?>
-        //"nimAntiSpamOptionString" to nimAntiSpamOptionStr, // 通过 AntiSpamOption 转换 Json
+        // "nimAntiSpamOptionString" to nimAntiSpamOptionStr, // 通过 AntiSpamOption 转换 Json
         "messageAck" to needMsgAck(),
         "hasSendAck" to hasSendAck(),
-        "ackCount" to if(uuid == null) 0 else teamMsgAckCount,
-        "unAckCount" to if(uuid == null) 0 else teamMsgUnAckCount,
+        "ackCount" to if (uuid == null) 0 else teamMsgAckCount,
+        "unAckCount" to if (uuid == null) 0 else teamMsgUnAckCount,
         "clientAntiSpam" to clientAntiSpam,
         "isInBlackList" to isInBlackList,
         "isChecked" to isChecked,
@@ -84,7 +129,7 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "yidunAntiCheating" to Utils.jsonStringToMap(yidunAntiCheating), // Map<String, Any?>
         "env" to env,
         "fromNickname" to fromNick, // Only Dart
-        "isRemoteRead" to isRemoteRead, //Only Dart
+        "isRemoteRead" to isRemoteRead // Only Dart
     )
 }
 
@@ -95,7 +140,7 @@ fun ChatRoomMessageImpl.toMap(): Map<String, Any?> {
         "extension" to mapOf(
             "nickname" to chatRoomMessageExtension?.senderNick,
             "avatar" to chatRoomMessageExtension?.senderAvatar,
-            "senderExtension" to chatRoomMessageExtension?.senderExtension,
+            "senderExtension" to chatRoomMessageExtension?.senderExtension
         )
     ).apply { putAll((this@toMap as IMMessageImpl).toMap()) }
 }
@@ -121,9 +166,8 @@ fun ImageAttachment.toMap(): Map<String, Any?> {
         "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.image),
         "thumbPath" to thumbPath,
         "thumbUrl" to thumbUrl,
-        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey),
+        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey)
     )
-
 }
 
 fun AudioAttachment.toMap(): Map<String, Any?> {
@@ -141,7 +185,7 @@ fun AudioAttachment.toMap(): Map<String, Any?> {
         "force_upload" to isForceUpload,
         "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.audio),
         "thumbPath" to thumbPath,
-        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey),
+        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey)
     )
 }
 
@@ -161,17 +205,16 @@ fun VideoAttachment.toMap(): Map<String, Any?> {
         "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.video),
         "thumbPath" to thumbPath,
         "thumbUrl" to thumbUrl,
-        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey),
+        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey)
     )
 }
-
 
 fun LocationAttachment.toMap(): Map<String, Any?> {
     return mapOf(
         "lat" to latitude,
         "lng" to longitude,
         "title" to address,
-        "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.location),
+        "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.location)
     )
 }
 
@@ -187,7 +230,7 @@ fun FileAttachment.toMap(): Map<String, Any?> {
         "force_upload" to isForceUpload,
         "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.file),
         "thumbPath" to thumbPath,
-        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey),
+        "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey)
     )
 }
 
@@ -200,7 +243,7 @@ fun CustomMessageConfig.toMap(): Map<String, Any?> {
         "enablePushNick" to enablePushNick,
         "enableUnreadCount" to enableUnreadCount,
         "enableRoute" to enableRoute,
-        "enablePersist" to enablePersist,
+        "enablePersist" to enablePersist
     )
 }
 
@@ -224,7 +267,7 @@ fun NIMAntiSpamOption.toMap(): Map<String, Any?> {
     return mapOf(
         "enable" to enable,
         "content" to content,
-        "antiSpamConfigId" to antiSpamConfigId,
+        "antiSpamConfigId" to antiSpamConfigId
     )
 }
 
@@ -235,7 +278,6 @@ fun MemberPushOption.toMap(): Map<String, Any?> {
         "forcePushList" to forcePushList // List<String>
     )
 }
-
 
 fun MsgThreadOption.toMap(): Map<String, Any?> {
     return mapOf(
@@ -248,14 +290,14 @@ fun MsgThreadOption.toMap(): Map<String, Any?> {
         "threadMessageToAccount" to threadMsgToAccount,
         "threadMessageTime" to threadMsgTime,
         "threadMessageIdServer" to threadMsgIdServer,
-        "threadMessageIdClient" to threadMsgIdClient,
+        "threadMessageIdClient" to threadMsgIdClient
     )
 }
 
 fun AttachmentProgress.toMap(): Map<String, Any?> {
     return mapOf(
         "id" to uuid,
-        "progress" to transferred.toDouble()/total,
+        "progress" to transferred.toDouble() / total
     )
 }
 
@@ -263,7 +305,7 @@ fun NosTransferProgress.toMap(): Map<String, Any?> {
     return mapOf(
         "key" to key,
         "transferred" to transferred,
-        "total" to total,
+        "total" to total
     )
 }
 
@@ -276,10 +318,9 @@ fun NosTransferInfo.toMap(): Map<String, Any?> {
         "md5" to md5,
         "url" to url,
         "extension" to extension,
-        "status" to status.name.lowercase(),
+        "status" to status.name.lowercase()
     )
 }
-
 
 fun RevokeMsgNotification.toMap(): Map<String, Any?> {
     return mapOf(
@@ -289,7 +330,7 @@ fun RevokeMsgNotification.toMap(): Map<String, Any?> {
         "customInfo" to customInfo,
         "notificationType" to notificationType,
         "revokeType" to stringFromRevokeMessageType(revokeType),
-        "callbackExt" to callbackExt,
+        "callbackExt" to callbackExt
     )
 }
 
@@ -298,7 +339,7 @@ fun BroadcastMessage.toMap(): Map<String, Any?> {
         "id" to id,
         "fromAccount" to fromAccount,
         "time" to time,
-        "content" to content,
+        "content" to content
     )
 }
 
@@ -312,7 +353,7 @@ fun NimUserInfo.toMap(): Map<String, Any?> {
         "email" to email,
         "birthday" to birthday,
         "mobile" to mobile,
-        "extension" to extension,
+        "extension" to extension
     )
 }
 
@@ -321,7 +362,7 @@ fun Friend.toMap(): Map<String, Any?> {
         "userId" to account,
         "alias" to alias,
         "extension" to extension,
-        "serverExtension" to serverExtension,
+        "serverExtension" to serverExtension
     )
 }
 
@@ -336,7 +377,7 @@ fun SystemMessage.toMap(): Map<String, Any?> {
         "content" to content,
         "attach" to attach,
         "unread" to isUnread,
-        "customInfo" to customInfo,
+        "customInfo" to customInfo
     )
 }
 
@@ -352,7 +393,7 @@ fun CustomNotification.toMap(): Map<String, Any?> {
         "pushPayload" to pushPayload,
         "config" to config?.toMap(),
         "antiSpamOption" to nimAntiSpamOption?.toMap(),
-        "env" to env,
+        "env" to env
     )
 }
 
@@ -360,7 +401,7 @@ fun CustomNotificationConfig.toMap(): Map<String, Any?> {
     return mapOf(
         "enablePush" to enablePush,
         "enablePushNick" to enablePushNick,
-        "enableUnreadCount" to enableUnreadCount,
+        "enableUnreadCount" to enableUnreadCount
     )
 }
 
@@ -368,7 +409,7 @@ fun EnterChatRoomResultData.toMap(): Map<String, Any?> {
     return mapOf(
         "roomId" to roomId,
         "roomInfo" to roomInfo?.toMap(),
-        "member" to member?.toMap(),
+        "member" to member?.toMap()
     )
 }
 
@@ -383,7 +424,7 @@ fun ChatRoomInfo.toMap(): Map<String, Any?> =
         "onlineUserCount" to onlineUserCount,
         "mute" to (if (isMute) 1 else 0),
         "extension" to extension,
-        "queueModificationLevel" to (if (queueLevel == 1) "manager" else "anyone"),
+        "queueModificationLevel" to (if (queueLevel == 1) "manager" else "anyone")
     )
 
 fun ChatRoomMember.toMap(): Map<String, Any?> = mapOf(
@@ -401,7 +442,7 @@ fun ChatRoomMember.toMap(): Map<String, Any?> = mapOf(
     "isValid" to isValid,
     "enterTime" to enterTime,
     "tags" to if (tags.isNullOrEmpty()) null else JSONArray(tags).toList<String>(),
-    "notifyTargetTags" to notifyTargetTags,
+    "notifyTargetTags" to notifyTargetTags
 )
 
 fun TeamMsgAckInfo.toMap(): Map<String, Any?> = mapOf(
@@ -411,7 +452,7 @@ fun TeamMsgAckInfo.toMap(): Map<String, Any?> = mapOf(
     "ackCount" to ackCount,
     "unAckCount" to unAckCount,
     "ackAccountList" to ackAccountList,
-    "unAckAccountList" to unAckAccountList,
+    "unAckAccountList" to unAckAccountList
 )
 
 val MemberType.dartName: String
@@ -424,12 +465,12 @@ val memberTypeToDartName = mapOf(
     MemberType.NORMAL to "normal",
     MemberType.CREATOR to "creator",
     MemberType.ADMIN to "manager",
-    MemberType.ANONYMOUS to "anonymous",
+    MemberType.ANONYMOUS to "anonymous"
 )
 
 fun <K, V> MutableMap<K, V>.update(
     key: K,
-    remappingFunction: (key: K, value: V?) -> V?,
+    remappingFunction: (key: K, value: V?) -> V?
 ): V? {
     requireNonNull(remappingFunction)
     val oldValue = get(key)
@@ -456,31 +497,31 @@ fun <T> JSONArray.toList(): List<T> =
 
 fun NotificationAttachmentWithExtension.toMap() = mapOf(
     "extension" to extension,
-    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification),
+    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification)
 )
 
 fun MemberChangeAttachment.toMap() = mapOf(
     "targets" to targets,
     "extension" to extension,
-    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification),
+    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification)
 )
 
 fun DismissAttachment.toMap() = mapOf(
     "extension" to extension,
-    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification),
+    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification)
 )
 
 fun LeaveTeamAttachment.toMap() = mapOf(
     "extension" to extension,
-    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification),
+    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification)
 )
 
 fun MuteMemberAttachment.toMap() = mapOf(
-    "mute" to isMute,
+    "mute" to isMute
 ) + (this as MemberChangeAttachment).toMap()
 
 fun UpdateTeamAttachment.toMap() = mapOf(
-    "updatedFields" to convertToTeamFieldEnumMap(updatedFields),
+    "updatedFields" to convertToTeamFieldEnumMap(updatedFields)
 ) + (this as NotificationAttachmentWithExtension).toMap()
 
 fun ChatRoomNotificationAttachment.toMap() = mapOf(
@@ -490,21 +531,21 @@ fun ChatRoomNotificationAttachment.toMap() = mapOf(
     "operator" to operator,
     "operatorNick" to operatorNick,
     "extension" to extension,
-    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification),
+    "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.notification)
 )
 
 fun ChatRoomRoomMemberInAttachment.toMap() = mapOf(
     "muted" to isMuted,
     "tempMuted" to isTempMuted,
-    "tempMutedDuration" to tempMutedTime,
+    "tempMutedDuration" to tempMutedTime
 ) + (this as ChatRoomNotificationAttachment).toMap()
 
 fun ChatRoomTempMuteAddAttachment.toMap() = mapOf(
-    "duration" to muteDuration,
+    "duration" to muteDuration
 ) + (this as ChatRoomNotificationAttachment).toMap()
 
 fun ChatRoomTempMuteRemoveAttachment.toMap() = mapOf(
-    "duration" to muteDuration,
+    "duration" to muteDuration
 ) + (this as ChatRoomNotificationAttachment).toMap()
 
 fun ChatRoomQueueChangeAttachment.toMap() = mapOf(
@@ -512,18 +553,17 @@ fun ChatRoomQueueChangeAttachment.toMap() = mapOf(
     "content" to content,
     "contentMap" to contentMap,
     "queueChangeType" to
-            EnumTypeMappingRegistry.enumToValue<ChatRoomQueueChangeType, String>(
-                chatRoomQueueChangeType ?: ChatRoomQueueChangeType.undefined
-            ),
+        EnumTypeMappingRegistry.enumToValue<ChatRoomQueueChangeType, String>(
+            chatRoomQueueChangeType ?: ChatRoomQueueChangeType.undefined
+        )
 ) + (this as ChatRoomNotificationAttachment).toMap()
 
 fun ChatRoomPartClearAttachment.toMap() = mapOf(
     "contentMap" to contentMap,
     "queueChangeType" to EnumTypeMappingRegistry.enumToValue<ChatRoomQueueChangeType, String>(
         chatRoomQueueChangeType ?: ChatRoomQueueChangeType.undefined
-    ),
+    )
 ) + (this as ChatRoomNotificationAttachment).toMap()
-
 
 fun Team.toMap(): Map<String, Any?> {
     return mapOf(
@@ -549,7 +589,7 @@ fun Team.toMap(): Map<String, Any?> {
             teamExtensionUpdateMode
         ),
         "isAllMute" to isAllMute,
-        "muteMode" to stringFromTeamAllMuteModeEnumMap(muteMode),
+        "muteMode" to stringFromTeamAllMuteModeEnumMap(muteMode)
     )
 }
 
@@ -563,7 +603,7 @@ fun TeamMember.toMap(): Map<String, Any?> {
         "extension" to extension,
         "isMute" to isMute,
         "joinTime" to joinTime,
-        "invitorAccid" to invitorAccid,
+        "invitorAccid" to invitorAccid
     )
 }
 
@@ -591,7 +631,7 @@ fun SuperTeam.toMap(): Map<String, Any?> {
             teamExtensionUpdateMode
         ),
         "isAllMute" to isAllMute,
-        "muteMode" to stringFromTeamAllMuteModeEnumMap(muteMode),
+        "muteMode" to stringFromTeamAllMuteModeEnumMap(muteMode)
     )
 }
 
@@ -605,7 +645,7 @@ fun SuperTeamMember.toMap(): Map<String, Any?> {
         "extension" to Utils.jsonStringToMap(extension),
         "isMute" to isMute,
         "joinTime" to joinTime,
-        "invitorAccid" to invitorAccid,
+        "invitorAccid" to invitorAccid
     )
 }
 
@@ -614,14 +654,14 @@ fun ThreadTalkHistory.toMap(): Map<String, Any?> {
         "thread" to thread,
         "time" to time,
         "replyAmount" to replyAmount,
-        "replyList" to replyList,
+        "replyList" to replyList
     )
 }
 
 fun CreateTeamResult.toMap(): Map<String, Any?> {
     return mapOf(
         "team" to team?.toMap(),
-        "failedInviteAccounts" to failedInviteAccounts,
+        "failedInviteAccounts" to failedInviteAccounts
     )
 }
 
@@ -630,7 +670,7 @@ fun EventSubscribeResult.toMap(): Map<String, Any?> {
         "eventType" to eventType,
         "expiry" to expiry,
         "time" to time,
-        "publisherAccount" to publisherAccount,
+        "publisherAccount" to publisherAccount
     )
 }
 
@@ -647,7 +687,7 @@ fun RecentContact.toMap() = mapOf(
     "lastMessageAttachment" to AttachmentHelper.attachmentToMap(msgType, attachment),
     "unreadCount" to unreadCount,
     "extension" to extension,
-    "tag" to tag,
+    "tag" to tag
 )
 
 fun Event.toMap() = mapOf(
@@ -662,7 +702,7 @@ fun Event.toMap() = mapOf(
     "publishTime" to publishTime,
     "publisherClientType" to publisherClientType,
     "multiClientConfig" to multiClientConfig,
-    "nimConfig" to nimConfig,
+    "nimConfig" to nimConfig
 )
 
 fun PassthroughProxyData.toMap(): Map<String, Any?> {
@@ -671,25 +711,26 @@ fun PassthroughProxyData.toMap(): Map<String, Any?> {
         "path" to path,
         "method" to method,
         "header" to header,
-        "body" to body,
+        "body" to body
     )
 }
+
 fun PassthroughNotifyData.toMap(): Map<String, Any?> {
     return mapOf(
         "fromAccid" to fromAccid,
         "body" to body,
-        "time" to time,
+        "time" to time
     )
 }
 
-fun CollectInfo.toMap() = mapOf<String,Any?>(
+fun CollectInfo.toMap() = mapOf<String, Any?>(
     "id" to id,
     "type" to type,
     "data" to data,
     "ext" to ext,
     "uniqueId" to uniqueId,
     "createTime" to createTime.toDouble(),
-    "updateTime" to updateTime.toDouble(),
+    "updateTime" to updateTime.toDouble()
 )
 
 data class NimCollectInfo constructor(
@@ -699,8 +740,8 @@ data class NimCollectInfo constructor(
     private val ext: String?,
     private val uniqueId: String?,
     private val createTime: Long = 0,
-    private val updateTime: Long = 0,
-): CollectInfo {
+    private val updateTime: Long = 0
+) : CollectInfo {
     override fun getId(): Long = id
 
     override fun getType(): Int = type
@@ -717,7 +758,7 @@ data class NimCollectInfo constructor(
 
     companion object {
         fun fromMap(map: Map<String, *>?): NimCollectInfo? =
-            if (map != null)
+            if (map != null) {
                 runCatching {
                     NimCollectInfo(
                         (map["id"] as Number).toLong(),
@@ -726,10 +767,12 @@ data class NimCollectInfo constructor(
                         map["ext"] as String?,
                         map["uniqueId"] as String?,
                         (map["createTime"] as Number).toLong(),
-                        (map["updateTime"] as Number).toLong(),
+                        (map["updateTime"] as Number).toLong()
                     )
                 }.getOrNull()
-            else null
+            } else {
+                null
+            }
     }
 }
 
@@ -745,7 +788,7 @@ fun MsgPinDbOption.toMap(sessionType: SessionTypeEnum, message: IMMessage?) = ma
     "pinOperatorAccount" to pinOption.account,
     "pinExt" to pinOption.ext,
     "pinCreateTime" to pinOption.createTime,
-    "pinUpdateTime" to pinOption.updateTime,
+    "pinUpdateTime" to pinOption.updateTime
 )
 
 fun MsgPinSyncResponseOption.toMap() = mapOf(
@@ -760,7 +803,7 @@ fun MsgPinSyncResponseOption.toMap() = mapOf(
     "pinOperatorAccount" to pinOption.account,
     "pinExt" to pinOption.ext,
     "pinCreateTime" to pinOption.createTime,
-    "pinUpdateTime" to pinOption.updateTime,
+    "pinUpdateTime" to pinOption.updateTime
 )
 
 fun RecentSession.toMap(): Map<String, Any?> {
@@ -773,18 +816,18 @@ fun RecentSession.toMap(): Map<String, Any?> {
         "recentSession" to toRecentContact()?.toMap(),
         "sessionType" to stringFromSessionTypeEnum(parseSessionId().first),
         "sessionTypePair" to parseSessionId().second,
-        "revokeNotification" to revokeNotification?.toMap(),
+        "revokeNotification" to revokeNotification?.toMap()
     )
 }
 
 fun RecentSessionList.toMap(): Map<String, Any?> {
     return mapOf(
         "hasMore" to hasMore(),
-        "sessionList" to sessionList.map {it?.toMap() }.toList(),
+        "sessionList" to sessionList.map { it?.toMap() }.toList()
     )
 }
 
-fun QuickCommentOption.toMap():Map<String,Any?>{
+fun QuickCommentOption.toMap(): Map<String, Any?> {
     return mapOf(
         "fromAccount" to fromAccount,
         "replyType" to replyType,
@@ -794,31 +837,31 @@ fun QuickCommentOption.toMap():Map<String,Any?>{
         "needPush" to isNeedPush,
         "pushTitle" to pushTitle,
         "pushContent" to pushContent,
-        "pushPayload" to pushPayload,
+        "pushPayload" to pushPayload
     )
 }
 
-fun MessageKey.toMap():Map<String,Any?>{
+fun MessageKey.toMap(): Map<String, Any?> {
     return mapOf(
         "sessionType" to stringFromSessionTypeEnum(sessionType),
         "fromAccount" to fromAccount,
         "toAccount" to toAccount,
         "time" to time,
         "serverId" to serverId,
-        "uuid" to uuid,
+        "uuid" to uuid
     )
 }
 
-fun QuickCommentOptionWrapper.toMap():Map<String,Any?> {
+fun QuickCommentOptionWrapper.toMap(): Map<String, Any?> {
     return mapOf(
         "key" to key.toMap(),
         "quickCommentList" to quickCommentList?.map { it.toMap() }?.toList(),
         "modify" to isModify,
-        "time" to time,
+        "time" to time
     )
 }
 
-fun StickTopSessionInfo.toMap():Map<String,Any?> {
+fun StickTopSessionInfo.toMap(): Map<String, Any?> {
     return mapOf(
         "sessionId" to sessionId,
         "sessionType" to stringFromSessionTypeEnum(sessionType),
@@ -828,9 +871,9 @@ fun StickTopSessionInfo.toMap():Map<String,Any?> {
     )
 }
 
-fun HandleQuickCommentOption.toMap():Map<String,Any?> {
+fun HandleQuickCommentOption.toMap(): Map<String, Any?> {
     return mapOf(
         "key" to key.toMap(),
-        "commentOption" to commentOption.toMap(),
+        "commentOption" to commentOption.toMap()
     )
 }

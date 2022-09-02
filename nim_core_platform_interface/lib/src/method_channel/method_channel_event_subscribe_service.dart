@@ -1,12 +1,8 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/platform_interface_event_subscribe_service.dart';
 
 class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
   @override
@@ -27,7 +23,9 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
 
   _observeEventChanged(Map<String, dynamic> paramMap) {
     var paramList = paramMap['eventList'] as List<dynamic>?;
-    List<Event>? eventList = paramList?.map((e) => Event.fromMap(e)).toList();
+    List<Event>? eventList = paramList
+        ?.map((e) => Event.fromMap(Map<String, dynamic>.from(e)))
+        .toList();
     if (eventList != null)
       EventSubscribeServicePlatform.instance.eventSubscribeStream
           .add(eventList);
@@ -38,7 +36,7 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
       EventSubscribeRequest request) async {
     Map<String, dynamic> replyMap = await invokeMethod('registerEventSubscribe',
         arguments: request.toMap());
-    return NIMResult.fromMap(replyMap,convert: (map) {
+    return NIMResult.fromMap(replyMap, convert: (map) {
       var resultList = map['resultList'] as List<dynamic>?;
       return resultList?.map((e) => e as String).toList();
     });
@@ -75,7 +73,8 @@ class MethodChannelEventSubscribeService extends EventSubscribeServicePlatform {
         await invokeMethod('querySubscribeEvent', arguments: request.toMap());
 
     return NIMResult.fromMap(replyMap, convert: (map) {
-      var eventSubscribeResultList = map['eventSubscribeResultList'] as List<dynamic>;
+      var eventSubscribeResultList =
+          map['eventSubscribeResultList'] as List<dynamic>;
       return eventSubscribeResultList
           .map(
               (e) => EventSubscribeResult.fromMap(Map<String, dynamic>.from(e)))

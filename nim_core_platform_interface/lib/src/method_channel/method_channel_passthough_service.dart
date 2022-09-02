@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_notifydata.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_proxydata.dart';
@@ -11,9 +15,7 @@ class MethodChannelPassThroughService extends PassThroughServicePlatform {
         final data = arguments['passthroughNotifyData'];
         if (data is Map) {
           PassThroughServicePlatform.instance.onPassThroughNotifyData.add(
-            NIMPassThroughNotifyData.fromMap(
-                Map<String, dynamic>.from(data)
-            ),
+            NIMPassThroughNotifyData.fromMap(Map<String, dynamic>.from(data)),
           );
         }
         break;

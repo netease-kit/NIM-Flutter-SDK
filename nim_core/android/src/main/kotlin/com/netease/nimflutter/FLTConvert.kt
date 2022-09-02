@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,21 +7,44 @@
 package com.netease.nimflutter
 
 import android.app.Activity
-import android.graphics.Typeface.NORMAL
 import com.netease.nimlib.NimNosSceneKeyConstant
 import com.netease.nimlib.sdk.NotificationFoldStyle
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
 import com.netease.nimlib.sdk.auth.ClientType
 import com.netease.nimlib.sdk.event.model.Event
 import com.netease.nimlib.sdk.misc.DirCacheFileType
-import com.netease.nimlib.sdk.msg.constant.*
-import com.netease.nimlib.sdk.msg.model.*
+import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
+import com.netease.nimlib.sdk.msg.constant.ChatRoomQueueChangeType
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
+import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
+import com.netease.nimlib.sdk.msg.constant.NotificationExtraTypeEnum
+import com.netease.nimlib.sdk.msg.constant.RevokeType
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
+import com.netease.nimlib.sdk.msg.constant.SystemMessageStatus
+import com.netease.nimlib.sdk.msg.constant.SystemMessageType
+import com.netease.nimlib.sdk.msg.model.CustomMessageConfig
+import com.netease.nimlib.sdk.msg.model.CustomNotification
+import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig
+import com.netease.nimlib.sdk.msg.model.MemberPushOption
+import com.netease.nimlib.sdk.msg.model.MsgFullKeywordSearchConfig
+import com.netease.nimlib.sdk.msg.model.MsgSearchOption
+import com.netease.nimlib.sdk.msg.model.MsgThreadOption
+import com.netease.nimlib.sdk.msg.model.NIMAntiSpamOption
+import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum
+import com.netease.nimlib.sdk.msg.model.SearchOrderEnum
 import com.netease.nimlib.sdk.robot.model.RobotMsgType
-import com.netease.nimlib.sdk.team.constant.*
-import com.netease.yunxin.kit.alog.ALog
-import java.io.Serializable
+import com.netease.nimlib.sdk.team.constant.TeamAllMuteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamBeInviteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamExtensionUpdateModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamFieldEnum
+import com.netease.nimlib.sdk.team.constant.TeamInviteModeEnum
+import com.netease.nimlib.sdk.team.constant.TeamMemberType
+import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum
+import com.netease.nimlib.sdk.team.constant.TeamTypeEnum
+import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum
+import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum
 import kotlin.properties.ReadOnlyProperty
-import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 val msgTypeEnumMap = mapOf(
@@ -47,7 +70,6 @@ val msgDirectionEnumMap = mapOf(
     MsgDirectionEnum.In to "received"
 )
 
-
 val sessionTypeEnumMap = mapOf(
     SessionTypeEnum.None to "none",
     SessionTypeEnum.P2P to "p2p",
@@ -55,7 +77,7 @@ val sessionTypeEnumMap = mapOf(
     SessionTypeEnum.SUPER_TEAM to "superTeam",
     SessionTypeEnum.System to "system",
     SessionTypeEnum.Ysf to "ysf",
-    SessionTypeEnum.ChatRoom to "chatRoom",
+    SessionTypeEnum.ChatRoom to "chatRoom"
 )
 
 val msgStatusEnumMap = mapOf(
@@ -64,7 +86,7 @@ val msgStatusEnumMap = mapOf(
     MsgStatusEnum.fail to "fail",
     MsgStatusEnum.read to "read",
     MsgStatusEnum.unread to "unread",
-    MsgStatusEnum.draft to "draft",
+    MsgStatusEnum.draft to "draft"
 )
 
 val attachStatusEnumMap = mapOf(
@@ -72,14 +94,14 @@ val attachStatusEnumMap = mapOf(
     AttachStatusEnum.transferring to "transferring",
     AttachStatusEnum.fail to "failed",
     AttachStatusEnum.transferred to "transferred",
-    AttachStatusEnum.cancel to "cancel",
+    AttachStatusEnum.cancel to "cancel"
 )
 
 val nimNosSceneKeyConstantMap = mapOf(
     NimNosSceneKeyConstant.NIM_DEFAULT_IM to "defaultIm",
     NimNosSceneKeyConstant.NIM_DEFAULT_PROFILE to "defaultProfile",
     NimNosSceneKeyConstant.NIM_SYSTEM_NOS_SCENE to "systemNosScene",
-    NimNosSceneKeyConstant.NIM_SECURITY_PREFIX to "securityPrefix",
+    NimNosSceneKeyConstant.NIM_SECURITY_PREFIX to "securityPrefix"
 )
 
 val clientTypeEnumMap = mapOf(
@@ -90,7 +112,7 @@ val clientTypeEnumMap = mapOf(
     ClientType.WP to "wp",
     ClientType.Web to "web",
     ClientType.REST to "rest",
-    ClientType.MAC to "macos",
+    ClientType.MAC to "macos"
 )
 
 val systemMessageTypeEnumMap = mapOf(
@@ -103,7 +125,7 @@ val systemMessageTypeEnumMap = mapOf(
     SystemMessageType.SuperTeamApply to "superTeamApply",
     SystemMessageType.SuperTeamApplyReject to "superTeamApplyReject",
     SystemMessageType.SuperTeamInvite to "superTeamInvite",
-    SystemMessageType.SuperTeamInviteReject to "superTeamInviteReject",
+    SystemMessageType.SuperTeamInviteReject to "superTeamInviteReject"
 )
 
 val systemMessageStatusEnumMap = mapOf(
@@ -116,63 +138,63 @@ val systemMessageStatusEnumMap = mapOf(
     SystemMessageStatus.extension2 to "extension2",
     SystemMessageStatus.extension3 to "extension3",
     SystemMessageStatus.extension4 to "extension4",
-    SystemMessageStatus.extension5 to "extension5",
+    SystemMessageStatus.extension5 to "extension5"
 )
-    
+
 val revokeMessageTypeEnumMap = mapOf(
     RevokeType.undefined to "undefined",
     RevokeType.P2P_DELETE_MSG to "p2pDeleteMsg",
     RevokeType.TEAM_DELETE_MSG to "teamDeleteMsg",
     RevokeType.SUPER_TEAM_DELETE_MSG to "superTeamDeleteMsg",
     RevokeType.P2P_ONE_WAY_DELETE_MSG to "p2pOneWayDeleteMsg",
-    RevokeType.TEAM_ONE_WAY_DELETE_MSG to "teamOneWayDeleteMsg",
+    RevokeType.TEAM_ONE_WAY_DELETE_MSG to "teamOneWayDeleteMsg"
 )
 
 val teamMessageNotifyTypeEnumMap = mapOf(
     TeamMessageNotifyTypeEnum.All to "all",
     TeamMessageNotifyTypeEnum.Manager to "manager",
-    TeamMessageNotifyTypeEnum.Mute to "mute",
+    TeamMessageNotifyTypeEnum.Mute to "mute"
 )
 
 val teamTypeEnumMap = mapOf(
-        TeamTypeEnum.Normal to "normal",
-        TeamTypeEnum.Advanced to "advanced",
+    TeamTypeEnum.Normal to "normal",
+    TeamTypeEnum.Advanced to "advanced"
 )
 
 val verifyTypeEnumMap = mapOf(
-        VerifyTypeEnum.Free to "free",
-        VerifyTypeEnum.Apply to "apply",
-        VerifyTypeEnum.Private to "private",
+    VerifyTypeEnum.Free to "free",
+    VerifyTypeEnum.Apply to "apply",
+    VerifyTypeEnum.Private to "private"
 )
 
 val teamInviteModeEnumMap = mapOf(
-        TeamInviteModeEnum.Manager to "manager",
-        TeamInviteModeEnum.All to "all",
+    TeamInviteModeEnum.Manager to "manager",
+    TeamInviteModeEnum.All to "all"
 )
 
 val teamBeInviteModeEnumMap = mapOf(
-        TeamBeInviteModeEnum.NeedAuth to "needAuth",
-        TeamBeInviteModeEnum.NoAuth to "noAuth",
+    TeamBeInviteModeEnum.NeedAuth to "needAuth",
+    TeamBeInviteModeEnum.NoAuth to "noAuth"
 )
 val teamUpdateModeEnumMap = mapOf(
-        TeamUpdateModeEnum.Manager to "manager",
-        TeamUpdateModeEnum.All to "all",
+    TeamUpdateModeEnum.Manager to "manager",
+    TeamUpdateModeEnum.All to "all"
 )
 val teamExtensionUpdateModeEnumMap = mapOf(
-        TeamExtensionUpdateModeEnum.Manager to "manager",
-        TeamExtensionUpdateModeEnum.All to "all",
+    TeamExtensionUpdateModeEnum.Manager to "manager",
+    TeamExtensionUpdateModeEnum.All to "all"
 )
 
 val teamAllMuteModeEnumMap = mapOf(
-        TeamAllMuteModeEnum.Cancel to "cancel",
-        TeamAllMuteModeEnum.MuteNormal to "muteNormal",
-        TeamAllMuteModeEnum.MuteALL to "muteAll",
+    TeamAllMuteModeEnum.Cancel to "cancel",
+    TeamAllMuteModeEnum.MuteNormal to "muteNormal",
+    TeamAllMuteModeEnum.MuteALL to "muteAll"
 )
 val teamMemberTypeMap = mapOf(
-        TeamMemberType.Normal to "normal",
-        TeamMemberType.Owner to "owner",
-        TeamMemberType.Manager to "manager",
-        TeamMemberType.Apply to "apply",
+    TeamMemberType.Normal to "normal",
+    TeamMemberType.Owner to "owner",
+    TeamMemberType.Manager to "manager",
+    TeamMemberType.Apply to "apply"
 )
 
 val teamFieldEnumTypeMap = mapOf(
@@ -189,81 +211,82 @@ val teamFieldEnumTypeMap = mapOf(
     TeamFieldEnum.TeamUpdateMode to "teamUpdateMode",
     TeamFieldEnum.TeamExtensionUpdateMode to "teamExtensionUpdateMode",
     TeamFieldEnum.AllMute to "allMuteMode",
-    TeamFieldEnum.MaxMemberCount to "maxMemberCount",
+    TeamFieldEnum.MaxMemberCount to "maxMemberCount"
 )
-
 
 fun stringToTeamFieldEnumTypeMap(type: String?): TeamFieldEnum =
     teamFieldEnumTypeMap.filterValues { it == type }.keys.firstOrNull() ?: TeamFieldEnum.undefined
 
-fun stringFromTeamFieldEnumTypeMap(type: TeamFieldEnum?) : String =
+fun stringFromTeamFieldEnumTypeMap(type: TeamFieldEnum?): String =
     teamFieldEnumTypeMap[type] ?: teamFieldEnumTypeMap[TeamFieldEnum.undefined]!!
 
 fun stringToTeamTypeEnumMap(type: String?): TeamTypeEnum =
-        teamTypeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamTypeEnum.Normal
+    teamTypeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamTypeEnum.Normal
 
 fun stringFromTeamTypeEnumMap(type: TeamTypeEnum?) =
-        teamTypeEnumMap[type]
-                ?: teamTypeEnumMap[TeamTypeEnum.Normal]
-
+    teamTypeEnumMap[type]
+        ?: teamTypeEnumMap[TeamTypeEnum.Normal]
 
 fun stringToVerifyTypeEnumMap(type: String?): VerifyTypeEnum =
-        verifyTypeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: VerifyTypeEnum.Free
+    verifyTypeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: VerifyTypeEnum.Free
 
 fun stringFromVerifyTypeEnumMap(type: VerifyTypeEnum?) =
-        verifyTypeEnumMap[type]
-                ?: verifyTypeEnumMap[VerifyTypeEnum.Free]
-
+    verifyTypeEnumMap[type]
+        ?: verifyTypeEnumMap[VerifyTypeEnum.Free]
 
 fun stringToTeamMessageNotifyTypeEnumMap(type: String?): TeamMessageNotifyTypeEnum =
-        teamMessageNotifyTypeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamMessageNotifyTypeEnum.All
+    teamMessageNotifyTypeEnumMap.filterValues { it == type }.keys.firstOrNull()
+        ?: TeamMessageNotifyTypeEnum.All
 
 fun stringFromTeamMessageNotifyTypMap(type: TeamMessageNotifyTypeEnum?) =
-        teamMessageNotifyTypeEnumMap[type]
-                ?: teamMessageNotifyTypeEnumMap[TeamMessageNotifyTypeEnum.All]
-
+    teamMessageNotifyTypeEnumMap[type]
+        ?: teamMessageNotifyTypeEnumMap[TeamMessageNotifyTypeEnum.All]
 
 fun stringToTeamInviteModeEnumMap(type: String?): TeamInviteModeEnum =
-        teamInviteModeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamInviteModeEnum.Manager
+    teamInviteModeEnumMap.filterValues { it == type }.keys.firstOrNull()
+        ?: TeamInviteModeEnum.Manager
 
 fun stringFromTeamInviteModeEnumMap(type: TeamInviteModeEnum?) =
-        teamInviteModeEnumMap[type]
-                ?: teamInviteModeEnumMap[TeamInviteModeEnum.Manager]
-
+    teamInviteModeEnumMap[type]
+        ?: teamInviteModeEnumMap[TeamInviteModeEnum.Manager]
 
 fun stringToTeamBeInviteModeEnumMap(type: String?): TeamBeInviteModeEnum =
-        teamBeInviteModeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamBeInviteModeEnum.NeedAuth
+    teamBeInviteModeEnumMap.filterValues { it == type }.keys.firstOrNull()
+        ?: TeamBeInviteModeEnum.NeedAuth
 
 fun stringFromTeamBeInviteModeEnumMap(type: TeamBeInviteModeEnum?) =
-        teamBeInviteModeEnumMap[type]
-                ?: teamBeInviteModeEnumMap[TeamBeInviteModeEnum.NeedAuth]
+    teamBeInviteModeEnumMap[type]
+        ?: teamBeInviteModeEnumMap[TeamBeInviteModeEnum.NeedAuth]
 
 fun stringToTeamUpdateModeEnumMap(type: String?): TeamUpdateModeEnum =
-        teamUpdateModeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamUpdateModeEnum.Manager
+    teamUpdateModeEnumMap.filterValues { it == type }.keys.firstOrNull()
+        ?: TeamUpdateModeEnum.Manager
 
 fun stringFromTeamUpdateModeEnumMap(type: TeamUpdateModeEnum?) =
-        teamUpdateModeEnumMap[type]
-                ?: teamUpdateModeEnumMap[TeamUpdateModeEnum.Manager]
+    teamUpdateModeEnumMap[type]
+        ?: teamUpdateModeEnumMap[TeamUpdateModeEnum.Manager]
 
 fun stringToTeamExtensionUpdateModeEnumMap(type: String?): TeamExtensionUpdateModeEnum =
-        teamExtensionUpdateModeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamExtensionUpdateModeEnum.Manager
+    teamExtensionUpdateModeEnumMap.filterValues { it == type }.keys.firstOrNull()
+        ?: TeamExtensionUpdateModeEnum.Manager
 
 fun stringFromTeamExtensionUpdateModeEnumMap(type: TeamExtensionUpdateModeEnum?) =
-        teamExtensionUpdateModeEnumMap[type]
-                ?: teamExtensionUpdateModeEnumMap[TeamExtensionUpdateModeEnum.Manager]
+    teamExtensionUpdateModeEnumMap[type]
+        ?: teamExtensionUpdateModeEnumMap[TeamExtensionUpdateModeEnum.Manager]
 
 fun stringToTeamAllMuteModeEnumMap(type: String?): TeamAllMuteModeEnum =
-        teamAllMuteModeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: TeamAllMuteModeEnum.Cancel
+    teamAllMuteModeEnumMap.filterValues { it == type }.keys.firstOrNull()
+        ?: TeamAllMuteModeEnum.Cancel
 
 fun stringFromTeamAllMuteModeEnumMap(type: TeamAllMuteModeEnum?) =
-        teamAllMuteModeEnumMap[type]
-                ?: teamAllMuteModeEnumMap[TeamAllMuteModeEnum.Cancel]
+    teamAllMuteModeEnumMap[type]
+        ?: teamAllMuteModeEnumMap[TeamAllMuteModeEnum.Cancel]
 
 fun stringToTeamMemberTypeMapMap(type: String?): TeamMemberType =
-        teamMemberTypeMap.filterValues { it == type }.keys.firstOrNull() ?: TeamMemberType.Normal
+    teamMemberTypeMap.filterValues { it == type }.keys.firstOrNull() ?: TeamMemberType.Normal
 
 fun stringFromTeamMemberTypeMapMap(type: TeamMemberType?) =
-        teamMemberTypeMap[type ?: TeamMemberType.Normal]
+    teamMemberTypeMap[type ?: TeamMemberType.Normal]
 
 fun stringToMsgTypeEnum(type: String?): MsgTypeEnum =
     msgTypeEnumMap.filterValues { it == type }.keys.firstOrNull() ?: MsgTypeEnum.undef
@@ -289,13 +312,11 @@ fun stringToMsgStatusEnum(status: String?) =
 fun stringFromMsgStatusEnum(status: MsgStatusEnum?) =
     msgStatusEnumMap[status] ?: msgStatusEnumMap[MsgStatusEnum.sending]
 
-
 fun stringToAttachStatusEnum(status: String?) =
     attachStatusEnumMap.filterValues { it == status }.keys.firstOrNull() ?: AttachStatusEnum.def
 
 fun stringFromAttachStatusEnum(status: AttachStatusEnum?) =
     attachStatusEnumMap[status] ?: attachStatusEnumMap[AttachStatusEnum.def]
-
 
 fun stringToNimNosSceneKeyConstant(key: String?) =
     nimNosSceneKeyConstantMap.filterValues { it == key }.keys.firstOrNull()
@@ -338,7 +359,6 @@ fun convertCustomMessageConfig(map: Map<String, Any?>?): CustomMessageConfig? {
             enableUnreadCount = it.getOrElse("enableUnreadCount") { true } as Boolean
         }
     }
-
 }
 
 fun convertMsgThreadOption(map: Map<String, Any?>?): MsgThreadOption? {
@@ -346,17 +366,16 @@ fun convertMsgThreadOption(map: Map<String, Any?>?): MsgThreadOption? {
         MsgThreadOption().apply {
             replyMsgFromAccount = it.getOrElse("replyMessageFromAccount") { "" } as String
             replyMsgToAccount = it.getOrElse("replyMessageToAccount") { "" } as String
-            replyMsgTime = (it.getOrElse("replyMessageTime") { 0L }  as Number).toLong()
-            replyMsgIdServer = (it.getOrElse("replyMessageIdServer") { 0L }  as Number).toLong()
+            replyMsgTime = (it.getOrElse("replyMessageTime") { 0L } as Number).toLong()
+            replyMsgIdServer = (it.getOrElse("replyMessageIdServer") { 0L } as Number).toLong()
             replyMsgIdClient = it.getOrElse("replyMessageIdClient") { "" } as String
             threadMsgFromAccount = it.getOrElse("threadMessageFromAccount") { "" } as String
             threadMsgToAccount = it.getOrElse("threadMessageToAccount") { "" } as String
-            threadMsgTime = (it.getOrElse("threadMessageTime") { 0L }  as Number).toLong()
-            threadMsgIdServer = (it.getOrElse("threadMessageIdServer") { 0L }  as Number).toLong()
+            threadMsgTime = (it.getOrElse("threadMessageTime") { 0L } as Number).toLong()
+            threadMsgIdServer = (it.getOrElse("threadMessageIdServer") { 0L } as Number).toLong()
             threadMsgIdClient = it.getOrElse("threadMessageIdClient") { "" } as String
         }
     }
-
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -370,7 +389,6 @@ fun convertMemberPushOption(map: Map<String, Any?>?): MemberPushOption? {
     }
 }
 
-
 fun convertNIMAntiSpamOption(map: Map<String, Any?>?): NIMAntiSpamOption? {
     return map?.let {
         NIMAntiSpamOption().apply {
@@ -381,27 +399,26 @@ fun convertNIMAntiSpamOption(map: Map<String, Any?>?): NIMAntiSpamOption? {
     }
 }
 
-
 fun convertToQueryDirectionEnum(param: Int): QueryDirectionEnum {
     return if (param == 0) QueryDirectionEnum.QUERY_OLD else QueryDirectionEnum.QUERY_NEW
 }
 
-
 fun convertToSearchOption(param: Map<String, Any?>?): MsgSearchOption? {
     return param?.let {
         MsgSearchOption().apply {
-            startTime = (it.getOrElse("startTime") { 0L }  as Number).toLong()
-            endTime = (it.getOrElse("endTime") { 0L }  as Number).toLong()
-            limit = (it.getOrElse("limit") { 100 }  as Number).toInt()
+            startTime = (it.getOrElse("startTime") { 0L } as Number).toLong()
+            endTime = (it.getOrElse("endTime") { 0L } as Number).toLong()
+            limit = (it.getOrElse("limit") { 100 } as Number).toInt()
             order =
-                if ((it.getOrElse("order") { 0 }  as Number).toInt() == 0) SearchOrderEnum.DESC else SearchOrderEnum.ASC
+                if ((it.getOrElse("order") { 0 } as Number).toInt() == 0) SearchOrderEnum.DESC else SearchOrderEnum.ASC
             messageTypes =
-                (it["msgTypeList"] as List<*>).map { stringToMsgTypeEnum(it as String) }.toList()
-            messageSubTypes = (it["messageSubTypes"] as List<*>).map { (it  as Number).toInt() }.toList()
+                (it["msgTypeList"] as List<*>?)?.map { stringToMsgTypeEnum(it as String) }?.toList()
+            messageSubTypes =
+                (it["messageSubTypes"] as List<*>?)?.map { (it as Number).toInt() }?.toList()
             isAllMessageTypes = it.getOrElse("allMessageTypes") { false } as Boolean
             searchContent = it["searchContent"] as String
-            fromIds = (it["fromIds"] as List<*>).map { it as String }.toList()
-            isEnableContentTransfer = it["enableContentTransfer"] as Boolean
+            fromIds = (it["fromIds"] as List<*>?)?.map { it as String }?.toList()
+            isEnableContentTransfer = it.getOrElse("enableContentTransfer") { true } as Boolean
         }
     }
 }
@@ -409,20 +426,21 @@ fun convertToSearchOption(param: Map<String, Any?>?): MsgSearchOption? {
 fun convertToSearchConfig(param: Map<String, Any?>?): MsgFullKeywordSearchConfig {
     val searchConfig = MsgFullKeywordSearchConfig(
         param?.get("keyword") as String,
-        (param.getOrElse("fromTime") { 0L }  as Number).toLong(),
-        (param.getOrElse("toTime") { 0L }  as Number).toLong()
+        (param.getOrElse("fromTime") { 0L } as Number).toLong(),
+        (param.getOrElse("toTime") { 0L } as Number).toLong()
     )
     return param.let {
         searchConfig.apply {
-            sessionLimit = (it.getOrElse("sessionLimit") { 0 }  as Number).toInt()
-            msgLimit = (it.getOrElse("msgLimit") { 0 }  as Number).toInt()
+            sessionLimit = (it.getOrElse("sessionLimit") { 0 } as Number).toInt()
+            msgLimit = (it.getOrElse("msgLimit") { 0 } as Number).toInt()
             isAsc = it.getOrElse("asc") { false } as Boolean
-            p2pList = (it["p2pList"] as List<*>).map { it as String }.toList()
-            teamList = (it["teamList"] as List<*>).map { it as String }.toList()
-            senderList = (it["senderList"] as List<*>).map { it as String }.toList()
+            p2pList = (it["p2pList"] as List<*>?)?.map { it as String }?.toList()
+            teamList = (it["teamList"] as List<*>?)?.map { it as String }?.toList()
+            senderList = (it["senderList"] as List<*>?)?.map { it as String }?.toList()
             msgTypeList =
-                (it["msgTypeList"] as List<*>).map { stringToMsgTypeEnum(it as String) }.toList()
-            msgSubtypeList = (it["msgSubtypeList"] as List<*>).map { (it  as Number).toInt() }.toList()
+                (it["msgTypeList"] as List<*>?)?.map { stringToMsgTypeEnum(it as String) }?.toList()
+            msgSubtypeList =
+                (it["msgSubtypeList"] as List<*>?)?.map { (it as Number).toInt() }?.toList()
         }
     }
 }
@@ -430,11 +448,10 @@ fun convertToSearchConfig(param: Map<String, Any?>?): MsgFullKeywordSearchConfig
 fun convertToCustomNotification(param: Map<String, Any?>?): CustomNotification? {
     return param?.let {
         CustomNotification().apply {
-
             sessionId = it["sessionId"] as String
             sessionType = stringToSessionTypeEnum(it["sessionType"] as String)
             fromAccount = it["fromAccount"] as String?
-            time = (it.getOrElse("time") { 0L }  as Number).toLong()
+            time = (it.getOrElse("time") { 0L } as Number).toLong()
             content = it["content"] as String?
             isSendToOnlineUserOnly = it.getOrElse("sendToOnlineUserOnly") { true } as Boolean
             apnsText = it["apnsText"] as String?
@@ -455,7 +472,6 @@ fun convertToCustomNotificationConfig(param: Map<String, Any?>?): CustomNotifica
             enableUnreadCount = it.getOrElse("enableUnreadCount") { true } as Boolean
         }
     }
-
 }
 
 fun convertToNIMAntiSpamOption(param: Map<String, Any?>?): NIMAntiSpamOption? {
@@ -466,7 +482,6 @@ fun convertToNIMAntiSpamOption(param: Map<String, Any?>?): NIMAntiSpamOption? {
             antiSpamConfigId = it["antiSpamConfigId"] as String
         }
     }
-
 }
 
 fun stringToSystemMessageType(type: String?) =
@@ -479,9 +494,9 @@ fun stringToSystemMessageStatus(type: String?) =
 
 fun convertToEvent(param: Map<String, *>): Event {
     val event = Event(
-        ( param["eventType"]  as Number).toInt(),
-        (param["eventValue"]  as Number).toInt(),
-        (param.getOrElse("expiry"){0L} as Number).toLong()
+        (param["eventType"] as Number).toInt(),
+        (param["eventValue"] as Number).toInt(),
+        (param.getOrElse("expiry") { 0L } as Number).toLong()
     )
     event.apply {
         config = param["config"] as String?
@@ -500,13 +515,20 @@ fun convertToTeamFieldEnumMap(param: Map<TeamFieldEnum, *>): Map<String, Any?> {
             TeamFieldEnum.Introduce -> newFields["updatedIntroduce"] = entry.value as String?
             TeamFieldEnum.Announcement -> newFields["updatedAnnouncement"] = entry.value as String?
             TeamFieldEnum.Extension -> newFields["updatedExtension"] = entry.value as String?
-            TeamFieldEnum.Ext_Server_Only -> newFields["updatedServerExtension"] = entry.value as String?
-            TeamFieldEnum.VerifyType -> newFields["updatedVerifyType"] = stringFromVerifyTypeEnumMap(entry.value as? VerifyTypeEnum)
-            TeamFieldEnum.InviteMode -> newFields["updatedInviteMode"] = stringFromTeamInviteModeEnumMap(entry.value as? TeamInviteModeEnum)
-            TeamFieldEnum.BeInviteMode -> newFields["updatedBeInviteMode"] = stringFromTeamBeInviteModeEnumMap(entry.value as? TeamBeInviteModeEnum)
-            TeamFieldEnum.TeamUpdateMode -> newFields["updatedUpdateMode"] = stringFromTeamUpdateModeEnumMap(entry.value as? TeamUpdateModeEnum)
-            TeamFieldEnum.TeamExtensionUpdateMode -> newFields["updatedExtensionUpdateMode"] = stringFromTeamExtensionUpdateModeEnumMap(entry.value as? TeamExtensionUpdateModeEnum)
-            TeamFieldEnum.AllMute -> newFields["updatedAllMuteMode"] = stringFromTeamAllMuteModeEnumMap(entry.value as? TeamAllMuteModeEnum)
+            TeamFieldEnum.Ext_Server_Only -> newFields["updatedServerExtension"] =
+                entry.value as String?
+            TeamFieldEnum.VerifyType -> newFields["updatedVerifyType"] =
+                stringFromVerifyTypeEnumMap(entry.value as? VerifyTypeEnum)
+            TeamFieldEnum.InviteMode -> newFields["updatedInviteMode"] =
+                stringFromTeamInviteModeEnumMap(entry.value as? TeamInviteModeEnum)
+            TeamFieldEnum.BeInviteMode -> newFields["updatedBeInviteMode"] =
+                stringFromTeamBeInviteModeEnumMap(entry.value as? TeamBeInviteModeEnum)
+            TeamFieldEnum.TeamUpdateMode -> newFields["updatedUpdateMode"] =
+                stringFromTeamUpdateModeEnumMap(entry.value as? TeamUpdateModeEnum)
+            TeamFieldEnum.TeamExtensionUpdateMode -> newFields["updatedExtensionUpdateMode"] =
+                stringFromTeamExtensionUpdateModeEnumMap(entry.value as? TeamExtensionUpdateModeEnum)
+            TeamFieldEnum.AllMute -> newFields["updatedAllMuteMode"] =
+                stringFromTeamAllMuteModeEnumMap(entry.value as? TeamAllMuteModeEnum)
             TeamFieldEnum.MaxMemberCount -> newFields["updatedMaxMemberCount"] = entry.value as? Int
             else -> null
         }
@@ -514,16 +536,15 @@ fun convertToTeamFieldEnumMap(param: Map<TeamFieldEnum, *>): Map<String, Any?> {
     return newFields
 }
 
-
 fun convertToStatusBarNotificationConfig(param: Map<String, Any?>?): StatusBarNotificationConfig? {
     return param?.let {
         StatusBarNotificationConfig().apply {
             ring = it["ring"] as Boolean
             notificationSound = it["notificationSound"] as String?
             vibrate = it["vibrate"] as Boolean
-            ledARGB = (it.getOrElse("ledARGB"){-1}  as Number).toInt()
-            ledOnMs = (it.getOrElse("ledOnMs"){-1}  as Number).toInt()
-            ledOffMs = (it.getOrElse("ledOffMs"){-1}  as Number).toInt()
+            ledARGB = (it.getOrElse("ledARGB") { -1 } as Number).toInt()
+            ledOnMs = (it.getOrElse("ledOnMs") { -1 } as Number).toInt()
+            ledOffMs = (it.getOrElse("ledOffMs") { -1 } as Number).toInt()
             hideContent = it["hideContent"] as Boolean
             downTimeToggle = it["downTimeToggle"] as Boolean
             downTimeEnableNotification = it["downTimeEnableNotification"] as Boolean
@@ -532,11 +553,12 @@ fun convertToStatusBarNotificationConfig(param: Map<String, Any?>?): StatusBarNo
 
             val notificationClsName = it["notificationEntranceClassName"] as String?
             if (notificationClsName != null) {
-                notificationEntrance = Class.forName(notificationClsName).asSubclass(Activity::class.java)
+                notificationEntrance =
+                    Class.forName(notificationClsName).asSubclass(Activity::class.java)
             }
 
             titleOnlyShowAppName = it["titleOnlyShowAppName"] as Boolean
-            notificationColor = (it.getOrElse("notificationColor"){0}  as Number).toInt()
+            notificationColor = (it.getOrElse("notificationColor") { 0 } as Number).toInt()
             showBadge = it["showBadge"] as Boolean
             customTitleWhenTeamNameEmpty = it["customTitleWhenTeamNameEmpty"] as String?
 
@@ -548,20 +570,19 @@ fun convertToStatusBarNotificationConfig(param: Map<String, Any?>?): StatusBarNo
             )
         }
     }
-
 }
 
 object EnumTypeMappingRegistry {
 
-    val enumTypeMappingRegistry = mapOf<Class<*>, Map<*,Any>>(
+    val enumTypeMappingRegistry = mapOf<Class<*>, Map<*, Any>>(
         NotificationFoldStyle::class.java to mapOf(
             NotificationFoldStyle.ALL to "all",
             NotificationFoldStyle.EXPAND to "expand",
-            NotificationFoldStyle.CONTACT to "contact",
+            NotificationFoldStyle.CONTACT to "contact"
         ),
         NotificationExtraTypeEnum::class.java to mapOf(
             NotificationExtraTypeEnum.MESSAGE to "message",
-            NotificationExtraTypeEnum.JSON_ARR_STR to "jsonArrStr",
+            NotificationExtraTypeEnum.JSON_ARR_STR to "jsonArrStr"
         ),
         RobotMsgType::class.java to mapOf(
             RobotMsgType.TEXT to "text",
@@ -574,14 +595,15 @@ object EnumTypeMappingRegistry {
             ChatRoomQueueChangeType.POLL to "poll",
             ChatRoomQueueChangeType.DROP to "drop",
             ChatRoomQueueChangeType.PARTCLEAR to "partialClear",
-            ChatRoomQueueChangeType.BATCH_UPDATE to "batchUpdate",
+            ChatRoomQueueChangeType.BATCH_UPDATE to "batchUpdate"
         ),
         DirCacheFileType::class.java to mapOf(
             DirCacheFileType.IMAGE to "image",
             DirCacheFileType.VIDEO to "video",
+            DirCacheFileType.THUMB to "thumb",
             DirCacheFileType.AUDIO to "audio",
             DirCacheFileType.LOG to "log",
-            DirCacheFileType.OTHER to "other",
+            DirCacheFileType.OTHER to "other"
         )
     )
 
@@ -602,7 +624,7 @@ object EnumTypeMappingRegistry {
 
 class MapProperty<T : Any>(
     private val map: Map<String, *>?,
-    private val orElse: T,
+    private val orElse: T
 ) : ReadOnlyProperty<Any?, T> {
 
     private var value: T? = null

@@ -1,10 +1,11 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/message/message.dart';
 import 'package:nim_core_platform_interface/src/utils/converter.dart';
+
 part 'chatroom_models.g.dart';
 
 /// 加入聊天室请求
@@ -238,11 +239,13 @@ class NIMChatroomInfo {
 }
 
 _chatroomInfoToJson(NIMChatroomInfo info) => _$NIMChatroomInfoToJson(info);
+
 NIMChatroomInfo _chatroomInfoFromJson(Map map) =>
     NIMChatroomInfo.fromMap(map.cast<String, dynamic>());
 
 _chatroomMemberToJson(NIMChatroomMember member) =>
     _$NIMChatroomMemberToJson(member);
+
 NIMChatroomMember _chatroomMemberFromJson(Map map) =>
     NIMChatroomMember.fromMap(map.cast<String, dynamic>());
 

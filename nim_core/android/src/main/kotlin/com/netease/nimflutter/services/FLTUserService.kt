@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -8,26 +8,34 @@ package com.netease.nimflutter.services
 
 import android.content.Context
 import android.text.TextUtils
-import com.netease.nimflutter.*
-import com.netease.nimlib.sdk.uinfo.UserService
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.ResultCallback
+import com.netease.nimflutter.SafeResult
+import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.friend.FriendService
 import com.netease.nimlib.sdk.friend.FriendServiceObserve
 import com.netease.nimlib.sdk.friend.constant.FriendFieldEnum
 import com.netease.nimlib.sdk.friend.constant.VerifyType
-import com.netease.nimlib.sdk.friend.model.*
-import com.netease.nimlib.sdk.msg.MsgServiceObserve
+import com.netease.nimlib.sdk.friend.model.AddFriendData
+import com.netease.nimlib.sdk.friend.model.BlackListChangedNotify
+import com.netease.nimlib.sdk.friend.model.Friend
+import com.netease.nimlib.sdk.friend.model.FriendChangedNotify
+import com.netease.nimlib.sdk.friend.model.MuteListChangedNotify
+import com.netease.nimlib.sdk.uinfo.UserService
 import com.netease.nimlib.sdk.uinfo.UserServiceObserve
 import com.netease.nimlib.sdk.uinfo.constant.GenderEnum
 import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.netease.yunxin.kit.alog.ALog
 
 class FLTUserService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private val tag = "FLTUserService"
@@ -36,26 +44,33 @@ class FLTUserService(
 
     override fun onMethodCalled(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
         when (method) {
-            //获取指定用户资料（本地）
+            // 获取指定用户资料（本地）
             "getUserInfo" -> getUserInfo(arguments, ResultCallback(safeResult))
             "getUserInfoList" -> getUserInfoList(arguments, ResultCallback(safeResult))
             "getAllUserInfo" -> getAllUserInfo(ResultCallback(safeResult))
-            //批量获取用户资料（云端）
+            // 批量获取用户资料（云端）
             "fetchUserInfoList" -> fetchUserInfoList(arguments, ResultCallback(safeResult))
-            //更新当前账号的信息
+            // 更新当前账号的信息
             "updateMyUserInfo" -> updateMyUserInfo(arguments, ResultCallback(safeResult))
-            //根据昵称查找账号
-            "searchUserIdListByNick" -> searchUserIdListByNick(arguments, ResultCallback(safeResult))
-            //根据关键字查找用户信息
-            "searchUserInfoListByKeyword" -> searchUserInfoListByKeyword(
-                arguments, ResultCallback(safeResult)
+            // 根据昵称查找账号
+            "searchUserIdListByNick" -> searchUserIdListByNick(
+                arguments,
+                ResultCallback(safeResult)
             )
-            //获取所有好友信息
+            // 根据关键字查找用户信息
+            "searchUserInfoListByKeyword" -> searchUserInfoListByKeyword(
+                arguments,
+                ResultCallback(safeResult)
+            )
+            // 获取所有好友信息
             "getFriendList" -> getFriendList(ResultCallback(safeResult))
             "getFriend" -> getFriend(arguments, ResultCallback(safeResult))
             "getFriendAccounts" -> getFriendAccounts(ResultCallback(safeResult))
             "searchAccountByAlias" -> searchAccountByAlias(arguments, ResultCallback(safeResult))
-            "searchFriendsByKeyword" -> searchFriendsByKeyword(arguments, ResultCallback(safeResult))
+            "searchFriendsByKeyword" -> searchFriendsByKeyword(
+                arguments,
+                ResultCallback(safeResult)
+            )
             "addFriend" -> addFriend(arguments, ResultCallback(safeResult))
             "ackAddFriend" -> ackAddFriend(arguments, ResultCallback(safeResult))
             "deleteFriend" -> deleteFriend(arguments, ResultCallback(safeResult))
@@ -89,7 +104,6 @@ class FLTUserService(
         } else {
             val userInfo = NIMClient.getService(UserService::class.java).getUserInfo(userId)
             resultCallback.result(NimResult(code = 0, userInfo) { it.toMap() })
-
         }
     }
 
@@ -106,31 +120,37 @@ class FLTUserService(
                 NimResult(code = -1, errorDetails = "getUserInfoList but the userIds is empty!")
             )
         } else {
-           var userInfo = NIMClient.getService(UserService::class.java).getUserInfoList(userIdList)
+            var userInfo = NIMClient.getService(UserService::class.java).getUserInfoList(userIdList)
             resultCallback.result(
                 NimResult(
                     code = 0,
                     userInfo
                 ) {
-                    mutableMapOf("userInfoList" to it.map { it1 -> it1?.toMap() }
-                        .toList())
-                })
+                    mutableMapOf(
+                        "userInfoList" to it.map { it1 -> it1?.toMap() }
+                            .toList()
+                    )
+                }
+            )
         }
     }
 
     /**
      * 获取本地数据库中所有用户资料
      */
-    private fun getAllUserInfo( resultCallback: ResultCallback<List<NimUserInfo?>>) {
+    private fun getAllUserInfo(resultCallback: ResultCallback<List<NimUserInfo?>>) {
         var userInfo = NIMClient.getService(UserService::class.java).getAllUserInfo()
         resultCallback.result(
             NimResult(
                 code = 0,
                 userInfo
             ) {
-                mutableMapOf("userInfoList" to it.map { it1 -> it1?.toMap() }
-                    .toList())
-            })
+                mutableMapOf(
+                    "userInfoList" to it.map { it1 -> it1?.toMap() }
+                        .toList()
+                )
+            }
+        )
     }
 
     /**
@@ -156,9 +176,12 @@ class FLTUserService(
                                 code = 0,
                                 param
                             ) {
-                                mutableMapOf("userInfoList" to it.map { it1 -> it1?.toMap() }
-                                    .toList())
-                            })
+                                mutableMapOf(
+                                    "userInfoList" to it.map { it1 -> it1?.toMap() }
+                                        .toList()
+                                )
+                            }
+                        )
                     }
 
                     override fun onFailed(code: Int) {
@@ -221,21 +244,20 @@ class FLTUserService(
         }
 
         NIMClient.getService(UserService::class.java).updateUserInfo(fields).setCallback(object :
-            RequestCallback<Void> {
-            override fun onSuccess(param: Void?) {
-                ALog.d(tag, "updateMyUserInfo onSuccess")
-                resultCallback.result(NimResult(code = 0))
-            }
+                RequestCallback<Void> {
+                override fun onSuccess(param: Void?) {
+                    ALog.d(tag, "updateMyUserInfo onSuccess")
+                    resultCallback.result(NimResult(code = 0))
+                }
 
-            override fun onFailed(code: Int) {
-                onFailed("updateMyUserInfo", code, resultCallback)
-            }
+                override fun onFailed(code: Int) {
+                    onFailed("updateMyUserInfo", code, resultCallback)
+                }
 
-            override fun onException(exception: Throwable?) {
-                onException("updateMyUserInfo", exception, resultCallback)
-            }
-        })
-
+                override fun onException(exception: Throwable?) {
+                    onException("updateMyUserInfo", exception, resultCallback)
+                }
+            })
     }
 
     /**
@@ -249,8 +271,9 @@ class FLTUserService(
         if (TextUtils.isEmpty(nick)) {
             resultCallback.result(
                 NimResult(
-                    code = -1, errorDetails = "searchUserIdByNick by " +
-                            "nick is empty"
+                    code = -1,
+                    errorDetails = "searchUserIdByNick by " +
+                        "nick is empty"
                 )
             )
         } else {
@@ -258,9 +281,11 @@ class FLTUserService(
                 .setCallback(object : RequestCallback<List<String?>?> {
                     override fun onSuccess(param: List<String?>?) {
                         ALog.d(tag, "searchUserIdByNick onSuccess")
-                        resultCallback.result(NimResult(code = 0, param) {
-                            mutableMapOf("userIdList" to it.map { it1 -> it1 }.toList())
-                        })
+                        resultCallback.result(
+                            NimResult(code = 0, param) {
+                                mutableMapOf("userIdList" to it.map { it1 -> it1 }.toList())
+                            }
+                        )
                     }
 
                     override fun onFailed(code: Int) {
@@ -285,8 +310,9 @@ class FLTUserService(
         if (TextUtils.isEmpty(keyword)) {
             resultCallback.result(
                 NimResult(
-                    code = -1, errorDetails = "searchUserInfoByKeyword " +
-                            "but keyword is empty"
+                    code = -1,
+                    errorDetails = "searchUserInfoByKeyword " +
+                        "but keyword is empty"
                 )
             )
         } else {
@@ -294,9 +320,11 @@ class FLTUserService(
                 .setCallback(object : RequestCallback<List<NimUserInfo?>?> {
                     override fun onSuccess(param: List<NimUserInfo?>?) {
                         ALog.d(tag, "searchUserInfoListByKeyword onSuccess")
-                        resultCallback.result(NimResult(code = 0, param) {
-                            mutableMapOf("userInfoList" to it.map { it1 -> it1?.toMap() }.toList())
-                        })
+                        resultCallback.result(
+                            NimResult(code = 0, param) {
+                                mutableMapOf("userInfoList" to it.map { it1 -> it1?.toMap() }.toList())
+                            }
+                        )
                     }
 
                     override fun onFailed(code: Int) {
@@ -318,9 +346,11 @@ class FLTUserService(
     ) {
         val friends = NIMClient.getService(FriendService::class.java).friends
         println("$tag getFriendList result = $friends")
-        resultCallback.result(NimResult(code = 0, friends) {
-            mutableMapOf("friendList" to it.map { it1 -> it1?.toMap() }.toList())
-        })
+        resultCallback.result(
+            NimResult(code = 0, friends) {
+                mutableMapOf("friendList" to it.map { it1 -> it1?.toMap() }.toList())
+            }
+        )
     }
 
     /**
@@ -336,9 +366,9 @@ class FLTUserService(
                 NimResult(code = -1, errorDetails = "getFriend but the userId is empty!")
             )
         } else {
-            val userInfo = NIMClient.getService(FriendService::class.java).getFriendByAccount(userId)
+            val userInfo =
+                NIMClient.getService(FriendService::class.java).getFriendByAccount(userId)
             resultCallback.result(NimResult(code = 0, userInfo) { it.toMap() })
-
         }
     }
 
@@ -349,15 +379,18 @@ class FLTUserService(
         resultCallback: ResultCallback<List<String>>
     ) {
         val blackList = NIMClient.getService(FriendService::class.java).friendAccounts
-        resultCallback.result(NimResult(code = 0, blackList) {
-            mutableMapOf("userIdList" to it)
-        })
+        resultCallback.result(
+            NimResult(code = 0, blackList) {
+                mutableMapOf("userIdList" to it)
+            }
+        )
     }
 
     /**
      * 根据备注反查账号
      */
-    private fun searchAccountByAlias(arguments: Map<String, *>,
+    private fun searchAccountByAlias(
+        arguments: Map<String, *>,
         resultCallback: ResultCallback<List<String?>>
     ) {
         val alias = arguments["alias"] as? String
@@ -365,9 +398,11 @@ class FLTUserService(
             .setCallback(object : RequestCallback<List<String?>?> {
                 override fun onSuccess(param: List<String?>?) {
                     ALog.d(tag, "searchAccountByAlias onSuccess")
-                    resultCallback.result(NimResult(code = 0, param) {
-                        mutableMapOf("userIdList" to it.map { it1 -> it1 }.toList())
-                    })
+                    resultCallback.result(
+                        NimResult(code = 0, param) {
+                            mutableMapOf("userIdList" to it.map { it1 -> it1 }.toList())
+                        }
+                    )
                 }
 
                 override fun onFailed(code: Int) {
@@ -376,33 +411,37 @@ class FLTUserService(
 
                 override fun onException(exception: Throwable?) {
                     onException("searchAccountByAlias onException", exception, resultCallback)
-                } })
+                }
+            })
     }
 
     /**
      * 搜索与关键字匹配的所有好友
      */
-    private fun searchFriendsByKeyword(arguments: Map<String, *>,
+    private fun searchFriendsByKeyword(
+        arguments: Map<String, *>,
         resultCallback: ResultCallback<List<Friend?>>
     ) {
         val keyword = arguments["keyword"] as? String
-        NIMClient.getService(FriendService::class.java).searchFriendsByKeyword(keyword).setCallback(object : RequestCallback<List<Friend?>?> {
-            override fun onSuccess(param: List<Friend?>?) {
-                ALog.d(tag, "searchFriendsByKeyword onSuccess")
-                resultCallback.result(NimResult(code = 0, param) {
-                    mutableMapOf("friendList" to it.map { it1 -> it1?.toMap() }.toList())
-                })
-            }
+        NIMClient.getService(FriendService::class.java).searchFriendsByKeyword(keyword)
+            .setCallback(object : RequestCallback<List<Friend?>?> {
+                override fun onSuccess(param: List<Friend?>?) {
+                    ALog.d(tag, "searchFriendsByKeyword onSuccess")
+                    resultCallback.result(
+                        NimResult(code = 0, param) {
+                            mutableMapOf("friendList" to it.map { it1 -> it1?.toMap() }.toList())
+                        }
+                    )
+                }
 
-            override fun onFailed(code: Int) {
-                onFailed("searchFriendsByKeyword onFailed", code, resultCallback)
-            }
+                override fun onFailed(code: Int) {
+                    onFailed("searchFriendsByKeyword onFailed", code, resultCallback)
+                }
 
-            override fun onException(exception: Throwable?) {
-                onException("searchFriendsByKeyword onException", exception, resultCallback)
-            }
-        })
-
+                override fun onException(exception: Throwable?) {
+                    onException("searchFriendsByKeyword onException", exception, resultCallback)
+                }
+            })
     }
 
     /**
@@ -412,9 +451,11 @@ class FLTUserService(
         resultCallback: ResultCallback<List<String>>
     ) {
         val blackList = NIMClient.getService(FriendService::class.java).blackList
-        resultCallback.result(NimResult(code = 0, blackList) {
-            mutableMapOf("userIdList" to it)
-        })
+        resultCallback.result(
+            NimResult(code = 0, blackList) {
+                mutableMapOf("userIdList" to it)
+            }
+        )
     }
 
     /**
@@ -424,9 +465,11 @@ class FLTUserService(
         resultCallback: ResultCallback<List<String>>
     ) {
         val muteList = NIMClient.getService(FriendService::class.java).muteList
-        resultCallback.result(NimResult(code = 0, muteList) {
-            mutableMapOf("userIdList" to it)
-        })
+        resultCallback.result(
+            NimResult(code = 0, muteList) {
+                mutableMapOf("userIdList" to it)
+            }
+        )
     }
 
     /**
@@ -633,7 +676,7 @@ class FLTUserService(
         val isMyFriend = NIMClient.getService(FriendService::class.java).isMyFriend(userId)
 
         ALog.d(tag, "user = $userId isMyFriend = $isMyFriend")
-        resultCallback.result(NimResult(code = 0, isMyFriend));
+        resultCallback.result(NimResult(code = 0, isMyFriend))
     }
 
     /**
@@ -647,7 +690,7 @@ class FLTUserService(
         val alias = arguments["alias"] as? String ?: ""
 
         val fields = HashMap<FriendFieldEnum, Any>()
-        fields[FriendFieldEnum.ALIAS] = alias;
+        fields[FriendFieldEnum.ALIAS] = alias
 
         NIMClient.getService(FriendService::class.java).updateFriendFields(userId, fields)
             .setCallback(object : RequestCallback<Void> {
@@ -668,8 +711,13 @@ class FLTUserService(
 
     private val userInfoChangedObserver =
         Observer<List<NimUserInfo>> { userInfoListChangeNotify ->
-            notifyEvent("onUserInfoChanged", mutableMapOf("changedUserInfoList" to userInfoListChangeNotify.map { it.toMap() }
-                .toList()))
+            notifyEvent(
+                "onUserInfoChanged",
+                mutableMapOf(
+                    "changedUserInfoList" to userInfoListChangeNotify.map { it.toMap() }
+                        .toList()
+                )
+            )
         }
 
     private val friendChangedObserver =
@@ -677,12 +725,22 @@ class FLTUserService(
             val addedOrUpdatedFriends = friendChangedNotify.addedOrUpdatedFriends // 新增的好友
             val deletedFriendAccounts = friendChangedNotify.deletedFriends // 删除好友或者被解除好友
 
-            notifyEvent("onFriendAddedOrUpdated", mutableMapOf("addedOrUpdatedFriendList" to addedOrUpdatedFriends.map { it.toMap() }
-                .toList()))
+            notifyEvent(
+                "onFriendAddedOrUpdated",
+                mutableMapOf(
+                    "addedOrUpdatedFriendList" to addedOrUpdatedFriends.map { it.toMap() }
+                        .toList()
+                )
+            )
 
-            notifyEvent("onFriendAccountDeleted", mutableMapOf("deletedFriendAccountList" to
-                    deletedFriendAccounts.map { it.toString() }
-                .toList()))
+            notifyEvent(
+                "onFriendAccountDeleted",
+                mutableMapOf(
+                    "deletedFriendAccountList" to
+                        deletedFriendAccounts.map { it.toString() }
+                            .toList()
+                )
+            )
         }
 
     private val blackListChangedObserve =
@@ -708,6 +766,5 @@ class FLTUserService(
             NIMClient.getService(FriendServiceObserve::class.java)
                 .observeMuteListChangedNotify(muteListChangedObserve, true)
         }
-
     }
 }

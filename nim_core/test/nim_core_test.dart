@@ -1,14 +1,11 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nim_core/nim_core.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('nim_core');
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('canLaunch android || ios', () {

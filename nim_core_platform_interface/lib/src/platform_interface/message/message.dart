@@ -1,13 +1,10 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/utils/converter.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
 
 part 'message.g.dart';
 
@@ -504,7 +501,7 @@ abstract class NIMMessageAttachment {
             type <= NIMTeamNotificationTypes.muteTeamMember) {
           return NIMTeamNotificationAttachment.createTeamNotificationAttachment(
               map);
-        }else if (type >= NIMSuperTeamNotificationTypes.invite &&
+        } else if (type >= NIMSuperTeamNotificationTypes.invite &&
             type <= NIMSuperTeamNotificationTypes.inviteAccept) {
           return NIMTeamNotificationAttachment.createTeamNotificationAttachment(
               map);

@@ -1,15 +1,14 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
 
 package com.netease.nimflutter
 
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Handler
+import android.os.Looper
 import io.flutter.plugin.common.MethodChannel.Result
-import java.lang.Exception
 import kotlin.coroutines.Continuation
 
 class SafeResult(private val unsafeResult: Result) : Result {
@@ -20,7 +19,7 @@ class SafeResult(private val unsafeResult: Result) : Result {
         runOnMainThread { unsafeResult.success(result) }
     }
 
-    override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+    override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
         runOnMainThread { unsafeResult.error(errorCode, errorMessage, errorDetails) }
     }
 
@@ -41,7 +40,7 @@ class MethodChannelError(
     private val errorCode: String?,
     private val errorMessage: String?,
     private val errorDetails: Any?
-): Exception()
+) : Exception()
 
 class MethodChannelSuspendResult(
     private val continuation: Continuation<Any?>
@@ -51,8 +50,16 @@ class MethodChannelSuspendResult(
         continuation.resumeWith(kotlin.Result.success(result))
     }
 
-    override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
-        continuation.resumeWith(kotlin.Result.failure(MethodChannelError(errorCode, errorMessage, errorDetails)))
+    override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
+        continuation.resumeWith(
+            kotlin.Result.failure(
+                MethodChannelError(
+                    errorCode,
+                    errorMessage,
+                    errorDetails
+                )
+            )
+        )
     }
 
     override fun notImplemented() {

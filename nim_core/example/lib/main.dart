@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -24,11 +24,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // For Publish Use
   static const appKey = 'Your_App_Key';
   static const account = 'Account_ID';
   static const token = 'Account_Token';
   static const friendAccount = 'Friend_Account_ID';
   static const chatroomId = '123456789';
+
+  // Inner Test Configuration 2
+  // static const account = 'lcd123456';
+  // static const token = '1f57ef61a99370211f126e9dd8ba88bd';
+  // static const friendAccount = 'jinjie03';
 
   final subsriptions = <StreamSubscription>[];
 
@@ -107,6 +113,16 @@ class _MyAppState extends State<MyApp> {
       print('MessageService##onMySessionUpdate: $session');
     }));
 
+    subsriptions
+        .add(NimCore.instance.messageService.onSessionDelete.listen((session) {
+      print('MessageService##onSessionDelete: $session');
+    }));
+
+    subsriptions
+        .add(NimCore.instance.messageService.onSessionUpdate.listen((session) {
+      print('MessageService##onSessionUpdate: $session');
+    }));
+
     _doInitializeSDK();
   }
 
@@ -180,6 +196,21 @@ class _MyAppState extends State<MyApp> {
         print(
             'MessageService##send message: ${result.code} ${result.errorDetails}');
       });
+
+      {
+        NimCore.instance.messageService
+            .deleteSession(
+          sessionInfo: NIMSessionInfo(
+            sessionId: friendAccount,
+            sessionType: NIMSessionType.p2p,
+          ),
+          deleteType: NIMSessionDeleteType.local,
+          sendAck: true,
+        )
+            .then((value) {
+          print('MessageService##delete session: $value');
+        });
+      }
 
       setupChatroom();
 
@@ -267,157 +298,6 @@ class _MyAppState extends State<MyApp> {
         body: Center(),
       ),
     );
-  }
-
-  void _testSuperTeam() async {
-    String teamId = '10001';
-    final ret1 = await NimCore.instance.superTeamService
-        .applyJoinTeam(teamId, 'postscript');
-    print(
-        '_testSuperTeam applyJoinTeam ${ret1.data?.id}, ${ret1.data?.name}, ${ret1.data?.createTime}');
-    final ret2 = await NimCore.instance.superTeamService.searchTeam(teamId);
-    print(
-        '_testSuperTeam searchTeam ${ret2.data!.id!}, ${ret2.data!.name!}, ${ret2.data!.createTime}');
-    final ret3 = await NimCore.instance.superTeamService.queryTeamList();
-    print('_testSuperTeam queryTeamList ${ret3.data!.length}');
-    final ret4 = await NimCore.instance.superTeamService.queryTeam(teamId);
-    print(
-        '_testSuperTeam queryTeam ${ret4.data!.id!}, ${ret4.data!.name!}, ${ret4.data!.createTime}');
-    final ret5 =
-        await NimCore.instance.superTeamService.searchTeamIdByName('测试群聊');
-    print('_testSuperTeam searchTeamIdByName ${ret5.data}');
-    final ret6 =
-        await NimCore.instance.superTeamService.searchTeamsByKeyword('测试群聊');
-    print('_testSuperTeam searchTeamsByKeyword ${ret6.data}');
-    final ret7 = await NimCore.instance.superTeamService
-        .addMembers(teamId, ['lcd123456'], '邀请入群');
-    print('_testSuperTeam addMembers ${ret7.data}');
-    final ret8 =
-        await NimCore.instance.superTeamService.queryMemberList(teamId);
-    print('_testSuperTeam queryMemberList ${ret8.data!.length}');
-    final ret9 = await NimCore.instance.superTeamService
-        .queryTeamMember(teamId, 'jinjie00');
-    print('_testSuperTeam queryTeamMember ${ret9.data?.account}');
-    final ret10 = await NimCore.instance.superTeamService
-        .updateMemberNick(teamId, 'jinjie00', 'nick');
-    print('_testSuperTeam updateMemberNick ${ret10.code}');
-    final ret101 = await NimCore.instance.superTeamService
-        .updateMyTeamNick(teamId, '金杰03');
-    print('_testSuperTeam updateMyTeamNick ${ret101.code}');
-    final ret11 = await NimCore.instance.superTeamService
-        .addManagers(teamId, ['jinjie00']);
-    print('_testSuperTeam addManagers ${ret11.code}');
-    final ret12 = await NimCore.instance.superTeamService
-        .removeManagers(teamId, ['jinjie00']);
-    print('_testSuperTeam removeManagers ${ret12.code}');
-    final ret13 =
-        await NimCore.instance.superTeamService.muteAllTeamMember(teamId, true);
-    print('_testSuperTeam muteAllTeamMember ${ret13.code}');
-    NIMTeamUpdateFieldRequest request = NIMTeamUpdateFieldRequest();
-    request.setName('更新群名称');
-    final ret14 = await NimCore.instance.superTeamService
-        .updateTeamFields(teamId, request);
-    print('_testSuperTeam updateTeamFields ${ret14.code}');
-    final ret100 = await NimCore.instance.superTeamService.searchTeam(teamId);
-    print(
-        '_testSuperTeam searchTeam ${ret100.data!.id!}, ${ret100.data!.name!}, ${ret100.data!.createTime}');
-    final ret16 = await NimCore.instance.superTeamService
-        .muteTeam(teamId, NIMTeamMessageNotifyTypeEnum.all);
-    print('_testSuperTeam muteTeam ${ret16.code}');
-    final ret17 = await NimCore.instance.superTeamService
-        .transferTeam(teamId, 'jinjie00', false);
-    print('_testSuperTeam transferTeam ${ret17.code}');
-    // final ret18 = await NimCore.instance.superTeamService.quitTeam(teamId);
-    // print('_testSuperTeam quitTeam ${ret18.code}');
-  }
-
-  void _testTeam() async {
-    final ret1 = await NimCore.instance.teamService.createTeam(
-        createTeamOptions: NIMCreateTeamOptions(
-          name: "测试群聊",
-          avatarUrl:
-              'https://t7.baidu.com/it/u=2168645659,3174029352&fm=193&f=GIF',
-          introduce: 'introduce',
-          announcement: 'announcement',
-          extension: 'extension',
-          postscript: 'postscript',
-          verifyType: NIMVerifyTypeEnum.free,
-          inviteMode: NIMTeamInviteModeEnum.all,
-          beInviteMode: NIMTeamBeInviteModeEnum.noAuth,
-          updateInfoMode: NIMTeamUpdateModeEnum.all,
-          extensionUpdateMode: NIMTeamExtensionUpdateModeEnum.all,
-          teamType: NIMTeamTypeEnum.advanced,
-        ),
-        members: ['jinjie00'],
-    );
-    print('_testTeam createTeam ${ret1.data!.team!.id!}');
-    String teamId = ret1.data!.team!.id!;
-    final ret2 = await NimCore.instance.teamService.searchTeam(teamId);
-    print(
-        '_testTeam searchTeam ${ret2.data!.id!}, ${ret2.data!.name!}, ${ret2.data!.createTime}');
-    final ret3 = await NimCore.instance.teamService.queryTeamList();
-    print('_testTeam queryTeamList ${ret3.data!.length}');
-    final ret4 = await NimCore.instance.teamService.queryTeam(teamId);
-    print(
-        '_testTeam queryTeam ${ret4.data!.id!}, ${ret4.data!.name!}, ${ret4.data!.createTime}');
-    final ret5 = await NimCore.instance.teamService.searchTeamIdByName('测试群聊');
-    print('_testTeam searchTeamIdByName ${ret5.data}');
-    final ret6 =
-        await NimCore.instance.teamService.searchTeamsByKeyword('测试群聊');
-    print('_testTeam searchTeamsByKeyword ${ret6.data}');
-    final ret7 = await NimCore.instance.teamService.addMembersEx(
-        teamId: teamId,
-        accounts: ['lcd123456'],
-        msg: '邀请入群',
-        customInfo: '自定义消息');
-    print('_testTeam addMembersEx ${ret7.code} ${ret7.data}');
-    final ret8 = await NimCore.instance.teamService.queryMemberList(teamId);
-    print('_testTeam queryMemberList ${ret8.data!.length}');
-    final ret9 =
-        await NimCore.instance.teamService.queryTeamMember(teamId, 'jinjie00');
-    print('_testTeam queryTeamMember ${ret9.data?.account}');
-    final ret10 = await NimCore.instance.teamService
-        .updateMemberNick(teamId, 'jinjie00', 'nick');
-    print('_testTeam updateMemberNick ${ret10.code}');
-    final ret11 =
-        await NimCore.instance.teamService.addManagers(teamId, ['jinjie00']);
-    print('_testTeam addManagers ${ret11.code}');
-    final ret12 =
-        await NimCore.instance.teamService.removeManagers(teamId, ['jinjie00']);
-    print('_testTeam removeManagers ${ret12.code}');
-    final ret13 =
-        await NimCore.instance.teamService.muteAllTeamMember(teamId, true);
-    print('_testTeam muteAllTeamMember ${ret13.code}');
-    NIMTeamUpdateFieldRequest request = NIMTeamUpdateFieldRequest();
-    request.setName('更新群名称');
-    final ret14 =
-        await NimCore.instance.teamService.updateTeamFields(teamId, request);
-    print('_testTeam updateTeamFields ${ret14.code}');
-    final ret100 = await NimCore.instance.teamService.searchTeam(teamId);
-    print(
-        '_testTeam searchTeam ${ret100.data!.id!}, ${ret100.data!.name!}, ${ret100.data!.createTime}');
-    final ret101 = await NimCore.instance.teamService.searchTeam(teamId);
-    print(
-        '_testTeam searchTeam ${ret101.data!.id!}, ${ret101.data!.name!}, ${ret101.data!.createTime}');
-    final ret102 = await NimCore.instance.teamService.muteTeamMember(teamId, 'jinjie00', true);
-    print('_testTeam muteTeamMember ${ret102.code}');
-    final ret103 = await NimCore.instance.teamService.muteTeamMember(teamId, 'jinjie00', false);
-    print('_testTeam unmuteTeamMember ${ret102.code}');
-    final ret16 = await NimCore.instance.teamService
-        .muteTeam(teamId, NIMTeamMessageNotifyTypeEnum.all);
-    print('_testTeam muteTeam ${ret16.code}');
-    final ret17 = await NimCore.instance.teamService
-        .transferTeam(teamId, 'jinjie00', false);
-    print('_testTeam transferTeam ${ret17.code}');
-    final ret18 = await NimCore.instance.teamService.quitTeam(teamId);
-    print('_testTeam quitTeam ${ret18.code}');
-    final ret19 = await NimCore.instance.teamService.createTeam(
-        createTeamOptions: NIMCreateTeamOptions(
-            name: "测试群聊", teamType: NIMTeamTypeEnum.normal),
-        members: ['jinjie00']);
-    String teamId1 = ret19.data!.team!.id!;
-    final ret20 = await NimCore.instance.teamService.dismissTeam(teamId1);
-    print('_testTeam dismissTeam ${ret20.code}');
   }
 
   void setupChatroom() {
@@ -642,7 +522,8 @@ class _MyAppState extends State<MyApp> {
         'sendDate': DateTime.now().toString(),
         'platform': Platform.operatingSystem,
       },
-    )).then((value) {
+    ))
+        .then((value) {
       print(
           'ChatroomService##enter chatroom: ${value.code} ${value.errorDetails}');
 

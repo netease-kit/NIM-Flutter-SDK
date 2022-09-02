@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -14,18 +14,21 @@
 #include "NimCore.h"
 
 class MethodCallHandlerImpl {
-public:
-    MethodCallHandlerImpl();
+ public:
+  MethodCallHandlerImpl();
 
-    void onMethodCall(const flutter::MethodCall<flutter::EncodableValue>& method_call,
-                      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void onMethodCall(
+      const flutter::MethodCall<flutter::EncodableValue>& method_call,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
-    flutter::MethodChannel<flutter::EncodableValue>* startListening(flutter::PluginRegistrar* registrar);
+  flutter::MethodChannel<flutter::EncodableValue>* startListening(
+      flutter::PluginRegistrar* registrar);
 
-    void stopListening();
+  void stopListening();
 
-private:
-    std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>> m_methodChannel;
+ private:
+  std::unique_ptr<flutter::MethodChannel<flutter::EncodableValue>>
+      m_methodChannel;
 };
 
 #endif  // METHODCALLHANDLERIMPL_H

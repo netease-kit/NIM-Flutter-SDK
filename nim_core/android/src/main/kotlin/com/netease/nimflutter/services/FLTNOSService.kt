@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -8,7 +8,12 @@ package com.netease.nimflutter.services
 
 import android.content.Context
 import android.text.TextUtils
-import com.netease.nimflutter.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.ResultCallback
+import com.netease.nimflutter.SafeResult
+import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.RequestCallback
@@ -21,7 +26,7 @@ import java.io.File
 
 class FLTNOSService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private val tag = "FLTNOSService"
@@ -40,8 +45,10 @@ class FLTNOSService(
             run {
                 notifyEvent(
                     "onNOSTransferProgress",
-                    mutableMapOf("progress" to
-                            nosTransferProgress.transferred.toDouble() / nosTransferProgress.total)
+                    mutableMapOf(
+                        "progress" to
+                            nosTransferProgress.transferred.toDouble() / nosTransferProgress.total
+                    )
                 )
             }
         }
@@ -77,7 +84,7 @@ class FLTNOSService(
             resultCallback.result(
                 NimResult(code = -1, errorDetails = "upload but the filePath is empty!")
             )
-        }else {
+        } else {
             val file = File(filePath)
             if (!file.exists()) {
                 resultCallback.result(
@@ -87,12 +94,12 @@ class FLTNOSService(
             }
             val mimeType = arguments["mimeType"] as? String ?: "image/jpeg"
             val sceneKey = arguments["sceneKey"] as? String
-            if(!TextUtils.isEmpty(sceneKey)){
+            if (!TextUtils.isEmpty(sceneKey)) {
                 NIMClient.getService(NosService::class.java).uploadAtScene(file, mimeType, sceneKey)
                     .setCallback(object : RequestCallback<String> {
                         override fun onSuccess(param: String?) {
                             ALog.d(tag, "uploadAtScene onSuccess")
-                            resultCallback.result(NimResult(code = 0,data = param))
+                            resultCallback.result(NimResult(code = 0, data = param))
                         }
 
                         override fun onFailed(code: Int) {
@@ -103,12 +110,12 @@ class FLTNOSService(
                             onException("uploadAtScene onException", exception, resultCallback)
                         }
                     })
-            }else {
+            } else {
                 NIMClient.getService(NosService::class.java).upload(file, mimeType)
                     .setCallback(object : RequestCallback<String> {
                         override fun onSuccess(param: String?) {
                             ALog.d(tag, "upload onSuccess")
-                            resultCallback.result(NimResult(code = 0,data = param))
+                            resultCallback.result(NimResult(code = 0, data = param))
                         }
 
                         override fun onFailed(code: Int) {

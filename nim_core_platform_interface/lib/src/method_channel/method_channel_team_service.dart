@@ -1,12 +1,6 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
-
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/create_team_options.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/platform_interface_team_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/team.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/team/team_member.dart';
 
 import '../../nim_core_platform_interface.dart';
 
@@ -23,12 +17,16 @@ class MethodChannelTeamService extends TeamServicePlatform {
           TeamServicePlatform.instance.onTeamListUpdate.add(list);
         break;
       case 'onTeamListRemove':
-        var teamList = arguments['team'] as List<dynamic>?;
-        List<NIMTeam>? list = teamList
-            ?.map((e) => NIMTeam.fromMap(Map<String, dynamic>.from(e)))
-            .toList();
-        if (list != null)
-          TeamServicePlatform.instance.onTeamListRemove.add(list);
+        // var teamList = arguments['team'] as List<dynamic>?;
+        // List<NIMTeam>? list = teamList
+        //     ?.map((e) => NIMTeam.fromMap(Map<String, dynamic>.from(e)))
+        //     .toList();
+        final team = arguments['team'] as Map?;
+        if (team != null) {
+          TeamServicePlatform.instance.onTeamListRemove.add(
+            [NIMTeam.fromMap(Map<String, dynamic>.from(team))],
+          );
+        }
         break;
     }
     return Future.value(null);
@@ -161,6 +159,20 @@ class MethodChannelTeamService extends TeamServicePlatform {
       ..['inviter'] = inviter;
     return NIMResult<void>.fromMap(await invokeMethod(
       'acceptInvite',
+      arguments: arguments,
+    ));
+  }
+
+  @override
+  Future<NIMResult<void>> declineInvite(
+      String teamId, String inviter, String reason) async {
+    final arguments = <String, dynamic>{};
+    arguments
+      ..['teamId'] = teamId
+      ..['inviter'] = inviter
+      ..['reason'] = reason;
+    return NIMResult<void>.fromMap(await invokeMethod(
+      'declineInvite',
       arguments: arguments,
     ));
   }
