@@ -31,11 +31,6 @@ class _MyAppState extends State<MyApp> {
   static const friendAccount = 'Friend_Account_ID';
   static const chatroomId = '123456789';
 
-  // Inner Test Configuration 2
-  // static const account = 'lcd123456';
-  // static const token = '1f57ef61a99370211f126e9dd8ba88bd';
-  // static const friendAccount = 'jinjie03';
-
   final subsriptions = <StreamSubscription>[];
 
   Uint8List? _deviceToken;
