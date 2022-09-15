@@ -67,6 +67,8 @@ enum MessageType: String {
   case RemoveStickTopSession = "removeStickTopSession"
   case UpdateStickTopSession = "updateStickTopSession"
   case QueryStickTopSession = "queryStickTopSession"
+  case QueryRoamMsgHasMoreTime = "queryRoamMsgHasMoreTime"
+  case UpdateRoamMsgHasMoreTag = "updateRoamMsgHasMoreTag"
   case StickTopInfoForSession = "stickTopInfoForSession"
   case LoadRecentSessions = "loadRecentSessions"
   case SortRecentSessions = "sortRecentSessions"
@@ -106,7 +108,7 @@ class FLTMessageService: FLTBaseService, FLTService {
   func onMethodCalled(_ method: String, _ arguments: [String: Any],
                       _ resultCallback: ResultCallback) {
     if let chatExtendService = nimCore?
-      .getService(ServiceType.ChatroomService.rawValue) as? FLTChatExtendService,
+      .getService(ServiceType.ChatExtendService.rawValue) as? FLTChatExtendService,
       chatExtendService.checkMethod(method) {
       chatExtendService.onMethodCalled(method, arguments, resultCallback)
       return
@@ -138,7 +140,11 @@ class FLTMessageService: FLTBaseService, FLTService {
           message.messageDirection = messageDirection
         }
 
-        let messageJson = NimResult.success(message.toDic()).toDic()
+        var targetMsg = message.toDic()
+        if let _ = targetMsg?["status"] {
+          targetMsg?["status"] = FLT_NIMMessageStatus.sending.rawValue
+        }
+        let messageJson = NimResult.success(targetMsg).toDic()
         print("create message : ", messageJson)
 
         resultCallback.result(messageJson)
@@ -253,6 +259,10 @@ class FLTMessageService: FLTBaseService, FLTService {
       updateStickTopSession(arguments, resultCallback)
     case MessageType.QueryStickTopSession.rawValue:
       queryStickTopSession(arguments, resultCallback)
+    case MessageType.QueryRoamMsgHasMoreTime.rawValue:
+      queryRoamMsgHasMoreTime(arguments, resultCallback)
+    case MessageType.UpdateRoamMsgHasMoreTag.rawValue:
+      updateRoamMsgHasMoreTag(arguments, resultCallback)
     case MessageType.StickTopInfoForSession.rawValue:
       stickTopInfoForSession(arguments, resultCallback)
     case MessageType.LoadRecentSessions.rawValue:
@@ -323,6 +333,10 @@ class FLTMessageService: FLTBaseService, FLTService {
           message.setting = NIMMessageSetting()
         }
         message.setting?.scene = scene
+        // 修复发送消息getCustomSetting失败,未处理问题
+        if let messageAck = arguments["messageAck"] as? Bool {
+          message.setting?.teamReceiptEnabled = messageAck
+        }
       }
 
       do {
@@ -612,7 +626,7 @@ extension FLTMessageService: NIMChatManagerDelegate {
     if let messageCallback = messageCacheDic[message.messageId],
        let resultCallBack = messageCallback.callback {
       if let ns_error = error as NSError? {
-        print("send message failed : ", error as Any)
+        print("send message failed :", error as Any)
         resultCallBack.result(NimResult.error(ns_error.code, ns_error.description).toDic())
       } else {
         print("send message success : \(message.serverID)")
@@ -1454,8 +1468,8 @@ extension FLTMessageService {
         }
       }
 
-      NIMSDK.shared().chatManager
-        .queryMessageReceiptDetail(message, accountSet: set) { error, receiptDetail in
+      if set.isEmpty {
+        NIMSDK.shared().chatManager.queryMessageReceiptDetail(message) { error, receiptDetail in
           if error != nil {
             let nserror = error! as NSError
             let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
@@ -1464,8 +1478,21 @@ extension FLTMessageService {
             resultCallback.result(NimResult.success(receiptDetail?.toDic()).toDic())
           }
         }
+      } else {
+        NIMSDK.shared().chatManager
+          .queryMessageReceiptDetail(message, accountSet: set) { error, receiptDetail in
+            if error != nil {
+              let nserror = error! as NSError
+              let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
+              resultCallback.result(result.toDic())
+            } else {
+              resultCallback.result(NimResult.success(receiptDetail?.toDic()).toDic())
+            }
+          }
+      }
+
     } else {
-      resultCallback.result(NimResult.error("create message error").toDic())
+      resultCallback.result(NimResult.error("arguments invalid").toDic())
     }
   }
 
@@ -1910,6 +1937,54 @@ extension FLTMessageService {
     }
   }
 
+  func queryRoamMsgHasMoreTime(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if let sessionId = arguments["sessionId"] as? String,
+       let sessionTypeValue = arguments["sessionType"] as? String,
+       let sessionType = try? NIMSessionType.getType(sessionTypeValue) {
+      let session = NIMSession(sessionId, type: sessionType)
+      NIMSDK.shared().conversationManager
+        .incompleteSessionInfo(by: session) { error, sessionInfo in
+          if error != nil {
+            let nserror = error! as NSError
+            let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
+            resultCallback.result(result.toDic())
+          } else {
+            if sessionInfo != nil {
+              let timeStamp = sessionInfo?.first?.timestamp ?? 0
+              resultCallback.result(NimResult.success(timeStamp).toDic())
+            } else {
+              resultCallback.result(NimResult.success().toDic())
+            }
+          }
+        }
+    }
+  }
+
+  func updateRoamMsgHasMoreTag(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if let message = NIMMessage.convertToMessage(arguments),
+       let sessionId = message.sessionId,
+       let sessionType = message.sessionType,
+       let type = FLT_NIMSessionType(rawValue: sessionType)?.convertToNIMSessionType() {
+      let session = NIMSession(sessionId, type: type)
+      message.gArgument = arguments
+      message.setValue(session, forKeyPath: #keyPath(NIMMessage.session))
+
+      NIMSDK.shared().conversationManager
+        .updateIncompleteSessions([message]) { error, recentSessions in
+          if error != nil {
+            let nserror = error! as NSError
+            let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
+            resultCallback.result(result.toDic())
+          } else {
+            resultCallback.result(NimResult.success().toDic())
+          }
+        }
+
+    } else {
+      resultCallback.result(NimResult.error("arguments invalid").toDic())
+    }
+  }
+
   func loadRecentSessionsWithOptions(_ arguments: [String: Any],
                                      _ resultCallback: ResultCallback) {
     NIMSDK.shared().chatExtendManager
@@ -2034,5 +2109,9 @@ extension FLTMessageService: NIMBroadcastManagerDelegate {
 extension FLTMessageService: NIMConversationManagerDelegate {
   func didServerSessionUpdated(_ recentSession: NIMRecentSession?) {
     notifyEvent(serviceName(), "onMySessionUpdate", recentSession!.toDicEx())
+  }
+
+  func allMessagesDeleted() {
+    notifyEvent(serviceName(), "onSessionDelete", nil)
   }
 }

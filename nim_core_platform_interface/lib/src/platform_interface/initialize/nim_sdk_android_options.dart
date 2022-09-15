@@ -41,6 +41,10 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   @JsonKey(defaultValue: false)
   final bool reducedIM;
 
+  ///是否开启融合存储
+  @JsonKey(defaultValue: true)
+  final bool enableFcs;
+
   ///
   /// 是否检查 Manifest 配置
   /// 最好在调试阶段打开，调试通过之后请关掉
@@ -101,6 +105,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.customPushContentType,
     this.mixPushConfig,
     this.notificationConfig,
+    this.enableFcs = true,
 
     /// common configurations
     required String appKey,

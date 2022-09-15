@@ -131,6 +131,20 @@ class MethodChannelTeamService extends TeamServicePlatform {
   }
 
   @override
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) async {
+    final arguments = <String, dynamic>{};
+    arguments
+      ..['teamId'] = teamId
+      ..['account'] = account
+      ..['reason'] = reason;
+    return NIMResult<void>.fromMap(await invokeMethod(
+      'rejectApply',
+      arguments: arguments,
+    ));
+  }
+
+  @override
   Future<NIMResult<List<String>>> addMembersEx(String teamId,
       List<String> accounts, String msg, String customInfo) async {
     final arguments = <String, dynamic>{};

@@ -39,8 +39,12 @@ class FLTInitializeService: FLTService {
     if let extras = arguments["extras"] as? [String: Any] {
       flutterVersionName = extras["versionName"] as? String
       if flutterVersionName != nil {
-        NIMSDKConfig.shared().flutterSDKVersion = flutterVersionName as! NSString
+        NIMSDKConfig.shared().flutterSDKVersion = flutterVersionName ?? ""
       }
+    }
+    // 修复配置未打开问题
+    if arguments["enablePreloadMessageAttachment"] as? Bool == nil {
+      NIMSDKConfig.shared().fetchAttachmentAutomaticallyAfterReceiving = true
     }
 
     if let sdkDir = arguments["sdkRootDir"] as? String {

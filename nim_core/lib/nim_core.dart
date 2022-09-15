@@ -48,6 +48,7 @@ export 'package:nim_core_platform_interface/src/platform_interface/settings/sett
 export 'package:nim_core_platform_interface/src/platform_interface/super_team/platform_interface_super_team_service.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team_member.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/system_message/add_friend_notification.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/platform_interface_system_message_service.dart';
@@ -62,29 +63,17 @@ export 'package:nim_core_platform_interface/src/platform_interface/user/user.dar
 export 'package:nim_core_platform_interface/src/utils/converter.dart';
 
 part 'src/audio/audio_service.dart';
-
 part 'src/auth/auth_service.dart';
-
 part 'src/chatroom/chatroom_message_builder.dart';
-
 part 'src/chatroom/chatroom_service.dart';
-
 part 'src/message/message_builder.dart';
-
 part 'src/message/message_service.dart';
-
 part 'src/nos/nos_service.dart';
-
 part 'src/passthrough/passthrough_service.dart';
-
 part 'src/settings/settings_service.dart';
-
 part 'src/settings/settings_service_mobile.dart';
-
 part 'src/super_team/super_team_service.dart';
-
 part 'src/team/team_service.dart';
-
 part 'src/user/user_service.dart';
 
 class NimCore {

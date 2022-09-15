@@ -55,8 +55,8 @@ abstract class MessageServicePlatform extends Service {
       StreamController<List<NIMSession>>.broadcast();
 
   // ignore: close_sinks, never closed
-  final StreamController<NIMSession> onSessionDelete =
-      StreamController<NIMSession>.broadcast();
+  final StreamController<NIMSession?> onSessionDelete =
+      StreamController<NIMSession?>.broadcast();
 
   // ignore: close_sinks, never closed
   final StreamController<NIMMessagePinEvent> onMessagePinNotify =
@@ -627,5 +627,16 @@ abstract class MessageServicePlatform extends Service {
   ///获取置顶会话信息的列表
   Future<NIMResult<List<NIMStickTopSessionInfo>>> queryStickTopSession() {
     throw UnimplementedError('queryStickTopSession() is not implemented');
+  }
+
+  ///获取是否有更多漫游消息标记的时间戳，如果没有，回调0
+  Future<NIMResult<int>> queryRoamMsgHasMoreTime(
+      String sessionId, NIMSessionType sessionType) {
+    throw UnimplementedError('queryRoamMsgHasMoreTime() is not implemented');
+  }
+
+  ///更新是否有更多漫游消息的标记
+  Future<NIMResult<void>> updateRoamMsgHasMoreTag(NIMMessage newTag) {
+    throw UnimplementedError('updateRoamMsgHasMoreTag() is not implemented');
   }
 }

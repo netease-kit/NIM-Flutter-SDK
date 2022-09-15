@@ -168,6 +168,7 @@ fun SDKOptions.configureWithMap(configurations: Map<String, *>) = apply {
         configurations.getOrElse("improveSDKProcessPriority") { true } as Boolean
     preLoadServers = configurations.getOrElse("preLoadServers") { true } as Boolean
     reducedIM = configurations.getOrElse("reducedIM") { false } as Boolean
+    enableFcs = configurations.getOrElse("enableFcs") { true } as Boolean
     checkManifestConfig = configurations.getOrElse("checkManifestConfig") { false } as Boolean
     disableAwake = configurations.getOrElse("disableAwake") { false } as Boolean
     fetchServerTimeInterval =

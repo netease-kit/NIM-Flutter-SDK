@@ -24,6 +24,7 @@ class MethodCallHandlerImpl {
     FLTSettingsService().register(nimCore)
     FLTChatRoomService().register(nimCore)
     FLTSuperTeamService().register(nimCore)
+    FLTChatExtendService().register(nimCore)
   }
 
   func onMethodCall(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {

@@ -67,6 +67,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import kotlin.collections.ArrayList
 
 class FLTMessageService(
     applicationContext: Context,
@@ -330,7 +331,9 @@ class FLTMessageService(
                 "addStickTopSession" to ::addStickTopSession,
                 "removeStickTopSession" to ::removeStickTopSession,
                 "updateStickTopSession" to ::updateStickTopSession,
-                "queryStickTopSession" to ::queryStickTopSession
+                "queryStickTopSession" to ::queryStickTopSession,
+                "queryRoamMsgHasMoreTime" to ::queryRoamMsgHasMoreTime,
+                "updateRoamMsgHasMoreTag" to ::updateRoamMsgHasMoreTag
             )
             msgService.registerCustomAttachmentParser { attachJsonString ->
                 CustomAttachment(Utils.jsonStringToMap(attachJsonString))
@@ -767,8 +770,13 @@ class FLTMessageService(
                 NimResult(code = -1, errorDetails = "fetchTeamMessageReceiptDetail but message error!")
             )
         } else {
-            val future = NIMClient.getService(TeamService::class.java)
-                .fetchTeamMessageReceiptDetail(message, accountList?.toSet())
+            val future = if (accountList?.isNotEmpty() == true) {
+                NIMClient.getService(TeamService::class.java)
+                    .fetchTeamMessageReceiptDetail(message, accountList.toSet())
+            } else {
+                NIMClient.getService(TeamService::class.java)
+                    .fetchTeamMessageReceiptDetail(message)
+            }
             if (future == null) {
                 resultCallback.result(
                     NimResult(code = -2, errorDetails = "fetchTeamMessageReceiptDetail error!")
@@ -1786,6 +1794,23 @@ class FLTMessageService(
                 mapOf("stickTopSessionInfoList" to data.map { it.toMap() }.toList())
             }
         )
+    }
+
+    private suspend fun queryRoamMsgHasMoreTime(arguments: Map<String, *>): NimResult<Long> {
+        val sessionId = arguments["sessionId"] as String
+        val sessionType = stringToSessionTypeEnum(arguments["sessionType"] as String)
+        return suspendCancellableCoroutine { cont ->
+            msgService.queryRoamMsgHasMoreTime(sessionId, sessionType)
+                .setCallback(NimResultContinuationCallback(cont))
+        }
+    }
+
+    private suspend fun updateRoamMsgHasMoreTag(arguments: Map<String, *>): NimResult<Nothing> {
+        val newTag = arguments["newTag"] as Map<String, *>
+        return withContext(Dispatchers.IO) {
+            msgService.updateRoamMsgHasMoreTag(MessageHelper.convertIMMessage(newTag))
+            NimResult.SUCCESS
+        }
     }
 }
 

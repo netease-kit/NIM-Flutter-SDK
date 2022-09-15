@@ -39,8 +39,8 @@ abstract class UserServicePlatform extends Service {
       StreamController<void>.broadcast();
 
   // ignore: close_sinks
-  final StreamController<void> onMuteListChanged =
-      StreamController<void>.broadcast();
+  final StreamController<NIMMuteListChangedNotify> onMuteListChanged =
+      StreamController<NIMMuteListChangedNotify>.broadcast();
 
   Future<NIMResult<NIMUser>> getUserInfo(String userId) async {
     throw UnimplementedError('getUserInfo() is not implemented');

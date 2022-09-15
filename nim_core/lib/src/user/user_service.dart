@@ -30,7 +30,7 @@ class UserService {
   Stream<void> onBlackListChanged =
       UserServicePlatform.instance.onBlackListChanged.stream;
 
-  Stream<void> onMuteListChanged =
+  Stream<NIMMuteListChangedNotify> onMuteListChanged =
       UserServicePlatform.instance.onMuteListChanged.stream;
 
   /// 从本地数据库中获取用户资料

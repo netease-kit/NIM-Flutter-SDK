@@ -67,6 +67,7 @@ export 'src/platform_interface/super_team/platform_interface_super_team_service.
 ///superTeam
 export 'src/platform_interface/super_team/super_team.dart';
 export 'src/platform_interface/super_team/super_team_member.dart';
+export 'src/platform_interface/system_message/add_friend_notification.dart';
 export 'src/platform_interface/system_message/custom_notification.dart';
 
 ///system message
@@ -84,6 +85,7 @@ export 'src/platform_interface/user/friend.dart';
 /// user
 export 'src/platform_interface/user/platform_interface_user_service.dart';
 export 'src/platform_interface/user/user.dart';
+export 'src/platform_interface/user/mute_list_changed_notify.dart';
 
 ///for test
 export 'src/utils/converter.dart';

@@ -67,6 +67,7 @@ class FLTTeamService(
             "dismissTeam" to ::dismissTeam,
             "applyJoinTeam" to ::applyJoinTeam,
             "passApply" to ::passApply,
+            "rejectApply" to ::rejectApply,
             "addMembersEx" to ::addMembersEx,
             "acceptInvite" to ::acceptInvite,
             "declineInvite" to ::declineInvite,
@@ -314,6 +315,16 @@ class FLTTeamService(
         val account = arguments["account"] as? String
         return suspendCancellableCoroutine { cont ->
             teamService.passApply(teamId, account)
+                .setCallback(NimResultContinuationCallbackOfNothing(cont))
+        }
+    }
+
+    private suspend fun rejectApply(arguments: Map<String, *>): NimResult<Nothing> {
+        val teamId = arguments["teamId"] as? String
+        val account = arguments["account"] as? String
+        val reason = arguments["reason"] as? String
+        return suspendCancellableCoroutine { cont ->
+            teamService.rejectApply(teamId, account, reason)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }

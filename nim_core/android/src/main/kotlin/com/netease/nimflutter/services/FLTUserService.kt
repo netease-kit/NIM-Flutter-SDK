@@ -272,8 +272,7 @@ class FLTUserService(
             resultCallback.result(
                 NimResult(
                     code = -1,
-                    errorDetails = "searchUserIdByNick by " +
-                        "nick is empty"
+                    errorDetails = "searchUserIdByNick by " + "nick is empty"
                 )
             )
         } else {
@@ -311,8 +310,7 @@ class FLTUserService(
             resultCallback.result(
                 NimResult(
                     code = -1,
-                    errorDetails = "searchUserInfoByKeyword " +
-                        "but keyword is empty"
+                    errorDetails = "searchUserInfoByKeyword " + "but keyword is empty"
                 )
             )
         } else {
@@ -322,7 +320,10 @@ class FLTUserService(
                         ALog.d(tag, "searchUserInfoListByKeyword onSuccess")
                         resultCallback.result(
                             NimResult(code = 0, param) {
-                                mutableMapOf("userInfoList" to it.map { it1 -> it1?.toMap() }.toList())
+                                mutableMapOf(
+                                    "userInfoList" to it.map { it1 -> it1?.toMap() }
+                                        .toList()
+                                )
                             }
                         )
                     }
@@ -736,23 +737,21 @@ class FLTUserService(
             notifyEvent(
                 "onFriendAccountDeleted",
                 mutableMapOf(
-                    "deletedFriendAccountList" to
-                        deletedFriendAccounts.map { it.toString() }
-                            .toList()
+                    "deletedFriendAccountList" to deletedFriendAccounts.map { it.toString() }
+                        .toList()
                 )
             )
         }
 
     private val blackListChangedObserve =
-        Observer<BlackListChangedNotify> {
+        Observer<BlackListChangedNotify> { _ ->
             val map = HashMap<String, Any?>()
             notifyEvent("onBlackListChanged", map)
         }
 
     private val muteListChangedObserve =
         Observer<MuteListChangedNotify> {
-            val map = HashMap<String, Any?>()
-            notifyEvent("onMuteListChanged", map)
+            notifyEvent("onMuteListChanged", it.toMap() as MutableMap<String, Any?>)
         }
 
     init {

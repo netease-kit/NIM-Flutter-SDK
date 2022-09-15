@@ -217,9 +217,14 @@ class MethodChannelMessageService extends MessageServicePlatform {
         }
         break;
       case 'onSessionDelete':
-        final session =
-            NIMSession.fromMap(Map<String, dynamic>.from(arguments));
-        MessageServicePlatform.instance.onSessionDelete.add(session);
+        if ((arguments as Map).length == 1) {
+          // empty map, clear session list
+          MessageServicePlatform.instance.onSessionDelete.add(null);
+        } else {
+          final session =
+              NIMSession.fromMap(Map<String, dynamic>.from(arguments));
+          MessageServicePlatform.instance.onSessionDelete.add(session);
+        }
         break;
       case 'onMessagePinAdded':
         MessageServicePlatform.instance.onMessagePinNotify.add(
@@ -1102,5 +1107,24 @@ class MethodChannelMessageService extends MessageServicePlatform {
             .toList();
       },
     );
+  }
+
+  @override
+  Future<NIMResult<int>> queryRoamMsgHasMoreTime(
+      String sessionId, NIMSessionType sessionType) async {
+    return NIMResult<int>.fromMap(
+        await invokeMethod('queryRoamMsgHasMoreTime', arguments: {
+      'sessionId': sessionId,
+      'sessionType':
+          NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+    }));
+  }
+
+  @override
+  Future<NIMResult<void>> updateRoamMsgHasMoreTag(NIMMessage newTag) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('updateRoamMsgHasMoreTag', arguments: {
+      'newTag': newTag.toMap(),
+    }));
   }
 }

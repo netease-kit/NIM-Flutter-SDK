@@ -56,6 +56,7 @@ class FLTAudioRecorderService(
             val messageMap = mutableMapOf<String, Any?>()
             messageMap["maxDuration"] = maxTime
             notify("onRecordReachedMaxTime", mutableMapOf())
+            mAudioRecorder.handleEndRecord(true, maxTime)
         }
     }
     private var mAudioRecorder: AudioRecorder = AudioRecorder(

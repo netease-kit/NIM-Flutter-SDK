@@ -16,7 +16,7 @@ enum TeamType: String {
   case RejectApply = "rejectApply"
   case AddMembersEx = "addMembersEx"
   case AcceptInvite = "acceptInvite"
-  case RejectInvite = "rejectInvite"
+  case DeclineInvite = "declineInvite"
   case GetMemverInvitor = "getMemverInvitor"
   case RemoveMembers = "removeMembers"
   case QuitTeam = "quitTeam"
@@ -67,7 +67,7 @@ class FLTTeamService: FLTBaseService, FLTService {
     case TeamType.RejectApply.rawValue: rejectApply(arguments, resultCallback)
     case TeamType.AddMembersEx.rawValue: addMembersEx(arguments, resultCallback)
     case TeamType.AcceptInvite.rawValue: acceptInvite(arguments, resultCallback)
-    case TeamType.RejectInvite.rawValue: rejectInvite(arguments, resultCallback)
+    case TeamType.DeclineInvite.rawValue: declineInvite(arguments, resultCallback)
     case TeamType.GetMemverInvitor.rawValue: getMemverInvitor(arguments, resultCallback)
     case TeamType.RemoveMembers.rawValue: removeMembers(arguments, resultCallback)
     case TeamType.QuitTeam.rawValue: quitTeam(arguments, resultCallback)
@@ -241,7 +241,7 @@ class FLTTeamService: FLTBaseService, FLTService {
   }
 
   // 拒绝群邀请(仅限高级群)
-  private func rejectInvite(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  private func declineInvite(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let teamId = getTeamId(arguments),
           let invitorId = arguments["inviter"] as? String,
           let reason = arguments["reason"] as? String else {
@@ -615,7 +615,9 @@ extension FLTTeamService: NIMTeamManagerDelegate {
     return members
   }
 
-  func onTeamMemberChanged(_ team: NIMTeam) {}
+  func onTeamMemberChanged(_ team: NIMTeam) {
+    onTeamUpdated(team)
+  }
 
   func onTeamMemberUpdated(_ team: NIMTeam, withMembers memberIDs: [String]?) {
     if team.type == .super {

@@ -24,6 +24,7 @@ import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData
 import com.netease.nimlib.sdk.event.model.Event
 import com.netease.nimlib.sdk.event.model.EventSubscribeResult
 import com.netease.nimlib.sdk.friend.model.Friend
+import com.netease.nimlib.sdk.friend.model.MuteListChangedNotify
 import com.netease.nimlib.sdk.msg.attachment.AudioAttachment
 import com.netease.nimlib.sdk.msg.attachment.FileAttachment
 import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
@@ -76,6 +77,7 @@ import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.netease.nimlib.session.IMMessageImpl
 import org.json.JSONArray
+import java.io.File
 import java.util.Objects.requireNonNull
 
 fun IMMessage.toMap(): Map<String, Any?> {
@@ -190,6 +192,18 @@ fun AudioAttachment.toMap(): Map<String, Any?> {
 }
 
 fun VideoAttachment.toMap(): Map<String, Any?> {
+    var thumb = thumbPath
+    val thumbForSave = thumbPathForSave
+    if (thumb == null || thumb.isEmpty()) {
+        // 发送视频消息上传成功之后，回调的path名称会被修改成md5，导致这里可能获取不到缩略图
+        val index = thumbForSave.lastIndexOf('/')
+        val prefix = thumbForSave.substring(0, index)
+        val realThumbPath = "$prefix/$displayName"
+        // 判断发送时生成的缩略图是否存在
+        if (File(realThumbPath).exists()) {
+            thumb = realThumbPath
+        }
+    }
     return mapOf(
         "dur" to duration,
         "w" to width,
@@ -203,7 +217,7 @@ fun VideoAttachment.toMap(): Map<String, Any?> {
         "expire" to expire,
         "force_upload" to isForceUpload,
         "messageType" to stringFromMsgTypeEnum(MsgTypeEnum.video),
-        "thumbPath" to thumbPath,
+        "thumbPath" to thumb,
         "thumbUrl" to thumbUrl,
         "sen" to stringFromNimNosSceneKeyConstant(nosTokenSceneKey)
     )
@@ -875,5 +889,12 @@ fun HandleQuickCommentOption.toMap(): Map<String, Any?> {
     return mapOf(
         "key" to key.toMap(),
         "commentOption" to commentOption.toMap()
+    )
+}
+
+fun MuteListChangedNotify.toMap(): Map<String, Any?> {
+    return mapOf(
+        "account" to account,
+        "mute" to isMute
     )
 }

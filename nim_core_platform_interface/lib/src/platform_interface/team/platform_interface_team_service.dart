@@ -52,6 +52,11 @@ abstract class TeamServicePlatform extends Service {
     throw UnimplementedError('passApply() is not implemented');
   }
 
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) async {
+    throw UnimplementedError('rejectApply() is not implemented');
+  }
+
   Future<NIMResult<List<String>>> addMembersEx(String teamId,
       List<String> accounts, String msg, String customInfo) async {
     throw UnimplementedError('addMembersEx() is not implemented');

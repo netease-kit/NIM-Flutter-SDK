@@ -2,6 +2,9 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import 'dart:convert';
+
+import 'package:nim_core_platform_interface/src/platform_interface/system_message/add_friend_notification.dart';
 import 'package:nim_core_platform_interface/src/utils/converter.dart';
 
 class SystemMessage {
@@ -15,7 +18,7 @@ class SystemMessage {
 
   final int? time;
 
-  final SystemMessageStatus? status;
+  SystemMessageStatus? status;
 
   final String? content;
 
@@ -38,7 +41,26 @@ class SystemMessage {
       this.attach,
       this.attachObject,
       this.unread,
-      this.customInfo});
+      this.customInfo}) {
+    if (attach != null) {
+      switch (type) {
+        case SystemMessageType.addFriend:
+          final Map<String, dynamic> attachMap = JsonDecoder().convert(attach!);
+          int verifyType = attachMap['vt'];
+          Map<String, dynamic>? exMap = attachMap['serverex'];
+          String? ext;
+          if (exMap != null) {
+            ext = exMap['0'] == 1 ? exMap['1'] : null;
+          }
+          attachObject = AddFriendNotify(
+              fromAccount, getEventFromInt(verifyType),
+              msg: content, serverExt: ext);
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
   factory SystemMessage.fromMap(Map<String, dynamic> param) {
     return SystemMessage(

@@ -1,3 +1,32 @@
+# 1.0.11(Sep 15, 2022)
+
+### Bug Fixes
+* iOS fixed message status
+
+### Dependency Updates
+* iOS updated SDK version 8.11.0
+
+# 1.0.10(Sep 8, 2022)
+
+### New Features
+* support iOS simulator
+
+### Behavior changes
+* UserService.onMuteListChanged return type change to NIMMuteListChangedNotify
+* MessageService.onSessionDelete return type change to nullable
+
+### API Changes
+* add queryRoamMsgHasMoreTime in MessageService
+* add updateRoamMsgHasMoreTag in MessageService
+* add rejectApply in TeamService
+
+### Bug Fixes
+* Fix some Known bugs
+
+### Dependency Updates
+* nim_core_platform_interface from 1.0.0 to 1.0.1
+* Android NIM SDK from 8.11.12 to 8.11.13
+
 # 1.0.9(Sep 2, 2022)
 
 ### Bug Fixes

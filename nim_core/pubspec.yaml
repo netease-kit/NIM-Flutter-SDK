@@ -1,6 +1,6 @@
 name: nim_core
 description: A Flutter plugin for NetEase IM SDK on Android, iOS and Windows.
-version: 1.0.9
+version: 1.0.11
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 
 environment:
@@ -10,8 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  nim_core_platform_interface:
-    ^1.0.0
+  nim_core_platform_interface: ^1.0.1
   # path: ../nim_core_platform_interface
   nim_core_windows:
     ^1.0.2
@@ -21,7 +20,7 @@ dependencies:
   # path: ../nim_core_macos
   path_provider: ^2.0.2
   yunxin_base: ^0.1.0-rc.0
-  yunxin_alog: ^1.0.7-rc.1
+  yunxin_alog: ^1.0.7
 
 dev_dependencies:
   flutter_test:

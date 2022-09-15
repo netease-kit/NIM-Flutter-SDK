@@ -84,6 +84,13 @@ class TeamService {
     return _platform.passApply(teamId, account);
   }
 
+  /// 拒绝用户的入群申请
+  /// 仅管理员和拥有者有此权限
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) {
+    return _platform.rejectApply(teamId, account, reason);
+  }
+
   /// 添加成员并设置自定义字段
   /// teamId	群组ID
   /// accounts	待加入的群成员帐号列表

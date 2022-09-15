@@ -15,11 +15,15 @@ A Flutter plugin for NetEase IM SDK on Android and iOS.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'NIMSDK_LITE', '~> 8.8.0'
+  s.dependency 'NIMSDK_LITE', '8.11.0'
   s.dependency 'YXAlog_iOS'
   s.platform = :ios, '8.0'
 
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.pod_target_xcconfig = {
+            'DEFINES_MODULE' => 'YES',
+            'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+      }
+      s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   s.swift_version = '5.0'
 end

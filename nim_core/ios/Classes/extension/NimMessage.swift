@@ -560,6 +560,9 @@ extension NIMMessage {
       }
 
       message.setting?.isSessionUpdate = message.sessionUpdate ?? true
+      if let messageAck = arguments["messageAck"] as? Bool {
+        message.setting?.teamReceiptEnabled = messageAck
+      }
 
       if let sessionId = target["sessionId"] as? String,
          let sessionTypeValue = target["sessionType"] as? String,
@@ -685,6 +688,7 @@ extension NIMMessage {
       }
 
       arguments["sessionUpdate"] = setting?.isSessionUpdate
+      arguments["messageAck"] = setting?.teamReceiptEnabled
       arguments["ackCount"] = teamReceiptInfo?.readCount
       arguments["unAckCount"] = teamReceiptInfo?.unreadCount
       arguments["clientAntiSpam"] = antiSpamOption?.hitClientAntispam

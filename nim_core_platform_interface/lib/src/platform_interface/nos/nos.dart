@@ -46,13 +46,13 @@ class NIMNOSTransferStatus {
   Map<String, dynamic> toMap() => _$NIMNOSTransferStatusToJson(this);
 }
 
-/// 认证类型
+/// 传输类型
 enum NIMNOSTransferType {
   upload,
   download,
 }
 
-/// 认证类型
+/// 传输状态
 enum NIMNosTransferStatus {
   def,
   transferring,

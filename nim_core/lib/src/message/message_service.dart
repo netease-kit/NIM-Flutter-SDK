@@ -51,7 +51,7 @@ class MessageService {
       MessageServicePlatform.instance.onSessionUpdate.stream;
 
   /// 最近会话删除
-  Stream<NIMSession> get onSessionDelete =>
+  Stream<NIMSession?> get onSessionDelete =>
       MessageServicePlatform.instance.onSessionDelete.stream;
 
   /// 消息PIN事件通知
@@ -856,5 +856,16 @@ class MessageService {
   ///获取置顶会话信息的列表
   Future<NIMResult<List<NIMStickTopSessionInfo>>> queryStickTopSession() {
     return _platform.queryStickTopSession();
+  }
+
+  ///获取是否有更多漫游消息标记的时间戳，如果没有，回调0
+  Future<NIMResult<int>> queryRoamMsgHasMoreTime(
+      String sessionId, NIMSessionType sessionType) {
+    return _platform.queryRoamMsgHasMoreTime(sessionId, sessionType);
+  }
+
+  ///更新是否有更多漫游消息的标记
+  Future<NIMResult<void>> updateRoamMsgHasMoreTag(NIMMessage newTag) {
+    return _platform.updateRoamMsgHasMoreTag(newTag);
   }
 }

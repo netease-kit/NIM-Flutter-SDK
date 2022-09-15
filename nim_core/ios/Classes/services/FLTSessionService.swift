@@ -227,8 +227,18 @@ class FLTSessionService: FLTBaseService, FLTService {
   }
 
   private func unreadCount(_ argument: [String: Any], _ resultCallback: ResultCallback) {
-    let count = NIMSDK.shared().conversationManager.allUnreadCount()
-    resultCallback.result(NimResult.success(["count": count]).toDic())
+    if let queryType = argument["queryType"] as? Int {
+      // 0-all, 1-notify true
+      var count: Int
+      if queryType == 0 {
+        count = NIMSDK.shared().conversationManager.allUnreadCount()
+      } else {
+        count = NIMSDK.shared().conversationManager.allUnreadCount(queryType == 1)
+      }
+      resultCallback.result(NimResult.success(["count": count]).toDic())
+    } else {
+      resultCallback.result(NimResult.error("argument error").toDic())
+    }
   }
 
   private func deleteRecent(_ argument: [String: Any], _ resultCallback: ResultCallback) {

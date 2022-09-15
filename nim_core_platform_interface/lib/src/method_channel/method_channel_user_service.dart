@@ -286,7 +286,9 @@ class MethodChannelUserService extends UserServicePlatform {
         break;
 
       case 'onMuteListChanged':
-        UserServicePlatform.instance.onMuteListChanged.add(null);
+        var muteListChanged = NIMMuteListChangedNotify.fromMap(
+            Map<String, dynamic>.from(arguments));
+        UserServicePlatform.instance.onMuteListChanged.add(muteListChanged);
         break;
     }
     return Future.value(null);

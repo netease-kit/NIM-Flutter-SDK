@@ -80,28 +80,30 @@ class FLTSettingsService: FLTBaseService, FLTService {
 
   private func setPushNoDisturbConfig(_ arguments: [String: Any],
                                       _ resultCallback: ResultCallback) {
-    if let enable = arguments["enable"] as? Bool,
-       let startTime = arguments["startTime"] as? String,
-       let endTime = arguments["endTime"] as? String {
+    if let enable = arguments["enable"] as? Bool {
       let settting = NIMPushNotificationSetting()
       settting.noDisturbing = enable
-      let startSplits = startTime.components(separatedBy: ":")
-      if startSplits.count == 2 {
-        if let h = UInt(startSplits[0]) {
-          settting.noDisturbingStartH = h
-        }
-        if let m = UInt(startSplits[1]) {
-          settting.noDisturbingStartM = m
-        }
-      }
 
-      let endSplits = endTime.components(separatedBy: ":")
-      if endSplits.count == 2 {
-        if let h = UInt(endSplits[0]) {
-          settting.noDisturbingEndH = h
+      if let startTime = arguments["startTime"] as? String,
+         let endTime = arguments["endTime"] as? String {
+        let startSplits = startTime.components(separatedBy: ":")
+        if startSplits.count == 2 {
+          if let h = UInt(startSplits[0]) {
+            settting.noDisturbingStartH = h
+          }
+          if let m = UInt(startSplits[1]) {
+            settting.noDisturbingStartM = m
+          }
         }
-        if let m = UInt(endSplits[1]) {
-          settting.noDisturbingEndM = m
+
+        let endSplits = endTime.components(separatedBy: ":")
+        if endSplits.count == 2 {
+          if let h = UInt(endSplits[0]) {
+            settting.noDisturbingEndH = h
+          }
+          if let m = UInt(endSplits[1]) {
+            settting.noDisturbingEndM = m
+          }
         }
       }
 
