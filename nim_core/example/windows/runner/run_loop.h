@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 #ifndef RUNNER_RUN_LOOP_H_
 #define RUNNER_RUN_LOOP_H_
 
@@ -21,12 +25,10 @@ class RunLoop {
   void Run();
 
   // Registers the given Flutter instance for event servicing.
-  void RegisterFlutterInstance(
-      flutter::FlutterEngine* flutter_instance);
+  void RegisterFlutterInstance(flutter::FlutterEngine* flutter_instance);
 
   // Unregisters the given Flutter instance from event servicing.
-  void UnregisterFlutterInstance(
-      flutter::FlutterEngine* flutter_instance);
+  void UnregisterFlutterInstance(flutter::FlutterEngine* flutter_instance);
 
  private:
   using TimePoint = std::chrono::steady_clock::time_point;

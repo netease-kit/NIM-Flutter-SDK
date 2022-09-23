@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -6,8 +6,6 @@ import 'dart:async';
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_user_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 abstract class UserServicePlatform extends Service {
@@ -41,14 +39,15 @@ abstract class UserServicePlatform extends Service {
       StreamController<void>.broadcast();
 
   // ignore: close_sinks
-  final StreamController<void> onMuteListChanged =
-      StreamController<void>.broadcast();
+  final StreamController<NIMMuteListChangedNotify> onMuteListChanged =
+      StreamController<NIMMuteListChangedNotify>.broadcast();
 
   Future<NIMResult<NIMUser>> getUserInfo(String userId) async {
     throw UnimplementedError('getUserInfo() is not implemented');
   }
 
-  Future<NIMResult<List<NIMUser>>> getUserInfoListAndroid(List<String> userId) async {
+  Future<NIMResult<List<NIMUser>>> getUserInfoListAndroid(
+      List<String> userId) async {
     throw UnimplementedError('getUserInfoListAndroid() is not implemented');
   }
 
@@ -96,12 +95,16 @@ abstract class UserServicePlatform extends Service {
     throw UnimplementedError('getFriendAccountsAndroid() is not implemented');
   }
 
-  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(String alias) async {
-    throw UnimplementedError('searchAccountByAliasAndroid() is not implemented');
+  Future<NIMResult<List<String>>> searchAccountByAliasAndroid(
+      String alias) async {
+    throw UnimplementedError(
+        'searchAccountByAliasAndroid() is not implemented');
   }
 
-  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(String keyword) async {
-    throw UnimplementedError('searchFriendsByKeywordAndroid() is not implemented');
+  Future<NIMResult<List<NIMFriend>>> searchFriendsByKeywordAndroid(
+      String keyword) async {
+    throw UnimplementedError(
+        'searchFriendsByKeywordAndroid() is not implemented');
   }
 
   Future<NIMResult<void>> deleteFriend(String userId, bool includeAlias) async {

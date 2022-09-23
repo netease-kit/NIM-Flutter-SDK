@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'nim_sdk_android_options.dart';
@@ -12,6 +16,7 @@ NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
         json['improveSDKProcessPriority'] as bool? ?? true,
     preLoadServers: json['preLoadServers'] as bool? ?? true,
     reducedIM: json['reducedIM'] as bool? ?? false,
+    enableFcs: json['enableFcs'] as bool? ?? true,
     checkManifestConfig: json['checkManifestConfig'] as bool? ?? false,
     disableAwake: json['disableAwake'] as bool? ?? false,
     databaseEncryptKey: json['databaseEncryptKey'] as String?,
@@ -78,6 +83,7 @@ Map<String, dynamic> _$NIMAndroidSDKOptionsToJson(
   val['improveSDKProcessPriority'] = instance.improveSDKProcessPriority;
   val['preLoadServers'] = instance.preLoadServers;
   val['reducedIM'] = instance.reducedIM;
+  val['enableFcs'] = instance.enableFcs;
   val['checkManifestConfig'] = instance.checkManifestConfig;
   val['disableAwake'] = instance.disableAwake;
   val['fetchServerTimeInterval'] = instance.fetchServerTimeInterval;

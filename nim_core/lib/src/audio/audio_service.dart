@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -23,8 +23,9 @@ class AudioService {
       AudioRecordServicePlatform.instance.onAudioRecordStatus.stream;
 
   ///开始录制，支持参数设置录音格式和最大录音长度，如果不传，则默认为AAC和120s
-  Future<NIMResult<bool>> startRecord(Map<String, dynamic>? param) async {
-    return _platform.startAudioRecord(param);
+  Future<NIMResult<bool>> startRecord(
+      AudioOutputFormat recordType, int maxDuration) async {
+    return _platform.startAudioRecord(recordType, maxDuration);
   }
 
   Future<NIMResult<bool>> stopRecord() async {

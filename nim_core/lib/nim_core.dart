@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -15,77 +15,79 @@ import 'package:nim_core/src/system_message/system_message_service.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
 
-export 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/audio/record_info.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/auth/auth_models.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/platform_interface_event_subscribe_service.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_android_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_ios_options.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_windows_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_macos_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_options.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_windows_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/message.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/message/recent_session_list.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/message_keyword_search_config.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/message_search_option.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/query_direction_enum.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/message/thread_talk_history.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/message/stick_top_session.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/quick_comment.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/message/recent_session_list.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/message/stick_top_session.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/message/talk_ext.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/message/thread_talk_history.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_notifydata.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_proxydata.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/settings/settings_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/super_team/platform_interface_super_team_service.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team_member.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/system_message/add_friend_notification.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/system_message/platform_interface_system_message_service.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/team/create_team_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/team/create_team_result.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/team/team_member.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/team/team.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team_member.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/super_team/platform_interface_super_team_service.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/team/team_member.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/friend.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/user.dart';
 export 'package:nim_core_platform_interface/src/utils/converter.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/message/talk_ext.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/platform_interface_event_subscribe_service.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/system_message/platform_interface_system_message_service.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
 
-part 'src/message/message_service.dart';
 part 'src/audio/audio_service.dart';
-part 'src/message/message_builder.dart';
-part 'src/user/user_service.dart';
 part 'src/auth/auth_service.dart';
-part 'src/team/team_service.dart';
-part 'src/super_team/super_team_service.dart';
-part 'src/chatroom/chatroom_service.dart';
 part 'src/chatroom/chatroom_message_builder.dart';
+part 'src/chatroom/chatroom_service.dart';
+part 'src/message/message_builder.dart';
+part 'src/message/message_service.dart';
+part 'src/nos/nos_service.dart';
+part 'src/passthrough/passthrough_service.dart';
 part 'src/settings/settings_service.dart';
 part 'src/settings/settings_service_mobile.dart';
-part 'src/passthrough/passthrough_service.dart';
-part 'src/nos/nos_service.dart';
+part 'src/super_team/super_team_service.dart';
+part 'src/team/team_service.dart';
+part 'src/user/user_service.dart';
 
 class NimCore {
   NimCore._();
+
   static final NimCore instance = NimCore._();
 
   /// 云信消息服务接口
   final MessageService messageService = MessageService();
 
   static const String tag = 'nim_core';
-  static const int _versionCode = 1;
-  static const String _versionName = '1.0.0-rc.21';
-  static const String _hash = 'bbe15264a9ed89ab46bcb673549b0e61e507f953';
+  static const int _versionCode = 3;
+  static const String _versionName = '1.0.0-rc.41';
+  static const String _hash = '02566d6321d1d27669d9d369d2f525bc2cdaee10';
 
   bool _initialized = false;
   NIMSDKOptions? _sdkOptions;
@@ -142,9 +144,10 @@ class NimCore {
     final handler = FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails details) {
       Alog.e(
-          tag: tag,
-          moduleName: tag,
-          content: 'flutter error detected: ${details.exceptionAsString()} \n ${details.stack}',
+        tag: tag,
+        moduleName: tag,
+        content:
+            'flutter error detected: ${details.exceptionAsString()} \n ${details.stack}',
       );
       handler?.call(details);
     };
@@ -158,8 +161,7 @@ class NimCore {
           moduleName: tag,
           content: 'print sdk info ==== '
               'operatingSystem: ${Platform.operatingSystem}, operatingSystemVersion: ${Platform.operatingSystemVersion};'
-              'verCode: $_versionCode, verName: $_versionName, hash: $_hash; '
-      );
+              'verCode: $_versionCode, verName: $_versionName, hash: $_hash; ');
       final extras = {
         'versionCode': _versionCode,
         'versionName': _versionName,
@@ -167,13 +169,12 @@ class NimCore {
       return InitializeServicePlatform.instance.initialize(options, extras);
     }).then((initResult) {
       Alog.i(
-        tag: tag,
-        moduleName: tag,
-        content: 'initialize done ==== '
-            'sdkRootDir: ${options.sdkRootDir}, '
-            'success: ${initResult.isSuccess}, '
-            'elapsed: ${DateTime.now().difference(startTS).inMilliseconds}'
-      );
+          tag: tag,
+          moduleName: tag,
+          content: 'initialize done ==== '
+              'sdkRootDir: ${options.sdkRootDir}, '
+              'success: ${initResult.isSuccess}, '
+              'elapsed: ${DateTime.now().difference(startTS).inMilliseconds}');
       if (initResult.isSuccess) {
         _initialized = true;
         _sdkOptions = options;
@@ -184,14 +185,13 @@ class NimCore {
 }
 
 class _Alog with LogMixin {
-
   static const module = 'nim_interface';
 
   void v(String tag, String msg) {
     Alog.v(
-        tag: tag,
-        moduleName: module,
-        content: msg,
+      tag: tag,
+      moduleName: module,
+      content: msg,
     );
   }
 

@@ -1,5 +1,5 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 #ifndef FLUTTER_SHELL_PLATFORM_COMMON_CLIENT_WRAPPER_INCLUDE_FLUTTER_METHOD_RESULT_H_
@@ -38,8 +38,7 @@ class MethodResult {
   // error_code: A string error code describing the error.
   // error_message: A user-readable error message.
   // error_details: Arbitrary extra details about the error.
-  void Error(const std::string& error_code,
-             const std::string& error_message,
+  void Error(const std::string& error_code, const std::string& error_message,
              const T& error_details) {
     ErrorInternal(error_code, error_message, &error_details);
   }

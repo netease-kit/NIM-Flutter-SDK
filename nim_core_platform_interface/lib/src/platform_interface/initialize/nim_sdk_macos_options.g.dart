@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'nim_sdk_macos_options.dart';
@@ -13,6 +17,7 @@ NIMMACOSSDKOptions _$NIMMACOSSDKOptionsFromJson(Map<String, dynamic> json) {
     pushToken: json['pushToken'] as String?,
     databaseEncryptKey: json['databaseEncryptKey'] as String?,
     enableClientAntispam: json['enableClientAntispam'] as bool?,
+    useAssetServerConfig: json['useAssetServerConfig'] as bool?,
     enabledHttps: json['enabledHttps'] as bool?,
     needUpdateLbsBeforeRelogin: json['needUpdateLbsBeforeRelogin'] as bool?,
     shouldVchatMissMessageMarkUnread:
@@ -83,5 +88,6 @@ Map<String, dynamic> _$NIMMACOSSDKOptionsToJson(NIMMACOSSDKOptions instance) {
   val['pushCertName'] = instance.pushCertName;
   val['pushToken'] = instance.pushToken;
   val['enableAppNap'] = instance.enableAppNap;
+  val['useAssetServerConfig'] = instance.useAssetServerConfig;
   return val;
 }

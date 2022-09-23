@@ -1,5 +1,11 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import 'package:json_annotation/json_annotation.dart';
+
 import '../../../nim_core_platform_interface.dart';
+
 part 'super_team.g.dart';
 
 @JsonSerializable()
@@ -91,45 +97,45 @@ class NIMSuperTeam {
     required this.muteMode,
   });
 
-  factory NIMSuperTeam.fromMap(Map<String, dynamic> map) => _$NIMSuperTeamFromJson(map);
+  factory NIMSuperTeam.fromMap(Map<String, dynamic> map) =>
+      _$NIMSuperTeamFromJson(map);
 
   Map<String, dynamic> toMap() => _$NIMSuperTeamToJson(this);
 }
+
 /// 聊天室通知类型
 class NIMSuperTeamNotificationTypes {
-
   //401 ~ 500的id给超大群使用
-   /// 超大群拉人
+  /// 超大群拉人
   static const invite = 401;
-  
-   /// 超大群踢人
-  static const kick = 402;
-  
-   /// 超大群退群
-  static const leave  = 403;
-  
-   /// 超大群修改群信息
-  static const updateInfo  = 404;
-  
-   /// 超大群解散
-  static const dismiss  = 405;
 
-   /// 超大群移交群主
+  /// 超大群踢人
+  static const kick = 402;
+
+  /// 超大群退群
+  static const leave = 403;
+
+  /// 超大群修改群信息
+  static const updateInfo = 404;
+
+  /// 超大群解散
+  static const dismiss = 405;
+
+  /// 超大群移交群主
   static const changeOwner = 406;
 
-   /// 超大群添加管理员
-  static const addManager  = 407;
+  /// 超大群添加管理员
+  static const addManager = 407;
 
-   /// 超大群删除管理员
-  static const removeManager  = 408;
+  /// 超大群删除管理员
+  static const removeManager = 408;
 
-   /// 超大群禁言群成员
-  static const muteList  = 409;
-  
-   /// 超大群申请成功进群
-  static const applyPass  = 410;
+  /// 超大群禁言群成员
+  static const muteList = 409;
 
-   /// 超大群接受邀请进群
-  static const inviteAccept  = 411;
+  /// 超大群申请成功进群
+  static const applyPass = 410;
+
+  /// 超大群接受邀请进群
+  static const inviteAccept = 411;
 }
-

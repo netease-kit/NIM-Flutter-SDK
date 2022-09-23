@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,23 +7,33 @@
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.MethodChannelSuspendResult
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultCallback
+import com.netease.nimflutter.ResultCallback
+import com.netease.nimflutter.SafeResult
+import com.netease.nimflutter.stringFromClientTypeEnum
+import com.netease.nimflutter.stringToClientTypeEnum
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
-import kotlinx.coroutines.flow.callbackFlow
 import com.netease.nimlib.sdk.StatusCode
-import com.netease.nimlib.sdk.auth.*
-
+import com.netease.nimlib.sdk.auth.AuthProvider
+import com.netease.nimlib.sdk.auth.AuthService
+import com.netease.nimlib.sdk.auth.AuthServiceObserver
+import com.netease.nimlib.sdk.auth.LoginInfo
+import com.netease.nimlib.sdk.auth.OnlineClient
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import java.lang.IllegalStateException
 
 object LoginInfoFactory {
     private const val authTypeDefault = 0
@@ -37,7 +47,11 @@ object LoginInfoFactory {
         val customClientType = arguments["customClientType"] as Int?
         when (arguments.getOrElse("authType") { authTypeDefault } as Int) {
             authTypeDynamic -> LoginInfo.LoginInfoBuilder.loginInfoDynamic(account, token)
-            authTypeThirdParty -> LoginInfo.LoginInfoBuilder.loginInfoThirdParty(account, token, loginExt)
+            authTypeThirdParty -> LoginInfo.LoginInfoBuilder.loginInfoThirdParty(
+                account,
+                token,
+                loginExt
+            )
             else -> LoginInfo.LoginInfoBuilder.loginInfoDefault(account, token)
         }.withCustomClientType(customClientType ?: 0).build()
     }
@@ -47,13 +61,13 @@ object LoginInfoFactory {
         "token" to loginInfo.token,
         "loginExt" to loginInfo.loginExt,
         "customClientType" to loginInfo.customClientType,
-        "authType" to loginInfo.authType,
+        "authType" to loginInfo.authType
     )
 }
 
 class FLTAuthService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore), AuthProvider {
 
     private var onlineClients: List<OnlineClient> = listOf()
@@ -70,7 +84,7 @@ class FLTAuthService(
     }
 
     override fun onMethodCalled(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
-        when(method) {
+        when (method) {
             "login" -> login(arguments, safeResult)
             "logout" -> {
                 NIMClient.getService(AuthService::class.java).logout()
@@ -84,14 +98,15 @@ class FLTAuthService(
 
     private fun login(arguments: Map<String, *>, safeResult: SafeResult) {
         NIMClient.getService(AuthService::class.java).login(LoginInfoFactory.fromMap(arguments))
-            .setCallback(NimResultCallback<LoginInfo>(safeResult){
-                NimResult(
-                    code = 0,
-                    data = it,
-                    convert = {it -> LoginInfoFactory.toMap(it) }
-                )
-            })
-
+            .setCallback(
+                NimResultCallback<LoginInfo>(safeResult) {
+                    NimResult(
+                        code = 0,
+                        data = it,
+                        convert = { it -> LoginInfoFactory.toMap(it) }
+                    )
+                }
+            )
     }
 
     @ExperimentalCoroutinesApi
@@ -144,7 +159,7 @@ class FLTAuthService(
             notifyEvent(
                 method = "onAuthStatusChanged",
                 arguments = hashMapOf(
-                    "status" to dartNameOfDataSyncStatus(status),
+                    "status" to dartNameOfDataSyncStatus(status)
                 )
             )
         }.launchIn(nimCore.lifeCycleScope)
@@ -185,11 +200,17 @@ class FLTAuthService(
                 }
             }
         }.onEach { clients ->
-            ALog.i(serviceName, "onOnlineClientsUpdated: ${clients.size} ${clients.joinToString { "${it.os}#${it.clientType}" }}")
+            ALog.i(
+                serviceName,
+                "onOnlineClientsUpdated: ${clients.size} ${clients.joinToString { "${it.os}#${it.clientType}" }}"
+            )
             onlineClients = clients
             notifyEvent(
                 method = "onOnlineClientsUpdated",
-                arguments = hashMapOf("clients" to clients.map { client -> client.toMap() }.toList())
+                arguments = hashMapOf(
+                    "clients" to clients.map { client -> client.toMap() }
+                        .toList()
+                )
             )
         }.launchIn(nimCore.lifeCycleScope)
     }
@@ -199,10 +220,10 @@ class FLTAuthService(
         safeResult: SafeResult
     ) {
         onlineClients.firstOrNull {
-            stringToClientTypeEnum(arguments["clientType"] as? String) == it.clientType
-                    && arguments["customTag"] == it.customTag
-                    && arguments["loginTime"] == it.loginTime
-                    && arguments["os"] == it.os
+            stringToClientTypeEnum(arguments["clientType"] as? String) == it.clientType &&
+                arguments["customTag"] == it.customTag &&
+                arguments["loginTime"] == it.loginTime &&
+                arguments["os"] == it.os
         }?.let { client ->
             ALog.i(serviceName, "kickOutOtherOnlineClient: ${client.os}#${client.clientType}")
             NIMClient.getService(AuthService::class.java).kickOtherClient(client)
@@ -211,7 +232,7 @@ class FLTAuthService(
     }
 
     override fun getToken(account: String?): String? =
-        if (account != null)
+        if (account != null) {
             runBlocking {
                 suspendCancellableCoroutine<Any?> { continuation ->
                     notifyEvent(
@@ -221,9 +242,9 @@ class FLTAuthService(
                     )
                 } as? String
             }
-        else
+        } else {
             null
-
+        }
 }
 
 fun OnlineClient.toMap() = mapOf(

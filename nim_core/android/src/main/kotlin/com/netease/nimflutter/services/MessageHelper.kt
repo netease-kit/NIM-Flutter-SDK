@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,10 +7,18 @@
 package com.netease.nimflutter.services
 
 import android.text.TextUtils
-import com.netease.nimflutter.*
+import com.netease.nimflutter.convertCustomMessageConfig
+import com.netease.nimflutter.convertMemberPushOption
+import com.netease.nimflutter.convertMsgThreadOption
+import com.netease.nimflutter.convertNIMAntiSpamOption
+import com.netease.nimflutter.stringToAttachStatusEnum
+import com.netease.nimflutter.stringToClientTypeEnum
+import com.netease.nimflutter.stringToMsgDirectionEnum
+import com.netease.nimflutter.stringToMsgStatusEnum
+import com.netease.nimflutter.stringToMsgTypeEnum
+import com.netease.nimflutter.stringToNimNosSceneKeyConstant
+import com.netease.nimflutter.stringToSessionTypeEnum
 import com.netease.nimlib.chatroom.model.ChatRoomMessageImpl
-import com.netease.nimlib.sdk.NIMClient
-import com.netease.nimlib.sdk.auth.AuthService
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessageExtension
 import com.netease.nimlib.sdk.chatroom.model.CustomChatRoomMessageConfig
@@ -34,7 +42,8 @@ object MessageHelper {
         val sessionType = stringToSessionTypeEnum(arguments["sessionType"] as String?)
         return when (messageType) {
             MsgTypeEnum.text -> createTextMessage(
-                sessionId, sessionType,
+                sessionId,
+                sessionType,
                 arguments["content"] as? String
             )
             MsgTypeEnum.image -> createImageMessage(
@@ -80,15 +89,14 @@ object MessageHelper {
     private fun createTextMessage(
         sessionId: String?,
         sessionType: SessionTypeEnum,
-        text: String?,
+        text: String?
     ): IMMessage? {
         return MessageBuilder.createTextMessage(sessionId, sessionType, text)
     }
 
-
     private fun createTipMessage(
         sessionId: String?,
-        sessionType: SessionTypeEnum,
+        sessionType: SessionTypeEnum
     ): IMMessage? {
         return MessageBuilder.createTipMessage(sessionId, sessionType)
     }
@@ -96,7 +104,7 @@ object MessageHelper {
     private fun createImageMessage(
         sessionId: String?,
         sessionType: SessionTypeEnum,
-        attachment: Map<String, *>?,
+        attachment: Map<String, *>?
     ): IMMessage? {
         return attachment?.let {
             runCatching {
@@ -112,7 +120,6 @@ object MessageHelper {
                         stringToNimNosSceneKeyConstant(nosScene)
                     )
                 }
-
             }.onFailure { exception ->
                 ALog.e(
                     "MessageHelper",
@@ -125,7 +132,7 @@ object MessageHelper {
     private fun createAudioMessage(
         sessionId: String?,
         sessionType: SessionTypeEnum,
-        attachment: Map<String, *>?,
+        attachment: Map<String, *>?
     ): IMMessage? {
         return attachment?.let {
             runCatching {
@@ -151,7 +158,7 @@ object MessageHelper {
     private fun createVideoMessage(
         sessionId: String?,
         sessionType: SessionTypeEnum,
-        attachment: Map<String, *>?,
+        attachment: Map<String, *>?
     ): IMMessage? {
         return attachment?.let {
             runCatching {
@@ -178,13 +185,12 @@ object MessageHelper {
                 ALog.e("MessageHelper", "createVideoMessage exception:${exception.message}")
             }.getOrNull()
         }
-
     }
 
     private fun createLocationMessage(
         sessionId: String?,
         sessionType: SessionTypeEnum,
-        attachment: Map<String, *>?,
+        attachment: Map<String, *>?
     ): IMMessage? {
         return attachment?.let {
             val latitude = it["lat"] as? Number
@@ -203,7 +209,7 @@ object MessageHelper {
     private fun createFileMessage(
         sessionId: String?,
         sessionType: SessionTypeEnum,
-        attachment: Map<String, *>?,
+        attachment: Map<String, *>?
     ): IMMessage? {
         return attachment?.let {
             runCatching {
@@ -231,7 +237,7 @@ object MessageHelper {
         sessionType: SessionTypeEnum,
         content: String?,
         attachment: Map<String, *>?,
-        config: Map<String, Any?>?,
+        config: Map<String, Any?>?
     ): IMMessage? {
         return attachment?.let {
             runCatching {
@@ -327,11 +333,11 @@ object MessageHelper {
             chatRoomConfig = CustomChatRoomMessageConfig().apply {
                 skipHistory = !(map.getOrElse("enableHistory") { true } as Boolean)
             }
-            (map["extension"] as? Map<String,*>)?.let {
+            (map["extension"] as? Map<String, *>)?.let {
                 chatRoomMessageExtension = ChatRoomMessageExtension().apply {
                     senderNick = it["nickname"] as? String
                     senderAvatar = it["avatar"] as? String
-                    senderExtension = it["senderExtension"] as? Map<String,*>
+                    senderExtension = it["senderExtension"] as? Map<String, *>
                 }
             }
         }

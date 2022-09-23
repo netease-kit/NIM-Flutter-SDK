@@ -1,14 +1,9 @@
-## 1.0.0-rc.21
-* fix some bugs
+## 1.0.1(Sep 8, 2022)
 
-## 1.0.0-rc.19
-* fix some bugs
+### Bug Fixes
+* Bug fix for nim_core version 1.0.10
 
-## 1.0.0-rc.18
-* fix build error
+## 1.0.0(Jul 13, 2022)
 
-## 1.0.0-rc.17
-* Update TeamService#updateTeamFields
-
-## 1.0.0-rc.15
-* Initial release.
+### New Features
+* first release version

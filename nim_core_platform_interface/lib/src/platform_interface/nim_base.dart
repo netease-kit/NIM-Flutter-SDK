@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -103,7 +103,8 @@ class NIMResult<T> {
 
   NIMResult(this.code, this.data, this.errorDetails);
 
-  NIMResult.failure({int code = -1, String? message}): this(code, null, message);
+  NIMResult.failure({int code = -1, String? message})
+      : this(code, null, message);
 
   NIMResult.success({String? message, dynamic data}) : this(0, data, message);
 

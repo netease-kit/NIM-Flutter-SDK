@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'team.dart';
@@ -139,7 +143,7 @@ NIMTeamNotificationAttachment _$NIMTeamNotificationAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMTeamNotificationAttachment(
     type: json['type'] as int,
-    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    extension: _parseExtension(json['extension']),
   );
 }
 
@@ -156,7 +160,7 @@ NIMMemberChangeAttachment _$NIMMemberChangeAttachmentFromJson(
     type: json['type'] as int,
     targets:
         (json['targets'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    extension: _parseExtension(json['extension']),
   );
 }
 
@@ -171,7 +175,7 @@ Map<String, dynamic> _$NIMMemberChangeAttachmentToJson(
 NIMDismissAttachment _$NIMDismissAttachmentFromJson(Map<String, dynamic> json) {
   return NIMDismissAttachment(
     type: json['type'] as int,
-    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    extension: _parseExtension(json['extension']),
   );
 }
 
@@ -186,7 +190,7 @@ NIMLeaveTeamAttachment _$NIMLeaveTeamAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMLeaveTeamAttachment(
     type: json['type'] as int,
-    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    extension: _parseExtension(json['extension']),
   );
 }
 
@@ -204,7 +208,7 @@ NIMMuteMemberAttachment _$NIMMuteMemberAttachmentFromJson(
     type: json['type'] as int,
     targets:
         (json['targets'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    extension: _parseExtension(json['extension']),
   );
 }
 
@@ -281,7 +285,7 @@ NIMUpdateTeamAttachment _$NIMUpdateTeamAttachmentFromJson(
     Map<String, dynamic> json) {
   return NIMUpdateTeamAttachment(
     type: json['type'] as int,
-    extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    extension: _parseExtension(json['extension']),
     updatedFields: _updatedFieldsFromJson(json['updatedFields'] as Map?),
   );
 }
@@ -291,5 +295,5 @@ Map<String, dynamic> _$NIMUpdateTeamAttachmentToJson(
     <String, dynamic>{
       'type': instance.type,
       'extension': instance.extension,
-      'updatedFields': instance.updatedFields,
+      'updatedFields': instance.updatedFields.toMap(),
     };

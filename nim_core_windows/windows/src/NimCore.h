@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -15,64 +15,70 @@ class FLTAuthService;
 class FLTMessageService;
 
 class NimCore {
-public:
-    using NimMethodChannel = flutter::MethodChannel<flutter::EncodableValue>;
+ public:
+  using NimMethodChannel = flutter::MethodChannel<flutter::EncodableValue>;
 
-public:
-    SINGLETONG(NimCore)
+ public:
+  SINGLETONG(NimCore)
 
-private:
-    NimCore();
-    ~NimCore();
+ private:
+  NimCore();
+  ~NimCore();
 
-public:
-    void regService();
+ public:
+  void regService();
 
-    void addService(FLTService* service);
+  void addService(FLTService* service);
 
-    FLTAuthService* getFLTAuthService() const;
-    FLTMessageService* getFLTMessageService() const;
-    FLTService* getService(const std::string& serviceName) const;
+  FLTAuthService* getFLTAuthService() const;
+  FLTMessageService* getFLTMessageService() const;
+  FLTService* getService(const std::string& serviceName) const;
 
-    void onMethodCall(const std::string& method, const flutter::EncodableMap* arguments,
-                      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void onMethodCall(
+      const std::string& method, const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
-    void invokeMethod(const std::string& method, const flutter::EncodableMap& arguments);
+  void invokeMethod(const std::string& method,
+                    const flutter::EncodableMap& arguments);
 
-    void setMethodChannel(NimMethodChannel* channel);
-    NimMethodChannel* getMethodChannel();
+  void setMethodChannel(NimMethodChannel* channel);
+  NimMethodChannel* getMethodChannel();
 
-public:
-    void setAppkey(const std::string& appkey);
-    std::string getAppkey() const;
+ public:
+  void setAppkey(const std::string& appkey);
+  std::string getAppkey() const;
 
-    void setLogDir(const std::string& logDir);
-    std::string getLogDir() const;
+  void setLogDir(const std::string& logDir);
+  std::string getLogDir() const;
 
-    std::string getAccountId() const;
+  std::string getAccountId() const;
 
-private:
-    std::unordered_map<std::string, FLTService*> m_services;
-    NimMethodChannel* m_channel = nullptr;
-    std::string m_appKey = "";
-    std::string m_logDir;
+ private:
+  std::unordered_map<std::string, FLTService*> m_services;
+  NimMethodChannel* m_channel = nullptr;
+  std::string m_appKey = "";
+  std::string m_logDir;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class MockMethodResult : public flutter::MethodResult<> {
-public:
-    MockMethodResult(const std::string serviceName, const std::string methodName,
-                     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
-    virtual void ErrorInternal(const std::string& error_code, const std::string& error_message, const flutter::EncodableValue* details) override;
-    virtual void NotImplementedInternal() override;
-    virtual void SuccessInternal(const flutter::EncodableValue* result) override;
+ public:
+  MockMethodResult(
+      const std::string serviceName, const std::string methodName,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  virtual void ErrorInternal(const std::string& error_code,
+                             const std::string& error_message,
+                             const flutter::EncodableValue* details) override;
+  virtual void NotImplementedInternal() override;
+  virtual void SuccessInternal(const flutter::EncodableValue* result) override;
 
-private:
-    std::string getStringFormEncodableValue(const flutter::EncodableValue* value) const;
+ private:
+  std::string getStringFormEncodableValue(
+      const flutter::EncodableValue* value) const;
 
-private:
-    std::string m_serviceName;
-    std::string m_methodName;
-    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> m_result;
+ private:
+  std::string m_serviceName;
+  std::string m_methodName;
+  std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> m_result;
 };
 #endif  // NIMCORE

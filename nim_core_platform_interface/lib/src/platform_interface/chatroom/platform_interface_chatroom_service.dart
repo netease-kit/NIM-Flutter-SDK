@@ -1,10 +1,9 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_chatroom_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 abstract class ChatroomServicePlatform extends Service {
@@ -24,7 +23,8 @@ abstract class ChatroomServicePlatform extends Service {
   /// 设置聊天室独立模式link地址提供者。
   /// 独立模式由于不依赖IM连接，SDK无法自动获取聊天室服务器的地址，需要客户端向SDK提供该地址。
   /// 独立模式下需要设置该字段，否则无法进入聊天室
-  NIMChatroomIndependentModeLinkAddressProvider? independentModeLinkAddressProvider;
+  NIMChatroomIndependentModeLinkAddressProvider?
+      independentModeLinkAddressProvider;
 
   /// 加入聊天室
   /// [request] 加入请求
@@ -241,5 +241,5 @@ abstract class ChatroomServicePlatform extends Service {
   Future<NIMResult<void>> clearChatroomQueue(String roomId);
 }
 
-typedef NIMChatroomIndependentModeLinkAddressProvider = Future<List<String>> Function(String roomId, String? account);
-
+typedef NIMChatroomIndependentModeLinkAddressProvider = Future<List<String>>
+    Function(String roomId, String? account);

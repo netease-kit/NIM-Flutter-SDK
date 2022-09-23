@@ -1,8 +1,5 @@
 BasedOnStyle: Google
-IndentWidth: 4
-ColumnLimit: 150
-AccessModifierOffset: -4
-AllowShortFunctionsOnASingleLine: None
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortBlocksOnASingleLine: false
-AllowShortIfStatementsOnASingleLine: false
+---
+Language: Cpp
+DerivePointerAlignment: false
+PointerAlignment: Left

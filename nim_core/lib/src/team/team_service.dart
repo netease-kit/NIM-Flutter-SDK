@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -84,6 +84,13 @@ class TeamService {
     return _platform.passApply(teamId, account);
   }
 
+  /// 拒绝用户的入群申请
+  /// 仅管理员和拥有者有此权限
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) {
+    return _platform.rejectApply(teamId, account, reason);
+  }
+
   /// 添加成员并设置自定义字段
   /// teamId	群组ID
   /// accounts	待加入的群成员帐号列表
@@ -100,6 +107,15 @@ class TeamService {
   /// 接受别人的入群邀请
   Future<NIMResult<void>> acceptInvite(String teamId, String inviter) {
     return _platform.acceptInvite(teamId, inviter);
+  }
+
+  ///拒绝入群邀请
+  ///[teamId] 群组ID
+  ///[inviter] 邀请我的用户帐号
+  ///[reason]  拒绝理由，长度不得超过5000
+  Future<NIMResult<void>> declineInvite(
+      String teamId, String inviter, String reason) async {
+    return _platform.declineInvite(teamId, inviter, reason);
   }
 
   /// 获取群成员入群邀请人（为空表示主动入群，没有邀请人）

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -9,23 +9,24 @@
 class MethodCallHandlerImpl;
 namespace nim_core_plugin {
 class NimCorePlugin : public flutter::Plugin {
-public:
-    static void RegisterWithRegistrar(flutter::PluginRegistrar *registrar);
+ public:
+  static void RegisterWithRegistrar(flutter::PluginRegistrar* registrar);
 
-    // Creates a plugin instance.
-    NimCorePlugin();
+  // Creates a plugin instance.
+  NimCorePlugin();
 
-    virtual ~NimCorePlugin();
+  virtual ~NimCorePlugin();
 
-    // Disallow copy and move.
-    NimCorePlugin(const NimCorePlugin &) = delete;
-    NimCorePlugin &operator=(const NimCorePlugin &) = delete;
+  // Disallow copy and move.
+  NimCorePlugin(const NimCorePlugin&) = delete;
+  NimCorePlugin& operator=(const NimCorePlugin&) = delete;
 
-    // Called when a method is called on the plugin channel.
-    void HandleMethodCall(const flutter::MethodCall<> &method_call, std::unique_ptr<flutter::MethodResult<>> result);
+  // Called when a method is called on the plugin channel.
+  void HandleMethodCall(const flutter::MethodCall<>& method_call,
+                        std::unique_ptr<flutter::MethodResult<>> result);
 
-public:
-    std::unique_ptr<MethodCallHandlerImpl> m_channel;
+ public:
+  std::unique_ptr<MethodCallHandlerImpl> m_channel;
 };
 
 }  // namespace nim_core_plugin

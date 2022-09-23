@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'chatroom_models.dart';
@@ -89,14 +93,6 @@ NIMChatroomEnterResult _$NIMChatroomEnterResultFromJson(
     member: _chatroomMemberFromJson(json['member'] as Map),
   );
 }
-
-Map<String, dynamic> _$NIMChatroomEnterResultToJson(
-        NIMChatroomEnterResult instance) =>
-    <String, dynamic>{
-      'roomId': instance.roomId,
-      'roomInfo': _chatroomInfoToJson(instance.roomInfo),
-      'member': _chatroomMemberToJson(instance.member),
-    };
 
 NIMChatroomInfo _$NIMChatroomInfoFromJson(Map<String, dynamic> json) {
   return NIMChatroomInfo(

@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../nim_core_platform_interface.dart';
@@ -40,14 +44,14 @@ class NIMSuperTeamMember {
 
   NIMSuperTeamMember(
       {this.id,
-        this.account,
-        this.type,
-        this.teamNick,
-        required this.isInTeam,
-        this.extension,
-        required this.isMute,
-        required this.joinTime,
-        this.invitorAccid});
+      this.account,
+      this.type,
+      this.teamNick,
+      required this.isInTeam,
+      this.extension,
+      required this.isMute,
+      required this.joinTime,
+      this.invitorAccid});
 
   factory NIMSuperTeamMember.fromMap(Map<String, dynamic> map) =>
       _$NIMSuperTeamMemberFromJson(map);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -31,7 +31,7 @@ class MessageService {
       MessageServicePlatform.instance.onMessageReceipt.stream;
 
   /// 群消息已读回执
-  Stream<NIMTeamMessageReceipt> get onTeamMessageReceipt =>
+  Stream<List<NIMTeamMessageReceipt>> get onTeamMessageReceipt =>
       MessageServicePlatform.instance.onTeamMessageReceipt.stream;
 
   /// 消息附件上传进度
@@ -51,12 +51,12 @@ class MessageService {
       MessageServicePlatform.instance.onSessionUpdate.stream;
 
   /// 最近会话删除
-  Stream<NIMSession> get onSessionDelete =>
+  Stream<NIMSession?> get onSessionDelete =>
       MessageServicePlatform.instance.onSessionDelete.stream;
 
   /// 消息PIN事件通知
   Stream<NIMMessagePinEvent> get onMessagePinNotify =>
-    MessageServicePlatform.instance.onMessagePinNotify.stream;
+      MessageServicePlatform.instance.onMessagePinNotify.stream;
 
   /// 会话服务-更新会话
   Stream<RecentSession> get onMySessionUpdate =>
@@ -143,28 +143,28 @@ class MessageService {
     MessageAction? action,
   }) async {
     final message = NIMMessage.imageEmptyMessage(
-        sessionId: sessionId,
-        sessionType: sessionType,
-        filePath: filePath,
-        fileSize: fileSize,
-        displayName: displayName,
-        nosScene: nosScene,
+      sessionId: sessionId,
+      sessionType: sessionType,
+      filePath: filePath,
+      fileSize: fileSize,
+      displayName: displayName,
+      nosScene: nosScene,
     );
     return _createMessageAndSend(message, action, resend);
   }
 
   /// 发送音频消息
-  Future<NIMResult<NIMMessage>> sendAudioMessage(
-      {required String sessionId,
-        required NIMSessionType sessionType,
-        required String filePath,
-        required int fileSize,
-        required int duration,
-        String? displayName,
-        NIMNosScene nosScene = NIMNosScenes.defaultIm,
-        bool resend = false,
-        MessageAction? action,
-      }) async {
+  Future<NIMResult<NIMMessage>> sendAudioMessage({
+    required String sessionId,
+    required NIMSessionType sessionType,
+    required String filePath,
+    required int fileSize,
+    required int duration,
+    String? displayName,
+    NIMNosScene nosScene = NIMNosScenes.defaultIm,
+    bool resend = false,
+    MessageAction? action,
+  }) async {
     final message = NIMMessage.audioEmptyMessage(
         sessionId: sessionId,
         sessionType: sessionType,
@@ -300,6 +300,7 @@ class MessageService {
   }
 
   /// 查询消息
+  @Deprecated('queryMessageListEx')
   Future<NIMResult<List<NIMMessage>>> queryMessageList(
       String account, NIMSessionType sessionType, int limit) async {
     return _platform.queryMessageList(account, sessionType, limit);
@@ -586,9 +587,9 @@ class MessageService {
   ///
   /// [sessionType] 会话类型
   Future<NIMResult<List<NIMMessagePin>>> queryMessagePinForSession(
-      String sessionId,
-      NIMSessionType sessionType,
-      ) {
+    String sessionId,
+    NIMSessionType sessionType,
+  ) {
     return _platform.queryMessagePinForSession(sessionId, sessionType);
   }
 
@@ -733,11 +734,17 @@ class MessageService {
     return _platform.clearSessionUnreadCount(sessionInfoList);
   }
 
+  /// 清空所有会话的未读计数
+  ///
+  Future<NIMResult<void>> clearAllSessionUnreadCount() {
+    return _platform.clearAllSessionUnreadCount();
+  }
+
   /// 删除最近联系人记录。
   /// 调用该接口后，会触发[MessageService.onSessionDelete]通知
   ///
   /// [deleteType] 删除类型，决定是否删除本地记录和漫游记录
-  /// 
+  ///
   /// [sendAck] 如果参数合法，是否向其他端标记此会话为已读
   Future<NIMResult<void>> deleteSession({
     required NIMSessionInfo sessionInfo,
@@ -767,64 +774,98 @@ class MessageService {
   /// <p>[needLastMsg]  是否需要lastMsg，0或者1，默认1
   /// <p>[limit] 结果集limit，最大100，默认100
   /// <p>[hasMore] 结果集是否完整，0或者1
-  Future<NIMResult<RecentSessionList>> queryMySessionList(
-      int minTimestamp,int maxTimestamp,int needLastMsg,int limit,int hasMore){
-    return _platform.queryMySessionList(minTimestamp, maxTimestamp, needLastMsg, limit, hasMore);
+  Future<NIMResult<RecentSessionList>> queryMySessionList(int minTimestamp,
+      int maxTimestamp, int needLastMsg, int limit, int hasMore) {
+    return _platform.queryMySessionList(
+        minTimestamp, maxTimestamp, needLastMsg, limit, hasMore);
   }
 
   ///【会话服务】获取某一个会话
   /// <p>[sessionId] 分为p2p/team/superTeam，格式分别是：p2p|accid、team|tid、super_team|tid
-  Future<NIMResult<RecentSession>> queryMySession(String sessionId, NIMSessionType sessionType){
-    return _platform.queryMySession(sessionId,sessionType);
+  Future<NIMResult<RecentSession>> queryMySession(
+      String sessionId, NIMSessionType sessionType) {
+    return _platform.queryMySession(sessionId, sessionType);
   }
 
   ///【会话服务】更新某一个会话，主要是设置会话的ext字段，如果会话不存在，则会创建出来，此时会话没有lastMsg
   ///  <p>[sessionId] 分为p2p/team/superTeam，格式分别是：p2p|accid、team|tid、super_team|tid
   ///  <p>[ext]       会话的扩展字段，仅自己可见
-  Future<NIMResult<void>> updateMySession(String sessionId, NIMSessionType sessionType,String ext){
-    return _platform.updateMySession(sessionId,sessionType,ext);
+  Future<NIMResult<void>> updateMySession(
+      String sessionId, NIMSessionType sessionType, String ext) {
+    return _platform.updateMySession(sessionId, sessionType, ext);
   }
 
   ///【会话服务】删除会话
   /// <p>[sessionList] 目标会话
-  Future<NIMResult<void>> deleteMySession(List<NIMMySessionKey> sessionList){
+  Future<NIMResult<void>> deleteMySession(List<NIMMySessionKey> sessionList) {
     return _platform.deleteMySession(sessionList);
   }
 
   ///增加一条快捷评论
-  Future<NIMResult<int>> addQuickComment(NIMMessage msg, int replyType, String ext, bool needPush, bool needBadge, String pushTitle, String pushContent, Map<String, Object> pushPayload){
-    return _platform.addQuickComment(msg, replyType, ext, needPush, needBadge, pushTitle, pushContent, pushPayload);
+  Future<NIMResult<int>> addQuickComment(
+      NIMMessage msg,
+      int replyType,
+      String ext,
+      bool needPush,
+      bool needBadge,
+      String pushTitle,
+      String pushContent,
+      Map<String, Object> pushPayload) {
+    return _platform.addQuickComment(msg, replyType, ext, needPush, needBadge,
+        pushTitle, pushContent, pushPayload);
   }
 
   ///删除一条快捷评论
-  Future<NIMResult<void>> removeQuickComment(NIMMessage msg, int replyType, String ext, bool needPush, bool needBadge, String pushTitle, String pushContent, Map<String, Object> pushPayload){
-    return _platform.removeQuickComment(msg, replyType, ext, needPush, needBadge, pushTitle, pushContent, pushPayload);
+  Future<NIMResult<void>> removeQuickComment(
+      NIMMessage msg,
+      int replyType,
+      String ext,
+      bool needPush,
+      bool needBadge,
+      String pushTitle,
+      String pushContent,
+      Map<String, Object> pushPayload) {
+    return _platform.removeQuickComment(msg, replyType, ext, needPush,
+        needBadge, pushTitle, pushContent, pushPayload);
   }
 
   ///获取快捷评论列表
-  Future<NIMResult<List<NIMQuickCommentOptionWrapper>>> queryQuickComment(List<NIMMessage> msgList){
+  Future<NIMResult<List<NIMQuickCommentOptionWrapper>>> queryQuickComment(
+      List<NIMMessage> msgList) {
     return _platform.queryQuickComment(msgList);
   }
 
   ///添加一个置顶会话
-  Future<NIMResult<NIMStickTopSessionInfo>> addStickTopSession(String sessionId, NIMSessionType sessionType, String ext){
+  Future<NIMResult<NIMStickTopSessionInfo>> addStickTopSession(
+      String sessionId, NIMSessionType sessionType, String ext) {
     return _platform.addStickTopSession(sessionId, sessionType, ext);
   }
 
   ///删除一个置顶会话
-  Future<NIMResult<void>> removeStickTopSession(String sessionId, NIMSessionType sessionType, String ext){
+  Future<NIMResult<void>> removeStickTopSession(
+      String sessionId, NIMSessionType sessionType, String ext) {
     return _platform.removeStickTopSession(sessionId, sessionType, ext);
   }
 
   ///更新一个会话在置顶上的扩展字段
-  Future<NIMResult<void>> updateStickTopSession(String sessionId, NIMSessionType sessionType, String ext){
+  Future<NIMResult<void>> updateStickTopSession(
+      String sessionId, NIMSessionType sessionType, String ext) {
     return _platform.updateStickTopSession(sessionId, sessionType, ext);
   }
 
   ///获取置顶会话信息的列表
-  Future<NIMResult<List<NIMStickTopSessionInfo>>> queryStickTopSession(){
+  Future<NIMResult<List<NIMStickTopSessionInfo>>> queryStickTopSession() {
     return _platform.queryStickTopSession();
   }
 
+  ///获取是否有更多漫游消息标记的时间戳，如果没有，回调0
+  Future<NIMResult<int>> queryRoamMsgHasMoreTime(
+      String sessionId, NIMSessionType sessionType) {
+    return _platform.queryRoamMsgHasMoreTime(sessionId, sessionType);
+  }
 
+  ///更新是否有更多漫游消息的标记
+  Future<NIMResult<void>> updateRoamMsgHasMoreTag(NIMMessage newTag) {
+    return _platform.updateRoamMsgHasMoreTag(newTag);
+  }
 }

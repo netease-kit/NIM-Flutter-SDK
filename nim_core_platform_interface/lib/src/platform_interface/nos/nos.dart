@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -46,13 +46,13 @@ class NIMNOSTransferStatus {
   Map<String, dynamic> toMap() => _$NIMNOSTransferStatusToJson(this);
 }
 
-/// 认证类型
+/// 传输类型
 enum NIMNOSTransferType {
   upload,
   download,
 }
 
-/// 认证类型
+/// 传输状态
 enum NIMNosTransferStatus {
   def,
   transferring,

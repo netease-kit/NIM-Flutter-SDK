@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,12 +7,10 @@
 package com.netease.nimflutter
 
 import android.os.Handler
-import io.flutter.plugin.common.BinaryMessenger
 import android.os.Looper
-
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-
 
 class SafeMethodChannel(messenger: BinaryMessenger, name: String) {
 

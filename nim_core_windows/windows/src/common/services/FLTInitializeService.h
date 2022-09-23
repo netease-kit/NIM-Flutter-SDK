@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -8,16 +8,20 @@
 #include "../FLTService.h"
 
 class FLTInitializeService : public FLTService {
-public:
-    FLTInitializeService();
-    virtual void onMethodCalled(const std::string& method, const flutter::EncodableMap* arguments,
-                                std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) override;
+ public:
+  FLTInitializeService();
+  virtual void onMethodCalled(
+      const std::string& method, const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result)
+      override;
 
-private:
-    void initializeSDK(const flutter::EncodableMap* arguments, std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+ private:
+  void initializeSDK(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
-private:
-    std::string m_appKey;
+ private:
+  std::string m_appKey;
 };
 
 #endif  // FLTINITIALIZESERVICE_H

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,7 +7,9 @@
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
 import com.netease.nimlib.sdk.media.record.AudioRecorder
 import com.netease.nimlib.sdk.media.record.IAudioRecordCallback
 import com.netease.nimlib.sdk.media.record.RecordType
@@ -15,7 +17,7 @@ import java.io.File
 
 class FLTAudioRecorderService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private var recordType: RecordType = RecordType.AAC
@@ -29,15 +31,14 @@ class FLTAudioRecorderService(
         override fun onRecordStart(audioFile: File?, recordType: RecordType?) {
             val messageMap = mutableMapOf<String, Any?>()
             messageMap["filePath"] = audioFile?.path
-            messageMap["recordType"] = recordType
+            messageMap["recordType"] = recordType?.fileSuffix
             notify("onRecordStart", messageMap)
         }
 
         override fun onRecordSuccess(audioFile: File?, audioLength: Long, recordType: RecordType?) {
-
             val messageMap = mutableMapOf<String, Any?>()
             messageMap["filePath"] = audioFile?.path
-            messageMap["recordType"] = recordType
+            messageMap["recordType"] = recordType?.fileSuffix
             messageMap["fileSize"] = audioFile?.length()
             messageMap["duration"] = audioLength
             notify("onRecordSuccess", messageMap)
@@ -55,6 +56,7 @@ class FLTAudioRecorderService(
             val messageMap = mutableMapOf<String, Any?>()
             messageMap["maxDuration"] = maxTime
             notify("onRecordReachedMaxTime", mutableMapOf())
+            mAudioRecorder.handleEndRecord(true, maxTime)
         }
     }
     private var mAudioRecorder: AudioRecorder = AudioRecorder(
@@ -72,30 +74,31 @@ class FLTAudioRecorderService(
             "stopRecord" to ::stopAudioRecord,
             "cancelRecord" to ::cancelAudioRecord,
             "isAudioRecording" to ::isAudioRecord,
-            "getAmplitude" to ::getCurrentRecordAmplitude,
+            "getAmplitude" to ::getCurrentRecordAmplitude
         )
     }
 
-    //通知事件，将播放的监听的状态信息，通过该方法回调给Flutter层
+    // 通知事件，将播放的监听的状态信息，通过该方法回调给Flutter层
     private fun notify(state: String, arguments: MutableMap<String, Any?>) {
         arguments["recordState"] = state
         notifyEvent("onRecordStateChange", arguments)
     }
 
-     private suspend fun startAudioRecord(arguments: Map<String, *>): NimResult<Boolean> {
-        //如果正在录制，需要停止
+    private suspend fun startAudioRecord(arguments: Map<String, *>): NimResult<Boolean> {
+        // 如果正在录制，需要停止
         if (mAudioRecorder.isRecording) {
-            mAudioRecorder.startRecord()
+            mAudioRecorder.completeRecord(true)
         }
         var type = recordType
         var maxLen = maxLength
         if (arguments["recordType"] != null) {
-            type = if((arguments["recordType"] as Number).toInt() == 0) RecordType.AAC else RecordType.AMR
+            type =
+                if ((arguments["recordType"] as Number).toInt() == 0) RecordType.AAC else RecordType.AMR
         }
         if (arguments["maxLength"] != null) {
             maxLen = (arguments["maxLength"] as Number).toInt()
         }
-        //配置参数发送变化，需要重新创建AudioRecord
+        // 配置参数发送变化，需要重新创建AudioRecord
         if (type != recordType || maxLen != maxLength) {
             mAudioRecorder.destroyAudioRecorder()
             recordType = type
@@ -130,5 +133,4 @@ class FLTAudioRecorderService(
     @Suppress("UNUSED_PARAMETER")
     private suspend fun getCurrentRecordAmplitude(arguments: Map<String, *>): NimResult<Int> =
         NimResult(code = 0, data = mAudioRecorder.currentRecordMaxAmplitude)
-
 }

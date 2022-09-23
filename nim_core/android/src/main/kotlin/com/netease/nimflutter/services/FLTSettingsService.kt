@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,7 +7,13 @@
 package com.netease.nimflutter.services
 
 import android.content.Context
-import com.netease.nimflutter.*
+import com.netease.nimflutter.EnumTypeMappingRegistry
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultContinuationCallback
+import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
+import com.netease.nimflutter.convertToStatusBarNotificationConfig
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.misc.DirCacheFileType
 import com.netease.nimlib.sdk.misc.MiscService
@@ -18,7 +24,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class FLTSettingsService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     override val serviceName = "SettingsService"
@@ -38,7 +44,7 @@ class FLTSettingsService(
             "archiveLogs" to ::archiveLogs,
             "uploadLogs" to ::uploadLogs,
             "getSizeOfDirCache" to ::getSizeOfDirCache,
-            "clearDirCache" to ::clearDirCache,
+            "clearDirCache" to ::clearDirCache
         )
     }
 
@@ -91,9 +97,9 @@ class FLTSettingsService(
                 mapOf(
                     "enable" to it.isOpen,
                     "startTime" to it.startTimeString,
-                    "endTime" to it.stopTimeString,
+                    "endTime" to it.stopTimeString
                 )
-            },
+            }
         )
     }
 
@@ -104,7 +110,9 @@ class FLTSettingsService(
             val startTime: String? by args
             val endTime: String? by args
             NIMClient.getService(MixPushService::class.java).setPushNoDisturbConfig(
-                enable, startTime, endTime
+                enable,
+                startTime,
+                endTime
             ).setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
@@ -184,6 +192,4 @@ class FLTSettingsService(
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
-
-
 }

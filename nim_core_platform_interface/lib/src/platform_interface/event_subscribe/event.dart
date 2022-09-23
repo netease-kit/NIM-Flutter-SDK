@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -71,7 +71,7 @@ class Event {
         publisherClientType: json?['publisherClientType'] as int?,
         multiClientConfig: json?['multiClientConfig'] as String?,
         multiClientConfigMap:
-        (json?['multiClientConfigMap'] as Map?)?.cast<int,String>(),
+            (json?['multiClientConfigMap'] as Map?)?.cast<int, String>(),
         nimConfig: json?['nimConfig'] as String?);
   }
 

@@ -28,9 +28,9 @@ dependencies:
   crypto: ^3.0.0
 
 dev_dependencies:
-#  yunxin_integration_test: ^0.0.1-rc.0
-  yunxin_integration_test:
-    path: ../../../yunxin_integration_test/
+#  yunxin_integration_test: ^0.0.1-rc.15
+  netease_auto_test_kit: ^0.0.1-rc.0
+ #   path: '../../../auto_test/auto_test_kit'
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

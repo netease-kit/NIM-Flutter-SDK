@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -25,7 +25,8 @@ class SuperTeamService {
 
   ///根据群id列表批量查询群信息
   ///[idList] 群id列表
-  Future<NIMResult<List<NIMSuperTeam>>> queryTeamListById(List<String> idList) async {
+  Future<NIMResult<List<NIMSuperTeam>>> queryTeamListById(
+      List<String> idList) async {
     return _platform.queryTeamListById(idList);
   }
 
@@ -63,7 +64,8 @@ class SuperTeamService {
   /// [teamId] 群组ID
   /// [account] 申请入群的用户ID
   /// [reason]  拒绝理由，长度不得超过5000
-  Future<NIMResult<void>> rejectApply(String teamId, String account,String reason) async {
+  Future<NIMResult<void>> rejectApply(
+      String teamId, String account, String reason) async {
     return _platform.rejectApply(teamId, account, reason);
   }
 
@@ -71,8 +73,8 @@ class SuperTeamService {
   ///[teamId] 群组ID
   ///[accountList] 待加入的群成员帐号列表
   ///[msg] 附言，长度不得超过5000
-  Future<NIMResult<List<String>>> addMembers(String teamId,
-      List<String> accountList, String msg) async {
+  Future<NIMResult<List<String>>> addMembers(
+      String teamId, List<String> accountList, String msg) async {
     return _platform.addMembers(teamId, accountList, msg);
   }
 
@@ -87,7 +89,8 @@ class SuperTeamService {
   ///[teamId] 群组ID
   ///[inviter] 邀请我的用户帐号
   ///[reason]  拒绝理由，长度不得超过5000
-  Future<NIMResult<void>> declineInvite(String teamId, String inviter,String reaseon) async {
+  Future<NIMResult<void>> declineInvite(
+      String teamId, String inviter, String reaseon) async {
     return _platform.declineInvite(teamId, inviter, reaseon);
   }
 
@@ -107,7 +110,8 @@ class SuperTeamService {
 
   ///获取群组成员列表
   ///[teamId] 群组ID
-  Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberList(String teamId) async {
+  Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberList(
+      String teamId) async {
     return _platform.queryMemberList(teamId);
   }
 
@@ -124,7 +128,7 @@ class SuperTeamService {
   ///[offset] 偏移位置
   ///[limit]  获取条数，每次最多200
   Future<NIMResult<List<NIMSuperTeamMember>>> queryMemberListByPage(
-      String teamId, int offset,int limit) async {
+      String teamId, int offset, int limit) async {
     return _platform.queryMemberListByPage(teamId, offset, limit);
   }
 
@@ -141,8 +145,7 @@ class SuperTeamService {
   /// 群修改自己的群昵称
   /// [teamId]    所在群组ID
   /// [nick]   新的群昵称
-  Future<NIMResult<void>> updateMyTeamNick(
-      String teamId, String nick) async {
+  Future<NIMResult<void>> updateMyTeamNick(String teamId, String nick) async {
     return _platform.updateMyTeamNick(teamId, nick);
   }
 
@@ -158,11 +161,13 @@ class SuperTeamService {
   /// 上层APP如果管理了群成员资料的缓存，可通过此接口更新缓存。
   /// observer 观察者, 参数为有更新的群成员资料列表
   /// [register] true为注册，false为注销
-  Stream<List<NIMSuperTeamMember>> get onMemberUpdate => SuperTeamServicePlatform.instance.onMemberUpdate.stream;
+  Stream<List<NIMSuperTeamMember>> get onMemberUpdate =>
+      SuperTeamServicePlatform.instance.onMemberUpdate.stream;
 
   /// 移除群成员的观察者通知。
   /// observer 观察者, 参数为被移除的群成员
-  Stream<List<NIMSuperTeamMember>> onMemberRemove = SuperTeamServicePlatform.instance.onMemberRemove.stream;
+  Stream<List<NIMSuperTeamMember>> onMemberRemove =
+      SuperTeamServicePlatform.instance.onMemberRemove.stream;
 
   ///拥有者将群的拥有者权限转给另外一个人，转移后，另外一个人成为拥有者
   ///原拥有者变成普通成员。
@@ -202,7 +207,7 @@ class SuperTeamService {
   }
 
   ///禁言群全体成员
-  ///将整个群禁言，该操作仅群主或者管理员有权限。禁言操作成功之后，会回调群更新接口，影响方法
+  ///将整个群禁言，该操作仅群主或者管理员有权限。禁言操作成功之后，会回调群更新接口
   ///[teamId] 群Id
   ///[mute] true表示禁言，false表示解除禁言
   Future<NIMResult<void>> muteAllTeamMember(String teamId, bool mute) async {
@@ -217,7 +222,6 @@ class SuperTeamService {
     return _platform.queryMutedTeamMembers(teamId);
   }
 
-
   ///编辑多个资料
   Future<NIMResult<void>> updateTeamFields(
       String teamId, NIMTeamUpdateFieldRequest request) async {
@@ -225,10 +229,12 @@ class SuperTeamService {
   }
 
   ///监听群资料变化
-  Stream<List<NIMSuperTeam>> get onSuperTeamUpdate => SuperTeamServicePlatform.instance.onSuperTeamUpdate.stream;
+  Stream<List<NIMSuperTeam>> get onSuperTeamUpdate =>
+      SuperTeamServicePlatform.instance.onSuperTeamUpdate.stream;
 
   ///监听移除群的变化
-  Stream<NIMSuperTeam> get onSuperTeamRemove => SuperTeamServicePlatform.instance.onSuperTeamRemove.stream;
+  Stream<NIMSuperTeam> get onSuperTeamRemove =>
+      SuperTeamServicePlatform.instance.onSuperTeamRemove.stream;
 
   ///群消息免打扰
   ///设置指定群消息通知类型
@@ -239,7 +245,6 @@ class SuperTeamService {
     return _platform.muteTeam(teamId, notifyType);
   }
 
-
   ///用户可以查询到具有指定群名称的群ID的列表
   ///[name] 群名称
   Future<NIMResult<List<String>>> searchTeamIdByName(String name) async {
@@ -248,7 +253,8 @@ class SuperTeamService {
 
   /// 用户在客户端本地可以搜索与关键字匹配的所有群：
   /// [keyword] 要搜索的关键字
-  Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(String keyword) async {
+  Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(
+      String keyword) async {
     return _platform.searchTeamsByKeyword(keyword);
   }
 }

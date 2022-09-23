@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -86,8 +86,8 @@ class MethodChannelAuthService extends AuthServicePlatform {
           arguments['clientType'] as int?,
           arguments['customClientType'] as int?,
         );
-      } else if (status == NIMAuthStatus.dataSyncStart
-        || status == NIMAuthStatus.dataSyncFinish) {
+      } else if (status == NIMAuthStatus.dataSyncStart ||
+          status == NIMAuthStatus.dataSyncFinish) {
         event = NIMDataSyncStatusEvent(status);
       } else {
         event = NIMAuthStatusEvent(status);
@@ -116,8 +116,7 @@ class MethodChannelAuthService extends AuthServicePlatform {
     final account = arguments['account'] as String?;
     assert(dynamicTokenProvider != null);
     assert(account != null);
-    if (tokenProvider == null || account == null)
-      return null;
+    if (tokenProvider == null || account == null) return null;
     return await tokenProvider(account);
   }
 }

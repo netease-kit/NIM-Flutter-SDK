@@ -1,8 +1,8 @@
-// Copyright (c) 2014-2021 NetEase, Inc.
-// All right reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
 
 class Log {
-
   static LogMixin? instance;
 
   static void v(String tag, String msg) {
@@ -24,7 +24,6 @@ class Log {
   static void e(String tag, String msg) {
     instance?.e(tag, msg);
   }
-
 }
 
 //log mixin
@@ -39,4 +38,3 @@ mixin LogMixin {
 
   void e(String tag, String msg) {}
 }
-

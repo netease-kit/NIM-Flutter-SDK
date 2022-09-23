@@ -1,10 +1,8 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/audio/platform_interface_audio_record_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/audio/record_info.dart';
 
 class MethodChannelAudioService extends AudioRecordServicePlatform {
   @override
@@ -27,7 +25,11 @@ class MethodChannelAudioService extends AudioRecordServicePlatform {
 
   @override
   Future<NIMResult<bool>> startAudioRecord(
-      Map<String, dynamic>? arguments) async {
+      AudioOutputFormat recordType, int maxLength) async {
+    var arguments = <String, dynamic>{
+      "recordType": recordType.index,
+      "maxLength": maxLength
+    };
     Map<String, dynamic> replyMap =
         await invokeMethod('startRecord', arguments: arguments);
     return NIMResult.fromMap(replyMap);
@@ -58,5 +60,5 @@ class MethodChannelAudioService extends AudioRecordServicePlatform {
   }
 
   @override
-  String get serviceName => 'AudioRecordService';
+  String get serviceName => 'AudioRecorderService';
 }

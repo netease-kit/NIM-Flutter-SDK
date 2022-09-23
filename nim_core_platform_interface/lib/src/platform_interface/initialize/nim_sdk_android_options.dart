@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -41,6 +41,10 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   @JsonKey(defaultValue: false)
   final bool reducedIM;
 
+  ///是否开启融合存储
+  @JsonKey(defaultValue: true)
+  final bool enableFcs;
+
   ///
   /// 是否检查 Manifest 配置
   /// 最好在调试阶段打开，调试通过之后请关掉
@@ -73,10 +77,10 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   ///
   final String? databaseEncryptKey;
 
- ///
- /// 消息缩略图的尺寸。<br>
- /// 该值为最长边的大小。下载的缩略图最长边不会超过该值。
- ///
+  ///
+  /// 消息缩略图的尺寸。<br>
+  /// 该值为最长边的大小。下载的缩略图最长边不会超过该值。
+  ///
   final int thumbnailSize;
 
   /// 第三方推送配置
@@ -101,6 +105,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.customPushContentType,
     this.mixPushConfig,
     this.notificationConfig,
+    this.enableFcs = true,
 
     /// common configurations
     required String appKey,

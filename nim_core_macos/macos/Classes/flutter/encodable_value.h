@@ -1,5 +1,5 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 #ifndef FLUTTER_SHELL_PLATFORM_COMMON_CLIENT_WRAPPER_INCLUDE_FLUTTER_ENCODABLE_VALUE_H_
@@ -58,39 +58,32 @@ static_assert(sizeof(double) == 8, "EncodableValue requires a 64-bit double");
 // extension types in an EncodableValue-style variant, and only ever storing
 // that variant in CustomEncodableValue.
 class CustomEncodableValue {
-public:
-    explicit CustomEncodableValue(const std::any& value) : value_(value) {
-    }
-    ~CustomEncodableValue() = default;
+ public:
+  explicit CustomEncodableValue(const std::any& value) : value_(value) {}
+  ~CustomEncodableValue() = default;
 
-    // Allow implicit conversion to std::any to allow direct use of any_cast.
-    operator std::any&() {
-        return value_;
-    }
-    operator const std::any&() const {
-        return value_;
-    }
+  // Allow implicit conversion to std::any to allow direct use of any_cast.
+  operator std::any&() { return value_; }
+  operator const std::any&() const { return value_; }
 
 #if defined(FLUTTER_ENABLE_RTTI) && FLUTTER_ENABLE_RTTI
-    // Passthrough to std::any's type().
-    const std::type_info& type() const noexcept {
-        return value_.type();
-    }
+  // Passthrough to std::any's type().
+  const std::type_info& type() const noexcept { return value_.type(); }
 #endif
 
-    // This operator exists only to provide a stable ordering for use as a
-    // std::map key, to satisfy the compiler requirements for EncodableValue.
-    // It does not attempt to provide useful ordering semantics, and using a
-    // custom value as a map key is not recommended.
-    bool operator<(const CustomEncodableValue& other) const {
-        return this < &other;
-    }
-    bool operator==(const CustomEncodableValue& other) const {
-        return this == &other;
-    }
+  // This operator exists only to provide a stable ordering for use as a
+  // std::map key, to satisfy the compiler requirements for EncodableValue.
+  // It does not attempt to provide useful ordering semantics, and using a
+  // custom value as a map key is not recommended.
+  bool operator<(const CustomEncodableValue& other) const {
+    return this < &other;
+  }
+  bool operator==(const CustomEncodableValue& other) const {
+    return this == &other;
+  }
 
-private:
-    std::any value_;
+ private:
+  std::any value_;
 };
 
 class EncodableValue;
@@ -105,8 +98,11 @@ namespace internal {
 //
 // Do not change the order or indexes of the items here; see the comment on
 // EncodableValue
-using EncodableValueVariant = std::variant<std::monostate, bool, int32_t, int64_t, double, std::string, std::vector<uint8_t>, std::vector<int32_t>,
-                                           std::vector<int64_t>, std::vector<double>, EncodableList, EncodableMap, CustomEncodableValue>;
+using EncodableValueVariant =
+    std::variant<std::monostate, bool, int32_t, int64_t, double, std::string,
+                 std::vector<uint8_t>, std::vector<int32_t>,
+                 std::vector<int64_t>, std::vector<double>, EncodableList,
+                 EncodableMap, CustomEncodableValue>;
 }  // namespace internal
 
 // An object that can contain any value or collection type supported by
@@ -155,62 +151,57 @@ using EncodableValueVariant = std::variant<std::monostate, bool, int32_t, int64_
 // EncodableList        -> List
 // EncodableMap         -> Map
 class EncodableValue : public internal::EncodableValueVariant {
-public:
-    // Rely on std::variant for most of the constructors/operators.
-    using super = internal::EncodableValueVariant;
-    using super::super;
-    using super::operator=;
+ public:
+  // Rely on std::variant for most of the constructors/operators.
+  using super = internal::EncodableValueVariant;
+  using super::super;
+  using super::operator=;
 
-    explicit EncodableValue() = default;
+  explicit EncodableValue() = default;
 
-    // Avoid the C++17 pitfall of conversion from char* to bool. Should not be
-    // needed for C++20.
-    explicit EncodableValue(const char* string) : super(std::string(string)) {
-    }
-    EncodableValue& operator=(const char* other) {
-        *this = std::string(other);
-        return *this;
-    }
+  // Avoid the C++17 pitfall of conversion from char* to bool. Should not be
+  // needed for C++20.
+  explicit EncodableValue(const char* string) : super(std::string(string)) {}
+  EncodableValue& operator=(const char* other) {
+    *this = std::string(other);
+    return *this;
+  }
 
-    // Allow implicit conversion from CustomEncodableValue; the only reason to
-    // make a CustomEncodableValue (which can only be constructed explicitly) is
-    // to use it with EncodableValue, so the risk of unintended conversions is
-    // minimal, and it avoids the need for the verbose:
-    //   EncodableValue(CustomEncodableValue(...)).
-    EncodableValue(const CustomEncodableValue& v) : super(v) {
-    }
+  // Allow implicit conversion from CustomEncodableValue; the only reason to
+  // make a CustomEncodableValue (which can only be constructed explicitly) is
+  // to use it with EncodableValue, so the risk of unintended conversions is
+  // minimal, and it avoids the need for the verbose:
+  //   EncodableValue(CustomEncodableValue(...)).
+  EncodableValue(const CustomEncodableValue& v) : super(v) {}
 
-    // Override the conversion constructors from std::variant to make them
-    // explicit, to avoid implicit conversion.
-    //
-    // While implicit conversion can be convenient in some cases, it can have very
-    // surprising effects. E.g., calling a function that takes an EncodableValue
-    // but accidentally passing an EncodableValue* would, instead of failing to
-    // compile, go through a pointer->bool->EncodableValue(bool) chain and
-    // silently call the function with a temp-constructed EncodableValue(true).
-    template <class T>
-    constexpr explicit EncodableValue(T&& t) noexcept : super(t) {
-    }
+  // Override the conversion constructors from std::variant to make them
+  // explicit, to avoid implicit conversion.
+  //
+  // While implicit conversion can be convenient in some cases, it can have very
+  // surprising effects. E.g., calling a function that takes an EncodableValue
+  // but accidentally passing an EncodableValue* would, instead of failing to
+  // compile, go through a pointer->bool->EncodableValue(bool) chain and
+  // silently call the function with a temp-constructed EncodableValue(true).
+  template <class T>
+  constexpr explicit EncodableValue(T&& t) noexcept : super(t) {}
 
-    // Returns true if the value is null. Convenience wrapper since unlike the
-    // other types, std::monostate uses aren't self-documenting.
-    bool IsNull() const {
-        return std::holds_alternative<std::monostate>(*this);
-    }
+  // Returns true if the value is null. Convenience wrapper since unlike the
+  // other types, std::monostate uses aren't self-documenting.
+  bool IsNull() const { return std::holds_alternative<std::monostate>(*this); }
 
-    // Convenience method to simplify handling objects received from Flutter
-    // where the values may be larger than 32-bit, since they have the same type
-    // on the Dart side, but will be either 32-bit or 64-bit here depending on
-    // the value.
-    //
-    // Calling this method if the value doesn't contain either an int32_t or an
-    // int64_t will throw an exception.
-    int64_t LongValue() const {
-        if (std::holds_alternative<int32_t>(*this)) {
-            return std::get<int32_t>(*this);
-        }
-        return std::get<int64_t>(*this);
+  // Convenience method to simplify handling objects received from Flutter
+  // where the values may be larger than 32-bit, since they have the same type
+  // on the Dart side, but will be either 32-bit or 64-bit here depending on
+  // the value.
+  //
+  // Calling this method if the value doesn't contain either an int32_t or an
+  // int64_t will throw an exception.
+  int64_t LongValue() const {
+    if (std::holds_alternative<int32_t>(*this)) {
+      return std::get<int32_t>(*this);
     }
+    return std::get<int64_t>(*this);
+  }
 };
 
 }  // namespace flutter

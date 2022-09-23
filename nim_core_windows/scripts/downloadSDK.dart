@@ -1,5 +1,10 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 //import 'package:http/http.dart' as http;
 import 'dart:io';
+
 import 'package:archive/archive.dart';
 import 'package:path/path.dart' show dirname, join;
 import 'package:process_run/shell.dart';

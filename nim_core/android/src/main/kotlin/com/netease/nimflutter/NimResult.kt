@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -16,11 +16,13 @@ data class NimResult<T>(
     private val convert: ((data: T) -> Map<String, Any?>)? = null
 ) {
 
+    val isSuccess = code == 0 || code == 200
+
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "code" to code,
             "errorDetails" to errorDetails,
-            "data" to if(data != null && convert != null) convert.invoke(data) else data
+            "data" to if (data != null && convert != null) convert.invoke(data) else data
         )
     }
 
@@ -36,7 +38,7 @@ data class NimResult<T>(
 
 class NimResultCallback<T>(
     private val resultCallback: ResultCallback<T>,
-    private val handler: ((T?) -> NimResult<T>)? = null,
+    private val handler: ((T?) -> NimResult<T>)? = null
 ) : RequestCallback<T> {
 
     constructor(
@@ -63,7 +65,14 @@ class NimResultContinuationCallback<T>(
 ) : RequestCallback<T> {
 
     override fun onSuccess(param: T?) {
-        continuation.resumeWith(Result.success(handler?.invoke(param) ?: NimResult(code = 0, data = param)))
+        continuation.resumeWith(
+            Result.success(
+                handler?.invoke(param) ?: NimResult(
+                    code = 0,
+                    data = param
+                )
+            )
+        )
     }
 
     override fun onFailed(code: Int) {

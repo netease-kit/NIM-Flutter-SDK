@@ -1,3 +1,7 @@
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pass_through_proxydata.g.dart';
@@ -32,7 +36,6 @@ class NIMPassThroughProxyData {
   factory NIMPassThroughProxyData.fromMap(Map<String, dynamic> map) =>
       _$NIMPassThroughProxyDataFromJson(map);
 
-  @override
   Map<String, dynamic> toMap() => _$NIMPassThroughProxyDataToJson(this);
 }
 

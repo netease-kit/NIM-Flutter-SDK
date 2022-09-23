@@ -1,4 +1,4 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
@@ -92,7 +92,7 @@ enum NIMAuthStatus {
   kickOutByOtherClient,
 
   /// 数据同步开始
-  /// 
+  ///
   /// 同步开始时，SDK 数据库中的数据可能还是旧数据。
   ///（如果是首次登录，那么 SDK 数据库中还没有数据，
   /// 重新登录时 SDK 数据库中还是上一次退出时保存的数据）
@@ -138,10 +138,8 @@ class NIMKickOutByOtherClientEvent extends NIMAuthStatusEvent {
 
 /// 数据同步状态变更事件，可监听数据同步开始、结束
 class NIMDataSyncStatusEvent extends NIMAuthStatusEvent {
-
-  NIMDataSyncStatusEvent(NIMAuthStatus status): super(status);
-
-} 
+  NIMDataSyncStatusEvent(NIMAuthStatus status) : super(status);
+}
 
 /// 当前在线端信息
 @JsonSerializable()

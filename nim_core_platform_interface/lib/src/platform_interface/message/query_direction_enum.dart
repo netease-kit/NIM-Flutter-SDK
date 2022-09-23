@@ -1,9 +1,8 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 enum QueryDirection {
-
   /// 查询比锚点时间更早的消息
   QUERY_OLD,
 

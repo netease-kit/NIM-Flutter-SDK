@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -9,12 +9,25 @@ package com.netease.nimflutter.services
 import com.netease.nimflutter.stringToNimNosSceneKeyConstant
 import com.netease.nimflutter.toMap
 import com.netease.nimflutter.update
-import com.netease.nimlib.sdk.chatroom.model.*
-import com.netease.nimlib.sdk.msg.attachment.*
-import com.netease.nimlib.sdk.msg.constant.ChatRoomQueueChangeType
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomNotificationAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomPartClearAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomQueueChangeAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomRoomMemberInAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomTempMuteAddAttachment
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomTempMuteRemoveAttachment
+import com.netease.nimlib.sdk.msg.attachment.AudioAttachment
+import com.netease.nimlib.sdk.msg.attachment.FileAttachment
+import com.netease.nimlib.sdk.msg.attachment.ImageAttachment
+import com.netease.nimlib.sdk.msg.attachment.LocationAttachment
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment
+import com.netease.nimlib.sdk.msg.attachment.NotificationAttachment
+import com.netease.nimlib.sdk.msg.attachment.VideoAttachment
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
-import com.netease.nimlib.sdk.msg.constant.NotificationType
-import com.netease.nimlib.sdk.team.model.*
+import com.netease.nimlib.sdk.team.model.DismissAttachment
+import com.netease.nimlib.sdk.team.model.LeaveTeamAttachment
+import com.netease.nimlib.sdk.team.model.MemberChangeAttachment
+import com.netease.nimlib.sdk.team.model.MuteMemberAttachment
+import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment
 import com.netease.yunxin.kit.alog.ALog
 import org.json.JSONObject
 
@@ -59,12 +72,12 @@ object AttachmentHelper {
                 if (messageType == MsgTypeEnum.custom) {
                     (attachment as? CustomAttachment)?.toMap() ?: mapOf()
                 } else {
-                    ALog.e("AttachmentHelper",
-                        "message type $messageType with unknown attachment type: ${attachment?.javaClass?.name}")
+                    ALog.e(
+                        "AttachmentHelper",
+                        "message type $messageType with unknown attachment type: ${attachment?.javaClass?.name}"
+                    )
                     mapOf()
                 }
             }
         } + (if (attachment is NotificationAttachment) mapOf("type" to attachment.type.value) else emptyMap())
-
-
 }

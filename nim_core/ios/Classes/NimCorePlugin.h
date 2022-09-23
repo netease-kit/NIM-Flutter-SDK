@@ -1,10 +1,8 @@
-/*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
- * Use of this source code is governed by a MIT license that can be
- * found in the LICENSE file.
- */
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
 
 #import <Flutter/Flutter.h>
 
-@interface NimCorePlugin : NSObject<FlutterPlugin>
+@interface NimCorePlugin : NSObject <FlutterPlugin>
 @end

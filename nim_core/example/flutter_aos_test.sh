@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Copyright (c) 2022 NetEase, Inc. All rights reserved.
+# Use of this source code is governed by a MIT license that can be
+# found in the LICENSE file.
+
 applicationName=$1
 platformName=$2
 version=$3

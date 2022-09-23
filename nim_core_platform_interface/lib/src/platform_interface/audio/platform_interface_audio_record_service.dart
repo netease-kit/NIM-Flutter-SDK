@@ -1,12 +1,10 @@
-// Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+// Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
 import 'dart:async';
 
 import 'package:nim_core_platform_interface/src/method_channel/method_channel_audio_record_service.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/audio/record_info.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/service.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../../../nim_core_platform_interface.dart';
@@ -28,7 +26,8 @@ abstract class AudioRecordServicePlatform extends Service {
   final StreamController<RecordInfo> onAudioRecordStatus =
       StreamController<RecordInfo>.broadcast();
 
-  Future<NIMResult<bool>> startAudioRecord(Map<String, dynamic>? param) async {
+  Future<NIMResult<bool>> startAudioRecord(
+      AudioOutputFormat recordType, int maxLength) async {
     throw UnimplementedError('startAudioRecord() is not implemented');
   }
 

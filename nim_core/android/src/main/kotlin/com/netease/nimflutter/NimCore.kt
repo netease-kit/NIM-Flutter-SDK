@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -9,7 +9,18 @@ package com.netease.nimflutter
 import android.app.Activity
 import android.content.Context
 import com.netease.nimflutter.initialize.FLTInitializeService
-import com.netease.nimflutter.services.*
+import com.netease.nimflutter.services.FLTAudioRecorderService
+import com.netease.nimflutter.services.FLTAuthService
+import com.netease.nimflutter.services.FLTChatroomService
+import com.netease.nimflutter.services.FLTEventSubscribeService
+import com.netease.nimflutter.services.FLTMessageService
+import com.netease.nimflutter.services.FLTNOSService
+import com.netease.nimflutter.services.FLTPassThroughService
+import com.netease.nimflutter.services.FLTSettingsService
+import com.netease.nimflutter.services.FLTSuperTeamService
+import com.netease.nimflutter.services.FLTSystemMessageService
+import com.netease.nimflutter.services.FLTTeamService
+import com.netease.nimflutter.services.FLTUserService
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -19,21 +30,21 @@ import kotlinx.coroutines.SupervisorJob
 typealias ServiceFactory = (context: Context, nimCore: NimCore) -> FLTService
 
 class NimCore private constructor(
-    private val context: Context,
+    private val context: Context
 ) {
 
     companion object : SingletonHolder<NimCore, Context>(::NimCore)
 
     val lifeCycleScope = CoroutineScope(
-        context = SupervisorJob() + Dispatchers.Main.immediate
-                + CoroutineExceptionHandler { _, throwable ->
-            ALog.e(tag, "coroutine exception", throwable)
-        }
+        context = SupervisorJob() + Dispatchers.Main.immediate +
+            CoroutineExceptionHandler { _, throwable ->
+                ALog.e(tag, "coroutine exception", throwable)
+            }
     )
 
     var activity: Activity? = null
 
-    var methodChannel: SafeMethodChannel? = null
+    var methodChannel: ArrayList<SafeMethodChannel> = ArrayList()
 
     private val services = mutableMapOf<String, FLTService>()
 
@@ -65,15 +76,25 @@ class NimCore private constructor(
             }
         }
 
-    fun onMethodCall(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
+    fun onMethodCall(method: String, arguments: Map<String, *>?, safeResult: SafeResult) {
+        if (arguments == null) {
+            ALog.e(tag, "$method has not been implemented,arguments is null")
+            safeResult.notImplemented()
+            return
+        }
         val serviceName = arguments["serviceName"] as? String
         ALog.i(tag, "onMethodCall: $serviceName#$method")
         if (services.containsKey(serviceName)) {
             val service = services[serviceName] as FLTService
-            if(isInitialized || service === initializer) {
+            if (isInitialized || service === initializer) {
                 service.dispatchFlutterMethodCall(method, arguments, safeResult)
             } else {
-                safeResult.success(NimResult<Nothing>(code = -1, errorDetails = "SDK Uninitialized").toMap())
+                safeResult.success(
+                    NimResult<Nothing>(
+                        code = -1,
+                        errorDetails = "SDK Uninitialized"
+                    ).toMap()
+                )
             }
         } else {
             ALog.e(tag, "$serviceName#$method has not been implemented")
@@ -92,7 +113,8 @@ class NimCore private constructor(
 }
 
 open class SingletonHolder<out T, in A>(private val creator: (A) -> T) {
-    @Volatile private var instance: T? = null
+    @Volatile
+    private var instance: T? = null
 
     fun getInstance(arg: A): T {
         val i = instance

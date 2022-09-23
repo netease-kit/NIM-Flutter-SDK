@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 NetEase, Inc.  All rights reserved.
+ * Copyright (c) 2022 NetEase, Inc. All rights reserved.
  * Use of this source code is governed by a MIT license that can be
  * found in the LICENSE file.
  */
@@ -7,18 +7,31 @@
 package com.netease.nimflutter.initialize
 
 import android.content.Context
-import com.netease.nimflutter.*
+import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.NimCore
+import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.ResultCallback
+import com.netease.nimflutter.SafeResult
+import com.netease.nimflutter.convertToStatusBarNotificationConfig
 import com.netease.nimflutter.services.LoginInfoFactory
-import com.netease.nimlib.sdk.*
+import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.NosTokenSceneConfig
+import com.netease.nimlib.sdk.Observer
+import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.lifecycle.SdkLifecycleObserver
 import com.netease.nimlib.sdk.mixpush.MixPushConfig
 import com.netease.yunxin.kit.alog.ALog
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import org.json.JSONObject
 
 class FLTInitializeService(
     applicationContext: Context,
-    nimCore: NimCore,
+    nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
 
     private val initial = 0
@@ -33,12 +46,12 @@ class FLTInitializeService(
 
     val isInitialized: Boolean
         get() {
-            if(state.value == initialized) {
+            if (state.value == initialized) {
                 return true
             }
 
-            /// 可能会存在 IM 复用的情况，这个时候上层已经进行了初始化
-            /// 检查 NIMClient.getService 方法是否正常返回，如果时，说明已经初始化了
+            // / 可能会存在 IM 复用的情况，这个时候上层已经进行了初始化
+            // / 检查 NIMClient.getService 方法是否正常返回，如果时，说明已经初始化了
             runCatching {
                 NIMClient.getService(SdkLifecycleObserver::class.java)
                 state.value = initialized
@@ -68,7 +81,7 @@ class FLTInitializeService(
             runCatching {
                 NIMClient.config(
                     applicationContext,
-                    arguments["autoLoginInfo"]?.let { LoginInfoFactory.fromMap(it as Map<String,*>) },
+                    arguments["autoLoginInfo"]?.let { LoginInfoFactory.fromMap(it as Map<String, *>) },
                     SDKOptions().configureWithMap(arguments).also {
                         sdkOptions = it
                     }
@@ -103,10 +116,12 @@ class FLTInitializeService(
             }
         } else {
             callback.result(
-                if (isInitialized)
-                    NimResult(code = -2, errorDetails = "duplicated initialize")
-                else
+                if (isInitialized) {
+                    ALog.e(serviceName, "duplicated initialize")
+                    NimResult(code = 0)
+                } else {
                     NimResult.FAILURE
+                }
             )
         }
     }
@@ -117,9 +132,11 @@ fun SDKOptions.configureWithMap(configurations: Map<String, *>) = apply {
 
     appKey = configurations["appKey"] as String
     require(appKey.isNotEmpty()) { "AppKey cannot be empty!" }
-    useAssetServerAddressConfig = configurations.getOrElse("useAssetServerAddressConfig") { false } as Boolean
+    useAssetServerAddressConfig =
+        configurations.getOrElse("useAssetServerAddressConfig") { false } as Boolean
     sdkStorageRootPath = configurations["sdkRootDir"] as String?
-    cdnRequestDataInterval = (configurations.getOrElse("cdnTrackInterval") { 3000 } as Number).toInt()
+    cdnRequestDataInterval =
+        (configurations.getOrElse("cdnTrackInterval") { 3000 } as Number).toInt()
     loginCustomTag = configurations["loginCustomTag"] as String?
     enableDatabaseBackup = configurations.getOrElse("enableDatabaseBackup") { false } as Boolean
     sessionReadAck = configurations.getOrElse("shouldSyncUnreadCount") { false } as Boolean
@@ -147,25 +164,35 @@ fun SDKOptions.configureWithMap(configurations: Map<String, *>) = apply {
     val extras: Map<String, Any?>? by args
     flutterSdkVersion = extras?.get("versionName") as String?
 
-    improveSDKProcessPriority = configurations.getOrElse("improveSDKProcessPriority") { true } as Boolean
+    improveSDKProcessPriority =
+        configurations.getOrElse("improveSDKProcessPriority") { true } as Boolean
     preLoadServers = configurations.getOrElse("preLoadServers") { true } as Boolean
     reducedIM = configurations.getOrElse("reducedIM") { false } as Boolean
+    enableFcs = configurations.getOrElse("enableFcs") { true } as Boolean
     checkManifestConfig = configurations.getOrElse("checkManifestConfig") { false } as Boolean
     disableAwake = configurations.getOrElse("disableAwake") { false } as Boolean
-    fetchServerTimeInterval = (configurations.getOrElse("fetchServerTimeInterval") { 1000 } as Number).toLong()
+    fetchServerTimeInterval =
+        (configurations.getOrElse("fetchServerTimeInterval") { 1000 } as Number).toLong()
     customPushContentType = configurations["customPushContentType"] as String?
     databaseEncryptKey = configurations["databaseEncryptKey"] as String?
     thumbnailSize = (configurations.getOrElse("thumbnailSize") { 350 } as Number).toInt()
 
-    val mixPushConfig: Map<String,*>? by args
+    val mixPushConfig: Map<String, *>? by args
     if (mixPushConfig != null) {
         this.mixPushConfig =
-            MixPushConfig.fromJson(JSONObject(mixPushConfig))
+            MixPushConfig.fromJson(
+                JSONObject(
+                    mixPushConfig!!.filter {
+                        it.value != null
+                    }
+                )
+            )
     }
 
-    val notificationConfig: Map<String,Any?>? by args
+    val notificationConfig: Map<String, Any?>? by args
     if (notificationConfig != null) {
         statusBarNotificationConfig = convertToStatusBarNotificationConfig(notificationConfig)
     }
-
+    // 状态对齐ios
+    enableLoseConnection = true
 }
