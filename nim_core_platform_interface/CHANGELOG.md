@@ -1,3 +1,7 @@
+## 1.0.2(Sep 23, 2022)
+### New Features
+* Support Web Plugin
+
 ## 1.0.1(Sep 8, 2022)
 
 ### Bug Fixes

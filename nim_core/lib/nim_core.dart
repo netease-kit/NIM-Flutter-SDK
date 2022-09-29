@@ -5,7 +5,7 @@
 library nim_core;
 
 import 'dart:async';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -61,6 +61,7 @@ export 'package:nim_core_platform_interface/src/platform_interface/team/team_mem
 export 'package:nim_core_platform_interface/src/platform_interface/user/friend.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/user.dart';
 export 'package:nim_core_platform_interface/src/utils/converter.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/avsignalling/avsignalling_models.dart';
 
 part 'src/audio/audio_service.dart';
 part 'src/auth/auth_service.dart';
@@ -75,6 +76,8 @@ part 'src/settings/settings_service_mobile.dart';
 part 'src/super_team/super_team_service.dart';
 part 'src/team/team_service.dart';
 part 'src/user/user_service.dart';
+
+part 'src/avsignalling/avsignalling_service.dart';
 
 class NimCore {
   NimCore._();
@@ -126,6 +129,9 @@ class NimCore {
 
   /// 聊天室服务，提供加入、退出、发送和接收聊天室消息等功能；
   final ChatroomService chatroomService = ChatroomService();
+
+  ///信令服务
+  final AvSignallingService avSignallingService = AvSignallingService();
 
   /// 设置服务
   final SettingsService settingsService = SettingsService();

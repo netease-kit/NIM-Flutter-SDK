@@ -25,15 +25,16 @@ class MethodCallHandlerImpl {
     FLTChatRoomService().register(nimCore)
     FLTSuperTeamService().register(nimCore)
     FLTChatExtendService().register(nimCore)
+    FLTSignallingService().register(nimCore)
   }
 
   func onMethodCall(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
     let arguments = call.arguments as? [String: Any] ?? [String: Any]()
     nimCore.onMethodCall(call.method, arguments, resultCallback: ResultCallback(result))
 
-//        if let arguments = call.arguments as? [String : Any] {
-//            nimCore.onMethodCall(call.method, arguments, resultCallback: ResultCallback(result))
-//        }
+    //        if let arguments = call.arguments as? [String : Any] {
+    //            nimCore.onMethodCall(call.method, arguments, resultCallback: ResultCallback(result))
+    //        }
   }
 
   @discardableResult

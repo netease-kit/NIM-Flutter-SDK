@@ -141,7 +141,8 @@ class FLTSessionService: FLTBaseService, FLTService {
       let ret = array?.map { recentSession in
         recentSession.toDic()
       }
-      resultCallback.result(["resultList": ret])
+      resultCallback.result(NimResult.success(["resultList": ret]).toDic())
+
     } else {
       resultCallback.result(NimResult.error("filter parameter miss").toDic())
     }

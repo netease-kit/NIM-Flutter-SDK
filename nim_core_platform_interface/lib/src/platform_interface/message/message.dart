@@ -544,6 +544,10 @@ class NIMFileAttachment extends NIMMessageAttachment {
   @JsonKey(name: 'url', includeIfNull: false)
   final String? url;
 
+  // web 发送专用
+  @JsonKey(name: 'base64', includeIfNull: false)
+  final String? base64;
+
   /// 文件大小
   @JsonKey(name: 'size')
   final int? size;
@@ -580,6 +584,7 @@ class NIMFileAttachment extends NIMMessageAttachment {
       required this.size,
       this.md5,
       this.url,
+      this.base64,
       this.displayName,
       this.extension,
       this.expire,

@@ -11,6 +11,10 @@ import com.netease.nimlib.NimNosSceneKeyConstant
 import com.netease.nimlib.sdk.NotificationFoldStyle
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
 import com.netease.nimlib.sdk.auth.ClientType
+import com.netease.nimlib.sdk.avsignalling.constant.ChannelStatus
+import com.netease.nimlib.sdk.avsignalling.constant.ChannelType
+import com.netease.nimlib.sdk.avsignalling.constant.InviteAckStatus
+import com.netease.nimlib.sdk.avsignalling.constant.SignallingEventType
 import com.netease.nimlib.sdk.event.model.Event
 import com.netease.nimlib.sdk.misc.DirCacheFileType
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
@@ -636,3 +640,43 @@ class MapProperty<T : Any>(
         return value!!
     }
 }
+
+val channelTypeEnumTypeMap = mapOf(
+    ChannelType.VIDEO to "video",
+    ChannelType.AUDIO to "audio",
+    ChannelType.CUSTOM to "custom"
+)
+
+fun stringFromChannelTypeEnum(type: ChannelType?) =
+    channelTypeEnumTypeMap[type] ?: channelTypeEnumTypeMap[ChannelType.CUSTOM]
+
+fun stringToChannelTypeEnum(type: String) =
+    channelTypeEnumTypeMap.filterValues { it == type }.keys.firstOrNull() ?: ChannelType.CUSTOM
+
+val channelStatusEnumTypeMap = mapOf(
+    ChannelStatus.NORMAL to "normal",
+    ChannelStatus.INVALID to "invalid"
+)
+
+fun stringFromChannelStatusEnum(status: ChannelStatus?) =
+    channelStatusEnumTypeMap[status] ?: channelStatusEnumTypeMap[ChannelStatus.NORMAL]
+
+val signallingEventTypeMap = mapOf(
+    SignallingEventType.UN_KNOW to "unKnow",
+    SignallingEventType.CLOSE to "close",
+    SignallingEventType.JOIN to "join",
+    SignallingEventType.INVITE to "invite",
+    SignallingEventType.CANCEL_INVITE to "cancelInvite",
+    SignallingEventType.REJECT to "reject",
+    SignallingEventType.ACCEPT to "accept",
+    SignallingEventType.LEAVE to "leave",
+    SignallingEventType.CONTROL to "control"
+)
+
+fun stringFromSignallingEventType(type: SignallingEventType?) =
+    signallingEventTypeMap[type] ?: signallingEventTypeMap[SignallingEventType.UN_KNOW]
+
+val inviteAckStatusMap = mapOf(
+    InviteAckStatus.REJECT to "reject",
+    InviteAckStatus.ACCEPT to "accept"
+)

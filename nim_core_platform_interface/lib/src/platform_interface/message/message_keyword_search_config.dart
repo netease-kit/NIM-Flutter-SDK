@@ -8,6 +8,9 @@ class MessageKeywordSearchConfig {
   // 关键词
   String? keyword;
 
+  // 对方帐号/teamId（web适用）
+  String? otherAccid;
+
   // 起始时间
   int? fromTime;
 
@@ -40,6 +43,7 @@ class MessageKeywordSearchConfig {
 
   MessageKeywordSearchConfig(
       {required this.keyword,
+      this.otherAccid,
       this.fromTime,
       this.toTime,
       this.sessionLimit,
@@ -53,6 +57,7 @@ class MessageKeywordSearchConfig {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         "keyword": keyword,
+        "otherAccid": otherAccid,
         "fromTime": fromTime,
         "toTime": toTime,
         "sessionLimit": sessionLimit,
@@ -70,6 +75,7 @@ class MessageKeywordSearchConfig {
   factory MessageKeywordSearchConfig.fromMap(Map<String, dynamic> param) {
     return MessageKeywordSearchConfig(
       keyword: param['keyword'] as String?,
+      otherAccid: param['otherAccid'] as String?,
       fromTime: param['fromTime'] as int?,
       toTime: param['toTime'] as int?,
       sessionLimit: param['sessionLimit'] as int?,

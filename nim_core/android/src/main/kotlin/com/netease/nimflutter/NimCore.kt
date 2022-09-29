@@ -17,6 +17,7 @@ import com.netease.nimflutter.services.FLTMessageService
 import com.netease.nimflutter.services.FLTNOSService
 import com.netease.nimflutter.services.FLTPassThroughService
 import com.netease.nimflutter.services.FLTSettingsService
+import com.netease.nimflutter.services.FLTSignallingService
 import com.netease.nimflutter.services.FLTSuperTeamService
 import com.netease.nimflutter.services.FLTSystemMessageService
 import com.netease.nimflutter.services.FLTTeamService
@@ -64,6 +65,7 @@ class NimCore private constructor(
         registerService(::FLTNOSService)
         registerService(::FLTSettingsService)
         registerService(::FLTPassThroughService)
+        registerService(::FLTSignallingService)
     }
 
     private val tag = "FLTNimCore_K"

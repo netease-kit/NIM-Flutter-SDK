@@ -20,7 +20,7 @@ NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
     checkManifestConfig: json['checkManifestConfig'] as bool? ?? false,
     disableAwake: json['disableAwake'] as bool? ?? false,
     databaseEncryptKey: json['databaseEncryptKey'] as String?,
-    thumbnailSize: json['thumbnailSize'] as int,
+    thumbnailSize: json['thumbnailSize'] as int? ?? 350,
     fetchServerTimeInterval: json['fetchServerTimeInterval'] as int? ?? 2000,
     customPushContentType: json['customPushContentType'] as String?,
     mixPushConfig: _mixPushConfigFromMap(json['mixPushConfig'] as Map?),

@@ -10,6 +10,18 @@ import com.netease.nimflutter.services.AttachmentHelper
 import com.netease.nimflutter.services.CustomAttachment
 import com.netease.nimflutter.services.MessageHelper
 import com.netease.nimlib.chatroom.model.ChatRoomMessageImpl
+import com.netease.nimlib.sdk.avsignalling.constant.SignallingEventType
+import com.netease.nimlib.sdk.avsignalling.event.CanceledInviteEvent
+import com.netease.nimlib.sdk.avsignalling.event.ChannelCommonEvent
+import com.netease.nimlib.sdk.avsignalling.event.InviteAckEvent
+import com.netease.nimlib.sdk.avsignalling.event.InvitedEvent
+import com.netease.nimlib.sdk.avsignalling.event.MemberUpdateEvent
+import com.netease.nimlib.sdk.avsignalling.event.SyncChannelListEvent
+import com.netease.nimlib.sdk.avsignalling.event.UserJoinEvent
+import com.netease.nimlib.sdk.avsignalling.model.ChannelBaseInfo
+import com.netease.nimlib.sdk.avsignalling.model.ChannelFullInfo
+import com.netease.nimlib.sdk.avsignalling.model.MemberInfo
+import com.netease.nimlib.sdk.avsignalling.model.SignallingPushConfig
 import com.netease.nimlib.sdk.chatroom.constant.MemberType
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomMember
@@ -896,5 +908,94 @@ fun MuteListChangedNotify.toMap(): Map<String, Any?> {
     return mapOf(
         "account" to account,
         "mute" to isMute
+    )
+}
+
+fun ChannelBaseInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelName" to channelName,
+        "channelId" to channelId,
+        "type" to stringFromChannelTypeEnum(type),
+        "channelExt" to channelExt,
+        "createTimestamp" to createTimestamp,
+        "expireTimestamp" to expireTimestamp,
+        "creatorAccountId" to creatorAccountId,
+        "channelStatus" to stringFromChannelStatusEnum(channelStatus)
+    )
+}
+
+fun ChannelFullInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelBaseInfo" to channelBaseInfo.toMap(),
+        "members" to members?.map { it.toMap() }?.toList()
+    )
+}
+
+fun MemberInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "accountId" to accountId,
+        "uid" to uid,
+        "joinTime" to joinTime,
+        "expireTime" to expireTime
+    )
+}
+
+fun SignallingPushConfig.toMap(): Map<String, Any?> {
+    return mapOf(
+        "needPush" to needPush(),
+        "pushTitle" to pushTitle,
+        "pushContent" to pushContent,
+        "pushPayload" to pushPayload
+    )
+}
+
+fun ChannelCommonEvent.toMap(): Map<String, Any?> {
+    val channelMap = channelBaseInfo.toMap()
+    val signallingEvent = mapOf(
+        "channelBaseInfo" to channelMap,
+        "eventType" to stringFromSignallingEventType(eventType),
+        "fromAccountId" to fromAccountId,
+        "time" to time,
+        "customInfo" to customInfo
+    )
+    val eventMap = mutableMapOf<String, Any?>(
+        "signallingEvent" to signallingEvent
+    )
+    when (eventType) {
+        SignallingEventType.JOIN ->
+            eventMap["joinMember"] = (this as UserJoinEvent).memberInfo.toMap()
+        SignallingEventType.INVITE ->
+            {
+                val invent = (this as InvitedEvent)
+                eventMap["toAccountId"] = invent.toAccountId
+                eventMap["requestId"] = invent.requestId
+                eventMap["pushConfig"] = invent.pushConfig.toMap()
+            }
+        SignallingEventType.CANCEL_INVITE -> {
+            val cancelInvite = (this as CanceledInviteEvent)
+            eventMap["toAccountId"] = cancelInvite.toAccount
+            eventMap["requestId"] = cancelInvite.requestId
+        }
+        SignallingEventType.ACCEPT,
+        SignallingEventType.REJECT -> {
+            val inviteAckEvent = (this as InviteAckEvent)
+            eventMap["toAccountId"] = inviteAckEvent.toAccountId
+            eventMap["requestId"] = inviteAckEvent.requestId
+            eventMap["ackStatus"] = inviteAckStatusMap[inviteAckEvent.ackStatus]
+        }
+        else -> {}
+    }
+    return eventMap
+}
+
+fun MemberUpdateEvent.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelFullInfo" to channelFullInfo.toMap()
+    )
+}
+
+fun SyncChannelListEvent.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelFullInfo" to channelFullInfo.toMap()
     )
 }

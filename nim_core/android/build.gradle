@@ -61,4 +61,6 @@ dependencies {
     implementation "com.netease.nimlib.flutter:push:$nimLibVer"
     // 超大群SDK
     implementation "com.netease.nimlib.flutter:superteam:$nimLibVer"
+    // 信令
+    implementation "com.netease.nimlib.flutter:avsignalling:$nimLibVer"
 }

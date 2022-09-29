@@ -248,6 +248,7 @@ NIMFileAttachment _$NIMFileAttachmentFromJson(Map<String, dynamic> json) {
     size: json['size'] as int?,
     md5: json['md5'] as String?,
     url: json['url'] as String?,
+    base64: json['base64'] as String?,
     displayName: json['name'] as String?,
     extension: json['ext'] as String?,
     expire: json['expire'] as int?,
@@ -267,6 +268,7 @@ Map<String, dynamic> _$NIMFileAttachmentToJson(NIMFileAttachment instance) {
 
   writeNotNull('path', instance.path);
   writeNotNull('url', instance.url);
+  writeNotNull('base64', instance.base64);
   val['size'] = instance.size;
   writeNotNull('md5', instance.md5);
   val['name'] = instance.displayName;

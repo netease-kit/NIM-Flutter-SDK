@@ -92,3 +92,7 @@ export 'src/utils/converter.dart';
 
 ///log
 export 'src/utils/log.dart';
+
+///avsignalling
+export 'src/platform_interface/avsignalling/platform_interface_avsignalling_service.dart';
+export 'src/platform_interface/avsignalling/avsignalling_models.dart';

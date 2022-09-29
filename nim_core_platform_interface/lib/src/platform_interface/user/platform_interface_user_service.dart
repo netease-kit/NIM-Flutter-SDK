@@ -79,7 +79,8 @@ abstract class UserServicePlatform extends Service {
     throw UnimplementedError('addFriend() is not implemented');
   }
 
-  Future<NIMResult<void>> ackAddFriend(String userId, bool isAgree) async {
+  Future<NIMResult<void>> ackAddFriend(
+      String userId, bool isAgree, String? idServer) async {
     throw UnimplementedError('ackAddFriend() is not implemented');
   }
 

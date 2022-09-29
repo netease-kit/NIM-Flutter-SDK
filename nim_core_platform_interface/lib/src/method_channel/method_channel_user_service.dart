@@ -101,8 +101,13 @@ class MethodChannelUserService extends UserServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> ackAddFriend(String userId, bool isAgree) async {
-    Map<String, dynamic> argument = {'userId': userId, 'isAgree': isAgree};
+  Future<NIMResult<void>> ackAddFriend(
+      String userId, bool isAgree, String? idServer) async {
+    Map<String, dynamic> argument = {
+      'userId': userId,
+      'isAgree': isAgree,
+      'idServer': idServer
+    };
     Map<String, dynamic> replyMap =
         await invokeMethod('ackAddFriend', arguments: argument);
     return NIMResult.fromMap(replyMap);

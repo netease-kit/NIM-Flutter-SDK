@@ -6,7 +6,7 @@
 
 //import 'package:flutter_test/flutter_test.dart';
 //import 'package:integration_test/integration_test.dart';
-//import 'package:netease_auto_test_kit/netease_auto_test_kit.dart';
+//import 'package:hawk/hawk.dart';
 
 //import '../../../nim_core/example/integration_test/main_test.dart';
 

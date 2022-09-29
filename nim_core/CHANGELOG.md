@@ -1,3 +1,16 @@
+# 1.1.0(Sep 23, 2022)
+
+### New Features
+* Support Web Plugin
+
+### API Changes
+* add 'idServer' as param for 'ackAddFriend' in 'UserService'
+* add 'base64' field in 'NIMFileAttachment'
+* add 'otherAccid' field in 'MessageKeywordSearchConfig' which is the param for 'searchCloudMessageHistory' in 'MessageService'
+
+### Bug Fixes
+* iOS fixed message filtering error
+
 # 1.0.11(Sep 15, 2022)
 
 ### Bug Fixes

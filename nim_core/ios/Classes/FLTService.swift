@@ -21,6 +21,7 @@ enum ServiceType: String {
   case PassThroughService
   case SettingService = "SettingsService"
   case SuperTeamService
+  case AvSignallingService
 }
 
 protocol FLTService {
