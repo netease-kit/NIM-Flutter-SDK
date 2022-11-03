@@ -2514,30 +2514,24 @@ void FLTMessageService::querySessionList(const flutter::EncodableMap* arguments,
   }
 
   nim::Session::QueryLastFewSessionAsync(
-      limit, [result](int res_code, const nim::SessionDataList& ret) {
+      limit, [result](int unread_count, const nim::SessionDataList& ret) {
         if (!result) {
           return;
         }
 
-        if (0 == res_code) {
-          flutter::EncodableList replyList;
-          for (auto& it : ret.sessions_) {
-            flutter::EncodableMap tmp;
-            if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
-              replyList.emplace_back(tmp);
-            } else {
-              YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
-            }
+        flutter::EncodableList replyList;
+        for (auto& it : ret.sessions_) {
+          flutter::EncodableMap tmp;
+          if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
+            replyList.emplace_back(tmp);
+          } else {
+            YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
           }
-
-          flutter::EncodableMap ret;
-          ret[flutter::EncodableValue("resultList")] = replyList;
-          result->Success(NimResult::getSuccessResult(ret));
-        } else {
-          result->Error(
-              "", "",
-              NimResult::getErrorResult(res_code, "querySessionList error!"));
         }
+
+        flutter::EncodableMap retList;
+        retList[flutter::EncodableValue("resultList")] = replyList;
+        result->Success(NimResult::getSuccessResult(retList));
       });
 }
 
@@ -2569,29 +2563,24 @@ void FLTMessageService::querySessionListFiltered(
   }
 
   nim::Session::QueryAllRecentSessionAsyncEx(
-      messageTypeList, [result](int res_code, const nim::SessionDataList& ret) {
+      messageTypeList,
+      [result](int unread_count, const nim::SessionDataList& ret) {
         if (!result) {
           return;
         }
 
-        if (0 == res_code) {
-          flutter::EncodableList replyList;
-          for (auto& it : ret.sessions_) {
-            flutter::EncodableMap tmp;
-            if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
-              replyList.emplace_back(tmp);
-            } else {
-              YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
-            }
-
-            flutter::EncodableMap retList;
-            retList[flutter::EncodableValue("resultList")] = replyList;
-            result->Success(NimResult::getSuccessResult(retList));
+        flutter::EncodableList replyList;
+        for (auto& it : ret.sessions_) {
+          flutter::EncodableMap tmp;
+          if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
+            replyList.emplace_back(tmp);
+          } else {
+            YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
           }
-        } else {
-          result->Error("", "",
-                        NimResult::getErrorResult(
-                            res_code, "querySessionListFiltered error!"));
+
+          flutter::EncodableMap retList;
+          retList[flutter::EncodableValue("resultList")] = replyList;
+          result->Success(NimResult::getSuccessResult(retList));
         }
       });
 }
@@ -3175,8 +3164,8 @@ void FLTMessageService::queryQuickComment(
             commentOptionMap.insert(std::make_pair("key", keyMap));
             commentOptionMap.insert(
                 std::make_pair("quickCommentList", commentList));
-            commentOptionMap.insert(std::make_pair("modify", false));  //不支持
-            commentOptionMap.insert(std::make_pair("time", 0));  //不支持
+            commentOptionMap.insert(std::make_pair("modify", false));  // 不支持
+            commentOptionMap.insert(std::make_pair("time", 0));  // 不支持
             commentOptionList.emplace_back(commentOptionMap);
           }
 

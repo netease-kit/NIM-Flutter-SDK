@@ -5,7 +5,7 @@
 import NIMSDK
 import Foundation
 
-enum AvSignalingType: String {
+enum AvSignalingMethod: String {
   case createChannel
   case closeChannel
   case joinChannel
@@ -35,27 +35,27 @@ class FLTSignallingService: FLTBaseService, FLTService {
   func onMethodCalled(_ method: String, _ arguments: [String: Any],
                       _ resultCallback: ResultCallback) {
     switch method {
-    case AvSignalingType.createChannel.rawValue:
+    case AvSignalingMethod.createChannel.rawValue:
       signalingCreateChannel(arguments, resultCallback)
-    case AvSignalingType.closeChannel.rawValue:
+    case AvSignalingMethod.closeChannel.rawValue:
       signalingCloseChannel(arguments, resultCallback)
-    case AvSignalingType.joinChannel.rawValue:
+    case AvSignalingMethod.joinChannel.rawValue:
       signalingJoinChannel(arguments, resultCallback)
-    case AvSignalingType.leaveChannel.rawValue:
+    case AvSignalingMethod.leaveChannel.rawValue:
       signalingLeaveChannel(arguments, resultCallback)
-    case AvSignalingType.invite.rawValue:
+    case AvSignalingMethod.invite.rawValue:
       signalingInvite(arguments, resultCallback)
-    case AvSignalingType.cancelInvite.rawValue:
+    case AvSignalingMethod.cancelInvite.rawValue:
       signalingCancelInvite(arguments, resultCallback)
-    case AvSignalingType.rejectInvite.rawValue:
+    case AvSignalingMethod.rejectInvite.rawValue:
       signalingReject(arguments, resultCallback)
-    case AvSignalingType.acceptInvite.rawValue:
+    case AvSignalingMethod.acceptInvite.rawValue:
       signalingAccept(arguments, resultCallback)
-    case AvSignalingType.sendControl.rawValue:
+    case AvSignalingMethod.sendControl.rawValue:
       signalingControl(arguments, resultCallback)
-    case AvSignalingType.call.rawValue:
+    case AvSignalingMethod.call.rawValue:
       signalingCall(arguments, resultCallback)
-    case AvSignalingType.queryChannelInfo.rawValue:
+    case AvSignalingMethod.queryChannelInfo.rawValue:
       signalingQueryChannelInfo(arguments, resultCallback)
 
     default:

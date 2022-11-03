@@ -10,6 +10,7 @@ import android.app.Activity
 import com.netease.nimlib.NimNosSceneKeyConstant
 import com.netease.nimlib.sdk.NotificationFoldStyle
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
+import com.netease.nimlib.sdk.StatusCode
 import com.netease.nimlib.sdk.auth.ClientType
 import com.netease.nimlib.sdk.avsignalling.constant.ChannelStatus
 import com.netease.nimlib.sdk.avsignalling.constant.ChannelType
@@ -66,7 +67,8 @@ val msgTypeEnumMap = mapOf(
     MsgTypeEnum.nrtc_netcall to "netcall",
     MsgTypeEnum.custom to "custom",
     MsgTypeEnum.appCustom to "appCustom",
-    MsgTypeEnum.qiyuCustom to "qiyuCustom"
+    MsgTypeEnum.qiyuCustom to "qiyuCustom",
+    MsgTypeEnum.qchatCustom to "qchatCustom"
 )
 
 val msgDirectionEnumMap = mapOf(
@@ -680,3 +682,17 @@ val inviteAckStatusMap = mapOf(
     InviteAckStatus.REJECT to "reject",
     InviteAckStatus.ACCEPT to "accept"
 )
+
+fun dartNameOfStatusCode(status: StatusCode) = when (status) {
+    StatusCode.UNLOGIN -> "unLogin"
+    StatusCode.NET_BROKEN -> "netBroken"
+    StatusCode.CONNECTING -> "connecting"
+    StatusCode.LOGINING -> "logging"
+    StatusCode.LOGINED -> "loggedIn"
+    StatusCode.KICKOUT -> "kickOut"
+    StatusCode.KICK_BY_OTHER_CLIENT -> "kickOutByOtherClient"
+    StatusCode.FORBIDDEN -> "forbidden"
+    StatusCode.VER_ERROR -> "versionError"
+    StatusCode.PWD_ERROR -> "pwdError"
+    else -> "unknown"
+}

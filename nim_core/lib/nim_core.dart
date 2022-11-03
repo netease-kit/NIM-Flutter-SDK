@@ -62,6 +62,13 @@ export 'package:nim_core_platform_interface/src/platform_interface/user/friend.d
 export 'package:nim_core_platform_interface/src/platform_interface/user/user.dart';
 export 'package:nim_core_platform_interface/src/utils/converter.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/avsignalling/avsignalling_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_base_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_channel_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_message_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_observer_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_server_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_role_models.dart';
 
 part 'src/audio/audio_service.dart';
 part 'src/auth/auth_service.dart';
@@ -78,6 +85,12 @@ part 'src/team/team_service.dart';
 part 'src/user/user_service.dart';
 
 part 'src/avsignalling/avsignalling_service.dart';
+part 'src/qchat/qchat_server_service.dart';
+part 'src/qchat/qchat_channel_service.dart';
+part 'src/qchat/qchat_service.dart';
+part 'src/qchat/qchat_message_service.dart';
+part 'src/qchat/qchat_observer.dart';
+part 'src/qchat/qchat_role_service.dart';
 
 class NimCore {
   NimCore._();
@@ -140,6 +153,24 @@ class NimCore {
 
   final PassThroughService passThroughService = PassThroughService();
 
+  /// 圈组消息服务
+  final QChatMessageService qChatMessageService = QChatMessageService();
+
+  /// 圈组频道服务
+  final QChatChannelService qChatChannelService = QChatChannelService();
+
+  /// 圈组身份组服务
+  final QChatRoleService qChatRoleService = QChatRoleService();
+
+  /// 圈组服务器服务
+  final QChatServerService qChatServerService = QChatServerService();
+
+  /// 圈组服务
+  final QChatService qChatService = QChatService();
+
+  ///圈组回调
+  final QChatObserver qChatObserver = QChatObserver();
+
   /// 初始化云信 IM SDK
   ///
   /// [options] 初始化配置参数。
@@ -187,6 +218,12 @@ class NimCore {
       }
       return initResult;
     });
+  }
+
+  /// 释放云信 IM SDK
+  /// 仅windows&macos平台有效
+  Future<NIMResult<void>> releaseDesktop() async {
+    return InitializeServicePlatform.instance.releaseDesktop();
   }
 }
 

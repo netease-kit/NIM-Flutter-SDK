@@ -89,3 +89,59 @@ const _$SystemMessageTypeEnumMap = {
   SystemMessageType.superTeamInvite: 'superTeamInvite',
   SystemMessageType.superTeamInviteReject: 'superTeamInviteReject',
 };
+
+const _$QChatSystemNotificationTypeEnumMap = {
+  QChatSystemNotificationType.server_member_invite: 'server_member_invite',
+  QChatSystemNotificationType.server_member_invite_reject:
+      'server_member_invite_reject',
+  QChatSystemNotificationType.server_member_apply: 'server_member_apply',
+  QChatSystemNotificationType.server_member_apply_reject:
+      'server_member_apply_reject',
+  QChatSystemNotificationType.server_create: 'server_create',
+  QChatSystemNotificationType.server_remove: 'server_remove',
+  QChatSystemNotificationType.server_update: 'server_update',
+  QChatSystemNotificationType.server_member_invite_done:
+      'server_member_invite_done',
+  QChatSystemNotificationType.server_member_invite_accept:
+      'server_member_invite_accept',
+  QChatSystemNotificationType.server_member_apply_done:
+      'server_member_apply_done',
+  QChatSystemNotificationType.server_member_apply_accept:
+      'server_member_apply_accept',
+  QChatSystemNotificationType.server_member_kick: 'server_member_kick',
+  QChatSystemNotificationType.server_member_leave: 'server_member_leave',
+  QChatSystemNotificationType.server_member_update: 'server_member_update',
+  QChatSystemNotificationType.channel_create: 'channel_create',
+  QChatSystemNotificationType.channel_remove: 'channel_remove',
+  QChatSystemNotificationType.channel_update: 'channel_update',
+  QChatSystemNotificationType.channel_update_white_black_role:
+      'channel_update_white_black_role',
+  QChatSystemNotificationType.channel_update_white_black_member:
+      'channel_update_white_black_member',
+  QChatSystemNotificationType.update_quick_comment: 'update_quick_comment',
+  QChatSystemNotificationType.channel_category_create:
+      'channel_category_create',
+  QChatSystemNotificationType.channel_category_remove:
+      'channel_category_remove',
+  QChatSystemNotificationType.channel_category_update:
+      'channel_category_update',
+  QChatSystemNotificationType.channel_category_update_white_black_role:
+      'channel_category_update_white_black_role',
+  QChatSystemNotificationType.channel_category_update_white_black_member:
+      'channel_category_update_white_black_member',
+  QChatSystemNotificationType.server_role_member_add: 'server_role_member_add',
+  QChatSystemNotificationType.server_role_member_delete:
+      'server_role_member_delete',
+  QChatSystemNotificationType.server_role_auth_update:
+      'server_role_auth_update',
+  QChatSystemNotificationType.channel_role_auth_update:
+      'channel_role_auth_update',
+  QChatSystemNotificationType.member_role_auth_update:
+      'member_role_auth_update',
+  QChatSystemNotificationType.channel_visibility_update:
+      'channel_visibility_update',
+  QChatSystemNotificationType.server_enter_leave: 'server_enter_leave',
+  QChatSystemNotificationType.server_member_join_by_invite_code:
+      'server_member_join_by_invite_code',
+  QChatSystemNotificationType.custom: 'custom',
+};

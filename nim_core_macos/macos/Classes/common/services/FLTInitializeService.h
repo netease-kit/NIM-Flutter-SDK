@@ -22,6 +22,7 @@ class FLTInitializeService : public FLTService {
 
  private:
   std::string m_appKey;
+  bool m_init = false;
 };
 
 #endif  // FLTINITIALIZESERVICE_H

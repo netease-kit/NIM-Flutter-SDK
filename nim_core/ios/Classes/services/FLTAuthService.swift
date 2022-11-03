@@ -109,7 +109,8 @@ class FLTAuthService: FLTBaseService, FLTService {
   }
 
   func loginStatus(_ code: Int) {
-    // 参考 https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Model/NIMFLoginUntil.m
+    // 参考
+    // https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Model/NIMFLoginUntil.m
     switch code {
     case 302:
       notifyEvent(serviceName(), "onAuthStatusChanged", ["status": "pwdError"])
@@ -126,7 +127,8 @@ class FLTAuthService: FLTBaseService, FLTService {
 }
 
 extension FLTAuthService: NIMLoginManagerDelegate {
-  // 参考 https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Service/NIMFLoginObserver.m
+  // 参考
+  // https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Service/NIMFLoginObserver.m
   func onLogin(_ step: NIMLoginStep) {
     var status = "unknown"
     switch step {

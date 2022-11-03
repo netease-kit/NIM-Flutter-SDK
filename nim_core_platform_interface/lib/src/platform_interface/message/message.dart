@@ -512,6 +512,14 @@ abstract class NIMMessageAttachment {
     }
   }
 
+  static Map<String, dynamic> toJson(NIMMessageAttachment? attachment) {
+    return _toMap(attachment);
+  }
+
+  static NIMMessageAttachment? fromJson(Map<Object?, Object?>? json) {
+    return _fromMap(json);
+  }
+
   Map<String, dynamic> toMap();
 }
 

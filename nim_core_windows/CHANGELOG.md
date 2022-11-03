@@ -1,3 +1,17 @@
+# v1.0.4(Oct 31, 2022)
+
+### Bug Fixes
+* Fix team sessionId error
+* Fix muteTeam error
+
+# v1.0.3(Sep 29, 2022)
+
+### Bug Fixes
+* Fix querySessionList error
+
+### Dependency Updates
+* windows NIM SDK from 8.8.0 to 9.6.0
+
 # v1.0.2(Sep 1, 2022)
 
 ### Bug Fixes

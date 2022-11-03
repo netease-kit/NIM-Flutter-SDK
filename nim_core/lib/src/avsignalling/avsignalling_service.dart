@@ -4,6 +4,8 @@
 
 part of nim_core;
 
+///信令服务类
+///目前仅支持iOS和Android平台
 class AvSignallingService {
   factory AvSignallingService() {
     if (_singleton == null) {

@@ -200,8 +200,8 @@ void FLTChatRoomService::enterChatroom(
       nim_chatroom::ChatRoomAnoymityEnterInfo anonymity_info;
       anonymity_info.app_key_ = independentEnterInfo.app_key_;
       anonymity_info.address_ = independentEnterInfo.address_;
-      anonymity_info.login_tags_ = independentEnterInfo.login_tags_;
-      anonymity_info.notify_tags_ = independentEnterInfo.notify_tags_;
+      // anonymity_info.login_tags_ = independentEnterInfo.login_tags_;
+      // anonymity_info.notify_tags_ = independentEnterInfo.notify_tags_;
       YXLOG(Info) << "start AnonymousEnter..." << YXLOGEnd;
       if (nim_chatroom::ChatRoom::AnonymousEnter(roomId, anonymity_info,
                                                  enterInfo)) {

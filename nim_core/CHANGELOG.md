@@ -1,12 +1,72 @@
+# 1.3.0(Nov 3, 2022)   
+
+### Dependency Updates
+* iOS updated NIM SDK version to 9.6.3
+* Android updated NIM SDK version to 9.6.3   
+* nim_core_platform_interface from 1.0.3 to 1.3.0
+* nim_core_windows from 1.0.3 to 1.0.4
+* nim_core_macos from 1.0.3 to 1.0.4
+
+### New Features
+* Support IM QChat in iOS and Android   
+
+### Bug Fixes   
+* Fix team sessionId error in Mac & Windows
+* Fix muteTeam error in Mac & Windows   
+
+### API Changes  
+* add `QChatChannelService` for Android and iOS
+* add `QChatMessageService` for Android and iOS
+* add `QChatObserver` for Android and iOS
+* add `QChatRoleService` for Android and iOS
+* add `QChatServerService` for Android and iOS
+* add `QChatService` for Android and iOS
+
+# 1.2.1(Oct 13, 2022)
+
+### Dependency Updates
+* iOS updated NIM SDK version to 9.6.1
+
+# 1.2.0(Sep 30, 2022)
+
+### New Features
+* Support IM Signalling in iOS and Android
+
+### API Changes
+* add `createChannel` in `AvSignallingService`    
+* add `closeChannel` in `AvSignallingService`
+* add `joinChannel` in `AvSignallingService`
+* add `leaveChannel` in `AvSignallingService`
+* add `invite` in `AvSignallingService`
+* add `cancelInvite` in `AvSignallingService`
+* add `rejectInvite` in `AvSignallingService`
+* add `acceptInvite` in `AvSignallingService`
+* add `sendControl` in `AvSignallingService`
+* add `call` in `AvSignallingService`
+* add `queryChannelInfo` in `AvSignallingService`
+* add `onlineNotification` in `AvSignallingService`
+* add `offlineNotification` in `AvSignallingService`
+* add `onMemberUpdateNotification` in `AvSignallingService`
+* add `otherClientInviteAckNotification` in `AvSignallingService`
+* add `syncChannelListNotification` in `AvSignallingService`
+
+### Bug Fixes  
+* fix iOS initialize issue
+
+### Dependency Updates
+* iOS updated NIM SDK version from 8.11.0 to 9.6.0
+* nim_core_platform_interface from 1.0.2 to 1.0.3
+* nim_core_web from 1.0.0 to 1.0.1
+
 # 1.1.0(Sep 23, 2022)
 
 ### New Features
 * Support Web Plugin
 
 ### API Changes
-* add 'idServer' as param for 'ackAddFriend' in 'UserService'
-* add 'base64' field in 'NIMFileAttachment'
-* add 'otherAccid' field in 'MessageKeywordSearchConfig' which is the param for 'searchCloudMessageHistory' in 'MessageService'
+* add `idServer` as param for `ackAddFriend` in `UserService`
+* add `base64` field in `NIMFileAttachment`
+* add `otherAccid` field in `MessageKeywordSearchConfig` which is the param for `searchCloudMessageHistory` in `MessageService`
 
 ### Bug Fixes
 * iOS fixed message filtering error

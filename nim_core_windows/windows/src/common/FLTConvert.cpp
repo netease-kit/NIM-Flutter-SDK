@@ -1626,14 +1626,19 @@ bool Convert::convertIMMessage2Map(flutter::EncodableMap& arguments,
     }
   }
 
-  if (imMessage.sender_accid_ == NimCore::getInstance()->getAccountId()) {
-    arguments[flutter::EncodableValue("messageDirection")] =
-        m_messageDirection["outgoing"];
-    arguments[flutter::EncodableValue("sessionId")] = imMessage.receiver_accid_;
+  if (imMessage.session_type_ == nim::kNIMSessionTypeP2P) {
+    if (imMessage.sender_accid_ == NimCore::getInstance()->getAccountId()) {
+      arguments[flutter::EncodableValue("messageDirection")] =
+          m_messageDirection["outgoing"];
+      arguments[flutter::EncodableValue("sessionId")] =
+          imMessage.receiver_accid_;
+    } else {
+      arguments[flutter::EncodableValue("messageDirection")] =
+          m_messageDirection["received"];
+      arguments[flutter::EncodableValue("sessionId")] = imMessage.sender_accid_;
+    }
   } else {
-    arguments[flutter::EncodableValue("messageDirection")] =
-        m_messageDirection["received"];
-    arguments[flutter::EncodableValue("sessionId")] = imMessage.sender_accid_;
+    arguments[flutter::EncodableValue("sessionId")] = imMessage.local_talk_id_;
   }
 
   arguments[flutter::EncodableValue("fromAccount")] = imMessage.sender_accid_;
@@ -1977,11 +1982,11 @@ bool Convert::convertQuickCommentInfo2Map(const nim::QuickCommentInfo& info,
 
 bool Convert::convertMsgClientId2MsgKeyMap(const std::string& clientMsgId,
                                            flutter::EncodableMap& msgKeyMap) {
-  msgKeyMap.insert(std::make_pair("sessionType", "p2p"));  //不支持
-  msgKeyMap.insert(std::make_pair("fromAccount", ""));     //不支持
-  msgKeyMap.insert(std::make_pair("toAccount", ""));       //不支持
-  msgKeyMap.insert(std::make_pair("time", 0));             //不支持
-  msgKeyMap.insert(std::make_pair("serverId", 0));         //不支持
+  msgKeyMap.insert(std::make_pair("sessionType", "p2p"));  // 不支持
+  msgKeyMap.insert(std::make_pair("fromAccount", ""));     // 不支持
+  msgKeyMap.insert(std::make_pair("toAccount", ""));       // 不支持
+  msgKeyMap.insert(std::make_pair("time", 0));             // 不支持
+  msgKeyMap.insert(std::make_pair("serverId", 0));         // 不支持
   msgKeyMap.insert(std::make_pair("uuid", clientMsgId));
   return true;
 }

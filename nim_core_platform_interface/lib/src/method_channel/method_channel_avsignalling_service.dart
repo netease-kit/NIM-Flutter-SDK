@@ -64,7 +64,7 @@ class MethodChannelAvSignallingService extends AvSignallingServicePlatform {
             .toList());
         break;
       case 'otherClientInviteAckNotification':
-        assert(arguments is Map && arguments['messageList'] is List);
+        assert(arguments is Map);
         _otherClientInviteAckNotificationStream.add(ChannelCommonEvent.fromJson(
             Map<String, dynamic>.from(arguments as Map)));
         break;

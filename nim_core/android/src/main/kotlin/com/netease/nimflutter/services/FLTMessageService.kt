@@ -753,7 +753,7 @@ class FLTMessageService(
         resultCallback: ResultCallback<IMMessage>
     ) {
         val messageList: List<IMMessage?> =
-            (arguments["messageList"] as List<*>)?.map { MessageHelper.convertIMMessage(it as Map<String, *>) }
+            (arguments["messageList"] as List<*>).map { MessageHelper.convertIMMessage(it as Map<String, *>) }
                 .toList()
         NIMClient.getService(TeamService::class.java).refreshTeamMessageReceipt(messageList)
         resultCallback.result(NimResult(code = 0))
@@ -1000,7 +1000,7 @@ class FLTMessageService(
         resultCallback: ResultCallback<String>
     ) {
         val messageList: List<IMMessage?> =
-            (arguments["messageList"] as List<*>)?.map { MessageHelper.convertIMMessage(it as Map<String, *>) }
+            (arguments["messageList"] as List<*>).map { MessageHelper.convertIMMessage(it as Map<String, *>) }
                 .toList()
         val ignore = arguments["ignore"] as Boolean
         NIMClient.getService(MsgService::class.java).deleteChattingHistory(messageList, ignore)

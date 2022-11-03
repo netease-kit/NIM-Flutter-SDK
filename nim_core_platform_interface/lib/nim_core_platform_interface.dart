@@ -96,3 +96,18 @@ export 'src/utils/log.dart';
 ///avsignalling
 export 'src/platform_interface/avsignalling/platform_interface_avsignalling_service.dart';
 export 'src/platform_interface/avsignalling/avsignalling_models.dart';
+
+///qchat
+export 'src/platform_interface/qchat/platform_interface_qchat_server_service.dart';
+export 'src/platform_interface/qchat/qchat_server_models.dart';
+export 'src/platform_interface/qchat/qchat_channel_models.dart';
+export 'src/platform_interface/qchat/qchat_base_models.dart';
+export 'src/platform_interface/qchat/platform_interface_qchat_channel_service.dart';
+export 'src/platform_interface/qchat/platform_interface_qchat_service.dart';
+export 'src/platform_interface/qchat/qchat_models.dart';
+export 'src/platform_interface/qchat/platform_interface_qchat_message_service.dart';
+export 'src/platform_interface/qchat/qchat_message_models.dart';
+export 'src/platform_interface/qchat/qchat_observer_models.dart';
+export 'src/platform_interface/qchat/platform_interface_qchat_observer.dart';
+export 'src/platform_interface/qchat/platform_interface_qchat_role_service.dart';
+export 'src/platform_interface/qchat/qchat_role_models.dart';

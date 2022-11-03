@@ -16,6 +16,12 @@ import com.netease.nimflutter.services.FLTEventSubscribeService
 import com.netease.nimflutter.services.FLTMessageService
 import com.netease.nimflutter.services.FLTNOSService
 import com.netease.nimflutter.services.FLTPassThroughService
+import com.netease.nimflutter.services.FLTQChatChannelService
+import com.netease.nimflutter.services.FLTQChatMessageService
+import com.netease.nimflutter.services.FLTQChatObserverService
+import com.netease.nimflutter.services.FLTQChatRoleService
+import com.netease.nimflutter.services.FLTQChatServerService
+import com.netease.nimflutter.services.FLTQChatService
 import com.netease.nimflutter.services.FLTSettingsService
 import com.netease.nimflutter.services.FLTSignallingService
 import com.netease.nimflutter.services.FLTSuperTeamService
@@ -66,6 +72,12 @@ class NimCore private constructor(
         registerService(::FLTSettingsService)
         registerService(::FLTPassThroughService)
         registerService(::FLTSignallingService)
+        registerService(::FLTQChatServerService)
+        registerService(::FLTQChatService)
+        registerService(::FLTQChatChannelService)
+        registerService(::FLTQChatMessageService)
+        registerService(::FLTQChatObserverService)
+        registerService(::FLTQChatRoleService)
     }
 
     private val tag = "FLTNimCore_K"

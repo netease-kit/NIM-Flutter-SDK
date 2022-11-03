@@ -198,7 +198,11 @@ void FLTTeamService::createTeam(
                   flutter::EncodableMap arguments_;
                   flutter::EncodableMap teamInfoMap;
                   flutter::EncodableList failedInviteAccounts;
-                  convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info);
+                  std::list<nim::TeamMemberProperty> all_my_member_info_list;
+                  all_my_member_info_list.push_back(
+                      team_event.member_property_);
+                  convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info,
+                                                   all_my_member_info_list);
                   arguments_.insert(std::make_pair("team", teamInfoMap));
                   for (auto id : team_event.invalid_ids_) {
                     failedInviteAccounts.emplace_back(id);
@@ -226,17 +230,23 @@ void FLTTeamService::createTeam(
 
 void FLTTeamService::queryTeamList(
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-  nim::Team::QueryAllMyTeamsInfoAsync(
-      [=](int team_count, const std::list<nim::TeamInfo>& team_info_list) {
-        flutter::EncodableMap arguments;
-        flutter::EncodableList teamInfoList;
-        for (auto team_info : team_info_list) {
-          flutter::EncodableMap teamInfoMap;
-          convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info);
-          teamInfoList.emplace_back(teamInfoMap);
-        }
-        arguments.insert(std::make_pair("teamList", teamInfoList));
-        result->Success(NimResult::getSuccessResult(arguments));
+  nim::Team::QueryMyAllMemberInfosAsync(
+      [=](int count,
+          const std::list<nim::TeamMemberProperty>& all_my_member_info_list) {
+        nim::Team::QueryAllMyTeamsInfoAsync(
+            [=](int team_count,
+                const std::list<nim::TeamInfo>& team_info_list) {
+              flutter::EncodableMap arguments;
+              flutter::EncodableList teamInfoList;
+              for (auto team_info : team_info_list) {
+                flutter::EncodableMap teamInfoMap;
+                convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info,
+                                                 all_my_member_info_list);
+                teamInfoList.emplace_back(teamInfoMap);
+              }
+              arguments.insert(std::make_pair("teamList", teamInfoList));
+              result->Success(NimResult::getSuccessResult(arguments));
+            });
       });
 }
 
@@ -253,16 +263,18 @@ void FLTTeamService::queryTeam(
                   NimResult::getErrorResult(-1, "queryTeam params error"));
     return;
   }
-  bool res = nim::Team::QueryTeamInfoAsync(
-      tid, [=](const std::string& tid, const nim::TeamInfo& team_info) {
-        flutter::EncodableMap teamInfoMap;
-        convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info);
-        result->Success(NimResult::getSuccessResult(teamInfoMap));
-      });
 
-  if (!res) {
-    result->Error("", "", NimResult::getErrorResult(-1, "queryTeam failed"));
-  }
+  nim::Team::QueryMyAllMemberInfosAsync(
+      [=](int count,
+          const std::list<nim::TeamMemberProperty>& all_my_member_info_list) {
+        nim::Team::QueryTeamInfoAsync(
+            tid, [=](const std::string& tid, const nim::TeamInfo& team_info) {
+              flutter::EncodableMap teamInfoMap;
+              convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info,
+                                               all_my_member_info_list);
+              result->Success(NimResult::getSuccessResult(teamInfoMap));
+            });
+      });
 }
 
 void FLTTeamService::searchTeam(
@@ -283,7 +295,10 @@ void FLTTeamService::searchTeam(
       tid, [=](const nim::TeamEvent& team_event) {
         if (team_event.res_code_ == nim::kNIMResSuccess) {
           flutter::EncodableMap teamInfoMap;
-          convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_event.team_info_);
+          std::list<nim::TeamMemberProperty> all_my_member_info_list;
+          all_my_member_info_list.push_back(team_event.member_property_);
+          convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_event.team_info_,
+                                           all_my_member_info_list);
           result->Success(NimResult::getSuccessResult(teamInfoMap));
         } else {
           result->Error("", "",
@@ -353,24 +368,25 @@ void FLTTeamService::searchTeamsByKeyword(
 
     keyword = std::get<std::string>(iter->second);
   }
-  bool res = nim::Team::QueryTeamInfoByKeywordAsync(
-      keyword,
-      [=](int team_count, const std::list<nim::TeamInfo>& team_info_list) {
-        flutter::EncodableMap result_map;
-        flutter::EncodableList teamInfoList;
-        for (auto team_info : team_info_list) {
-          flutter::EncodableMap teamInfoMap;
-          convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info);
-          teamInfoList.emplace_back(teamInfoMap);
-        }
-        result_map.insert(std::make_pair("teamList", teamInfoList));
-        result->Success(NimResult::getSuccessResult(result_map));
-      });
 
-  if (!res) {
-    result->Error("", "",
-                  NimResult::getErrorResult(-1, "searchTeamsByKeyword failed"));
-  }
+  nim::Team::QueryMyAllMemberInfosAsync(
+      [=](int count,
+          const std::list<nim::TeamMemberProperty>& all_my_member_info_list) {
+        nim::Team::QueryTeamInfoByKeywordAsync(
+            keyword, [=](int team_count,
+                         const std::list<nim::TeamInfo>& team_info_list) {
+              flutter::EncodableMap result_map;
+              flutter::EncodableList teamInfoList;
+              for (auto team_info : team_info_list) {
+                flutter::EncodableMap teamInfoMap;
+                convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_info,
+                                                 all_my_member_info_list);
+                teamInfoList.emplace_back(teamInfoMap);
+              }
+              result_map.insert(std::make_pair("teamList", teamInfoList));
+              result->Success(NimResult::getSuccessResult(result_map));
+            });
+      });
 }
 
 void FLTTeamService::applyJoinTeam(
@@ -398,7 +414,10 @@ void FLTTeamService::applyJoinTeam(
       tid, reason, [=](const nim::TeamEvent& team_event) {
         if (team_event.res_code_ == nim::kNIMResSuccess) {
           flutter::EncodableMap teamInfoMap;
-          convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_event.team_info_);
+          std::list<nim::TeamMemberProperty> all_my_member_info_list;
+          all_my_member_info_list.push_back(team_event.member_property_);
+          convertNIMTeamInfoToDartTeamInfo(teamInfoMap, team_event.team_info_,
+                                           all_my_member_info_list);
           result->Success(NimResult::getSuccessResult(teamInfoMap));
         } else {
           result->Error("", "",
@@ -1175,7 +1194,7 @@ void FLTTeamService::updateTeamFields(
 void FLTTeamService::updateTeam(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-  //接口已废弃
+  // 接口已废弃
   if (!arguments) {
     return;
   }
@@ -1366,7 +1385,8 @@ bool FLTTeamService::getTeamId(const flutter::EncodableMap* arguments,
 }
 
 void FLTTeamService::convertNIMTeamInfoToDartTeamInfo(
-    flutter::EncodableMap& argments, const nim::TeamInfo& info) {
+    flutter::EncodableMap& argments, const nim::TeamInfo& info,
+    const std::list<nim::TeamMemberProperty>& all_my_member_info_list) {
   argments.insert(std::make_pair("id", info.GetTeamID()));
   argments.insert(std::make_pair("name", info.GetName()));
   argments.insert(std::make_pair("icon", info.GetIcon()));
@@ -1380,8 +1400,29 @@ void FLTTeamService::convertNIMTeamInfoToDartTeamInfo(
   argments.insert(std::make_pair(
       "isAllMute", info.GetMuteType() == nim::kNIMTeamMuteTypeAllMute));
   argments.insert(std::make_pair("extServer", info.GetServerCustom()));
-  argments.insert(std::make_pair("isMyTeam", true));            // todo
-  argments.insert(std::make_pair("messageNotifyType", "all"));  // todo
+  argments.insert(std::make_pair("isMyTeam", true));  // todo
+
+  std::string messageNotifyType = "all";
+  if (all_my_member_info_list.size() != 0) {
+    auto teamID = info.GetTeamID();
+    auto findIt = std::find_if(all_my_member_info_list.begin(),
+                               all_my_member_info_list.end(),
+                               [teamID](const auto& member_info) {
+                                 return teamID == member_info.GetTeamID();
+                               });
+    if (all_my_member_info_list.end() != findIt) {
+      auto member_info = *findIt;
+      auto bits = member_info.GetBits();
+      if (bits == 0) {
+        messageNotifyType = "all";
+      } else if (bits == 1) {
+        messageNotifyType = "mute";
+      } else if (bits == 2) {
+        messageNotifyType = "manager";
+      }
+    }
+  }
+  argments.insert(std::make_pair("messageNotifyType", messageNotifyType));
 
   std::string strTeamType;
   Convert::getInstance()->convertNIMEnumToDartString(
@@ -1453,7 +1494,10 @@ void FLTTeamService::teamEventCallback(const nim::TeamEvent& team_event) {
   flutter::EncodableMap result_map;
   flutter::EncodableList teamList;
   flutter::EncodableMap team_info_map;
-  convertNIMTeamInfoToDartTeamInfo(team_info_map, team_event.team_info_);
+  std::list<nim::TeamMemberProperty> all_my_member_info_list;
+  all_my_member_info_list.push_back(team_event.member_property_);
+  convertNIMTeamInfoToDartTeamInfo(team_info_map, team_event.team_info_,
+                                   all_my_member_info_list);
   teamList.emplace_back(team_info_map);
 
   if (nim::kNIMNotificationIdTeamKick == team_event.notification_id_ ||

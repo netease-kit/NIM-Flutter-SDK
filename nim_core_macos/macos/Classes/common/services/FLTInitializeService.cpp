@@ -44,6 +44,14 @@ void FLTInitializeService::onMethodCalled(
     //         MessageBoxA(NULL, "Debug....", "Debug", 0);
     // #endif
     initializeSDK(arguments, result);
+  } else if (method == "releaseDesktop") {
+    if (!m_init) {
+      result->Error("", "", NimResult::getErrorResult(-1, "IM release failed"));
+      return;
+    }
+    nim::Client::Cleanup2();
+    m_init = false;
+    result->Success(NimResult::getSuccessResult());
   } else {
     result->NotImplemented();
   }
@@ -214,6 +222,7 @@ void FLTInitializeService::initializeSDK(
     if (nim::Client::Init(appkey, NimCore::getInstance()->getLogDir(), "",
                           sdkConfig)) {
       m_appKey = appkey;
+      m_init = true;
       NimCore::getInstance()->regService();
       result->Success(NimResult::getSuccessResult());
     } else {

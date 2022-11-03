@@ -5,8 +5,8 @@
 import 'dart:core';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
+
+import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 
 part 'converter.g.dart';
 
@@ -33,6 +33,24 @@ class NIMMessageTypeConverter with EnumConverter<NIMMessageType, String> {
 
   String toValue() {
     return super.enumToValue(_$NIMMessageTypeEnumMap, messageType!);
+  }
+}
+
+@JsonSerializable()
+class QChatSystemNotificationTypeConverter
+    with EnumConverter<QChatSystemNotificationType, String> {
+  final QChatSystemNotificationType? type;
+
+  QChatSystemNotificationTypeConverter({this.type});
+
+  QChatSystemNotificationType fromValue(String value,
+      {QChatSystemNotificationType? defaultType}) {
+    return enumFromValue(_$QChatSystemNotificationTypeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  String toValue() {
+    return super.enumToValue(_$QChatSystemNotificationTypeEnumMap, type!);
   }
 }
 

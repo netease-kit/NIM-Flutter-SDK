@@ -149,7 +149,7 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
 
 fun ChatRoomMessageImpl.toMap(): Map<String, Any?> {
     return hashMapOf<String, Any?>(
-        "enableHistory" to (chatRoomConfig?.skipHistory?.not() ?: false),
+        "enableHistory" to (chatRoomConfig?.skipHistory?.not() ?: true),
         "isHighPriorityMessage" to isHighPriorityMessage,
         "extension" to mapOf(
             "nickname" to chatRoomMessageExtension?.senderNick,
@@ -323,7 +323,7 @@ fun MsgThreadOption.toMap(): Map<String, Any?> {
 fun AttachmentProgress.toMap(): Map<String, Any?> {
     return mapOf(
         "id" to uuid,
-        "progress" to transferred.toDouble() / total
+        "progress" to if (total > 0L) transferred.toDouble() / total else 1
     )
 }
 

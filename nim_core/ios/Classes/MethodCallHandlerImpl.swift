@@ -26,6 +26,12 @@ class MethodCallHandlerImpl {
     FLTSuperTeamService().register(nimCore)
     FLTChatExtendService().register(nimCore)
     FLTSignallingService().register(nimCore)
+    FLTQChatChannelService().register(nimCore)
+//    FLTQChatDelegate().register(nimCore)
+    FLTQChatMessageService().register(nimCore)
+    FLTQChatRoleService().register(nimCore)
+    FLTQChatService().register(nimCore)
+    FLTQChatServerService().register(nimCore)
   }
 
   func onMethodCall(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
@@ -33,7 +39,8 @@ class MethodCallHandlerImpl {
     nimCore.onMethodCall(call.method, arguments, resultCallback: ResultCallback(result))
 
     //        if let arguments = call.arguments as? [String : Any] {
-    //            nimCore.onMethodCall(call.method, arguments, resultCallback: ResultCallback(result))
+    //            nimCore.onMethodCall(call.method, arguments,
+    //            resultCallback: ResultCallback(result))
     //        }
   }
 

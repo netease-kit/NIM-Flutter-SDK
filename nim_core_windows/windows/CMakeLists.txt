@@ -18,7 +18,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/include")
 link_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/lib/x64/${CMAKE_BUILD_TYPE}")
 
 # nim_sdk
-set(NIM_SDK_URL "https://yx-web-nosdn.netease.im/package/nim-win32-x64-refs-tags-8.8.0.459-build.567.tar.gz?download=nim-win32-x64-refs-tags-8.8.0.459-build.567.tar.gz")
+set(NIM_SDK_URL "https://yx-web-nosdn.netease.im/package/nim-win32-x64-refs-tags-9.6.0.1676-build.312.tar.gz?download=nim-win32-x64-refs-tags-9.6.0.1676-build.312.tar.gz")
 set(SPLIT "download=")
 string(LENGTH ${SPLIT} SPLIT_LENGTH)
 string(LENGTH ${NIM_SDK_URL} NIM_SDK_URL_LENGTH)
@@ -103,7 +103,7 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE yx_alog nim_wrapper_util nim_cpp_wr
 apply_standard_settings(${PLUGIN_NAME})
 set_target_properties(${PLUGIN_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden)
 target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL)
-target_compile_options(${PLUGIN_NAME} PRIVATE /wd"4251" /wd"4091")
+target_compile_options(${PLUGIN_NAME} PRIVATE /wd"4251" /wd"4091" /bigobj)
 target_include_directories(${PLUGIN_NAME} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)

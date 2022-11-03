@@ -450,7 +450,7 @@ extension NIMMessage {
       message.gArgument = target
       if let type = target["messageType"] as? String,
          let mType = FLT_NIMMessageType(rawValue: type)?.convertToNIMMessageType(),
-         var attachment = target["messageAttachment"] as? [String: Any] {
+         let attachment = target["messageAttachment"] as? [String: Any] {
         message.setValue(mType.rawValue, forKeyPath: #keyPath(NIMMessage.messageType))
 
         switch mType {
@@ -1063,9 +1063,22 @@ extension NIMImageObject: NimDataConvertProtrol {
   }
 
   static func fromDic(_ json: [String: Any]) -> Any? {
-    if let model = NIMImageObject.yx_model(with: json) {
-      model.extensionModelIva(json, NIMImageObject.self)
-      return model
+//    if let model = NIMImageObject.yx_model(with: json) {
+//      model.extensionModelIva(json, NIMImageObject.self)
+//      return model
+//    }
+    if let urlString = json["url"] as? String,
+       let url = URL(string: urlString) {
+      do {
+        let data = try Data(contentsOf: url)
+        let model = NIMImageObject(data: data, extension: "")
+        if let name = json["name"] as? String {
+          model.displayName = name
+        }
+        return model
+      } catch {
+        print(error)
+      }
     }
     return nil
   }
@@ -1152,9 +1165,22 @@ extension NIMFileObject: NimDataConvertProtrol {
   }
 
   static func fromDic(_ json: [String: Any]) -> Any? {
-    if let model = NIMFileObject.yx_model(with: json) {
-      model.extensionModelIva(json, NIMFileObject.self)
-      return model
+//    if let model = NIMFileObject.yx_model(with: json) {
+//      model.extensionModelIva(json, NIMFileObject.self)
+//      return model
+//    }
+    if let urlString = json["url"] as? String,
+       let url = URL(string: urlString) {
+      do {
+        let data = try Data(contentsOf: url)
+        let model = NIMImageObject(data: data, extension: "")
+        if let name = json["name"] as? String {
+          model.displayName = name
+        }
+        return model
+      } catch {
+        print(error)
+      }
     }
     return nil
   }
@@ -1191,6 +1217,18 @@ extension NIMVideoObject: NimDataConvertProtrol {
       model.extensionModelIva(json, NIMVideoObject.self)
       return model
     }
+//      if let urlString = json["url"] as? String,
+//         let url = URL(string: urlString){
+//
+//          do {
+//              let data = try Data(contentsOf: url)
+//              let model = NIMVideoObject(data: data, extension: "")
+//              return model
+//          } catch  {
+//              print(error)
+//          }
+//
+//      }
     return nil
   }
 
@@ -1205,6 +1243,41 @@ extension NIMVideoObject: NimDataConvertProtrol {
     keyPaths[#keyPath(NIMVideoObject.coverUrl)] = "thumbUrl"
     keyPaths[#keyPath(NIMVideoObject.coverPath)] = "thumbPath"
     return keyPaths
+  }
+}
+
+extension NIMNotificationObject: NimDataConvertProtrol {
+  func toDic() -> [String: Any]? {
+    var jsonObject = [String: Any]()
+    extensionIvaToJson(&jsonObject, NIMNotificationObject.self)
+    jsonObject["type"] = notificationType.rawValue
+    return jsonObject
+  }
+
+  static func fromDic(_ json: [String: Any]) -> Any? {
+    if let model = NIMNotificationObject.yx_model(with: json) {
+      model.extensionModelIva(json, NIMNotificationObject.self)
+      return model
+    }
+    return nil
+  }
+}
+
+extension NIMRtcCallRecordObject: NimDataConvertProtrol {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      extensionIvaToJson(&jsonObject, NIMRtcCallRecordObject.self)
+      return jsonObject
+    }
+    return nil
+  }
+
+  static func fromDic(_ json: [String: Any]) -> Any? {
+    if let model = NIMNotificationObject.yx_model(with: json) {
+      model.extensionModelIva(json, NIMRtcCallRecordObject.self)
+      return model
+    }
+    return nil
   }
 }
 
