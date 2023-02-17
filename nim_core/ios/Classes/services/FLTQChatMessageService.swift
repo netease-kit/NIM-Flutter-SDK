@@ -18,10 +18,23 @@ enum QChatMessageMethod: String {
   case sendSystemNotification
   case resendSystemNotification
   case updateSystemNotification
+  case replyMessage
+  case getReferMessages
+  case getThreadMessages
+  case getMessageThreadInfos
+  case addQuickComment
+  case removeQuickComment
+  case getQuickComments
+  case getMessageCache
+  case clearMessageCache
+  case getLastMessageOfChannels
+  case searchMsgByPage
 }
 
 class FLTQChatMessageService: FLTBaseService, FLTService {
   var sendedMsgCallback: ResultCallback?
+  private let paramErrorTip = "参数错误"
+  private let paramErrorCode = 414
 
   override func onInitialized() {
     NIMSDK.shared().qchatManager.add(self)
@@ -75,6 +88,28 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
       qChatResendSystemNotification(arguments, resultCallback)
     case QChatMessageMethod.updateSystemNotification.rawValue:
       qChatUpdateSystemNotification(arguments, resultCallback)
+    case QChatMessageMethod.replyMessage.rawValue:
+      qChatReplyMessage(arguments, resultCallback)
+    case QChatMessageMethod.getReferMessages.rawValue:
+      qChatGetReferMessages(arguments, resultCallback)
+    case QChatMessageMethod.getThreadMessages.rawValue:
+      qChatGetThreadMessages(arguments, resultCallback)
+    case QChatMessageMethod.getMessageThreadInfos.rawValue:
+      qChatGetMessageThreadInfos(arguments, resultCallback)
+    case QChatMessageMethod.addQuickComment.rawValue:
+      qChatAddQuickComment(arguments, resultCallback)
+    case QChatMessageMethod.removeQuickComment.rawValue:
+      qChatRemoveQuickComment(arguments, resultCallback)
+    case QChatMessageMethod.getQuickComments.rawValue:
+      qChatGetQuickComments(arguments, resultCallback)
+    case QChatMessageMethod.getMessageCache.rawValue:
+      qChatGetMessageCache(arguments, resultCallback)
+    case QChatMessageMethod.clearMessageCache.rawValue:
+      qChatClearMessageCache(arguments, resultCallback)
+    case QChatMessageMethod.getLastMessageOfChannels.rawValue:
+      qChatGetLastMessageOfChannels(arguments, resultCallback)
+    case QChatMessageMethod.searchMsgByPage.rawValue:
+      qChatSearchMsgByPage(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -82,46 +117,35 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
 
   func qChatMessageCallback(_ error: Error?, _ data: Any?, _ resultCallback: ResultCallback) {
     if let ns_error = error as NSError? {
-      // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
-      let code = ns_error.code == 1 ? 414 : ns_error.code
-      errorCallBack(resultCallback, ns_error.description, code)
+      errorCallBack(resultCallback, ns_error.description, ns_error.code)
     } else {
       successCallBack(resultCallback, data)
     }
   }
 
   func qChatSendMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    var qchatChannelId: Int64 = 0
-    var qchatServerId: Int64 = 0
-    if let cId = arguments["channelId"] as? Int {
-      qchatChannelId = Int64(cId)
+    guard let cId = arguments["channelId"] as? Int,
+          let sId = arguments["serverId"] as? Int else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
-    if let cId = arguments["qChatChannelId"] as? Int {
-      qchatChannelId = Int64(cId)
-    }
-    if let sId = arguments["serverId"] as? Int {
-      qchatServerId = Int64(sId)
-    }
-    if let sId = arguments["qChatServerId"] as? Int {
-      qchatServerId = Int64(sId)
-    }
+    let qchatChannelId = Int64(cId)
+    let qchatServerId = Int64(sId)
     let session = NIMSession(forQChat: qchatChannelId, qchatServerId: qchatServerId)
     let qMsg = NIMQChatMessage.convertToMessage(arguments) ?? NIMQChatMessage()
     qMsg.setValue(session, forKeyPath: #keyPath(NIMQChatMessage.session))
 
-    weak var weakSelf = self
     sendedMsgCallback = resultCallback
-    NIMSDK.shared().qchatMessageManager.send(qMsg, to: session) { error in
+    NIMSDK.shared().qchatMessageManager.send(qMsg, to: session) { [weak self] error in
       if let ns_error = error as NSError? {
-        // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
-        let code = ns_error.code == 1 ? 414 : ns_error.code
-        weakSelf?.errorCallBack(resultCallback, ns_error.description, code)
+        self?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
       }
     }
   }
 
   func qChatResendMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let arg = arguments["message"] as? [String: Any] else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -134,12 +158,13 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
     }
     let id = NIMQChatMessageServerIdInfo.fromDic(arg)
     sea.ids = [id]
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { error, result in
+    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { [weak self] error, result in
       if let err = error {
         print(
-          "@@#❌qChatResendMessage -> getMessageHistory FAILED, error: ",
+          "@@#❌qChatResendMessage -> getMessageHistoryByIds FAILED, error: ",
           err
         )
+        self?.qChatMessageCallback(error, nil, resultCallback)
       } else {
         if let res = result,
            let msgs = res.messages {
@@ -147,12 +172,16 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
              let msg = msgs.first {
             do {
               try NIMSDK.shared().qchatMessageManager.resend(msg)
-              self.successCallBack(resultCallback, ["sentMessage": msg.toDict()])
+              self?.successCallBack(resultCallback, ["sentMessage": msg.toDict()])
             } catch {
-              self.errorCallBack(resultCallback, error.localizedDescription)
+              self?.errorCallBack(resultCallback, error.localizedDescription)
             }
           } else {
-            self.errorCallBack(resultCallback, "参数错误", 414)
+            self?.errorCallBack(
+              resultCallback,
+              self?.paramErrorTip ?? "参数错误",
+              self?.paramErrorCode ?? 414
+            )
           }
         }
       }
@@ -160,14 +189,19 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
   }
 
   func qChatUpdateMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatUpdateMessageParam.fromDic(arguments)
-    let sea = NIMQChatGetMessageHistoryParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(sea) { error, result in
+    guard let request = NIMQChatUpdateMessageParam.fromDic(arguments),
+          let sea = NIMQChatGetMessageHistoryParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatMessageManager.getMessageHistory(sea) { [weak self] error, result in
       if let err = error {
         print(
           "@@#❌qChatUpdateMessage -> getMessageHistory FAILED, error: ",
           err
         )
+        self?.qChatMessageCallback(error, nil, resultCallback)
       } else {
         if let res = result,
            let msgs = res.messages {
@@ -175,10 +209,14 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
              let msg = msgs.first {
             request.message = msg
             NIMSDK.shared().qchatMessageManager.updateMessage(request) { error, res in
-              self.qChatMessageCallback(error, ["message": res?.toDict()], resultCallback)
+              self?.qChatMessageCallback(error, ["message": res?.toDict()], resultCallback)
             }
           } else {
-            self.errorCallBack(resultCallback, "参数错误", 414)
+            self?.errorCallBack(
+              resultCallback,
+              self?.paramErrorTip ?? "参数错误",
+              self?.paramErrorCode ?? 414
+            )
           }
         }
       }
@@ -186,16 +224,19 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
   }
 
   func qChatRevokeMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatRevokeMessageParam.fromDic(arguments)
+    guard let request = NIMQChatRevokeMessageParam.fromDic(arguments),
+          let sea = NIMQChatGetMessageHistoryByIdsParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
 
-    let sea = NIMQChatGetMessageHistoryByIdsParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { error, result in
+    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { [weak self] error, result in
       if let err = error {
         print(
-          "@@#❌qChatRevokeMessage -> getMessageHistory FAILED, error: ",
+          "@@#❌qChatRevokeMessage -> getMessageHistoryByIds FAILED, error: ",
           err
         )
-        self.qChatMessageCallback(err, nil, resultCallback)
+        self?.qChatMessageCallback(error, nil, resultCallback)
       } else {
         if let res = result,
            let msgs = res.messages {
@@ -203,10 +244,14 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
              let msg = msgs.first {
             request.message = msg
             NIMSDK.shared().qchatMessageManager.revokeMessage(request) { error, result in
-              self.qChatMessageCallback(error, ["message": result?.toDict()], resultCallback)
+              self?.qChatMessageCallback(error, ["message": result?.toDict()], resultCallback)
             }
           } else {
-            self.errorCallBack(resultCallback, "参数错误", 414)
+            self?.errorCallBack(
+              resultCallback,
+              self?.paramErrorTip ?? "参数错误",
+              self?.paramErrorCode ?? 414
+            )
           }
         }
       }
@@ -214,14 +259,19 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
   }
 
   func qChatDeleteMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatDeleteMessageParam.fromDic(arguments)
-    let sea = NIMQChatGetMessageHistoryByIdsParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { error, result in
+    guard let request = NIMQChatDeleteMessageParam.fromDic(arguments),
+          let sea = NIMQChatGetMessageHistoryByIdsParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { [weak self] error, result in
       if let err = error {
         print(
-          "@@#❌qChatDeleteMessage -> getMessageHistory FAILED, error: ",
+          "@@#❌qChatDeleteMessage -> getMessageHistoryByIds FAILED, error: ",
           err
         )
+        self?.qChatMessageCallback(error, nil, resultCallback)
       } else {
         if let res = result,
            let msgs = res.messages {
@@ -229,10 +279,14 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
              let msg = msgs.first {
             request.message = msg
             NIMSDK.shared().qchatMessageManager.deleteMessage(request) { error, result in
-              self.qChatMessageCallback(error, result?.toDict(), resultCallback)
+              self?.qChatMessageCallback(error, ["message": result?.toDict()], resultCallback)
             }
           } else {
-            self.errorCallBack(resultCallback, "参数错误", 414)
+            self?.errorCallBack(
+              resultCallback,
+              self?.paramErrorTip ?? "参数错误",
+              self?.paramErrorCode ?? 414
+            )
           }
         }
       }
@@ -241,6 +295,7 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
 
   func qChatDownloadAttachment(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let arg = arguments["message"] as? [String: Any] else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -253,12 +308,13 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
     }
     let id = NIMQChatMessageServerIdInfo.fromDic(arg)
     sea.ids = [id]
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { error, result in
+    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { [weak self] error, result in
       if let err = error {
         print(
-          "@@#❌qChatResendMessage -> getMessageHistory FAILED, error: ",
+          "@@#❌qChatResendMessage -> getMessageHistoryByIds FAILED, error: ",
           err
         )
+        self?.qChatMessageCallback(error, nil, resultCallback)
       } else {
         if let res = result,
            let msgs = res.messages {
@@ -266,12 +322,16 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
              let msg = msgs.first {
             do {
               try NIMSDK.shared().qchatMessageManager.fetchMessageAttachment(msg)
-              self.successCallBack(resultCallback, nil)
+              self?.successCallBack(resultCallback, nil)
             } catch {
-              self.errorCallBack(resultCallback, error.localizedDescription)
+              self?.errorCallBack(resultCallback, error.localizedDescription)
             }
           } else {
-            self.errorCallBack(resultCallback, "参数错误", 414)
+            self?.errorCallBack(
+              resultCallback,
+              self?.paramErrorTip ?? "参数错误",
+              self?.paramErrorCode ?? 414
+            )
           }
         }
       }
@@ -279,57 +339,501 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
   }
 
   func qChatGetMessageHistory(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetMessageHistoryParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(request) { error, result in
-      self.qChatMessageCallback(error, ["messages": result?.toDict()], resultCallback)
+    guard let request = NIMQChatGetMessageHistoryParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager.getMessageHistory(request) { [weak self] error, result in
+      self?.qChatMessageCallback(error, ["messages": result?.toDict()], resultCallback)
     }
   }
 
   func qChatGetMessageHistoryByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetMessageHistoryByIdsParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: request) { error, result in
-      self.qChatMessageCallback(error, ["messages": result?.toDict()], resultCallback)
+    guard let request = NIMQChatGetMessageHistoryByIdsParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, ["messages": result?.toDict()], resultCallback)
+      }
   }
 
   func qChatMarkMessageRead(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatMarkMessageReadParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.markMessageRead(request) { error in
-      self.qChatMessageCallback(error, nil, resultCallback)
+    guard let request = NIMQChatMarkMessageReadParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager.markMessageRead(request) { [weak self] error in
+      self?.qChatMessageCallback(error, nil, resultCallback)
     }
   }
 
   func qChatMarkSystemNotificationsRead(_ arguments: [String: Any],
                                         _ resultCallback: ResultCallback) {
-    let request = NIMQChatMarkSystemNotificationsReadParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.markSystemNotificationsRead(request) { error in
-      self.qChatMessageCallback(error, nil, resultCallback)
+    guard let request = NIMQChatMarkSystemNotificationsReadParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager.markSystemNotificationsRead(request) { [weak self] error in
+      self?.qChatMessageCallback(error, nil, resultCallback)
     }
   }
 
   func qChatSendSystemNotification(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatSendSystemNotificationParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.sendSystemNotification(request) { error, result in
-      self.qChatMessageCallback(
+    guard let request = NIMQChatSendSystemNotificationParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .sendSystemNotification(request) { [weak self] error, result in
+        self?.qChatMessageCallback(
+          error,
+          ["sentCustomNotification": result?.toDict()],
+          resultCallback
+        )
+      }
+  }
+
+  func qChatResendSystemNotification(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatResendSystemNotificationParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .resendSystemNotification(request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatUpdateSystemNotification(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatUpdateSystemNotificationParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .updateSystemNotification(request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatReplyMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let msgArg = arguments["message"] as? [String: Any],
+          let replyMsgArg = arguments["replyMessage"] as? [String: Any],
+          let qchatChannelId = msgArg["channelId"] as? Int64,
+          let qchatServerId = msgArg["serverId"] as? Int64 else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    let session = NIMSession(forQChat: qchatChannelId, qchatServerId: qchatServerId)
+    let fromMsg = NIMQChatMessage.convertToMessage(msgArg) ?? NIMQChatMessage()
+    fromMsg.setValue(session, forKeyPath: #keyPath(NIMQChatMessage.session))
+
+    sendedMsgCallback = resultCallback
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    if let channelId = replyMsgArg["qChatChannelId"] as? UInt64 {
+      if channelId != qchatChannelId {
+        errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+        return
+      }
+      sea.channelId = channelId
+    }
+    if let serverId = replyMsgArg["qChatServerId"] as? UInt64 {
+      if serverId != qchatServerId {
+        errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+        return
+      }
+      sea.serverId = serverId
+    }
+    let id = NIMQChatMessageServerIdInfo.fromDic(replyMsgArg)
+    sea.ids = [id]
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatReplyMessage -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0,
+               let toMsg = msgs.first {
+              NIMSDK.shared().qchatMessageExtendManager
+                .reply(fromMsg, to: toMsg) { error in
+                  if let ns_error = error as NSError? {
+                    self?.errorCallBack(
+                      resultCallback,
+                      ns_error.description,
+                      ns_error.code
+                    )
+                  }
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatGetReferMessages(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let msgArg = arguments["message"] as? [String: Any] else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    var type: NIMQChatMessageReferType = .all
+    if let typeStr = arguments["referType"] as? String,
+       let tp = FLTQChatMessageReferType(rawValue: typeStr)?.convertNIMQChatMessageReferType() {
+      type = tp
+    }
+
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    if let channelId = msgArg["qChatChannelId"] as? UInt64 {
+      sea.channelId = channelId
+    }
+    if let serverId = msgArg["qChatServerId"] as? UInt64 {
+      sea.serverId = serverId
+    }
+    let id = NIMQChatMessageServerIdInfo.fromDic(msgArg)
+    sea.ids = [id]
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatGetReferMessages -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0,
+               let refMsg = msgs.first {
+              NIMSDK.shared().qchatMessageExtendManager
+                .getReferMessages(refMsg, type: type) { error, result in
+                  self?.qChatMessageCallback(
+                    error,
+                    ["replyMessage": result?.toDict()?.first ?? "replyMessage is nil",
+                     "threadMessage": refMsg
+                       .toDict() ?? "threadMessage is nil"],
+                    resultCallback
+                  )
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatGetThreadMessages(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let msgArg = arguments["message"] as? [String: Any] else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    var request: NIMQChatGetThreadMessagesParam
+    if let messageQueryOption = arguments["messageQueryOption"] as? [String: Any] {
+      request = NIMQChatGetThreadMessagesParam.fromDic(messageQueryOption)
+    } else {
+      request = NIMQChatGetThreadMessagesParam()
+    }
+
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    if let channelId = msgArg["qChatChannelId"] as? UInt64 {
+      sea.channelId = channelId
+    }
+    if let serverId = msgArg["qChatServerId"] as? UInt64 {
+      sea.serverId = serverId
+    }
+    let id = NIMQChatMessageServerIdInfo.fromDic(msgArg)
+    sea.ids = [id]
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatGetThreadMessages -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0,
+               let qMsg = msgs.first {
+              request.message = qMsg
+              NIMSDK.shared().qchatMessageExtendManager
+                .getThreadMessages(request) { [weak self] error, result in
+                  self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatGetMessageThreadInfos(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let channelId = arguments["channelId"] as? UInt64,
+          let serverId = arguments["serverId"] as? UInt64 else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    sea.channelId = channelId
+    sea.serverId = serverId
+    if let msgList = arguments["msgList"] as? [[String: Any]] {
+      var msgIds = [NIMQChatMessageServerIdInfo]()
+      for item in msgList {
+        msgIds.append(NIMQChatMessageServerIdInfo.fromDic(item))
+      }
+      sea.ids = msgIds
+    }
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatGetMessageThreadInfos -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0 {
+              NIMSDK.shared().qchatMessageExtendManager
+                .batchGetMessageThreadInfo(msgs) { error, result in
+                  var res = [String: Any]()
+                  for (key, value) in result ?? [:] {
+                    res[key] = value.toDict()
+                  }
+                  self?.qChatMessageCallback(
+                    error,
+                    ["messageThreadInfoMap": res],
+                    resultCallback
+                  )
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatAddQuickComment(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let msgArg = arguments["commentMessage"] as? [String: Any] else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    var type: Int64 = 0
+    if let tp = arguments["type"] as? Int64 {
+      type = tp
+    }
+
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    if let channelId = msgArg["qChatChannelId"] as? UInt64 {
+      sea.channelId = channelId
+    }
+    if let serverId = msgArg["qChatServerId"] as? UInt64 {
+      sea.serverId = serverId
+    }
+    let id = NIMQChatMessageServerIdInfo.fromDic(msgArg)
+    sea.ids = [id]
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatAddQuickComment -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0,
+               let commentMessage = msgs.first {
+              NIMSDK.shared().qchatMessageExtendManager
+                .addQuickCommentType(type, to: commentMessage) { [weak self] error in
+                  self?.qChatMessageCallback(error, nil, resultCallback)
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatRemoveQuickComment(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let msgArg = arguments["commentMessage"] as? [String: Any] else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    var type: Int64 = 0
+    if let tp = arguments["type"] as? Int64 {
+      type = tp
+    }
+
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    if let channelId = msgArg["qChatChannelId"] as? UInt64 {
+      sea.channelId = channelId
+    }
+    if let serverId = msgArg["qChatServerId"] as? UInt64 {
+      sea.serverId = serverId
+    }
+    let id = NIMQChatMessageServerIdInfo.fromDic(msgArg)
+    sea.ids = [id]
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatRemoveQuickComment -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0,
+               let commentMessage = msgs.first {
+              NIMSDK.shared().qchatMessageExtendManager
+                .deleteQuickCommentType(type, to: commentMessage) { [weak self] error in
+                  self?.qChatMessageCallback(error, nil, resultCallback)
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatGetQuickComments(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let channelId = arguments["channelId"] as? UInt64,
+          let serverId = arguments["serverId"] as? UInt64 else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    let sea = NIMQChatGetMessageHistoryByIdsParam()
+    sea.channelId = channelId
+    sea.serverId = serverId
+    if let msgList = arguments["msgList"] as? [[String: Any]] {
+      var msgIds = [NIMQChatMessageServerIdInfo]()
+      for item in msgList {
+        msgIds.append(NIMQChatMessageServerIdInfo.fromDic(item))
+      }
+      sea.ids = msgIds
+    }
+    NIMSDK.shared().qchatMessageManager
+      .getMessageHistory(byIds: sea) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatGetQuickComments -> getMessageHistory FAILED, error: ",
+            err
+          )
+          self?.qChatMessageCallback(error, nil, resultCallback)
+        } else {
+          if let res = result,
+             let msgs = res.messages {
+            if msgs.count > 0 {
+              NIMSDK.shared().qchatMessageExtendManager
+                .fetchQuickComments(msgs) { error, result in
+                  var res = [Int: Any]()
+                  for (key, value) in result?.msgIdQuickCommentDic ?? [:] {
+                    if let intKey = Int(key) {
+                      res[intKey] = value.toDict()
+                    }
+                  }
+                  self?.qChatMessageCallback(
+                    error,
+                    ["messageQuickCommentDetailMap": res],
+                    resultCallback
+                  )
+                }
+            } else {
+              self?.errorCallBack(
+                resultCallback,
+                self?.paramErrorTip ?? "参数错误",
+                self?.paramErrorCode ?? 414
+              )
+            }
+          }
+        }
+      }
+  }
+
+  func qChatGetMessageCache(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetMessageCacheParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager.getMessageCache(request) { [weak self] error, result in
+      self?.qChatMessageCallback(
         error,
-        ["sentCustomNotification": result?.toDict()],
+        ["messageCacheList": result?.toDict()],
         resultCallback
       )
     }
   }
 
-  func qChatResendSystemNotification(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatResendSystemNotificationParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.resendSystemNotification(request) { error, result in
-      self.qChatMessageCallback(error, result?.toDict(), resultCallback)
-    }
+  func qChatClearMessageCache(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    NIMSDK.shared().qchatMessageManager.clearMessageCache()
+    successCallBack(resultCallback, nil)
   }
 
-  func qChatUpdateSystemNotification(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatUpdateSystemNotificationParam.fromDic(arguments)
-    NIMSDK.shared().qchatMessageManager.updateSystemNotification(request) { error, result in
-      self.qChatMessageCallback(error, result?.toDict(), resultCallback)
+  func qChatGetLastMessageOfChannels(_ arguments: [String: Any],
+                                     _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetLastMessageOfChannelsParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
+    NIMSDK.shared().qchatMessageManager
+      .getLastMessage(ofChannels: request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatSearchMsgByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatSearchMsgByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .searchMsg(byPage: request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+      }
   }
 }
 
@@ -478,5 +982,24 @@ extension FLTQChatMessageService: NIMQChatManagerDelegate, NIMQChatMessageManage
   func onSystemNotificationUpdate(_ result: NIMQChatSystemNotificationUpdateResult) {
     let arguments = result.toDict()
     notifyEvent(serviceDelegateName(), "onSystemNotificationUpdate", arguments)
+  }
+
+  /**
+   * 圈组服务器未读信息变更事件回调
+   *
+   * @param serverUnreadInfoDic 事件详情, key为@(serverId)（服务器ID的NSNumber），value 为NIMQChatServerUnreadInfo
+   */
+  func serverUnreadInfoChanged(_ serverUnreadInfoDic: [NSNumber: NIMQChatServerUnreadInfo]) {
+    var arguments = [[String: Any]]()
+    for (_, value) in serverUnreadInfoDic {
+      if let info = value.toDict() {
+        arguments.append(info)
+      }
+    }
+    notifyEvent(
+      serviceDelegateName(),
+      "serverUnreadInfoChanged",
+      ["serverUnreadInfos": arguments]
+    )
   }
 }

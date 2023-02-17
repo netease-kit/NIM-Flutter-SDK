@@ -18,6 +18,7 @@ export 'src/platform_interface/auth/platform_interface_auth_service.dart';
 ///chatroom
 export 'src/platform_interface/chatroom/chatroom_models.dart';
 export 'src/platform_interface/chatroom/platform_interface_chatroom_service.dart';
+export 'src/platform_interface/robot/robot_message_type.dart';
 export 'src/platform_interface/event_subscribe/event.dart';
 export 'src/platform_interface/event_subscribe/event_subscribe_request.dart';
 export 'src/platform_interface/event_subscribe/event_subscribe_result.dart';
@@ -111,3 +112,5 @@ export 'src/platform_interface/qchat/qchat_observer_models.dart';
 export 'src/platform_interface/qchat/platform_interface_qchat_observer.dart';
 export 'src/platform_interface/qchat/platform_interface_qchat_role_service.dart';
 export 'src/platform_interface/qchat/qchat_role_models.dart';
+export 'src/platform_interface/qchat/platform_interface_qchat_push_service.dart';
+export 'src/platform_interface/qchat/qchat_push_models.dart';

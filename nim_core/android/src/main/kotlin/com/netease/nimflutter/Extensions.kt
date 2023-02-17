@@ -6,6 +6,7 @@
 
 package com.netease.nimflutter
 
+import com.netease.nimflutter.Utils.jsonStringToMap
 import com.netease.nimflutter.services.AttachmentHelper
 import com.netease.nimflutter.services.CustomAttachment
 import com.netease.nimflutter.services.MessageHelper
@@ -44,6 +45,7 @@ import com.netease.nimlib.sdk.msg.attachment.LocationAttachment
 import com.netease.nimlib.sdk.msg.attachment.NotificationAttachmentWithExtension
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment
 import com.netease.nimlib.sdk.msg.constant.ChatRoomQueueChangeType
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.AttachmentProgress
@@ -107,7 +109,11 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "sessionType" to stringFromSessionTypeEnum(sessionType),
         "messageType" to stringFromMsgTypeEnum(msgType),
         "messageSubType" to subtype,
-        "status" to stringFromMsgStatusEnum(status),
+        "status" to stringFromMsgStatusEnum(
+            status,
+            direct == MsgDirectionEnum.Out &&
+                sessionType == SessionTypeEnum.P2P && isRemoteRead
+        ),
         "messageDirection" to stringFromMsgDirectionEnum(direct),
         "fromAccount" to fromAccount,
         "content" to content,
@@ -117,7 +123,7 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "uuid" to uuid,
         "serverId" to serverId,
         // "attachString" to attachStr, // String
-        "config" to config?.toMap(), // Map<String, Any?>
+        "config" to if (config == null) CustomMessageConfig().toMap() else config.toMap(), // Map<String, Any?>
         // "configString" to configStr, // 通过 Config 转换 Json
         "remoteExtension" to remoteExtension, // Map<String, Any?>
         "localExtension" to localExtension, // Map<String, Any?>
@@ -634,11 +640,12 @@ fun TeamMember.toMap(): Map<String, Any?> {
 }
 
 fun SuperTeam.toMap(): Map<String, Any?> {
+    // superTeam 中type写死superTeam
     return mapOf(
         "id" to id,
         "name" to name,
         "icon" to icon,
-        "type" to stringFromTeamTypeEnumMap(type),
+        "type" to "superTeam",
         "announcement" to announcement,
         "introduce" to introduce,
         "creator" to creator,
@@ -677,10 +684,10 @@ fun SuperTeamMember.toMap(): Map<String, Any?> {
 
 fun ThreadTalkHistory.toMap(): Map<String, Any?> {
     return mapOf(
-        "thread" to thread,
+        "thread" to thread?.toMap(),
         "time" to time,
         "replyAmount" to replyAmount,
-        "replyList" to replyList
+        "replyList" to replyList?.map { it.toMap() }?.toList()
     )
 }
 
@@ -707,7 +714,7 @@ fun RecentContact.toMap() = mapOf(
     "sessionType" to stringFromSessionTypeEnum(sessionType),
     "lastMessageId" to recentMessageId,
     "lastMessageType" to stringFromMsgTypeEnum(msgType),
-    "lastMessageStatus" to stringFromMsgStatusEnum(msgStatus),
+    "lastMessageStatus" to stringFromMsgStatusEnum(msgStatus, false),
     "lastMessageContent" to content,
     "lastMessageTime" to time,
     "lastMessageAttachment" to AttachmentHelper.attachmentToMap(msgType, attachment),
@@ -899,8 +906,8 @@ fun StickTopSessionInfo.toMap(): Map<String, Any?> {
 
 fun HandleQuickCommentOption.toMap(): Map<String, Any?> {
     return mapOf(
-        "key" to key.toMap(),
-        "commentOption" to commentOption.toMap()
+        "key" to key?.toMap(),
+        "commentOption" to commentOption?.toMap()
     )
 }
 
@@ -945,7 +952,7 @@ fun SignallingPushConfig.toMap(): Map<String, Any?> {
         "needPush" to needPush(),
         "pushTitle" to pushTitle,
         "pushContent" to pushContent,
-        "pushPayload" to pushPayload
+        "pushPayload" to jsonStringToMap(pushPayload)
     )
 }
 

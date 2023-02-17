@@ -420,3 +420,269 @@ Map<String, dynamic> _$QChatChannelMemberToJson(QChatChannelMember instance) =>
       'createTime': instance.createTime,
       'updateTime': instance.updateTime,
     };
+
+QChatUpdateChannelBlackWhiteRolesParam
+    _$QChatUpdateChannelBlackWhiteRolesParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatUpdateChannelBlackWhiteRolesParam(
+          channelId: json['channelId'] as int,
+          serverId: json['serverId'] as int,
+          type: $enumDecode(_$QChatChannelBlackWhiteTypeEnumMap, json['type']),
+          roleId: json['roleId'] as int,
+          operateType: $enumDecode(
+              _$QChatChannelBlackWhiteOperateTypeEnumMap, json['operateType']),
+        );
+
+Map<String, dynamic> _$QChatUpdateChannelBlackWhiteRolesParamToJson(
+        QChatUpdateChannelBlackWhiteRolesParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'type': _$QChatChannelBlackWhiteTypeEnumMap[instance.type]!,
+      'operateType':
+          _$QChatChannelBlackWhiteOperateTypeEnumMap[instance.operateType]!,
+      'roleId': instance.roleId,
+    };
+
+const _$QChatChannelBlackWhiteTypeEnumMap = {
+  QChatChannelBlackWhiteType.white: 'white',
+  QChatChannelBlackWhiteType.black: 'black',
+};
+
+const _$QChatChannelBlackWhiteOperateTypeEnumMap = {
+  QChatChannelBlackWhiteOperateType.add: 'add',
+  QChatChannelBlackWhiteOperateType.remove: 'remove',
+};
+
+QChatGetChannelBlackWhiteRolesByPageParam
+    _$QChatGetChannelBlackWhiteRolesByPageParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetChannelBlackWhiteRolesByPageParam(
+          type: $enumDecode(_$QChatChannelBlackWhiteTypeEnumMap, json['type']),
+          serverId: json['serverId'] as int,
+          channelId: json['channelId'] as int,
+          timeTag: json['timeTag'] as int,
+          limit: json['limit'] as int?,
+        );
+
+Map<String, dynamic> _$QChatGetChannelBlackWhiteRolesByPageParamToJson(
+        QChatGetChannelBlackWhiteRolesByPageParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'type': _$QChatChannelBlackWhiteTypeEnumMap[instance.type]!,
+      'timeTag': instance.timeTag,
+      'limit': instance.limit,
+    };
+
+QChatGetChannelBlackWhiteRolesByPageResult
+    _$QChatGetChannelBlackWhiteRolesByPageResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetChannelBlackWhiteRolesByPageResult(
+          roleList: serverRoleListFromJsonNullable(json['roleList'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetChannelBlackWhiteRolesByPageResultToJson(
+        QChatGetChannelBlackWhiteRolesByPageResult instance) =>
+    <String, dynamic>{
+      'roleList': instance.roleList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatGetExistingChannelBlackWhiteRolesParam
+    _$QChatGetExistingChannelBlackWhiteRolesParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetExistingChannelBlackWhiteRolesParam(
+          channelId: json['channelId'] as int,
+          serverId: json['serverId'] as int,
+          type: $enumDecode(_$QChatChannelBlackWhiteTypeEnumMap, json['type']),
+          roleIds:
+              (json['roleIds'] as List<dynamic>).map((e) => e as int).toList(),
+        );
+
+Map<String, dynamic> _$QChatGetExistingChannelBlackWhiteRolesParamToJson(
+        QChatGetExistingChannelBlackWhiteRolesParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'type': _$QChatChannelBlackWhiteTypeEnumMap[instance.type]!,
+      'roleIds': instance.roleIds,
+    };
+
+QChatGetExistingChannelBlackWhiteRolesResult
+    _$QChatGetExistingChannelBlackWhiteRolesResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetExistingChannelBlackWhiteRolesResult(
+          roleList: serverRoleListFromJsonNullable(json['roleList'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetExistingChannelBlackWhiteRolesResultToJson(
+        QChatGetExistingChannelBlackWhiteRolesResult instance) =>
+    <String, dynamic>{
+      'roleList': instance.roleList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatUpdateChannelBlackWhiteMembersParam
+    _$QChatUpdateChannelBlackWhiteMembersParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatUpdateChannelBlackWhiteMembersParam(
+          type: $enumDecode(_$QChatChannelBlackWhiteTypeEnumMap, json['type']),
+          serverId: json['serverId'] as int,
+          channelId: json['channelId'] as int,
+          operateType: $enumDecode(
+              _$QChatChannelBlackWhiteOperateTypeEnumMap, json['operateType']),
+          toAccids: (json['toAccids'] as List<dynamic>)
+              .map((e) => e as String)
+              .toList(),
+        );
+
+Map<String, dynamic> _$QChatUpdateChannelBlackWhiteMembersParamToJson(
+        QChatUpdateChannelBlackWhiteMembersParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'type': _$QChatChannelBlackWhiteTypeEnumMap[instance.type]!,
+      'operateType':
+          _$QChatChannelBlackWhiteOperateTypeEnumMap[instance.operateType]!,
+      'toAccids': instance.toAccids,
+    };
+
+QChatGetChannelBlackWhiteMembersByPageParam
+    _$QChatGetChannelBlackWhiteMembersByPageParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetChannelBlackWhiteMembersByPageParam(
+          channelId: json['channelId'] as int,
+          serverId: json['serverId'] as int,
+          type: $enumDecode(_$QChatChannelBlackWhiteTypeEnumMap, json['type']),
+          timeTag: json['timeTag'] as int,
+          limit: json['limit'] as int?,
+        );
+
+Map<String, dynamic> _$QChatGetChannelBlackWhiteMembersByPageParamToJson(
+        QChatGetChannelBlackWhiteMembersByPageParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'type': _$QChatChannelBlackWhiteTypeEnumMap[instance.type]!,
+      'timeTag': instance.timeTag,
+      'limit': instance.limit,
+    };
+
+QChatGetChannelBlackWhiteMembersByPageResult
+    _$QChatGetChannelBlackWhiteMembersByPageResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetChannelBlackWhiteMembersByPageResult(
+          memberList:
+              _qChatServerMemberListFromJson(json['memberList'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetChannelBlackWhiteMembersByPageResultToJson(
+        QChatGetChannelBlackWhiteMembersByPageResult instance) =>
+    <String, dynamic>{
+      'memberList': instance.memberList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatGetExistingChannelBlackWhiteMembersParam
+    _$QChatGetExistingChannelBlackWhiteMembersParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetExistingChannelBlackWhiteMembersParam(
+          type: $enumDecode(_$QChatChannelBlackWhiteTypeEnumMap, json['type']),
+          serverId: json['serverId'] as int,
+          channelId: json['channelId'] as int,
+          accids: (json['accids'] as List<dynamic>)
+              .map((e) => e as String)
+              .toList(),
+        );
+
+Map<String, dynamic> _$QChatGetExistingChannelBlackWhiteMembersParamToJson(
+        QChatGetExistingChannelBlackWhiteMembersParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'type': _$QChatChannelBlackWhiteTypeEnumMap[instance.type]!,
+      'accids': instance.accids,
+    };
+
+QChatGetExistingChannelBlackWhiteMembersResult
+    _$QChatGetExistingChannelBlackWhiteMembersResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetExistingChannelBlackWhiteMembersResult(
+          memberList:
+              _qChatServerMemberListFromJson(json['memberList'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetExistingChannelBlackWhiteMembersResultToJson(
+        QChatGetExistingChannelBlackWhiteMembersResult instance) =>
+    <String, dynamic>{
+      'memberList': instance.memberList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatUpdateUserChannelPushConfigParam
+    _$QChatUpdateUserChannelPushConfigParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatUpdateUserChannelPushConfigParam(
+          pushMsgType:
+              $enumDecode(_$QChatPushMsgTypeEnumMap, json['pushMsgType']),
+          channelId: json['channelId'] as int,
+          serverId: json['serverId'] as int,
+        );
+
+Map<String, dynamic> _$QChatUpdateUserChannelPushConfigParamToJson(
+        QChatUpdateUserChannelPushConfigParam instance) =>
+    <String, dynamic>{
+      'pushMsgType': _$QChatPushMsgTypeEnumMap[instance.pushMsgType]!,
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+    };
+
+const _$QChatPushMsgTypeEnumMap = {
+  QChatPushMsgType.all: 'all',
+  QChatPushMsgType.highMidLevel: 'highMidLevel',
+  QChatPushMsgType.highLevel: 'highLevel',
+  QChatPushMsgType.none: 'none',
+  QChatPushMsgType.inherit: 'inherit',
+};
+
+QChatGetUserChannelPushConfigsParam
+    _$QChatGetUserChannelPushConfigsParamFromJson(Map<String, dynamic> json) =>
+        QChatGetUserChannelPushConfigsParam(
+          (json['channelIdInfos'] as List<dynamic>)
+              .map(
+                  (e) => QChatChannelIdInfo.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        );
+
+Map<String, dynamic> _$QChatGetUserChannelPushConfigsParamToJson(
+        QChatGetUserChannelPushConfigsParam instance) =>
+    <String, dynamic>{
+      'channelIdInfos': instance.channelIdInfos.map((e) => e.toJson()).toList(),
+    };
+
+QChatGetChannelCategoriesByPageParam
+    _$QChatGetChannelCategoriesByPageParamFromJson(Map<String, dynamic> json) =>
+        QChatGetChannelCategoriesByPageParam(
+          serverId: json['serverId'] as int,
+          timeTag: json['timeTag'] as int,
+          limit: json['limit'] as int?,
+        );
+
+Map<String, dynamic> _$QChatGetChannelCategoriesByPageParamToJson(
+        QChatGetChannelCategoriesByPageParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'timeTag': instance.timeTag,
+      'limit': instance.limit,
+    };
+
+QChatGetChannelCategoriesByPageResult
+    _$QChatGetChannelCategoriesByPageResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetChannelCategoriesByPageResult(
+          categories:
+              _qChatChannelCategoryFromJson(json['categories'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetChannelCategoriesByPageResultToJson(
+        QChatGetChannelCategoriesByPageResult instance) =>
+    <String, dynamic>{
+      'categories': instance.categories?.map((e) => e.toJson()).toList(),
+    };

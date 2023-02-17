@@ -100,17 +100,19 @@ class FLTSessionService: FLTBaseService, FLTService {
   // MARK: - SDK API
 
   private func createSession(_ argument: [String: Any], _ resultCallback: ResultCallback) {
+    guard let time = argument["time"] as? Int,
+          time > 0 else {
+      resultCallback.result(NimResult.success().toDic())
+      return
+    }
     if let session = convertSession(argument) {
       let option = NIMAddEmptyRecentSessionBySessionOption()
       if let linkToLastMessage = argument["linkToLastMessage"] as? Bool {
         option.withLastMsg = linkToLastMessage
       }
       NIMSDK.shared().conversationManager.addEmptyRecentSession(by: session, option: option)
-      resultCallback.result(NimResult.success([
-        "sessionId": session.sessionId,
-        "sessionType": FLT_NIMSessionType.convertFLTSessionType(session.sessionType)?
-          .rawValue as Any,
-      ]).toDic())
+      let recentSession = NIMSDK.shared().conversationManager.recentSession(by: session)
+      resultCallback.result(NimResult.success(recentSession?.toDic()).toDic())
     } else {
       createSessionFaile(resultCallback)
     }
@@ -118,11 +120,23 @@ class FLTSessionService: FLTBaseService, FLTService {
 
   private func getRecentList(_ argument: [String: Any], _ resultCallback: ResultCallback) {
     let array = NIMSDK.shared().conversationManager.allRecentSessions()
-    let ret = array?.map { recentSession in
-      recentSession.toDic()
-    }
+    if let allSessions = array {
+      var limit = allSessions.count
+      var ret = [[String: Any]]()
+      if let lmt = argument["limit"] as? Int {
+        limit = min(limit, lmt)
+      }
 
-    resultCallback.result(NimResult.success(["resultList": ret]).toDic())
+      for index in 0 ..< limit {
+        if let item = allSessions[index].toDic() {
+          ret.append(item)
+        }
+      }
+
+      resultCallback.result(NimResult.success(["resultList": ret]).toDic())
+    } else {
+      resultCallback.result(NimResult.error("get allRecentSessions() error").toDic())
+    }
   }
 
   private func getCustomRecentList(_ argument: [String: Any], _ resultCallback: ResultCallback) {
@@ -159,8 +173,8 @@ class FLTSessionService: FLTBaseService, FLTService {
 
   private func updateSession(_ argument: [String: Any], _ resultCallback: ResultCallback) {
     if let data = argument["session"] as? [String: Any],
-       let session = convertSession(data),
-       let extensionDic = data["extension"] as? [String: Any] {
+       let session = convertSession(data) {
+      let extensionDic = data["extension"] as? [String: Any]
       if let recent = NIMSDK.shared().conversationManager.recentSession(by: session) {
         NIMSDK.shared().conversationManager
           .updateRecentLocalExt(extensionDic, recentSession: recent)
@@ -183,12 +197,19 @@ class FLTSessionService: FLTBaseService, FLTService {
     if let data = argument["message"] as? [String: Any],
        let message = NIMMessage.convertToMessage(data),
        let session = convertSession(data) {
-      NIMSDK.shared().conversationManager.update(message, for: session) { error in
+      let msgs = NIMSDK.shared().conversationManager.messages(in: session, messageIds: [message.messageId])
+      NIMSDK.shared().conversationManager.update(msgs?.first ?? message, for: session) { error in
         if let ns_error = error as NSError? {
           resultCallback
             .result(NimResult(nil, NSNumber(value: ns_error.code), ns_error.description)
               .toDic())
         } else {
+          let recentSession = NIMSDK.shared().conversationManager.recentSession(by: session)
+          if recentSession == nil {
+            let option = NIMAddEmptyRecentSessionBySessionOption()
+            option.withLastMsg = true
+            NIMSDK.shared().conversationManager.addEmptyRecentSession(by: session, option: option)
+          }
           resultCallback.result(NimResult.success().toDic())
         }
       }
@@ -325,7 +346,7 @@ class FLTSessionService: FLTBaseService, FLTService {
   private func convertSession(_ arguments: [String: Any]) -> NIMSession? {
     if let sessionId = arguments["sessionId"] as? String,
        let sessionTypeValue = arguments["sessionType"] as? String,
-       let sessionType = try? NIMSessionType.getType(sessionTypeValue) {
+       let sessionType = FLT_NIMSessionType(rawValue: sessionTypeValue)?.convertToNIMSessionType() {
       return NIMSession(sessionId, type: sessionType)
     }
     return nil

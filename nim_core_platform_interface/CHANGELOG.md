@@ -1,3 +1,25 @@
+# 1.4.3(Feb 8, 2023)
+
+### API Changes
+* add `ignore` param in `clearChattingHistory`
+* add `mimeType` and `sampleRate` in `voiceToText`
+
+## 1.4.2(Jan 5, 2023)
+### Bug Fixes
+* Fix Known issues
+
+## 1.4.1(Dec 13, 2022)
+### Bug Fixes
+* Fix Known issues
+
+## 1.4.0(Nov 28, 2022)
+### New Features
+* Support IM QChat2.0 in iOS and Android
+
+## 1.3.1(Nov 22, 2022)
+### Bug Fixes
+* add base64 for web to send Image/Video/Audio message
+
 ## 1.3.0(Nov 3, 2022)
 ### New Features
 * Support IM QChat in iOS and Android

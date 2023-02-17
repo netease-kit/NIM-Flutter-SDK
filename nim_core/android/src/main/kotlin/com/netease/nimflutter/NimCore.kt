@@ -19,6 +19,7 @@ import com.netease.nimflutter.services.FLTPassThroughService
 import com.netease.nimflutter.services.FLTQChatChannelService
 import com.netease.nimflutter.services.FLTQChatMessageService
 import com.netease.nimflutter.services.FLTQChatObserverService
+import com.netease.nimflutter.services.FLTQChatPushService
 import com.netease.nimflutter.services.FLTQChatRoleService
 import com.netease.nimflutter.services.FLTQChatServerService
 import com.netease.nimflutter.services.FLTQChatService
@@ -78,6 +79,7 @@ class NimCore private constructor(
         registerService(::FLTQChatMessageService)
         registerService(::FLTQChatObserverService)
         registerService(::FLTQChatRoleService)
+        registerService(::FLTQChatPushService)
     }
 
     private val tag = "FLTNimCore_K"

@@ -13,6 +13,7 @@ import com.netease.nimflutter.NimResult
 import com.netease.nimflutter.NimResultContinuationCallback
 import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
 import com.netease.nimflutter.stringToTeamFieldEnumTypeMap
+import com.netease.nimflutter.stringToTeamMessageNotifyTypeEnumMap
 import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
@@ -24,10 +25,8 @@ import com.netease.nimlib.sdk.team.constant.TeamBeInviteModeEnum
 import com.netease.nimlib.sdk.team.constant.TeamExtensionUpdateModeEnum
 import com.netease.nimlib.sdk.team.constant.TeamFieldEnum
 import com.netease.nimlib.sdk.team.constant.TeamInviteModeEnum
-import com.netease.nimlib.sdk.team.constant.TeamMessageNotifyTypeEnum
 import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum
 import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum
-import com.netease.nimlib.sdk.team.model.TeamMember
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -36,6 +35,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.suspendCancellableCoroutine
+import org.json.JSONObject
 import java.io.Serializable
 
 class FLTSuperTeamService(
@@ -421,12 +421,23 @@ class FLTSuperTeamService(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private suspend fun updateMyMemberExtension(arguments: Map<String, *>): NimResult<Nothing> {
         val teamId = arguments["teamId"] as? String
-        val nick = arguments["extension"] as? String
+        val extensionMap = arguments["extension"] as? Map<String, *>
         return suspendCancellableCoroutine { cont ->
-            superTeamService.updateMyMemberExtension(teamId, nick)
-                .setCallback(NimResultContinuationCallbackOfNothing(cont))
+            superTeamService.updateMyMemberExtension(
+                teamId,
+                extensionMap?.run {
+                    var result: String? = null
+                    try {
+                        result = JSONObject(this).toString()
+                    } catch (exception: Exception) {
+                        exception.printStackTrace()
+                    }
+                    result
+                }
+            ).setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 
@@ -494,9 +505,13 @@ class FLTSuperTeamService(
         val teamId = arguments["teamId"] as? String
         val accountList = arguments["accountList"] as? ArrayList<String>
         val mute = arguments["mute"] as Boolean
-        return suspendCancellableCoroutine { cont ->
-            superTeamService.muteTeamMembers(teamId, accountList, mute)
-                .setCallback(NimResultContinuationCallbackOfNothing(cont))
+        return if (accountList?.isNotEmpty() == true) {
+            suspendCancellableCoroutine { cont ->
+                superTeamService.muteTeamMembers(teamId, accountList, mute)
+                    .setCallback(NimResultContinuationCallbackOfNothing(cont))
+            }
+        } else {
+            NimResult(code = 414, errorDetails = "error params")
         }
     }
 
@@ -509,16 +524,18 @@ class FLTSuperTeamService(
         }
     }
 
-    private suspend fun queryMutedTeamMembers(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
+    private suspend fun queryMutedTeamMembers(arguments: Map<String, *>): NimResult<List<SuperTeamMember>?> {
         val teamId = arguments["teamId"] as? String
         return if (teamId.isNullOrEmpty()) {
             NimResult(code = -1, null)
         } else {
+            val members = superTeamService.queryMutedTeamMembers(teamId)
             NimResult(
                 code = 0,
+                data = members,
                 convert = {
                     mapOf(
-                        "teamMemberList" to superTeamService.queryMutedTeamMembers(teamId)
+                        "teamMemberList" to members
                             ?.map { msg -> msg.toMap() }?.toList()
                     )
                 }
@@ -570,7 +587,7 @@ class FLTSuperTeamService(
 
     private suspend fun muteTeam(arguments: Map<String, *>): NimResult<Nothing> {
         val teamId = arguments["teamId"] as? String
-        val notifyType = TeamMessageNotifyTypeEnum.typeOfValue(arguments["notifyType"] as? Int ?: 0)
+        val notifyType = stringToTeamMessageNotifyTypeEnumMap(arguments["notifyType"] as? String)
         return suspendCancellableCoroutine { cont ->
             superTeamService.muteTeam(teamId, notifyType)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))

@@ -175,4 +175,92 @@ class QChatServerService {
   Future<NIMResult<void>> joinByInviteCode(QChatJoinByInviteCodeParam param) {
     return _platform.joinByInviteCode(param);
   }
+
+  /// 修改其他人的服务器成员信息
+  ///
+  /// [param]
+  Future<NIMResult<QChatUpdateServerMemberInfoResult>> updateServerMemberInfo(
+      QChatUpdateServerMemberInfoParam param) {
+    return _platform.updateServerMemberInfo(param);
+  }
+
+  /// 封禁服务器成员
+  ///
+  /// [param]
+  Future<NIMResult<void>> banServerMember(QChatBanServerMemberParam param) {
+    return _platform.banServerMember(param);
+  }
+
+  /// 解封服务器成员
+  ///
+  /// [param]
+  Future<NIMResult<void>> unbanServerMember(QChatUnbanServerMemberParam param) {
+    return _platform.unbanServerMember(param);
+  }
+
+  /// 查询服务器封禁成员列表(分页)
+  ///
+  /// [param]
+  Future<NIMResult<QChatGetBannedServerMembersByPageResult>>
+      getBannedServerMembersByPage(
+          QChatGetBannedServerMembersByPageParam param) {
+    return _platform.getBannedServerMembersByPage(param);
+  }
+
+  /// 更新用户服务器推送配置
+  ///
+  /// [param]
+  Future<NIMResult<void>> updateUserServerPushConfig(
+      QChatUpdateUserServerPushConfigParam param) {
+    return _platform.updateUserServerPushConfig(param);
+  }
+
+  /// 获取用户服务器推送配置列表
+  ///
+  /// [param]
+  Future<NIMResult<QChatGetUserPushConfigsResult>> getUserServerPushConfigs(
+      QChatGetUserServerPushConfigsParam param) {
+    return _platform.getUserServerPushConfigs(param);
+  }
+
+  /// 检索服务器成员列表
+  ///
+  /// [param]
+  Future<NIMResult<QChatSearchServerMemberByPageResult>>
+      searchServerMemberByPage(QChatSearchServerMemberByPageParam param) {
+    return _platform.searchServerMemberByPage(param);
+  }
+
+  // /// 查询服务器下的申请邀请记录
+  // ///
+  // /// [param]
+  // Future<NIMResult<QChatGetInviteApplyRecordOfServerResult>>
+  //     getInviteApplyRecordOfServer(
+  //         QChatGetInviteApplyRecordOfServerParam param) {
+  //   return _platform.getInviteApplyRecordOfServer(param);
+  // }
+  //
+  // /// 查询我的申请邀请记录
+  // ///
+  // /// [param]
+  // Future<NIMResult<QChatGetInviteApplyRecordOfSelfResult>>
+  //     getInviteApplyRecordOfSelf(QChatGetInviteApplyRecordOfSelfParam param) {
+  //   return _platform.getInviteApplyRecordOfSelf(param);
+  // }
+
+  /// 清空服务器未读数
+  ///
+  /// [param]
+  Future<NIMResult<QChatServerMarkReadResult>> markRead(
+      QChatServerMarkReadParam param) {
+    return _platform.markRead(param);
+  }
+
+  /// 订阅服务器下的所有频道的消息
+  ///
+  /// [param]
+  Future<NIMResult<QChatSubscribeAllChannelResult>> subscribeAllChannel(
+      QChatSubscribeAllChannelParam param) {
+    return _platform.subscribeAllChannel(param);
+  }
 }

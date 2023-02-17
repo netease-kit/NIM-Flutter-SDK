@@ -38,6 +38,8 @@ class FLTAuthService: FLTBaseService, FLTService {
       login(arguments, resultCallback)
     case AuthType.AuthLogout.rawValue:
       logout(arguments, resultCallback)
+    case AuthType.KickOutOtherOnlineClient.rawValue:
+      kickOutOtherOnlineClient(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -95,12 +97,25 @@ class FLTAuthService: FLTBaseService, FLTService {
   private func kickOutOtherOnlineClient(_ arguments: [String: Any],
                                         _ resultCallback: ResultCallback) {
     if let client = NIMLoginClient.fromDic(arguments) as? NIMLoginClient {
-      NIMSDK.shared().loginManager.kickOtherClient(client) { error in
-        if let ns_error = error as NSError? {
-          resultCallback
-            .result(NimResult.error(ns_error.code, ns_error.description).toDic())
+      if let cls = NIMSDK.shared().loginManager.currentLoginClients() {
+        var kickClient: NIMLoginClient?
+        for cl in cls {
+          if cl.timestamp == client.timestamp,
+             cl.os == client.os, cl.type == client.type, cl.customTag == client.customTag {
+            kickClient = cl
+          }
+        }
+        if kickClient != nil {
+          NIMSDK.shared().loginManager.kickOtherClient(kickClient!) { error in
+            if let ns_error = error as NSError? {
+              resultCallback
+                .result(NimResult.error(ns_error.code, ns_error.description).toDic())
+            } else {
+              resultCallback.result(NimResult.success().toDic())
+            }
+          }
         } else {
-          resultCallback.result(NimResult.success().toDic())
+          resultCallback.result(NimResult.error("nim login client find error").toDic())
         }
       }
     } else {

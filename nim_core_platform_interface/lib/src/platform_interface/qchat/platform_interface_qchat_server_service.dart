@@ -118,4 +118,62 @@ abstract class QChatServerServicePlatform extends Service {
       QChatJoinByInviteCodeParam param) async {
     throw UnimplementedError('joinByInviteCode is not implemented');
   }
+
+  Future<NIMResult<QChatUpdateServerMemberInfoResult>> updateServerMemberInfo(
+      QChatUpdateServerMemberInfoParam param) async {
+    throw UnimplementedError('updateServerMemberInfo is not implemented');
+  }
+
+  Future<NIMResult<void>> banServerMember(
+      QChatBanServerMemberParam param) async {
+    throw UnimplementedError('banServerMember is not implemented');
+  }
+
+  Future<NIMResult<void>> unbanServerMember(
+      QChatUnbanServerMemberParam param) async {
+    throw UnimplementedError('unbanServerMember is not implemented');
+  }
+
+  Future<NIMResult<QChatGetBannedServerMembersByPageResult>>
+      getBannedServerMembersByPage(
+          QChatGetBannedServerMembersByPageParam param) async {
+    throw UnimplementedError('getBannedServerMembersByPage is not implemented');
+  }
+
+  Future<NIMResult<void>> updateUserServerPushConfig(
+      QChatUpdateUserServerPushConfigParam param) async {
+    throw UnimplementedError('updateUserServerPushConfig is not implemented');
+  }
+
+  Future<NIMResult<QChatGetUserPushConfigsResult>> getUserServerPushConfigs(
+      QChatGetUserServerPushConfigsParam param) async {
+    throw UnimplementedError('getUserServerPushConfigs is not implemented');
+  }
+
+  Future<NIMResult<QChatSearchServerMemberByPageResult>>
+      searchServerMemberByPage(QChatSearchServerMemberByPageParam param) async {
+    throw UnimplementedError('searchServerMemberByPage is not implemented');
+  }
+
+  // Future<NIMResult<QChatGetInviteApplyRecordOfServerResult>>
+  //     getInviteApplyRecordOfServer(
+  //         QChatGetInviteApplyRecordOfServerParam param) async {
+  //   throw UnimplementedError('getInviteApplyRecordOfServer is not implemented');
+  // }
+  //
+  // Future<NIMResult<QChatGetInviteApplyRecordOfSelfResult>>
+  //     getInviteApplyRecordOfSelf(
+  //         QChatGetInviteApplyRecordOfSelfParam param) async {
+  //   throw UnimplementedError('getInviteApplyRecordOfSelf is not implemented');
+  // }
+
+  Future<NIMResult<QChatServerMarkReadResult>> markRead(
+      QChatServerMarkReadParam param) async {
+    throw UnimplementedError('markRead is not implemented');
+  }
+
+  Future<NIMResult<QChatSubscribeAllChannelResult>> subscribeAllChannel(
+      QChatSubscribeAllChannelParam param) async {
+    throw UnimplementedError('subscribeAllChannel is not implemented');
+  }
 }

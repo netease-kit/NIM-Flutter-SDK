@@ -114,4 +114,34 @@ abstract class QChatRoleServicePlatform extends Service {
     throw UnimplementedError(
         'getExistingAccidsOfMemberRoles is not implemented');
   }
+
+  Future<NIMResult<QChatAddMemberRoleResult>> addMemberRole(
+      QChatAddMemberRoleParam param) async {
+    throw UnimplementedError('addMemberRole is not implemented');
+  }
+
+  Future<NIMResult<void>> removeMemberRole(
+      QChatRemoveMemberRoleParam param) async {
+    throw UnimplementedError('removeMemberRole is not implemented');
+  }
+
+  Future<NIMResult<QChatUpdateMemberRoleResult>> updateMemberRole(
+      QChatUpdateMemberRoleParam param) async {
+    throw UnimplementedError('updateMemberRole is not implemented');
+  }
+
+  Future<NIMResult<QChatGetMemberRolesResult>> getMemberRoles(
+      QChatGetMemberRolesParam param) async {
+    throw UnimplementedError('getMemberRoles is not implemented');
+  }
+
+  Future<NIMResult<QChatCheckPermissionResult>> checkPermission(
+      QChatCheckPermissionParam param) async {
+    throw UnimplementedError('checkPermission is not implemented');
+  }
+
+  // Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
+  //     QChatCheckPermissionsParam param) async {
+  //   throw UnimplementedError('checkPermissions is not implemented');
+  // }
 }

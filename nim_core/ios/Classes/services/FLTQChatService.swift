@@ -14,6 +14,9 @@ enum QChatMethod: String {
 class FLTQChatService: FLTBaseService, FLTService {
   var loginAction: (() -> Void)?
 
+  private let paramErrorTip = "参数错误"
+  private let paramErrorCode = 414
+
   override func onInitialized() {
     NIMSDK.shared().qchatManager.add(self)
   }
@@ -47,9 +50,7 @@ class FLTQChatService: FLTBaseService, FLTService {
 
   func qChatCallback(_ error: Error?, _ data: Any?, _ resultCallback: ResultCallback) {
     if let ns_error = error as NSError? {
-      // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
-      let code = ns_error.code == 1 ? 414 : ns_error.code
-      errorCallBack(resultCallback, ns_error.description, code)
+      errorCallBack(resultCallback, ns_error.description, ns_error.code)
     } else {
       successCallBack(resultCallback, data)
     }
@@ -84,12 +85,12 @@ class FLTQChatService: FLTBaseService, FLTService {
   func kickOtherClients(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let deviceIds = arguments["deviceIds"] as? [String] else {
       print("kickOtherClients parameter error, deviceIds is nil")
-      errorCallBack(resultCallback, "parameter error, deviceIds is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
     guard let clientArray = NIMSDK.shared().qchatManager.currentLoginClients() else {
       print("kickOtherClients there are no other clients")
-      errorCallBack(resultCallback, "there are no other clients")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 

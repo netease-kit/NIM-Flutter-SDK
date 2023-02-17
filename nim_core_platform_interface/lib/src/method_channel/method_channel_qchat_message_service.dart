@@ -116,4 +116,99 @@ class MethodChannelQChatMessageService extends QChatMessageServicePlatform {
             arguments: param.toJson()),
         convert: (json) => QChatUpdateSystemNotificationResult.fromJson(json));
   }
+
+  @override
+  Future<NIMResult<void>> addQuickComment(
+      QChatAddQuickCommentParam param) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('addQuickComment', arguments: param.toJson()));
+  }
+
+  @override
+  Future<NIMResult<void>> clearMessageCache() async {
+    return NIMResult<void>.fromMap(await invokeMethod('clearMessageCache'));
+  }
+
+  @override
+  Future<NIMResult<void>> clearMsgNotifyAndroid() async {
+    return NIMResult<void>.fromMap(await invokeMethod('clearMsgNotifyAndroid'));
+  }
+
+  @override
+  Future<NIMResult<QChatGetLastMessageOfChannelsResult>>
+      getLastMessageOfChannels(QChatGetLastMessageOfChannelsParam param) async {
+    return NIMResult<QChatGetLastMessageOfChannelsResult>.fromMap(
+        await invokeMethod('getLastMessageOfChannels',
+            arguments: param.toJson()),
+        convert: (json) => QChatGetLastMessageOfChannelsResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<List<QChatMessageCache>?>> getMessageCache(
+      int qchatServerId, int qchatChannelId) async {
+    return NIMResult<List<QChatMessageCache>>.fromMap(
+        await invokeMethod('getMessageCache', arguments: <String, dynamic>{
+          "qchatServerId": qchatServerId,
+          "qchatChannelId": qchatChannelId
+        }),
+        convert: (json) => (json['messageCacheList'] as List<dynamic>?)
+            ?.map(
+                (e) => QChatMessageCache.fromJson(Map<String, dynamic>.from(e)))
+            .toList());
+  }
+
+  @override
+  Future<NIMResult<QChatGetMessageThreadInfosResult>> getMessageThreadInfos(
+      QChatGetMessageThreadInfosParam param) async {
+    return NIMResult<QChatGetMessageThreadInfosResult>.fromMap(
+        await invokeMethod('getMessageThreadInfos', arguments: param.toJson()),
+        convert: (json) => QChatGetMessageThreadInfosResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetQuickCommentsResult>> getQuickComments(
+      QChatGetQuickCommentsParam param) async {
+    return NIMResult<QChatGetQuickCommentsResult>.fromMap(
+        await invokeMethod('getQuickComments', arguments: param.toJson()),
+        convert: (json) => QChatGetQuickCommentsResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetReferMessagesResult>> getReferMessages(
+      QChatGetReferMessagesParam param) async {
+    return NIMResult<QChatGetReferMessagesResult>.fromMap(
+        await invokeMethod('getReferMessages', arguments: param.toJson()),
+        convert: (json) => QChatGetReferMessagesResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetThreadMessagesResult>> getThreadMessages(
+      QChatGetThreadMessagesParam param) async {
+    return NIMResult<QChatGetThreadMessagesResult>.fromMap(
+        await invokeMethod('getThreadMessages', arguments: param.toJson()),
+        convert: (json) => QChatGetThreadMessagesResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<void>> removeQuickComment(
+      QChatRemoveQuickCommentParam param) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('removeQuickComment', arguments: param.toJson()));
+  }
+
+  @override
+  Future<NIMResult<QChatSendMessageResult>> replyMessage(
+      QChatReplyMessageParam param) async {
+    return NIMResult<QChatSendMessageResult>.fromMap(
+        await invokeMethod('replyMessage', arguments: param.toJson()),
+        convert: (json) => QChatSendMessageResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatSearchMsgByPageResult>> searchMsgByPage(
+      QChatSearchMsgByPageParam param) async {
+    return NIMResult<QChatSearchMsgByPageResult>.fromMap(
+        await invokeMethod('searchMsgByPage', arguments: param.toJson()),
+        convert: (json) => QChatSearchMsgByPageResult.fromJson(json));
+  }
 }

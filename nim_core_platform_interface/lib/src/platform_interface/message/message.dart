@@ -31,9 +31,8 @@ class NIMMessage {
       defaultValue: NIMMessageType.undef)
   final NIMMessageType messageType;
 
-  /// 消息子类型
-  @JsonKey(unknownEnumValue: NIMMessageType.undef)
-  NIMMessageType? messageSubType;
+  /// 消息子类型,小于等于0表示没有子类型
+  int? messageSubType;
 
   /// 消息状态
   @JsonKey(unknownEnumValue: NIMMessageStatus.sending)
@@ -150,7 +149,7 @@ class NIMMessage {
       toJson: NIMMessageThreadOption._toMap)
   NIMMessageThreadOption? messageThreadOption;
 
-  ///快捷评论的最后更新时间
+  ///快捷评论的最后更新时间 (SDK内部使用，不建议用户使用)
   final int? quickCommentUpdateTime;
 
   /// 消息是否标记为已删除
@@ -238,6 +237,7 @@ class NIMMessage {
     );
   }
 
+  //空消息占用callbackExtension 传递 empty 标记提供给iOS端使用
   factory NIMMessage.emptyMessage(
       {required String sessionId,
       required NIMSessionType sessionType,
@@ -246,6 +246,7 @@ class NIMMessage {
         timestamp: timestamp,
         sessionId: sessionId,
         sessionType: sessionType,
+        callbackExtension: 'empty',
         messageType: NIMMessageType.undef,
         messageDirection: NIMMessageDirection.outgoing);
   }
@@ -256,6 +257,7 @@ class NIMMessage {
       required String filePath,
       required int fileSize,
       String? displayName,
+      String? base64,
       NIMNosScene nosScene = NIMNosScenes.defaultIm}) {
     var extension = filePath.split('.').last;
 
@@ -263,6 +265,7 @@ class NIMMessage {
         path: filePath,
         size: fileSize,
         displayName: displayName,
+        base64: base64,
         extension: extension,
         nosScene: nosScene);
     return NIMMessage(
@@ -282,6 +285,7 @@ class NIMMessage {
       required int fileSize,
       required int duration,
       String? displayName,
+      String? base64,
       NIMNosScene nosScene = NIMNosScenes.defaultIm}) {
     /// 最低显示1秒
     if (duration < 1000) duration = 1000;
@@ -292,6 +296,7 @@ class NIMMessage {
         path: filePath,
         size: fileSize,
         duration: duration,
+        base64: base64,
         extension: extension,
         nosScene: nosScene);
     return NIMMessage(
@@ -329,6 +334,7 @@ class NIMMessage {
       required NIMSessionType sessionType,
       required String filePath,
       int? fileSize,
+      String? base64,
       required int duration,
       required int width,
       required int height,
@@ -342,6 +348,7 @@ class NIMMessage {
         duration: duration,
         width: width,
         height: height,
+        base64: base64,
         displayName: displayName,
         extension: extension,
         nosScene: nosScene);
@@ -360,6 +367,7 @@ class NIMMessage {
       {required String sessionId,
       required NIMSessionType sessionType,
       required String filePath,
+      String? base64,
       int? fileSize,
       required String displayName,
       NIMNosScene nosScene = NIMNosScenes.defaultIm}) {
@@ -367,6 +375,7 @@ class NIMMessage {
     var fileAttachment = NIMFileAttachment(
         path: filePath,
         size: fileSize,
+        base64: base64,
         displayName: displayName,
         extension: extension,
         nosScene: nosScene);
@@ -432,7 +441,7 @@ class NIMCustomMessageConfig {
   /// 该消息是否要计入未读数，如果为true，那么对方收到消息后，最近联系人列表中未读数加1
   final bool enableUnreadCount;
 
-  /// 该消息是否支持路由，如果为true，默认按照app的路由开关（如果有配置抄送地址则将抄送该消息）
+  /// 该消息是否支持路由，如果为true，默认按照app的路由开关（如果有配置抄送地址则将抄送该消息），该字段web端不支持
   final bool enableRoute;
 
   /// 该消息是否要存离线
@@ -552,7 +561,7 @@ class NIMFileAttachment extends NIMMessageAttachment {
   @JsonKey(name: 'url', includeIfNull: false)
   final String? url;
 
-  // web 发送专用
+  /// web 发送专用
   @JsonKey(name: 'base64', includeIfNull: false)
   final String? base64;
 
@@ -629,6 +638,7 @@ class NIMAudioAttachment extends NIMFileAttachment {
       required int? size,
       String? md5,
       String? url,
+      String? base64,
       String? displayName,
       String? extension,
       int? expire,
@@ -639,6 +649,7 @@ class NIMAudioAttachment extends NIMFileAttachment {
             size: size,
             md5: md5,
             url: url,
+            base64: base64,
             displayName: displayName,
             extension: extension,
             expire: expire,
@@ -685,6 +696,7 @@ class NIMVideoAttachment extends NIMFileAttachment {
       required int? size,
       String? md5,
       String? url,
+      String? base64,
       String? displayName,
       String? extension,
       int? expire,
@@ -695,6 +707,7 @@ class NIMVideoAttachment extends NIMFileAttachment {
             size: size,
             md5: md5,
             url: url,
+            base64: base64,
             displayName: displayName,
             extension: extension,
             expire: expire,
@@ -735,6 +748,7 @@ class NIMImageAttachment extends NIMFileAttachment {
       this.width,
       this.height,
       String? path,
+      String? base64,
       required int? size,
       String? md5,
       String? url,
@@ -748,6 +762,7 @@ class NIMImageAttachment extends NIMFileAttachment {
             size: size,
             md5: md5,
             url: url,
+            base64: base64,
             displayName: displayName,
             extension: extension,
             expire: expire,
@@ -1042,7 +1057,7 @@ class NIMChatroomMessage extends NIMMessage {
     String? sessionId,
     NIMSessionType? sessionType,
     required NIMMessageType messageType,
-    NIMMessageType? messageSubType,
+    int? messageSubType,
     NIMMessageStatus? status,
     required NIMMessageDirection messageDirection,
     String? fromAccount,
@@ -1197,8 +1212,15 @@ class NIMSession {
   @JsonKey(fromJson: castPlatformMapToDartMap)
   Map<String, dynamic>? extension;
 
+  /// web 专用session字段
+  /// 其中 isTop?: bool 字段，表示该会话是否置顶；
+  /// msgReceiptTime ?: int ，表示对方已读的最新一条消息的时间。
+  @JsonKey(fromJson: castPlatformMapToDartMap)
+  Map<String, dynamic>? sessionForWeb;
+
   /// 设置一个标签，用于做联系人置顶、最近会话列表排序等扩展用途。 SDK不关心tag的意义。 <br>
   /// 第三方app需要事先规划好可能的用途
+  /// android 独有，不推荐使用，建议使用extension扩展字段代替
   int? tag;
 
   NIMSession({
@@ -1214,6 +1236,7 @@ class NIMSession {
     this.lastMessageAttachment,
     this.unreadCount = 0,
     this.extension,
+    this.sessionForWeb,
     this.tag,
   });
 
@@ -1239,7 +1262,8 @@ class NIMSessionInfo {
   factory NIMSessionInfo.fromMap(Map<String, dynamic> map) {
     return NIMSessionInfo(
       sessionId: map['sessionId'] as String,
-      sessionType: NIMSessionTypeConverter().fromValue('sessionType'),
+      sessionType:
+          NIMSessionTypeConverter().fromValue(map['sessionType'] as String),
     );
   }
 
@@ -1250,8 +1274,7 @@ class NIMSessionInfo {
       };
 }
 
-///群已读回执信息 此类有两种状态，一种是存储已读未读用户账号列表的状态，
-///一种是存储已读未读人数的状态 第一种状态下，ackCount和unAckCount为0 第二种状态下ackAccountList和unAckAccountList都为null
+///群已读回执信息
 @JsonSerializable()
 class NIMTeamMessageAckInfo {
   final String? teamId;

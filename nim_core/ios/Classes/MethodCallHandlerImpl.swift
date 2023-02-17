@@ -27,7 +27,7 @@ class MethodCallHandlerImpl {
     FLTChatExtendService().register(nimCore)
     FLTSignallingService().register(nimCore)
     FLTQChatChannelService().register(nimCore)
-//    FLTQChatDelegate().register(nimCore)
+    FLTQChatPushService().register(nimCore)
     FLTQChatMessageService().register(nimCore)
     FLTQChatRoleService().register(nimCore)
     FLTQChatService().register(nimCore)

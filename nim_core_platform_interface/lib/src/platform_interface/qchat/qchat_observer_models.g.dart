@@ -171,3 +171,35 @@ Map<String, dynamic> _$QChatSystemNotificationUpdateEventToJson(
       'msgUpdateInfo': instance.msgUpdateInfo?.toJson(),
       'systemNotification': instance.systemNotification?.toJson(),
     };
+
+QChatServerUnreadInfoChangedEvent _$QChatServerUnreadInfoChangedEventFromJson(
+        Map<String, dynamic> json) =>
+    QChatServerUnreadInfoChangedEvent(
+      serverUnreadInfos:
+          qChatServerUnreadInfoListFromJson(json['serverUnreadInfos'] as List?),
+    );
+
+Map<String, dynamic> _$QChatServerUnreadInfoChangedEventToJson(
+        QChatServerUnreadInfoChangedEvent instance) =>
+    <String, dynamic>{
+      'serverUnreadInfos':
+          instance.serverUnreadInfos?.map((e) => e.toJson()).toList(),
+    };
+
+QChatServerUnreadInfo _$QChatServerUnreadInfoFromJson(
+        Map<String, dynamic> json) =>
+    QChatServerUnreadInfo(
+      serverId: json['serverId'] as int,
+      unreadCount: json['unreadCount'] as int?,
+      mentionedCount: json['mentionedCount'] as int?,
+      maxCount: json['maxCount'] as int?,
+    );
+
+Map<String, dynamic> _$QChatServerUnreadInfoToJson(
+        QChatServerUnreadInfo instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'unreadCount': instance.unreadCount,
+      'mentionedCount': instance.mentionedCount,
+      'maxCount': instance.maxCount,
+    };

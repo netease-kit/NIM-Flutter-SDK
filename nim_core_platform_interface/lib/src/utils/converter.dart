@@ -71,6 +71,99 @@ class NIMSessionTypeConverter with EnumConverter<NIMSessionType, String> {
 }
 
 @JsonSerializable()
+class NIMTeamBeInviteModeEnumConverter
+    with EnumConverter<NIMTeamBeInviteModeEnum, String> {
+  final NIMTeamBeInviteModeEnum? nimTeamBeInviteModeEnum;
+
+  NIMTeamBeInviteModeEnumConverter({this.nimTeamBeInviteModeEnum});
+
+  NIMTeamBeInviteModeEnum fromValue(String value,
+      {NIMTeamBeInviteModeEnum? defaultType}) {
+    return enumFromValue(_$NIMTeamBeInviteModeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  String toValue() {
+    return super
+        .enumToValue(_$NIMTeamBeInviteModeEnumMap, nimTeamBeInviteModeEnum!);
+  }
+}
+
+@JsonSerializable()
+class NIMTeamInviteModeEnumConverter
+    with EnumConverter<NIMTeamInviteModeEnum, String> {
+  final NIMTeamInviteModeEnum? nimTeamInviteModeEnum;
+
+  NIMTeamInviteModeEnumConverter({this.nimTeamInviteModeEnum});
+
+  NIMTeamInviteModeEnum fromValue(String value,
+      {NIMTeamInviteModeEnum? defaultType}) {
+    return enumFromValue(_$NIMTeamInviteModeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  String toValue() {
+    return super
+        .enumToValue(_$NIMTeamInviteModeEnumMap, nimTeamInviteModeEnum!);
+  }
+}
+
+@JsonSerializable()
+class NIMTeamExtensionUpdateModeEnumConverter
+    with EnumConverter<NIMTeamExtensionUpdateModeEnum, String> {
+  final NIMTeamExtensionUpdateModeEnum? nimTeamExtensionUpdateModeEnum;
+
+  NIMTeamExtensionUpdateModeEnumConverter(
+      {this.nimTeamExtensionUpdateModeEnum});
+
+  NIMTeamExtensionUpdateModeEnum fromValue(String value,
+      {NIMTeamExtensionUpdateModeEnum? defaultType}) {
+    return enumFromValue(_$NIMTeamExtensionUpdateModeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  String toValue() {
+    return super.enumToValue(
+        _$NIMTeamExtensionUpdateModeEnumMap, nimTeamExtensionUpdateModeEnum!);
+  }
+}
+
+@JsonSerializable()
+class NIMTeamUpdateModeEnumConverter
+    with EnumConverter<NIMTeamUpdateModeEnum, String> {
+  final NIMTeamUpdateModeEnum? nimTeamUpdateModeEnum;
+
+  NIMTeamUpdateModeEnumConverter({this.nimTeamUpdateModeEnum});
+
+  NIMTeamUpdateModeEnum fromValue(String value,
+      {NIMTeamUpdateModeEnum? defaultType}) {
+    return enumFromValue(_$NIMTeamUpdateModeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  String toValue() {
+    return super
+        .enumToValue(_$NIMTeamUpdateModeEnumMap, nimTeamUpdateModeEnum!);
+  }
+}
+
+@JsonSerializable()
+class NIMVerifyTypeEnumConverter with EnumConverter<NIMVerifyTypeEnum, String> {
+  final NIMVerifyTypeEnum? nimVerifyTypeEnum;
+
+  NIMVerifyTypeEnumConverter({this.nimVerifyTypeEnum});
+
+  NIMVerifyTypeEnum fromValue(String value, {NIMVerifyTypeEnum? defaultType}) {
+    return enumFromValue(_$NIMVerifyTypeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  String toValue() {
+    return super.enumToValue(_$NIMVerifyTypeEnumMap, nimVerifyTypeEnum!);
+  }
+}
+
+@JsonSerializable()
 class SystemMessageStatusConverter
     with EnumConverter<SystemMessageStatus, String> {
   final SystemMessageStatus? status;

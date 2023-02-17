@@ -649,7 +649,7 @@ class QChatInviteApplyServerMemberInfo {
   /// 申请邀请唯一标识
   int? requestId = 0;
 
-  /// 获取过期时间戳
+  /// 过期时间戳
   int? expireTime = 0;
 
   QChatInviteApplyServerMemberInfo(this.requestId, this.expireTime);
@@ -1152,4 +1152,733 @@ class PairIntWithString {
   String toString() {
     return 'PairIntWithString{first: $first, second: $second}';
   }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateServerMemberInfoParam extends QChatAntiSpamConfigParam {
+  /// 服务器id，必填
+  final int serverId;
+
+  /// 被修改信息的服务器成员的accid，必填
+  final String accid;
+
+  /// 昵称
+  String? nick;
+
+  /// 头像
+  String? avatar;
+
+  QChatUpdateServerMemberInfoParam(this.serverId, this.accid,
+      {this.nick, this.avatar});
+
+  factory QChatUpdateServerMemberInfoParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatUpdateServerMemberInfoParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatUpdateServerMemberInfoParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatUpdateServerMemberInfoParam{serverId: $serverId, accid: $accid, nick: $nick, avatar: $avatar}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateServerMemberInfoResult {
+  /// 更新后的服务器成员
+  @JsonKey(fromJson: memberFromJson)
+  QChatServerMember? member;
+
+  QChatUpdateServerMemberInfoResult(this.member);
+
+  factory QChatUpdateServerMemberInfoResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatUpdateServerMemberInfoResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatUpdateServerMemberInfoResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatUpdateServerMemberInfoResult{member: $member}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatBanServerMemberParam extends QChatUpdateServerMemberBanParam {
+  QChatBanServerMemberParam(int? serverId, String? targetAccid,
+      [String? customExt])
+      : super(serverId, targetAccid, customExt);
+
+  factory QChatBanServerMemberParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatBanServerMemberParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatBanServerMemberParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUnbanServerMemberParam extends QChatUpdateServerMemberBanParam {
+  QChatUnbanServerMemberParam(int? serverId, String? targetAccid,
+      [String? customExt])
+      : super(serverId, targetAccid, customExt);
+
+  factory QChatUnbanServerMemberParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatUnbanServerMemberParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatUnbanServerMemberParamToJson(this);
+}
+
+abstract class QChatUpdateServerMemberBanParam {
+  /// 服务器id
+  final int? serverId;
+
+  /// 目标用户accid
+  final String? targetAccid;
+
+  /// 自定义扩展
+  String? customExt;
+
+  QChatUpdateServerMemberBanParam(this.serverId, this.targetAccid,
+      [this.customExt]);
+
+  @override
+  String toString() {
+    return 'QChatUpdateServerMemberBanParam{serverId: $serverId, targetAccid: $targetAccid, customExt: $customExt}';
+  }
+}
+
+@JsonSerializable()
+class QChatGetBannedServerMembersByPageParam {
+  /// 服务器id
+  final int serverId;
+
+  /// 查询时间戳，如果传0表示当前时间
+  final int timeTag;
+
+  /// 查询数量限制，默认100
+  final int? limit;
+
+  QChatGetBannedServerMembersByPageParam(this.serverId, this.timeTag,
+      [this.limit]);
+
+  factory QChatGetBannedServerMembersByPageParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetBannedServerMembersByPageParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetBannedServerMembersByPageParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetBannedServerMembersByPageResult extends QChatGetByPageResult {
+  /// 服务器成员封禁列表
+  @JsonKey(fromJson: _serverMemberBanInfoListNullable)
+  final List<QChatBannedServerMember>? serverMemberBanInfoList;
+
+  QChatGetBannedServerMembersByPageResult(
+      bool? hasMore, int? nextTimeTag, this.serverMemberBanInfoList)
+      : super(hasMore: hasMore ?? false, nextTimeTag: nextTimeTag);
+
+  factory QChatGetBannedServerMembersByPageResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetBannedServerMembersByPageResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetBannedServerMembersByPageResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetBannedServerMembersByPageResult{serverMemberBanInfoList: $serverMemberBanInfoList}';
+  }
+}
+
+List<QChatBannedServerMember>? _serverMemberBanInfoListNullable(
+    List<dynamic>? dataList) {
+  return dataList
+      ?.map((e) =>
+          QChatBannedServerMember.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable()
+class QChatBannedServerMember {
+  /// 服务器id
+  int? serverId;
+
+  /// 用户accid
+  String? accid;
+
+  /// 自定义扩展
+  String? custom;
+
+  /// 封禁时间
+  int? banTime;
+
+  /// 有效标志：false-无效，true-有效
+  bool? isValid;
+
+  /// 创建时间
+  int? createTime;
+
+  /// 更新时间
+  int? updateTime;
+
+  QChatBannedServerMember();
+
+  factory QChatBannedServerMember.fromJson(Map<String, dynamic> json) =>
+      _$QChatBannedServerMemberFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatBannedServerMemberToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatBannedServerMember{serverId: $serverId, accid: $accid, custom: $custom, banTime: $banTime, isValid: $isValid, createTime: $createTime, updateTime: $updateTime}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateUserServerPushConfigParam
+    extends QChatUpdateUserPushConfigParam {
+  /// 服务器Id，必填
+  final int serverId;
+
+  QChatUpdateUserServerPushConfigParam(
+      this.serverId, QChatPushMsgType pushMsgType)
+      : super(pushMsgType);
+
+  factory QChatUpdateUserServerPushConfigParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatUpdateUserServerPushConfigParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatUpdateUserServerPushConfigParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatUpdateUserServerPushConfigParam{serverId: $serverId}';
+  }
+}
+
+@JsonSerializable()
+class QChatGetUserServerPushConfigsParam {
+  /// serverId列表
+  final List<int> serverIdList;
+
+  QChatGetUserServerPushConfigsParam(this.serverIdList);
+
+  factory QChatGetUserServerPushConfigsParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetUserServerPushConfigsParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetUserServerPushConfigsParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetUserServerPushConfigsParam{serverIdList: $serverIdList}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetUserPushConfigsResult {
+  /// 查询到的用户推送配置
+  @JsonKey(fromJson: _userPushConfigsNullable)
+  final List<QChatUserPushConfig>? userPushConfigs;
+
+  QChatGetUserPushConfigsResult(this.userPushConfigs);
+
+  factory QChatGetUserPushConfigsResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetUserPushConfigsResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetUserPushConfigsResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetUserPushConfigsResult{userPushConfigs: $userPushConfigs}';
+  }
+}
+
+List<QChatUserPushConfig>? _userPushConfigsNullable(List<dynamic>? dataList) {
+  return dataList
+      ?.map((e) =>
+          QChatUserPushConfig.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable()
+class QChatUserPushConfig {
+  /// 服务器id
+  int? serverId;
+
+  /// 频道id
+  int? channelId;
+
+  /// 频道分组id
+  int? channelCategoryId;
+
+  /// 推送维度
+  QChatDimension? dimension;
+
+  /// 推送接收哪些消息类型
+  QChatPushMsgType? pushMsgType;
+
+  QChatUserPushConfig();
+
+  factory QChatUserPushConfig.fromJson(Map<String, dynamic> json) =>
+      _$QChatUserPushConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatUserPushConfigToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatUserPushConfig{serverId: $serverId, channelId: $channelId, channelCategoryId: $channelCategoryId, dimension: $dimension, pushMsgType: $pushMsgType}';
+  }
+}
+
+enum QChatDimension {
+  /// 频道维度
+  channel,
+
+  /// 服务器维度
+  server,
+
+  /// 频道分组维度
+  channelCategory
+}
+
+@JsonSerializable()
+class QChatSearchServerMemberByPageParam {
+  /// 检索关键字，目标检索昵称、账号，最大100个字符
+  final String keyword;
+
+  /// 服务器ID
+  final int serverId;
+
+  /// 检索返回的最大记录数，最大和默认都是100
+  int? limit;
+
+  QChatSearchServerMemberByPageParam(this.keyword, this.serverId, [this.limit]);
+
+  factory QChatSearchServerMemberByPageParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatSearchServerMemberByPageParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatSearchServerMemberByPageParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatSearchServerMemberByPageParam{keyword: $keyword, serverId: $serverId, limit: $limit}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSearchServerMemberByPageResult {
+  /// 查询到的服务器成员
+  @JsonKey(fromJson: _memberListFromJson)
+  final List<QChatServerMember>? members;
+
+  QChatSearchServerMemberByPageResult(this.members);
+
+  factory QChatSearchServerMemberByPageResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatSearchServerMemberByPageResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatSearchServerMemberByPageResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatSearchServerMemberByPageResult{members: $members}';
+  }
+}
+
+@JsonSerializable()
+class QChatGetInviteApplyRecordOfServerParam {
+  /// 服务器ID
+  final int serverId;
+
+  /// 开始时间戳
+  int? fromTime;
+
+  /// 结束时间戳
+  int? toTime;
+
+  /// 是否逆序，同历史消息查询，默认从现在查到过去
+  bool? reverse;
+
+  /// 最大数量限制，默认100，最大100
+  int? limit;
+
+  /// 排除id
+  int? excludeRecordId;
+
+  QChatGetInviteApplyRecordOfServerParam(this.serverId,
+      {this.fromTime,
+      this.toTime,
+      this.reverse,
+      this.limit,
+      this.excludeRecordId});
+
+  factory QChatGetInviteApplyRecordOfServerParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetInviteApplyRecordOfServerParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetInviteApplyRecordOfServerParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetInviteApplyRecordOfServerParam{serverId: $serverId, fromTime: $fromTime, toTime: $toTime, reverse: $reverse, limit: $limit, excludeRecordId: $excludeRecordId}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetInviteApplyRecordOfServerResult {
+  /// 申请邀请记录
+  @JsonKey(fromJson: _recordsNullable)
+  final List<QChatInviteApplyRecord>? records;
+
+  QChatGetInviteApplyRecordOfServerResult(this.records);
+
+  factory QChatGetInviteApplyRecordOfServerResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetInviteApplyRecordOfServerResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetInviteApplyRecordOfServerResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetInviteApplyRecordOfServerResult{records: $records}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatInviteApplyRecord {
+  /// 操作者账号
+  String? accid;
+
+  /// 申请/邀请记录类型
+  QChatInviteApplyRecordType? type;
+
+  /// 服务器Id
+  int? serverId;
+
+  /// 申请/邀请记录状态
+  QChatInviteApplyRecordStatus? status;
+
+  /// 申请/邀请唯一标识
+  int? requestId;
+
+  /// 创建时间
+  int? createTime;
+
+  /// 更新时间
+  int? updateTime;
+
+  /// 过期时间
+  int? expireTime;
+
+  /// 邀请申请信息结果数据
+  @JsonKey(fromJson: _applyRecordDataNullable)
+  QChatInviteApplyRecordData? data;
+
+  /// 记录唯一标识
+  int? recordId;
+
+  QChatInviteApplyRecord();
+
+  factory QChatInviteApplyRecord.fromJson(Map<String, dynamic> json) =>
+      _$QChatInviteApplyRecordFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatInviteApplyRecordToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatInviteApplyRecord{accid: $accid, type: $type, serverId: $serverId, status: $status, requestId: $requestId, createTime: $createTime, updateTime: $updateTime, expireTime: $expireTime, data: $data, recordId: $recordId}';
+  }
+}
+
+QChatInviteApplyRecordData? _applyRecordDataNullable(Map? map) {
+  if (map == null) {
+    return null;
+  }
+  return QChatInviteApplyRecordData.fromJson(map.cast<String, dynamic>());
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatInviteApplyRecordData {
+  /// 申请附言
+  String? applyPostscript;
+
+  /// 处理申请的accid（同意或拒绝申请的操作者accid）
+  String? updateAccid;
+
+  /// 处理申请/邀请的附言
+  String? updatePostscript;
+
+  /// 邀请附言
+  String? invitePostscript;
+
+  /// 邀请码
+  String? inviteCode;
+
+  /// 被邀请用户数量
+  int? invitedUserCount;
+
+  /// 被邀请用户信息
+  @JsonKey(fromJson: _invitedUsersNullable)
+  List<QChatInvitedUserInfo>? invitedUsers;
+
+  QChatInviteApplyRecordData();
+
+  factory QChatInviteApplyRecordData.fromJson(Map<String, dynamic> json) =>
+      _$QChatInviteApplyRecordDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatInviteApplyRecordDataToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatInviteApplyRecordData{applyPostscript: $applyPostscript, updateAccid: $updateAccid, updatePostscript: $updatePostscript, invitePostscript: $invitePostscript, inviteCode: $inviteCode, invitedUserCount: $invitedUserCount, invitedUsers: $invitedUsers}';
+  }
+}
+
+List<QChatInvitedUserInfo>? _invitedUsersNullable(List<dynamic>? dataList) {
+  return dataList
+      ?.map((e) =>
+          QChatInvitedUserInfo.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable()
+class QChatInvitedUserInfo {
+  /// 被邀请用户的accid
+  String? accid;
+
+  /// 被邀请用户当前的状态
+  QChatInviteApplyRecordStatus? status;
+
+  /// 处理邀请的附言
+  String? updatePostscript;
+
+  /// 处理邀请的时间
+  int? updateTime;
+
+  QChatInvitedUserInfo();
+
+  factory QChatInvitedUserInfo.fromJson(Map<String, dynamic> json) =>
+      _$QChatInvitedUserInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatInvitedUserInfoToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatInvitedUserInfo{accid: $accid, status: $status, updatePostscript: $updatePostscript, updateTime: $updateTime}';
+  }
+}
+
+enum QChatInviteApplyRecordType {
+  /// 申请
+  apply,
+
+  /// 邀请
+  invite,
+
+  /// 被邀请
+  beInvited,
+
+  /// 生成邀请码
+  generateInviteCode,
+
+  /// 通过邀请码加入
+  joinByInviteCode,
+}
+
+enum QChatInviteApplyRecordStatus {
+  /// 初始状态
+  initial,
+
+  /// 同意
+  accept,
+
+  /// 拒绝
+  reject,
+
+  /// 通过其他操作同意
+  acceptByOther,
+
+  /// 通过其他操作拒绝
+  rejectByOther,
+
+  /// 自动加入
+  autoJoin,
+
+  /// 过期
+  expired
+}
+
+@JsonSerializable()
+class QChatGetInviteApplyRecordOfSelfParam {
+  /// 开始时间戳
+  int? fromTime;
+
+  /// 结束时间戳
+  int? toTime;
+
+  /// 是否逆序，同历史消息查询，默认从现在查到过去
+  bool? reverse;
+
+  /// limit，默认100，最大100
+  int? limit;
+
+  /// 排除id
+  int? excludeRecordId;
+
+  factory QChatGetInviteApplyRecordOfSelfParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetInviteApplyRecordOfSelfParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetInviteApplyRecordOfSelfParamToJson(this);
+
+  QChatGetInviteApplyRecordOfSelfParam(
+      {this.fromTime,
+      this.toTime,
+      this.reverse,
+      this.limit,
+      this.excludeRecordId});
+
+  @override
+  String toString() {
+    return 'QChatGetInviteApplyRecordOfSelfParam{fromTime: $fromTime, toTime: $toTime, reverse: $reverse, limit: $limit, excludeRecordId: $excludeRecordId}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetInviteApplyRecordOfSelfResult {
+  /// 申请邀请记录
+  @JsonKey(fromJson: _recordsNullable)
+  final List<QChatInviteApplyRecord>? records;
+
+  QChatGetInviteApplyRecordOfSelfResult(this.records);
+
+  factory QChatGetInviteApplyRecordOfSelfResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetInviteApplyRecordOfSelfResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetInviteApplyRecordOfSelfResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetInviteApplyRecordOfSelfResult{records: $records}';
+  }
+}
+
+List<QChatInviteApplyRecord>? _recordsNullable(List<dynamic>? dataList) {
+  return dataList
+      ?.map((e) =>
+          QChatInviteApplyRecord.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable()
+class QChatServerMarkReadParam {
+  /// serverId列表
+  final List<int> serverIds;
+
+  QChatServerMarkReadParam(this.serverIds);
+
+  factory QChatServerMarkReadParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatServerMarkReadParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatServerMarkReadParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatServerMarkReadParam{serverIds: $serverIds}';
+  }
+}
+
+@JsonSerializable()
+class QChatServerMarkReadResult {
+  /// 清空未读数成功的serverId列表
+  final List<int>? successServerIds;
+
+  /// 清空未读数失败的serverId列表
+  final List<int>? failedServerIds;
+
+  /// 清空未读的服务器时间戳，这个时间戳之前的频道消息都认为是已读
+  final int? timestamp;
+
+  QChatServerMarkReadResult(
+      this.successServerIds, this.failedServerIds, this.timestamp);
+
+  factory QChatServerMarkReadResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatServerMarkReadResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatServerMarkReadResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatServerMarkReadResult{successServerIds: $successServerIds, failedServerIds: $failedServerIds, timestamp: $timestamp}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSubscribeAllChannelParam {
+  /// 请求参数，订阅类型，见[QChatSubType],只支持[QChatSubscribeType.channelMsg],
+  /// [QChatSubscribeType.channelMsgUnreadCount],
+  /// [QChatSubscribeType.channelMsgUnreadStatus]
+  final QChatSubscribeType type;
+
+  /// 请求参数，操作的对象：serverId列表
+  final List<int> serverIds;
+
+  QChatSubscribeAllChannelParam(this.type, this.serverIds);
+
+  factory QChatSubscribeAllChannelParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatSubscribeAllChannelParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatSubscribeAllChannelParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatSubscribeAllChannelParam{type: $type, serverIds: $serverIds}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSubscribeAllChannelResult {
+  /// 订阅成功后的未读信息列表
+  @JsonKey(fromJson: _unreadInfoListNullable)
+  final List<QChatUnreadInfo>? unreadInfoList;
+
+  /// 订阅失败的服务器id列表
+  @JsonKey(fromJson: _filedListNullable)
+  final List<int>? failedList;
+
+  QChatSubscribeAllChannelResult(this.unreadInfoList, this.failedList);
+
+  factory QChatSubscribeAllChannelResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatSubscribeAllChannelResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatSubscribeAllChannelResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatSubscribeAllChannelResult{unreadInfoList: $unreadInfoList, failedList: $failedList}';
+  }
+}
+
+List<QChatUnreadInfo>? _unreadInfoListNullable(List<dynamic>? dataList) {
+  return dataList
+      ?.map((e) => QChatUnreadInfo.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+List<int>? _filedListNullable(List<dynamic>? dataList) {
+  return dataList?.map((e) => e is int ? e : int.parse(e)).toList();
 }

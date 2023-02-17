@@ -1706,7 +1706,7 @@ bool FLTChatRoomService::convertDartMessageToNimMessage(
     if (iter->first == flutter::EncodableValue("messageId")) {
       message.client_msg_id_ = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("messageSubType")) {
-      message.sub_type_ = atoi(std::get<std::string>(iter->second).c_str());
+      message.sub_type_ = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("fromAccount")) {
       message.from_id_ = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("content")) {
@@ -1811,7 +1811,8 @@ void FLTChatRoomService::convertNimMessageToDartMessage(
   Convert::getInstance()->convertNIMEnumToDartString(
       static_cast<nim::NIMMessageType>(message.sub_type_),
       Convert::getInstance()->getMessageType(), strMessageSubType);
-  arguments.insert(std::make_pair("messageSubType", strMessageSubType));
+  // arguments.insert(std::make_pair("messageSubType", strMessageSubType));
+  arguments.insert(std::make_pair("messageSubType", message.sub_type_));
 
   arguments.insert(std::make_pair("fromAccount", message.from_id_));
 

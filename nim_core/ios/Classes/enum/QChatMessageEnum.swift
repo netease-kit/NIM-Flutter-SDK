@@ -373,3 +373,55 @@ enum FLTQChatSystemNotificationType: String {
     return nil
   }
 }
+
+enum FLTQChatMessageReferType: String {
+  case replay
+  case thread
+  case all
+
+  func convertNIMQChatMessageReferType() -> NIMQChatMessageReferType {
+    switch self {
+    case .replay:
+      return .reply
+    case .thread:
+      return .thread
+    case .all:
+      return .all
+    }
+  }
+
+  static func convert(type: NIMQChatMessageReferType) -> FLTQChatMessageReferType? {
+    switch type {
+    case .reply:
+      return .replay
+    case .thread:
+      return .thread
+    case .all:
+      return .all
+    default:
+      break
+    }
+    return nil
+  }
+}
+
+enum FLTQChatSearchMessageSortType: String {
+  case createTime
+
+  func convertNIMQChatSearchMessageSortType() -> NIMQChatSearchMessageSortType {
+    switch self {
+    case .createTime:
+      return .sendTime
+    }
+  }
+
+  static func convert(type: NIMQChatSearchMessageSortType) -> FLTQChatSearchMessageSortType? {
+    switch type {
+    case .sendTime:
+      return .createTime
+    default:
+      break
+    }
+    return nil
+  }
+}

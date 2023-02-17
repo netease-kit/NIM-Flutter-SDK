@@ -17,7 +17,7 @@ enum TeamType: String {
   case AddMembersEx = "addMembersEx"
   case AcceptInvite = "acceptInvite"
   case DeclineInvite = "declineInvite"
-  case GetMemverInvitor = "getMemverInvitor"
+  case GetMemberInvitor = "getMemberInvitor"
   case RemoveMembers = "removeMembers"
   case QuitTeam = "quitTeam"
   case QueryMemberList = "queryMemberList"
@@ -34,6 +34,7 @@ enum TeamType: String {
   case SearchTeamIdByName = "searchTeamIdByName"
   case SearchTeamsByKeyword = "searchTeamsByKeyword"
   case UpdateMyMemberExtension = "updateMyMemberExtension"
+  case UpdateMyTeamNick = "updateMyTeamNick"
 }
 
 class FLTTeamService: FLTBaseService, FLTService {
@@ -68,7 +69,7 @@ class FLTTeamService: FLTBaseService, FLTService {
     case TeamType.AddMembersEx.rawValue: addMembersEx(arguments, resultCallback)
     case TeamType.AcceptInvite.rawValue: acceptInvite(arguments, resultCallback)
     case TeamType.DeclineInvite.rawValue: declineInvite(arguments, resultCallback)
-    case TeamType.GetMemverInvitor.rawValue: getMemverInvitor(arguments, resultCallback)
+    case TeamType.GetMemberInvitor.rawValue: getMemberInvitor(arguments, resultCallback)
     case TeamType.RemoveMembers.rawValue: removeMembers(arguments, resultCallback)
     case TeamType.QuitTeam.rawValue: quitTeam(arguments, resultCallback)
     case TeamType.QueryMemberList.rawValue: queryMemberList(arguments, resultCallback)
@@ -87,6 +88,7 @@ class FLTTeamService: FLTBaseService, FLTService {
     case TeamType.SearchTeamIdByName.rawValue: searchTeamWithOption(arguments, resultCallback)
     case TeamType.UpdateMyMemberExtension
       .rawValue: updateMyMemberExtension(arguments, resultCallback)
+    case TeamType.UpdateMyTeamNick.rawValue: updateMyTeamNick(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -105,7 +107,7 @@ class FLTTeamService: FLTBaseService, FLTService {
             NIMSDK.shared().teamManager.fetchTeamInfo(teamid!, completion: { error, team in
               weakSelf?.teamCallback(
                 error,
-                ["team": team?.toDic(), "failedInviteAccounts": failedUserIds],
+                ["team": team?.toDic() ?? [:], "failedInviteAccounts": failedUserIds ?? []],
                 resultCallback
               )
             })
@@ -125,6 +127,10 @@ class FLTTeamService: FLTBaseService, FLTService {
   private func queryTeam(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let teamId = getTeamId(arguments) else {
       errorCallBack(resultCallback, "parameter is error")
+      return
+    }
+    if teamId.isEmpty {
+      errorCallBack(resultCallback, "parameter is empty", 1000)
       return
     }
     let team = NIMSDK.shared().teamManager.team(byId: teamId)
@@ -257,7 +263,7 @@ class FLTTeamService: FLTBaseService, FLTService {
   }
 
   // 查询群成员入群邀请人
-  private func getMemverInvitor(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  private func getMemberInvitor(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let teamId = getTeamId(arguments),
           let memberIds = arguments["accids"] as? [String] else {
       errorCallBack(resultCallback, "parameter is error")
@@ -321,6 +327,9 @@ class FLTTeamService: FLTBaseService, FLTService {
       errorCallBack(resultCallback, "parameter is error")
       return
     }
+    if teamId.isEmpty || userId.isEmpty {
+      errorCallBack(resultCallback, "parameter teamId is empty", 404)
+    }
 
     let member = NIMSDK.shared().teamManager.teamMember(userId, inTeam: teamId)
     teamCallback(nil, member?.toDic(), resultCallback)
@@ -342,7 +351,7 @@ class FLTTeamService: FLTBaseService, FLTService {
       }
   }
 
-  // 群主转让
+  // 群主转让,quit为false：参数仅包含原拥有者和当前拥有者的(即操作者和account)，权限已被更新。 quit为true: 参数为空。
   private func transferTeam(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let teamId = getTeamId(arguments),
           let newOwnerId = getUserId(arguments),
@@ -357,11 +366,21 @@ class FLTTeamService: FLTBaseService, FLTService {
         if error != nil {
           weakSelf?.teamCallback(error, nil, resultCallback)
         } else {
-          NIMSDK.shared().teamManager.fetchTeamMembers(teamId) { error, members in
-            let ret = members?.map { member in
-              member.toDic()
+          if isLeave {
+            let emptyResult: [String] = Array()
+            weakSelf?.teamCallback(error, ["teamMemberList": emptyResult], resultCallback)
+          } else {
+            NIMSDK.shared().teamManager.fetchTeamMembers(fromServer: teamId) { error, members in
+              var ret = members?.filter { teamMember in
+                teamMember.userId == newOwnerId || teamMember.userId == NIMSDK.shared().loginManager.currentAccount()
+              }.map { member in
+                member.toDic()
+              }
+              if ret == nil {
+                ret = Array()
+              }
+              weakSelf?.teamCallback(error, ["teamMemberList": ret], resultCallback)
             }
-            weakSelf?.teamCallback(error, ["teamMemberList": ret], resultCallback)
           }
         }
       }
@@ -381,7 +400,14 @@ class FLTTeamService: FLTBaseService, FLTService {
         weakSelf?.teamCallback(error, nil, resultCallback)
       } else {
         NIMSDK.shared().teamManager.fetchTeamMembers(teamId) { error, members in
-          let ret = members?.map { member in
+          let ret = members?.filter { teamMember in
+            for user in userIds {
+              if user == teamMember.userId {
+                return true
+              }
+            }
+            return false
+          }.map { member in
             member.toDic()
           }
           weakSelf?.teamCallback(error, ["teamMemberList": ret], resultCallback)
@@ -403,8 +429,15 @@ class FLTTeamService: FLTBaseService, FLTService {
       if error != nil {
         weakSelf?.teamCallback(error, nil, resultCallback)
       } else {
-        NIMSDK.shared().teamManager.fetchTeamMembers(teamId) { error, members in
-          let ret = members?.map { member in
+        NIMSDK.shared().teamManager.fetchTeamMembers(fromServer: teamId) { error, members in
+          let ret = members?.filter { teamMember in
+            for user in userIds {
+              if user == teamMember.userId {
+                return true
+              }
+            }
+            return false
+          }.map { member in
             member.toDic()
           }
           weakSelf?.teamCallback(error, ["teamMemberList": ret], resultCallback)
@@ -452,10 +485,13 @@ class FLTTeamService: FLTBaseService, FLTService {
 
     weak var weakSelf = self
     NIMSDK.shared().teamManager.fetchTeamMutedMembers(teamId) { error, members in
-      let ret = members?.map { member in
+      var ret = members?.map { member in
         member.toDic()
       }
-      weakSelf?.teamCallback(error, ret, resultCallback)
+      if ret == nil {
+        ret = Array()
+      }
+      weakSelf?.teamCallback(error, ["teamMemberList": ret], resultCallback)
     }
   }
 
@@ -463,7 +499,7 @@ class FLTTeamService: FLTBaseService, FLTService {
     guard let teamId = getTeamId(arguments),
           let request = arguments["request"] as? [String: Any?],
           let requestList = request["requestList"] as? [String] else {
-      errorCallBack(resultCallback, "parameter is error")
+      errorCallBack(resultCallback, "parameter is error", 414)
       return
     }
     weak var weakSelf = self
@@ -513,6 +549,11 @@ class FLTTeamService: FLTBaseService, FLTService {
     if requestList.contains("verifyType"),
        let verifyType = request["verifyType"] as? Int {
       values[NSNumber(value: NIMTeamUpdateTag.joinMode.rawValue)] = String(verifyType)
+    }
+
+    if teamId.isEmpty || values.isEmpty {
+      errorCallBack(resultCallback, "parameter is error", 414)
+      return
     }
     NIMSDK.shared().teamManager.updateTeamInfos(values, teamId: teamId) { error in
       weakSelf?.teamCallback(error, nil, resultCallback)
@@ -581,6 +622,15 @@ class FLTTeamService: FLTBaseService, FLTService {
     NIMSDK.shared().teamManager.updateMyCustomInfo(str, inTeam: teamId) { error in
       weakSelf?.teamCallback(error, nil, resultCallback)
     }
+  }
+
+  // 修改自己的群昵称
+  private func updateMyTeamNick(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    var params = [String: Any]()
+    params["teamId"] = arguments["teamId"]
+    params["nick"] = arguments["nick"]
+    params["account"] = NIMSDK.shared().loginManager.currentAccount()
+    updateMemberNick(params, resultCallback)
   }
 
   private func teamCallback(_ error: Error?, _ data: Any?, _ resultCallback: ResultCallback) {

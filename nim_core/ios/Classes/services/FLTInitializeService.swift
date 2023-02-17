@@ -51,6 +51,10 @@ class FLTInitializeService: FLTService {
       NIMSDKConfig.shared().setupSDKDir(sdkDir)
     }
 
+    if let enableQChatMessageCache = arguments["enabledQChatMessageCache"] as? Bool {
+      NIMQChatConfig.shared().enabledMessageCache = enableQChatMessageCache
+    }
+
     if let option = NIMSDKOption.yx_model(with: arguments) {
       NIMSDK.shared().register(with: option)
     }
@@ -78,6 +82,12 @@ class FLTInitializeService: FLTService {
       }
       NIMSDK.shared().sceneDict = NSMutableDictionary()
     }
+
+    // 开启群回执功能
+    if let teamReceiptEnabled = arguments["enableTeamMessageReadReceipt"] as? Bool {
+      NIMSDKConfig.shared().teamReceiptEnabled = teamReceiptEnabled
+    }
+
     resultCallback.result(NimResult.success().toDic())
 
     nimCore?.notifyOnInitialized()

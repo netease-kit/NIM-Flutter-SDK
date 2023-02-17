@@ -14,7 +14,10 @@ import com.netease.nimflutter.NimResultContinuationCallback
 import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
 import com.netease.nimflutter.toMap
 import com.netease.nimflutter.toQChatAddChannelRoleParam
+import com.netease.nimflutter.toQChatAddMemberRoleParam
 import com.netease.nimflutter.toQChatAddMembersToServerRoleParam
+import com.netease.nimflutter.toQChatCheckPermissionParam
+import com.netease.nimflutter.toQChatCheckPermissionsParam
 import com.netease.nimflutter.toQChatCreateServerRoleParam
 import com.netease.nimflutter.toQChatDeleteServerRoleParam
 import com.netease.nimflutter.toQChatGetChannelRolesParam
@@ -22,29 +25,37 @@ import com.netease.nimflutter.toQChatGetExistingAccidsInServerRoleParam
 import com.netease.nimflutter.toQChatGetExistingAccidsOfMemberRolesParam
 import com.netease.nimflutter.toQChatGetExistingChannelRolesByServerRoleIdsParam
 import com.netease.nimflutter.toQChatGetExistingServerRolesByAccidsParam
+import com.netease.nimflutter.toQChatGetMemberRolesParam
 import com.netease.nimflutter.toQChatGetMembersFromServerRoleParam
 import com.netease.nimflutter.toQChatGetServerRolesByAccidParam
 import com.netease.nimflutter.toQChatGetServerRolesParam
 import com.netease.nimflutter.toQChatRemoveChannelRoleParam
+import com.netease.nimflutter.toQChatRemoveMemberRoleParam
 import com.netease.nimflutter.toQChatRemoveMembersFromServerRoleParam
 import com.netease.nimflutter.toQChatUpdateChannelRoleParam
+import com.netease.nimflutter.toQChatUpdateMemberRoleParam
 import com.netease.nimflutter.toQChatUpdateServerRoleParam
 import com.netease.nimflutter.toQChatUpdateServerRolePrioritiesParam
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.qchat.QChatRoleService
 import com.netease.nimlib.sdk.qchat.result.QChatAddChannelRoleResult
+import com.netease.nimlib.sdk.qchat.result.QChatAddMemberRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatAddMembersToServerRoleResult
+import com.netease.nimlib.sdk.qchat.result.QChatCheckPermissionResult
+import com.netease.nimlib.sdk.qchat.result.QChatCheckPermissionsResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingAccidsInServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingAccidsOfMemberRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingChannelRolesByServerRoleIdsResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingServerRolesByAccidsResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetMemberRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetMembersFromServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServerRolesByAccidResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServerRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatRemoveMembersFromServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateChannelRoleResult
+import com.netease.nimlib.sdk.qchat.result.QChatUpdateMemberRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerRolePrioritiesResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerRoleResult
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -79,7 +90,13 @@ class FLTQChatRoleService(
                 "getExistingServerRolesByAccids" to ::getExistingServerRolesByAccids,
                 "getExistingAccidsInServerRole" to ::getExistingAccidsInServerRole,
                 "getExistingChannelRolesByServerRoleIds" to ::getExistingChannelRolesByServerRoleIds,
-                "getExistingAccidsOfMemberRoles" to ::getExistingAccidsOfMemberRoles
+                "getExistingAccidsOfMemberRoles" to ::getExistingAccidsOfMemberRoles,
+                "addMemberRole" to ::addMemberRole,
+                "removeMemberRole" to ::removeMemberRole,
+                "updateMemberRole" to ::updateMemberRole,
+                "getMemberRoles" to ::getMemberRoles,
+                "checkPermission" to ::checkPermission,
+                "checkPermissions" to ::checkPermissions
             )
         }
     }
@@ -332,6 +349,92 @@ class FLTQChatRoleService(
         return suspendCancellableCoroutine { cont ->
             qChatRoleService.getExistingAccidsOfMemberRoles(
                 arguments.toQChatGetExistingAccidsOfMemberRolesParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun addMemberRole(arguments: Map<String, *>): NimResult<QChatAddMemberRoleResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatRoleService.addMemberRole(
+                arguments.toQChatAddMemberRoleParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+    private suspend fun removeMemberRole(arguments: Map<String, *>): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            qChatRoleService.removeMemberRole(
+                arguments.toQChatRemoveMemberRoleParam()
+            ).setCallback(
+                NimResultContinuationCallbackOfNothing(cont)
+            )
+        }
+    }
+    private suspend fun updateMemberRole(arguments: Map<String, *>): NimResult<QChatUpdateMemberRoleResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatRoleService.updateMemberRole(
+                arguments.toQChatUpdateMemberRoleParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+    private suspend fun getMemberRoles(arguments: Map<String, *>): NimResult<QChatGetMemberRolesResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatRoleService.getMemberRoles(
+                arguments.toQChatGetMemberRolesParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+    private suspend fun checkPermission(arguments: Map<String, *>): NimResult<QChatCheckPermissionResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatRoleService.checkPermission(
+                arguments.toQChatCheckPermissionParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun checkPermissions(arguments: Map<String, *>): NimResult<QChatCheckPermissionsResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatRoleService.checkPermissions(
+                arguments.toQChatCheckPermissionsParam()
             ).setCallback(
                 NimResultContinuationCallback(cont) { result ->
                     NimResult(

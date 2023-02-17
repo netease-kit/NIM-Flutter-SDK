@@ -167,4 +167,45 @@ class MethodChannelQChatRoleService extends QChatRoleServicePlatform {
         convert: (json) =>
             QChatGetExistingAccidsOfMemberRolesResult.fromJson(json));
   }
+
+  Future<NIMResult<QChatAddMemberRoleResult>> addMemberRole(
+      QChatAddMemberRoleParam param) async {
+    return NIMResult<QChatAddMemberRoleResult>.fromMap(
+        await invokeMethod('addMemberRole', arguments: param.toJson()),
+        convert: (json) => QChatAddMemberRoleResult.fromJson(json));
+  }
+
+  Future<NIMResult<void>> removeMemberRole(
+      QChatRemoveMemberRoleParam param) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('removeMemberRole', arguments: param.toJson()));
+  }
+
+  Future<NIMResult<QChatUpdateMemberRoleResult>> updateMemberRole(
+      QChatUpdateMemberRoleParam param) async {
+    return NIMResult<QChatUpdateMemberRoleResult>.fromMap(
+        await invokeMethod('updateMemberRole', arguments: param.toJson()),
+        convert: (json) => QChatUpdateMemberRoleResult.fromJson(json));
+  }
+
+  Future<NIMResult<QChatGetMemberRolesResult>> getMemberRoles(
+      QChatGetMemberRolesParam param) async {
+    return NIMResult<QChatGetMemberRolesResult>.fromMap(
+        await invokeMethod('getMemberRoles', arguments: param.toJson()),
+        convert: (json) => QChatGetMemberRolesResult.fromJson(json));
+  }
+
+  Future<NIMResult<QChatCheckPermissionResult>> checkPermission(
+      QChatCheckPermissionParam param) async {
+    return NIMResult<QChatCheckPermissionResult>.fromMap(
+        await invokeMethod('checkPermission', arguments: param.toJson()),
+        convert: (json) => QChatCheckPermissionResult.fromJson(json));
+  }
+
+  // Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
+  //     QChatCheckPermissionsParam param) async {
+  //   return NIMResult<QChatCheckPermissionsResult>.fromMap(
+  //       await invokeMethod('checkPermissions', arguments: param.toJson()),
+  //       convert: (json) => QChatCheckPermissionsResult.fromJson(json));
+  // }
 }

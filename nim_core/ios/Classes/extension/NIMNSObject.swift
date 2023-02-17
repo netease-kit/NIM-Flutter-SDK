@@ -86,6 +86,17 @@ extension NSObject {
     return nil
   }
 
+  func getArrayFromJSONString(_ jsonString: String) -> [String]? {
+    if let jsonData = jsonString.data(using: .utf8),
+       let arr = try? JSONSerialization.jsonObject(
+         with: jsonData,
+         options: .mutableContainers
+       ) as? [String] {
+      return arr
+    }
+    return nil
+  }
+
   func getJsonStringFromArray(_ array: [Any]) -> String? {
     if !JSONSerialization.isValidJSONObject(array) {
       return nil

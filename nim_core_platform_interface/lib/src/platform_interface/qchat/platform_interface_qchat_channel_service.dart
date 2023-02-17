@@ -86,4 +86,53 @@ abstract class QChatChannelServicePlatform extends Service {
       QChatSearchChannelMembersParam param) {
     throw UnimplementedError('searchChannelMembers is not implemented');
   }
+
+  /// 更新频道黑白名单身份组
+
+  Future<NIMResult<void>> updateChannelBlackWhiteRoles(
+      QChatUpdateChannelBlackWhiteRolesParam param);
+
+  /// 分页查询频道黑白名单身份组列表
+
+  Future<NIMResult<QChatGetChannelBlackWhiteRolesByPageResult>>
+      getChannelBlackWhiteRolesByPage(
+          QChatGetChannelBlackWhiteRolesByPageParam param);
+
+  /// 批量查询频道黑白名单身份组列表
+
+  Future<NIMResult<QChatGetExistingChannelBlackWhiteRolesResult>>
+      getExistingChannelBlackWhiteRoles(
+          QChatGetExistingChannelBlackWhiteRolesParam param);
+
+  /// 更新频道黑白名单成员
+
+  Future<NIMResult<void>> updateChannelBlackWhiteMembers(
+      QChatUpdateChannelBlackWhiteMembersParam param);
+
+  /// 分页查询频道黑白名单成员列表
+
+  Future<NIMResult<QChatGetChannelBlackWhiteMembersByPageResult>>
+      getChannelBlackWhiteMembersByPage(
+          QChatGetChannelBlackWhiteMembersByPageParam param);
+
+  /// 批量查询频道黑白名单成员列表
+
+  Future<NIMResult<QChatGetExistingChannelBlackWhiteMembersResult>>
+      getExistingChannelBlackWhiteMembers(
+          QChatGetExistingChannelBlackWhiteMembersParam param);
+
+  /// 更新用户频道推送配置
+
+  Future<NIMResult<void>> updateUserChannelPushConfig(
+      QChatUpdateUserChannelPushConfigParam param);
+
+  /// 获取用户频道推送配置列表
+
+  Future<NIMResult<QChatGetUserPushConfigsResult>> getUserChannelPushConfigs(
+      QChatGetUserChannelPushConfigsParam param);
+
+  /// 分页查询服务器下频道类别列表
+
+  Future<NIMResult<QChatGetChannelCategoriesByPageResult>>
+      getChannelCategoriesByPage(QChatGetChannelCategoriesByPageParam param);
 }

@@ -29,6 +29,7 @@ NIMIOSSDKOptions _$NIMIOSSDKOptionsFromJson(Map<String, dynamic> json) {
     enableFileQuickTransfer: json['enableFileQuickTransfer'] as bool?,
     enableAsyncLoadRecentSession: json['enableAsyncLoadRecentSession'] as bool?,
     linkQuickSwitch: json['linkQuickSwitch'] as bool?,
+    enabledQChatMessageCache: json['enabledQChatMessageCache'] as bool?,
     appKey: json['appKey'] as String,
     sdkRootDir: json['sdkRootDir'] as String?,
     customClientType: json['customClientType'] as int?,
@@ -97,5 +98,6 @@ Map<String, dynamic> _$NIMIOSSDKOptionsToJson(NIMIOSSDKOptions instance) {
   val['enableFileQuickTransfer'] = instance.enableFileQuickTransfer;
   val['enableAsyncLoadRecentSession'] = instance.enableAsyncLoadRecentSession;
   val['linkQuickSwitch'] = instance.linkQuickSwitch;
+  val['enabledQChatMessageCache'] = instance.enabledQChatMessageCache;
   return val;
 }

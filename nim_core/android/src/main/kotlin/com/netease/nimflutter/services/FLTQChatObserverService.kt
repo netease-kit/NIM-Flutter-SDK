@@ -21,10 +21,12 @@ import com.netease.nimlib.sdk.qchat.event.QChatMessageDeleteEvent
 import com.netease.nimlib.sdk.qchat.event.QChatMessageRevokeEvent
 import com.netease.nimlib.sdk.qchat.event.QChatMessageUpdateEvent
 import com.netease.nimlib.sdk.qchat.event.QChatMultiSpotLoginEvent
+import com.netease.nimlib.sdk.qchat.event.QChatServerUnreadInfoChangedEvent
 import com.netease.nimlib.sdk.qchat.event.QChatStatusChangeEvent
 import com.netease.nimlib.sdk.qchat.event.QChatSystemNotificationUpdateEvent
 import com.netease.nimlib.sdk.qchat.event.QChatUnreadInfoChangedEvent
 import com.netease.nimlib.sdk.qchat.model.QChatMessage
+import com.netease.nimlib.sdk.qchat.model.QChatServerUnreadInfo
 import com.netease.nimlib.sdk.qchat.model.QChatSystemNotification
 
 class FLTQChatObserverService(
@@ -49,6 +51,7 @@ class FLTQChatObserverService(
                 observeAttachmentProgress(onAttachmentProgress, true)
                 observeReceiveSystemNotification(onReceiveSystemNotification, true)
                 observeSystemNotificationUpdate(onSystemNotificationUpdate, true)
+                observeServerUnreadInfoChanged(serverUnreadInfoChanged, true)
             }
         }
     }
@@ -187,5 +190,25 @@ class FLTQChatObserverService(
     fun QChatSystemNotificationUpdateEvent.toMap() = mapOf<String, Any?>(
         "msgUpdateInfo" to msgUpdateInfo?.toMap(),
         "systemNotification" to systemNotification?.toMap()
+    )
+
+    private val serverUnreadInfoChanged = Observer<QChatServerUnreadInfoChangedEvent> { event ->
+        run {
+            notifyEvent(
+                "serverUnreadInfoChanged",
+                event.toMap() as MutableMap<String, Any?>
+            )
+        }
+    }
+
+    fun QChatServerUnreadInfoChangedEvent.toMap() = mapOf<String, Any?>(
+        "serverUnreadInfos" to serverUnreadInfos?.map { it.toMap() }?.toList()
+    )
+
+    fun QChatServerUnreadInfo.toMap() = mapOf<String, Any?>(
+        "serverId" to serverId,
+        "unreadCount" to unreadCount,
+        "mentionedCount" to mentionedCount,
+        "maxCount" to maxCount
     )
 }

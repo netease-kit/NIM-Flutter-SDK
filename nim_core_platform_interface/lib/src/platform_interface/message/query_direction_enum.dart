@@ -22,10 +22,10 @@ enum NIMUnreadCountQueryType {
   /// 所有类型
   all,
 
-  /// 仅通知消息
+  /// 仅通知消息, pc端暂不支持
   notifyOnly,
 
-  /// 仅免打扰消息
+  /// 仅免打扰消息，pc端暂不支持
   noDisturbOnly,
 }
 

@@ -16,8 +16,12 @@ import com.netease.nimlib.qchat.model.QChatSystemNotificationImpl
 import com.netease.nimlib.qchat.model.systemnotification.QChatSystemNotificationAttachmentImpl
 import com.netease.nimlib.sdk.auth.ClientType
 import com.netease.nimlib.sdk.qchat.enums.QChatApplyJoinMode
+import com.netease.nimlib.sdk.qchat.enums.QChatDimension
+import com.netease.nimlib.sdk.qchat.enums.QChatInviteApplyRecordStatus
+import com.netease.nimlib.sdk.qchat.enums.QChatInviteApplyRecordType
 import com.netease.nimlib.sdk.qchat.enums.QChatInviteMode
 import com.netease.nimlib.sdk.qchat.enums.QChatMemberType
+import com.netease.nimlib.sdk.qchat.enums.QChatPushMsgType
 import com.netease.nimlib.sdk.qchat.enums.QChatSearchServerTypeEnum
 import com.netease.nimlib.sdk.qchat.enums.QChatServerSearchSortEnum
 import com.netease.nimlib.sdk.qchat.enums.QChatSubscribeOperateType
@@ -25,13 +29,17 @@ import com.netease.nimlib.sdk.qchat.enums.QChatSubscribeType
 import com.netease.nimlib.sdk.qchat.enums.QChatSystemNotificationType
 import com.netease.nimlib.sdk.qchat.event.QChatStatusChangeEvent
 import com.netease.nimlib.sdk.qchat.model.QChatAntiSpamConfig
+import com.netease.nimlib.sdk.qchat.model.QChatBannedServerMember
 import com.netease.nimlib.sdk.qchat.model.QChatChannel
 import com.netease.nimlib.sdk.qchat.model.QChatChannelCategory
 import com.netease.nimlib.sdk.qchat.model.QChatChannelIdInfo
 import com.netease.nimlib.sdk.qchat.model.QChatChannelMember
 import com.netease.nimlib.sdk.qchat.model.QChatChannelRole
 import com.netease.nimlib.sdk.qchat.model.QChatClient
+import com.netease.nimlib.sdk.qchat.model.QChatInviteApplyRecord
 import com.netease.nimlib.sdk.qchat.model.QChatInviteApplyServerMemberInfo
+import com.netease.nimlib.sdk.qchat.model.QChatInvitedUserInfo
+import com.netease.nimlib.sdk.qchat.model.QChatMemberRole
 import com.netease.nimlib.sdk.qchat.model.QChatMessage
 import com.netease.nimlib.sdk.qchat.model.QChatMessageAntiSpamOption
 import com.netease.nimlib.sdk.qchat.model.QChatMessageAntiSpamResult
@@ -45,12 +53,23 @@ import com.netease.nimlib.sdk.qchat.model.QChatServerRole
 import com.netease.nimlib.sdk.qchat.model.QChatServerRoleMember
 import com.netease.nimlib.sdk.qchat.model.QChatSystemNotification
 import com.netease.nimlib.sdk.qchat.model.QChatUnreadInfo
+import com.netease.nimlib.sdk.qchat.model.QChatUserPushConfig
+import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatApplyRecordData
+import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatBeInvitedRecordData
+import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatGenerateInviteCodeRecordData
+import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatInviteApplyRecordData
+import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatInviteRecordData
+import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatJoinByInviteCodeRecordData
 import com.netease.nimlib.sdk.qchat.model.systemnotification.QChatSystemNotificationAttachment
 import com.netease.nimlib.sdk.qchat.param.QChatAcceptServerApplyParam
 import com.netease.nimlib.sdk.qchat.param.QChatAcceptServerInviteParam
 import com.netease.nimlib.sdk.qchat.param.QChatAddChannelRoleParam
+import com.netease.nimlib.sdk.qchat.param.QChatAddMemberRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatAddMembersToServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatApplyServerJoinParam
+import com.netease.nimlib.sdk.qchat.param.QChatBanServerMemberParam
+import com.netease.nimlib.sdk.qchat.param.QChatCheckPermissionParam
+import com.netease.nimlib.sdk.qchat.param.QChatCheckPermissionsParam
 import com.netease.nimlib.sdk.qchat.param.QChatCreateChannelParam
 import com.netease.nimlib.sdk.qchat.param.QChatCreateServerParam
 import com.netease.nimlib.sdk.qchat.param.QChatCreateServerRoleParam
@@ -60,6 +79,8 @@ import com.netease.nimlib.sdk.qchat.param.QChatDeleteServerParam
 import com.netease.nimlib.sdk.qchat.param.QChatDeleteServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatDownloadAttachmentParam
 import com.netease.nimlib.sdk.qchat.param.QChatGenerateInviteCodeParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetBannedServerMembersByPageParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetChannelBlackWhiteRolesByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelMembersByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelRolesParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelUnreadInfosParam
@@ -67,8 +88,12 @@ import com.netease.nimlib.sdk.qchat.param.QChatGetChannelsByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelsParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetExistingAccidsInServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetExistingAccidsOfMemberRolesParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetExistingChannelBlackWhiteRolesParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetExistingChannelRolesByServerRoleIdsParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetExistingServerRolesByAccidsParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetInviteApplyRecordOfSelfParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetInviteApplyRecordOfServerParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetMemberRolesParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetMembersFromServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetMessageHistoryByIdsParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetMessageHistoryParam
@@ -78,6 +103,7 @@ import com.netease.nimlib.sdk.qchat.param.QChatGetServerRolesByAccidParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetServerRolesParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetServersByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetServersParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetUserServerPushConfigsParam
 import com.netease.nimlib.sdk.qchat.param.QChatInviteServerMembersParam
 import com.netease.nimlib.sdk.qchat.param.QChatJoinByInviteCodeParam
 import com.netease.nimlib.sdk.qchat.param.QChatKickOtherClientsParam
@@ -89,6 +115,7 @@ import com.netease.nimlib.sdk.qchat.param.QChatMarkSystemNotificationsReadParam
 import com.netease.nimlib.sdk.qchat.param.QChatRejectServerApplyParam
 import com.netease.nimlib.sdk.qchat.param.QChatRejectServerInviteParam
 import com.netease.nimlib.sdk.qchat.param.QChatRemoveChannelRoleParam
+import com.netease.nimlib.sdk.qchat.param.QChatRemoveMemberRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatRemoveMembersFromServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatResendMessageParam
 import com.netease.nimlib.sdk.qchat.param.QChatResendSystemNotificationParam
@@ -96,27 +123,41 @@ import com.netease.nimlib.sdk.qchat.param.QChatRevokeMessageParam
 import com.netease.nimlib.sdk.qchat.param.QChatSearchChannelByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatSearchChannelMembersParam
 import com.netease.nimlib.sdk.qchat.param.QChatSearchServerByPageParam
+import com.netease.nimlib.sdk.qchat.param.QChatSearchServerMemberByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatSendMessageParam
 import com.netease.nimlib.sdk.qchat.param.QChatSendSystemNotificationParam
+import com.netease.nimlib.sdk.qchat.param.QChatServerMarkReadParam
+import com.netease.nimlib.sdk.qchat.param.QChatSubscribeAllChannelParam
 import com.netease.nimlib.sdk.qchat.param.QChatSubscribeChannelParam
 import com.netease.nimlib.sdk.qchat.param.QChatSubscribeServerParam
+import com.netease.nimlib.sdk.qchat.param.QChatUnbanServerMemberParam
+import com.netease.nimlib.sdk.qchat.param.QChatUpdateChannelBlackWhiteMembersParam
+import com.netease.nimlib.sdk.qchat.param.QChatUpdateChannelBlackWhiteRolesParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateChannelParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateChannelRoleParam
+import com.netease.nimlib.sdk.qchat.param.QChatUpdateMemberRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateMessageParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateMyMemberInfoParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateParam
+import com.netease.nimlib.sdk.qchat.param.QChatUpdateServerMemberInfoParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateServerParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateServerRolePrioritiesParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateSystemNotificationParam
+import com.netease.nimlib.sdk.qchat.param.QChatUpdateUserServerPushConfigParam
 import com.netease.nimlib.sdk.qchat.result.QChatAddChannelRoleResult
+import com.netease.nimlib.sdk.qchat.result.QChatAddMemberRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatAddMembersToServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatApplyServerJoinResult
+import com.netease.nimlib.sdk.qchat.result.QChatCheckPermissionResult
+import com.netease.nimlib.sdk.qchat.result.QChatCheckPermissionsResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateServerResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatDeleteMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGenerateInviteCodeResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetBannedServerMembersByPageResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetChannelBlackWhiteRolesByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelMembersByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelUnreadInfosResult
@@ -124,8 +165,12 @@ import com.netease.nimlib.sdk.qchat.result.QChatGetChannelsByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelsResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingAccidsInServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingAccidsOfMemberRolesResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetExistingChannelBlackWhiteRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingChannelRolesByServerRoleIdsResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetExistingServerRolesByAccidsResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetInviteApplyRecordOfSelfResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetInviteApplyRecordOfServerResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetMemberRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetMembersFromServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetMessageHistoryResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServerMembersByPageResult
@@ -134,6 +179,7 @@ import com.netease.nimlib.sdk.qchat.result.QChatGetServerRolesByAccidResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServerRolesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServersByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServersResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetUserPushConfigsResult
 import com.netease.nimlib.sdk.qchat.result.QChatInviteServerMembersResult
 import com.netease.nimlib.sdk.qchat.result.QChatKickOtherClientsResult
 import com.netease.nimlib.sdk.qchat.result.QChatLoginResult
@@ -142,18 +188,25 @@ import com.netease.nimlib.sdk.qchat.result.QChatRevokeMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchChannelByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchChannelMembersResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchServerByPageResult
+import com.netease.nimlib.sdk.qchat.result.QChatSearchServerMemberByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSendMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSendSystemNotificationResult
+import com.netease.nimlib.sdk.qchat.result.QChatServerMarkReadResult
+import com.netease.nimlib.sdk.qchat.result.QChatSubscribeAllChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeServerResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateChannelRoleResult
+import com.netease.nimlib.sdk.qchat.result.QChatUpdateMemberRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateMyMemberInfoResult
+import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerMemberInfoResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerRolePrioritiesResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateSystemNotificationResult
+import org.json.JSONException
+import org.json.JSONObject
 
 fun Map<String, *>.toQChatAcceptServerApplyParam(): QChatAcceptServerApplyParam {
     val requestId = (this["requestId"] as Number).toLong()
@@ -480,7 +533,7 @@ fun QChatServerMember.toMap() = mapOf<String, Any?>(
     "accid" to accid,
     "nick" to nick,
     "avatar" to avatar,
-    "custom" to custom,
+    "custom" to if (custom == null) "" else custom,
     "type" to type.toStr(),
     "joinTime" to joinTime,
     "inviter" to inviter,
@@ -763,8 +816,56 @@ fun Map<String, *>.toQChatSearchChannelMembersParam(): QChatSearchChannelMembers
     return param
 }
 
+fun Map<String, *>.toQChatUpdateChannelBlackWhiteRolesParam(): QChatUpdateChannelBlackWhiteRolesParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
+    val operateType = stringToQChatChannelBlackWhiteOperateType(this["operateType"] as String)!!
+    val roleId = (this["roleId"] as Number).toLong()
+    return QChatUpdateChannelBlackWhiteRolesParam(serverId, channelId, type, operateType, roleId)
+}
+
+fun Map<String, *>.toQChatGetChannelBlackWhiteRolesByPageParam(): QChatGetChannelBlackWhiteRolesByPageParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
+    val timeTag = (this["timeTag"] as Number).toLong()
+    val param = QChatGetChannelBlackWhiteRolesByPageParam(serverId, channelId, type, timeTag)
+    (this["limit"] as Number?)?.toInt()?.let {
+        param.limit = it
+    }
+    return param
+}
+
+fun QChatGetChannelBlackWhiteRolesByPageResult.toMap() = mapOf<String, Any?>(
+    "hasMore" to isHasMore,
+    "nextTimeTag" to nextTimeTag,
+    "roleList" to roleList?.map { it.toMap() }?.toList()
+)
+
+fun Map<String, *>.toQChatGetExistingChannelBlackWhiteRolesParam(): QChatGetExistingChannelBlackWhiteRolesParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
+    val roleIds = (this["roleIds"] as List<*>).map { (it as Number).toLong() }
+    return QChatGetExistingChannelBlackWhiteRolesParam(serverId, channelId, type, roleIds)
+}
+
+fun QChatGetExistingChannelBlackWhiteRolesResult.toMap() = mapOf<String, Any?>(
+    "roleList" to roleList?.map { it.toMap() }?.toList()
+)
+
+fun Map<String, *>.toQChatUpdateChannelBlackWhiteMembersParam(): QChatUpdateChannelBlackWhiteMembersParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
+    val operateType = stringToQChatChannelBlackWhiteOperateType(this["operateType"] as String)!!
+    val toAccids = (this["toAccids"] as List<String>)
+    return QChatUpdateChannelBlackWhiteMembersParam(serverId, channelId, type, operateType, toAccids)
+}
+
 fun QChatSearchChannelMembersResult.toMap() = mapOf<String, Any?>(
-    "members" to members.map { it.toMap() }.toList()
+    "members" to members?.map { it.toMap() }?.toList()
 )
 
 fun QChatChannelMember.toMap() = mapOf<String, Any?>(
@@ -830,7 +931,7 @@ fun QChatMessage.toMap() = mapOf<String, Any?>(
     "serverStatus" to serverStatus,
     "pushPayload" to pushPayload,
     "pushContent" to pushContent,
-    "mentionedAccidList" to mentionedAccidList,
+    "mentionedAccidList" to (mentionedAccidList ?: emptyList<String>()),
     "mentionedAll" to isMentionedAll,
     "historyEnable" to isHistoryEnable,
     "attachment" to AttachmentHelper.attachmentToMap(msgType, attachment),
@@ -852,7 +953,7 @@ fun QChatMessage.toMap() = mapOf<String, Any?>(
     "subType" to subType,
     "direct" to stringFromMsgDirectionEnum(direct),
     "localExtension" to localExtension,
-    "status" to stringFromMsgStatusEnum(status)
+    "status" to stringFromMsgStatusEnum(status, false)
 )
 
 fun QChatMessageRefer.toMap() = mapOf<String, Any?>(
@@ -1013,6 +1114,21 @@ fun QChatRevokeMessageResult.toMap() = mapOf<String, Any?>(
     "message" to message.toMap()
 )
 
+fun String.getMap(): MutableMap<String, Any>? {
+    try {
+        val jsonObject = JSONObject(this)
+        val keyIter: Iterator<String> = jsonObject.keys()
+        val valueMap = mutableMapOf<String, Any>()
+        keyIter.forEach {
+            valueMap[it] = jsonObject[it] as Any
+        }
+        return valueMap
+    } catch (e: JSONException) {
+        e.printStackTrace()
+    }
+    return null
+}
+
 @Suppress("UNCHECKED_CAST")
 fun Map<String, *>.toQChatSendMessageParam(): QChatSendMessageParam {
     val serverId = (this["serverId"] as Number).toLong()
@@ -1025,8 +1141,13 @@ fun Map<String, *>.toQChatSendMessageParam(): QChatSendMessageParam {
     (this["antiSpamOption"] as Map<String, Any>?)?.let {
         param.antiSpamOption = it.toQChatMessageAntiSpamOption()
     }
+    // 先转map，再走attachment统一的反序列化逻辑
     (this["attach"] as String?)?.let {
-        param.attach = it
+        val map = it.getMap()
+        if (map != null) {
+            val attachment = AttachmentHelper.attachmentFromMap(type, map)
+            param.attach = attachment?.toJson(false)
+        }
     }
     (this["body"] as String?)?.let {
         param.body = it
@@ -1236,7 +1357,8 @@ fun Map<String, *>.toQChatUpdateMessageParam(): QChatUpdateMessageParam {
         it.body = this["body"] as? String
         it.extension = this["extension"] as? Map<String, Any?>
         it.serverStatus = (this["serverStatus"] as? Number)?.toInt()
-        it.antiSpamOption = (this["antiSpamOption"] as? Map<String, Any?>)?.toQChatMessageAntiSpamOption()
+        it.antiSpamOption =
+            (this["antiSpamOption"] as? Map<String, Any?>)?.toQChatMessageAntiSpamOption()
         it.subType = (this["subType"] as? Number)?.toInt()
     }
 }
@@ -1698,4 +1820,373 @@ fun Map<String, *>.toQChatGetExistingAccidsOfMemberRolesParam(): QChatGetExistin
 
 fun QChatGetExistingAccidsOfMemberRolesResult.toMap() = mapOf<String, Any?>(
     "accidList" to accidList
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatUpdateServerMemberInfoParam(): QChatUpdateServerMemberInfoParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val accid = this["accid"] as String
+    val nick = this["nick"] as String?
+    val avatar = this["avatar"] as String?
+    val antiSpamConfig = (this["antiSpamConfig"] as Map<String, *>?)?.toQChatAntiSpamConfig()
+    return QChatUpdateServerMemberInfoParam(serverId, accid).apply {
+        this.nick = nick
+        this.avatar = avatar
+        this.antiSpamConfig = antiSpamConfig
+    }
+}
+
+fun QChatUpdateServerMemberInfoResult.toMap() = mapOf<String, Any?>(
+    "member" to member?.toMap()
+)
+
+fun Map<String, *>.toQChatBanServerMemberParam(): QChatBanServerMemberParam {
+    val serverId = (this["serverId"] as Number?)?.toLong() ?: 0L
+    val targetAccid = this["targetAccid"] as String?
+    val customExt = this["customExt"] as String?
+    return QChatBanServerMemberParam(serverId, targetAccid).apply {
+        this.customExt = customExt
+    }
+}
+
+fun Map<String, *>.toQChatUnbanServerMemberParam(): QChatUnbanServerMemberParam {
+    val serverId = (this["serverId"] as Number?)?.toLong() ?: 0L
+    val targetAccid = this["targetAccid"] as String?
+    val customExt = this["customExt"] as String?
+    return QChatUnbanServerMemberParam(serverId, targetAccid).apply {
+        this.customExt = customExt
+    }
+}
+
+fun Map<String, *>.toQChatGetBannedServerMembersByPageParam(): QChatGetBannedServerMembersByPageParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val timeTag = (this["timeTag"] as Number).toLong()
+    val limit = (this["limit"] as Number?)?.toInt()
+    return QChatGetBannedServerMembersByPageParam(serverId, timeTag).apply {
+        this.limit = limit
+    }
+}
+
+fun QChatGetBannedServerMembersByPageResult.toMap() = mapOf<String, Any?>(
+    "hasMore" to isHasMore,
+    "nextTimeTag" to nextTimeTag,
+    "serverMemberBanInfoList" to serverMemberBanInfoList?.map { it.toMap() }
+)
+
+fun QChatBannedServerMember.toMap() = mapOf<String, Any?>(
+    "serverId" to serverId,
+    "accid" to accid,
+    "custom" to custom,
+    "banTime" to banTime,
+    "isValid" to isValid,
+    "createTime" to createTime,
+    "updateTime" to updateTime
+)
+
+fun Map<String, *>.toQChatUpdateUserServerPushConfigParam(): QChatUpdateUserServerPushConfigParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val pushMsgType = (this["pushMsgType"] as String?)?.toQChatPushMsgType()!!
+    return QChatUpdateUserServerPushConfigParam(serverId, pushMsgType)
+}
+
+fun String.toQChatPushMsgType(): QChatPushMsgType? {
+    return when (this) {
+        "all" -> QChatPushMsgType.ALL
+        "highMidLevel" -> QChatPushMsgType.HIGH_MID_LEVEL
+        "highLevel" -> QChatPushMsgType.HIGH_LEVEL
+        "none" -> QChatPushMsgType.NONE
+        "inherit" -> QChatPushMsgType.INHERIT
+        else -> null
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatGetUserServerPushConfigsParam(): QChatGetUserServerPushConfigsParam {
+    val serverIdList = (this["serverIdList"] as List<Any>).map { it.toString().toLong() }
+    return QChatGetUserServerPushConfigsParam(serverIdList)
+}
+
+fun QChatGetUserPushConfigsResult.toMap() = mapOf<String, Any?>(
+    "userPushConfigs" to userPushConfigs?.map {
+        it.toMap()
+    }
+)
+
+fun QChatUserPushConfig.toMap() = mapOf<String, Any?>(
+    "serverId" to serverId,
+    "channelId" to channelId,
+    "channelCategoryId" to (channelCategoryId ?: 0),
+    "dimension" to dimension?.toStr(),
+    "pushMsgType" to pushMsgType?.toStr()
+)
+
+fun QChatDimension.toStr() = when (this) {
+    QChatDimension.CHANNEL -> "channel"
+    QChatDimension.SERVER -> "server"
+    QChatDimension.CHANNEL_CATEGORY -> "channelCategory"
+}
+
+fun QChatPushMsgType.toStr() = when (this) {
+    QChatPushMsgType.ALL -> "all"
+    QChatPushMsgType.HIGH_MID_LEVEL -> "highMidLevel"
+    QChatPushMsgType.HIGH_LEVEL -> "highLevel"
+    QChatPushMsgType.NONE -> "none"
+    QChatPushMsgType.INHERIT -> "inherit"
+}
+
+fun Map<String, *>.toQChatSearchServerMemberByPageParam(): QChatSearchServerMemberByPageParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val limit = (this["limit"] as Number?)?.toInt()
+    val keyword = this["keyword"] as String
+    return QChatSearchServerMemberByPageParam(keyword, serverId).apply {
+        this.limit = limit
+    }
+}
+
+fun QChatSearchServerMemberByPageResult.toMap() = mapOf<String, Any?>(
+    "members" to members?.map { it.toMap() }
+)
+
+fun Map<String, *>.toQChatGetInviteApplyRecordOfServerParam(): QChatGetInviteApplyRecordOfServerParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val fromTime = (this["fromTime"] as Number?)?.toLong()
+    val toTime = (this["toTime"] as Number?)?.toLong()
+    val limit = (this["limit"] as Number?)?.toInt()
+    val excludeRecordId = (this["excludeRecordId"] as Number?)?.toLong()
+    val reverse = this["reverse"] as Boolean?
+    return QChatGetInviteApplyRecordOfServerParam(
+        serverId,
+        fromTime,
+        toTime,
+        reverse,
+        limit,
+        excludeRecordId
+    )
+}
+
+fun QChatGetInviteApplyRecordOfServerResult.toMap() = mapOf<String, Any?>(
+    "records" to records?.map { it.toMap() }
+)
+
+fun QChatInviteApplyRecord.toMap() = mapOf<String, Any?>(
+    "accid" to accid,
+    "type" to type?.toStr(),
+    "serverId" to serverId,
+    "status" to status?.toStr(),
+    "requestId" to requestId,
+    "createTime" to createTime,
+    "updateTime" to updateTime,
+    "expireTime" to expireTime,
+    "data" to data?.toMap(),
+    "recordId" to recordId
+)
+
+fun QChatInviteApplyRecordData.toMap() = when (this) {
+    is QChatApplyRecordData -> mapOf<String, Any?>(
+        "applyPostscript" to applyPostscript,
+        "updateAccid" to updateAccid,
+        "updatePostscript" to updatePostscript
+    )
+    is QChatBeInvitedRecordData -> mapOf<String, Any?>(
+        "invitePostscript" to invitePostscript,
+        "updatePostscript" to updatePostscript
+    )
+    is QChatGenerateInviteCodeRecordData -> mapOf<String, Any?>(
+        "inviteCode" to inviteCode,
+        "invitedUserCount" to invitedUserCount,
+        "invitePostscript" to invitePostscript
+    )
+    is QChatInviteRecordData -> mapOf<String, Any?>(
+        "invitedUsers" to invitedUsers?.map { it.toMap() },
+        "invitePostscript" to invitePostscript
+    )
+    is QChatJoinByInviteCodeRecordData -> mapOf<String, Any?>(
+        "invitePostscript" to invitePostscript,
+        "inviteCode" to inviteCode,
+        "updatePostscript" to updatePostscript
+    )
+    else -> null
+}
+
+fun QChatInvitedUserInfo.toMap() = mapOf<String, Any?>(
+    "accid" to accid,
+    "status" to status?.toStr(),
+    "updatePostscript" to updatePostscript,
+    "updateTime" to updateTime
+)
+
+fun QChatInviteApplyRecordType.toStr() = when (this) {
+    QChatInviteApplyRecordType.APPLY -> "apply"
+    QChatInviteApplyRecordType.INVITE -> "invite"
+    QChatInviteApplyRecordType.BE_INVITED -> "beInvited"
+    QChatInviteApplyRecordType.GENERATE_INVITE_CODE -> "generateInviteCode"
+    QChatInviteApplyRecordType.JOIN_BY_INVITE_CODE -> "joinByInviteCode"
+}
+
+fun QChatInviteApplyRecordStatus.toStr() = when (this) {
+    QChatInviteApplyRecordStatus.INITIAL -> "initial"
+    QChatInviteApplyRecordStatus.ACCEPT -> "accept"
+    QChatInviteApplyRecordStatus.REJECT -> "reject"
+    QChatInviteApplyRecordStatus.ACCEPT_BY_OTHER -> "acceptByOther"
+    QChatInviteApplyRecordStatus.REJECT_BY_OTHER -> "rejectByOther"
+    QChatInviteApplyRecordStatus.AUTO_JOIN -> "autoJoin"
+    QChatInviteApplyRecordStatus.EXPIRED -> "expired"
+}
+
+fun Map<String, *>.toQChatGetInviteApplyRecordOfSelfParam(): QChatGetInviteApplyRecordOfSelfParam {
+    val fromTime = (this["fromTime"] as Number?)?.toLong()
+    val toTime = (this["toTime"] as Number?)?.toLong()
+    val limit = (this["limit"] as Number?)?.toInt()
+    val excludeRecordId = (this["excludeRecordId"] as Number?)?.toLong()
+    val reverse = this["reverse"] as Boolean?
+    return QChatGetInviteApplyRecordOfSelfParam(fromTime, toTime, reverse, limit, excludeRecordId)
+}
+
+fun QChatGetInviteApplyRecordOfSelfResult.toMap() = mapOf<String, Any?>(
+    "records" to records?.map { it.toMap() }
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatServerMarkReadParam(): QChatServerMarkReadParam {
+    val serverIds = (this["serverIds"] as List<Any>).map {
+        it.toString().toLong()
+    }
+    return QChatServerMarkReadParam(serverIds)
+}
+
+fun QChatServerMarkReadResult.toMap() = mapOf<String, Any>(
+    "successServerIds" to successServerIds,
+    "failedServerIds" to failedServerIds,
+    "timestamp" to timestamp
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatSubscribeAllChannelParam(): QChatSubscribeAllChannelParam {
+    val serverIds = (this["serverIds"] as List<Any>).map {
+        it.toString().toLong()
+    }
+    val type = (this["type"] as String).toQChatSubscribeType()!!
+    return QChatSubscribeAllChannelParam(type, serverIds)
+}
+
+fun QChatSubscribeAllChannelResult.toMap() = mapOf<String, Any?>(
+    "failedList" to failedList,
+    "unreadInfoList" to unreadInfoList?.map {
+        it.toMap()
+    }
+)
+
+fun Map<String, *>.toQChatAddMemberRoleParam(): QChatAddMemberRoleParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val accid = this["accid"] as String
+    return QChatAddMemberRoleParam(serverId, channelId, accid)
+}
+
+fun QChatAddMemberRoleResult.toMap() = mapOf<String, Any?>(
+    "role" to role?.toMap()
+)
+
+fun QChatMemberRole.toMap() = mapOf<String, Any?>(
+    "serverId" to serverId,
+    "id" to id,
+    "accid" to accid,
+    "channelId" to channelId,
+    "resourceAuths" to resourceAuths?.filter {
+        !TextUtils.isEmpty(stringFromQChatRoleResource(it.key)) &&
+            !TextUtils.isEmpty(stringFromQChatRoleResource(it.key))
+    }?.mapKeys {
+        stringFromQChatRoleResource(it.key)
+    }?.mapValues {
+        stringFromQChatRoleOption(it.value)
+    },
+    "createTime" to createTime,
+    "updateTime" to updateTime,
+    "nick" to nick,
+    "avatar" to if (avatar == null) "" else avatar,
+    "custom" to if (custom == null) "" else custom,
+    "type" to type?.toStr(),
+    "joinTime" to jointime,
+    "inviter" to inviter
+)
+
+fun Map<String, *>.toQChatRemoveMemberRoleParam(): QChatRemoveMemberRoleParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val accid = this["accid"] as String
+    return QChatRemoveMemberRoleParam(serverId, channelId, accid)
+}
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatUpdateMemberRoleParam(): QChatUpdateMemberRoleParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val accid = this["accid"] as String
+    val resourceAuths = (this["resourceAuths"] as Map<String, String>).let {
+        it.mapKeys { k ->
+            stringToQChatRoleResource(k.key)
+        }.mapValues { v ->
+            stringToQChatRoleOption(v.value)
+        }
+    }
+    return QChatUpdateMemberRoleParam(serverId, channelId, accid, resourceAuths)
+}
+
+fun QChatUpdateMemberRoleResult.toMap() = mapOf<String, Any?>(
+    "role" to role?.toMap()
+)
+
+fun Map<String, *>.toQChatGetMemberRolesParam(): QChatGetMemberRolesParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number).toLong()
+    val timeTag = (this["timeTag"] as Number).toLong()
+    val limit = (this["limit"] as Number).toInt()
+    return QChatGetMemberRolesParam(serverId, channelId, timeTag, limit)
+}
+
+fun QChatGetMemberRolesResult.toMap() = mapOf<String, Any?>(
+    "roleList" to roleList?.map {
+        it.toMap()
+    }
+)
+
+fun Map<String, *>.toQChatCheckPermissionParam(): QChatCheckPermissionParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number?)?.toLong()
+    val permission = this["permission"] as String
+    val type = stringToQChatRoleResource(permission)
+    return if (channelId == null) {
+        QChatCheckPermissionParam(serverId, type)
+    } else {
+        QChatCheckPermissionParam(serverId, channelId, type)
+    }
+}
+
+fun QChatCheckPermissionResult.toMap() = mapOf<String, Any?>(
+    "hasPermission" to isHasPermission
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatCheckPermissionsParam(): QChatCheckPermissionsParam {
+    val serverId = (this["serverId"] as Number).toLong()
+    val channelId = (this["channelId"] as Number?)?.toLong()
+    val permissionTypeList = (this["permissions"] as List<Any>?)?.map {
+        stringToQChatRoleResource(it.toString())
+    }
+    return if (channelId == null) {
+        QChatCheckPermissionsParam(serverId, permissionTypeList)
+    } else {
+        QChatCheckPermissionsParam(serverId, channelId, permissionTypeList)
+    }
+}
+
+fun QChatCheckPermissionsResult.toMap() = mapOf<String, Any?>(
+    "permissions" to permissions?.filter {
+        !TextUtils.isEmpty(stringFromQChatRoleResource(it.key)) &&
+            !TextUtils.isEmpty(stringFromQChatRoleResource(it.key))
+    }?.mapKeys {
+        stringFromQChatRoleResource(it.key)
+    }?.mapValues {
+        stringFromQChatRoleOption(it.value)
+    }
 )

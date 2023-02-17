@@ -14,6 +14,8 @@ import com.netease.nimlib.sdk.qchat.enums.QChatChannelSyncMode
 import com.netease.nimlib.sdk.qchat.enums.QChatChannelType
 import com.netease.nimlib.sdk.qchat.enums.QChatInOutType
 import com.netease.nimlib.sdk.qchat.enums.QChatKickOutReason
+import com.netease.nimlib.sdk.qchat.enums.QChatMessageReferType
+import com.netease.nimlib.sdk.qchat.enums.QChatMessageSearchSortEnum
 import com.netease.nimlib.sdk.qchat.enums.QChatMultiSpotNotifyType
 import com.netease.nimlib.sdk.qchat.enums.QChatNotifyReason
 import com.netease.nimlib.sdk.qchat.enums.QChatQuickCommentOperateType
@@ -182,6 +184,9 @@ val qChatChannelBlackWhiteTypeMap = mapOf(
 fun stringFromQChatChannelBlackWhiteType(type: QChatChannelBlackWhiteType?): String? =
     qChatChannelBlackWhiteTypeMap[type]
 
+fun stringToQChatChannelBlackWhiteType(type: String?): QChatChannelBlackWhiteType? =
+    qChatChannelBlackWhiteTypeMap.filterValues { it == type }.keys.firstOrNull()
+
 val qChatChannelBlackWhiteOperateTypeMap = mapOf(
     QChatChannelBlackWhiteOperateType.ADD to "add",
     QChatChannelBlackWhiteOperateType.REMOVE to "remove"
@@ -189,6 +194,9 @@ val qChatChannelBlackWhiteOperateTypeMap = mapOf(
 
 fun stringFromQChatChannelBlackWhiteOperateType(type: QChatChannelBlackWhiteOperateType?): String? =
     qChatChannelBlackWhiteOperateTypeMap[type]
+
+fun stringToQChatChannelBlackWhiteOperateType(type: String?): QChatChannelBlackWhiteOperateType? =
+    qChatChannelBlackWhiteOperateTypeMap.filterValues { it == type }.keys.firstOrNull()
 
 val qChatQuickCommentOperateTypeMap = mapOf(
     QChatQuickCommentOperateType.ADD to "add",
@@ -216,7 +224,7 @@ val qChatRoleResourceMap = mapOf(
     QChatRoleResource.KICK_SERVER to
         "kickServer",
 
-    QChatRoleResource.ACCOUNT_INFO_SELF to
+    QChatRoleResource.ACCOUNT_INFO_OTHER to
         "accountInfoOther",
 
     QChatRoleResource.RECALL_MSG to
@@ -313,3 +321,22 @@ fun stringToQChatRoleType(type: String): QChatRoleType =
 
 fun stringFromQChatRoleType(type: QChatRoleType?) =
     qChatRoleTypeMap[type] ?: qChatRoleTypeMap[QChatRoleType.EVERYONE]
+
+val qChatMessageReferTypeMap = mapOf(
+    QChatMessageReferType.ALL to "all",
+    QChatMessageReferType.REPLAY to "replay",
+    QChatMessageReferType.THREAD to "thread"
+)
+
+fun stringToQChatMessageReferType(type: String): QChatMessageReferType =
+    qChatMessageReferTypeMap.filterValues { it == type }.keys.firstOrNull() ?: QChatMessageReferType.ALL
+
+fun stringFromQChatMessageReferType(type: QChatMessageReferType?) =
+    qChatMessageReferTypeMap[type] ?: qChatMessageReferTypeMap[QChatMessageReferType.ALL]
+
+val qQChatMessageSearchSortEnum = mapOf(
+    QChatMessageSearchSortEnum.CreateTime to "createTime"
+)
+
+fun stringToQChatMessageSearchSortEnum(type: String?): QChatMessageSearchSortEnum? =
+    qQChatMessageSearchSortEnum.filterValues { it == type }.keys.firstOrNull()

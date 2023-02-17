@@ -6,10 +6,10 @@ import NIMSDK
 import Foundation
 
 extension NIMQChatCreateServerRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatCreateServerRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatCreateServerRoleParam? {
     guard let model = NIMQChatCreateServerRoleParam.yx_model(with: json) else {
       print("❌NIMQChatCreateServerRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatCreateServerRoleParam()
+      return nil
     }
     if let type = json["type"] as? String,
        let tp = FLTQChatRoleType(rawValue: type)?.convertNIMQChatRoleType() {
@@ -27,20 +27,20 @@ extension NIMQChatCreateServerRoleParam {
 }
 
 extension NIMQChatDeleteServerRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatDeleteServerRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatDeleteServerRoleParam? {
     guard let model = NIMQChatDeleteServerRoleParam.yx_model(with: json) else {
       print("❌NIMQChatDeleteServerRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatDeleteServerRoleParam()
+      return nil
     }
     return model
   }
 }
 
 extension NIMQChatUpdateServerRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateServerRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateServerRoleParam? {
     guard let model = NIMQChatUpdateServerRoleParam.yx_model(with: json) else {
       print("❌NIMQChatUpdateServerRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatUpdateServerRoleParam()
+      return nil
     }
     if let resourceAuths = json["resourceAuths"] as? [String: String] {
       var commands = [NIMQChatPermissionStatusInfo]()
@@ -66,10 +66,10 @@ extension NIMQChatUpdateServerRoleParam {
 }
 
 extension NIMQChatupdateServerRolePrioritiesParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatupdateServerRolePrioritiesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatupdateServerRolePrioritiesParam? {
     guard let model = NIMQChatupdateServerRolePrioritiesParam.yx_model(with: json) else {
       print("❌NIMQChatupdateServerRolePrioritiesParam.yx_model(with: json) FAILED")
-      return NIMQChatupdateServerRolePrioritiesParam()
+      return nil
     }
     if let roleIdPriorityMap = json["roleIdPriorityMap"] as? [String: Int] {
       var updateItems = [NIMQChatUpdateServerRolePriorityItem]()
@@ -89,43 +89,42 @@ extension NIMQChatupdateServerRolePrioritiesParam {
 }
 
 extension NIMQChatGetServerRolesParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetServerRolesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetServerRolesParam? {
     guard let model = NIMQChatGetServerRolesParam.yx_model(with: json) else {
       print("❌NIMQChatGetServerRolesParam.yx_model(with: json) FAILED")
-      return NIMQChatGetServerRolesParam()
+      return nil
     }
     return model
   }
 }
 
 extension NIMQChatAddChannelRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatAddChannelRoleParam {
-    guard let model = NIMQChatAddChannelRoleParam.yx_model(with: json) else {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatAddChannelRoleParam? {
+    guard let model = NIMQChatAddChannelRoleParam.yx_model(with: json),
+          let serverRoleId = json["serverRoleId"] as? UInt64 else {
       print("❌NIMQChatAddChannelRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatAddChannelRoleParam()
+      return nil
     }
-    if let serverRoleId = json["serverRoleId"] as? UInt64 {
-      model.parentRoleId = serverRoleId
-    }
+    model.parentRoleId = serverRoleId
     return model
   }
 }
 
 extension NIMQChatRemoveChannelRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatRemoveChannelRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatRemoveChannelRoleParam? {
     guard let model = NIMQChatRemoveChannelRoleParam.yx_model(with: json) else {
       print("❌NIMQChatRemoveChannelRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatRemoveChannelRoleParam()
+      return nil
     }
     return model
   }
 }
 
 extension NIMQChatUpdateChannelRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateChannelRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateChannelRoleParam? {
     guard let model = NIMQChatUpdateChannelRoleParam.yx_model(with: json) else {
       print("❌NIMQChatUpdateChannelRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatUpdateChannelRoleParam()
+      return nil
     }
     if let resourceAuths = json["resourceAuths"] as? [String: String] {
       var commands = [NIMQChatPermissionStatusInfo]()
@@ -147,10 +146,10 @@ extension NIMQChatUpdateChannelRoleParam {
 }
 
 extension NIMQChatGetChannelRolesParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelRolesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelRolesParam? {
     guard let model = NIMQChatGetChannelRolesParam.yx_model(with: json) else {
       print("❌NIMQChatGetChannelRolesParam.yx_model(with: json) FAILED")
-      return NIMQChatGetChannelRolesParam()
+      return nil
     }
     if let time = json["timeTag"] as? Double {
       model.timeTag = TimeInterval(time / 1000)
@@ -160,10 +159,10 @@ extension NIMQChatGetChannelRolesParam {
 }
 
 extension NIMQChatAddServerRoleMembersParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatAddServerRoleMembersParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatAddServerRoleMembersParam? {
     guard let model = NIMQChatAddServerRoleMembersParam.yx_model(with: json) else {
       print("❌NIMQChatAddServerRoleMembersParam.yx_model(with: json) FAILED")
-      return NIMQChatAddServerRoleMembersParam()
+      return nil
     }
     if let accids = json["accids"] as? [String] {
       model.accountArray = accids
@@ -173,10 +172,10 @@ extension NIMQChatAddServerRoleMembersParam {
 }
 
 extension NIMQChatRemoveServerRoleMemberParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatRemoveServerRoleMemberParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatRemoveServerRoleMemberParam? {
     guard let model = NIMQChatRemoveServerRoleMemberParam.yx_model(with: json) else {
       print("❌NIMQChatRemoveServerRoleMemberParam.yx_model(with: json) FAILED")
-      return NIMQChatRemoveServerRoleMemberParam()
+      return nil
     }
     if let accids = json["accids"] as? [String] {
       model.accountArray = accids
@@ -186,10 +185,10 @@ extension NIMQChatRemoveServerRoleMemberParam {
 }
 
 extension NIMQChatGetServerRoleMembersParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetServerRoleMembersParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetServerRoleMembersParam? {
     guard let model = NIMQChatGetServerRoleMembersParam.yx_model(with: json) else {
       print("❌NIMQChatGetServerRoleMembersParam.yx_model(with: json) FAILED")
-      return NIMQChatGetServerRoleMembersParam()
+      return nil
     }
     if let time = json["timeTag"] as? Double {
       model.timeTag = TimeInterval(time / 1000)
@@ -199,10 +198,10 @@ extension NIMQChatGetServerRoleMembersParam {
 }
 
 extension NIMQChatGetServerRolesByAccidParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetServerRolesByAccidParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetServerRolesByAccidParam? {
     guard let model = NIMQChatGetServerRolesByAccidParam.yx_model(with: json) else {
       print("❌NIMQChatGetServerRolesByAccidParam.yx_model(with: json) FAILED")
-      return NIMQChatGetServerRolesByAccidParam()
+      return nil
     }
     if let time = json["timeTag"] as? Double {
       model.timeTag = TimeInterval(time / 1000)
@@ -212,10 +211,10 @@ extension NIMQChatGetServerRolesByAccidParam {
 }
 
 extension NIMQChatGetExistingAccidsInServerRoleParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetExistingAccidsInServerRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetExistingAccidsInServerRoleParam? {
     guard let model = NIMQChatGetExistingAccidsInServerRoleParam.yx_model(with: json) else {
       print("❌NIMQChatGetExistingAccidsInServerRoleParam.yx_model(with: json) FAILED")
-      return NIMQChatGetExistingAccidsInServerRoleParam()
+      return nil
     }
     return model
   }
@@ -223,11 +222,11 @@ extension NIMQChatGetExistingAccidsInServerRoleParam {
 
 extension NIMQChatGetExistingServerRoleMembersByAccidsParam {
   static func fromDic(_ json: [String: Any])
-    -> NIMQChatGetExistingServerRoleMembersByAccidsParam {
+    -> NIMQChatGetExistingServerRoleMembersByAccidsParam? {
     guard let model = NIMQChatGetExistingServerRoleMembersByAccidsParam.yx_model(with: json)
     else {
       print("❌NIMQChatGetExistingServerRoleMembersByAccidsParam.yx_model(with: json) FAILED")
-      return NIMQChatGetExistingServerRoleMembersByAccidsParam()
+      return nil
     }
     return model
   }
@@ -235,23 +234,23 @@ extension NIMQChatGetExistingServerRoleMembersByAccidsParam {
 
 extension NIMQChatGetExistingChannelRolesByServerRoleIdsParam {
   static func fromDic(_ json: [String: Any])
-    -> NIMQChatGetExistingChannelRolesByServerRoleIdsParam {
+    -> NIMQChatGetExistingChannelRolesByServerRoleIdsParam? {
     guard let model = NIMQChatGetExistingChannelRolesByServerRoleIdsParam.yx_model(with: json)
     else {
       print(
         "❌NIMQChatGetExistingChannelRolesByServerRoleIdsParam.yx_model(with: json) FAILED"
       )
-      return NIMQChatGetExistingChannelRolesByServerRoleIdsParam()
+      return nil
     }
     return model
   }
 }
 
 extension NIMQChatGetExistingAccidsOfMemberRolesParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetExistingAccidsOfMemberRolesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetExistingAccidsOfMemberRolesParam? {
     guard let model = NIMQChatGetExistingAccidsOfMemberRolesParam.yx_model(with: json) else {
       print("❌NIMQChatGetExistingAccidsOfMemberRolesParam.yx_model(with: json) FAILED")
-      return NIMQChatGetExistingAccidsOfMemberRolesParam()
+      return nil
     }
     return model
   }
@@ -260,10 +259,10 @@ extension NIMQChatGetExistingAccidsOfMemberRolesParam {
 // MARK: result
 
 extension NIMQChatServerRole {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatServerRole {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatServerRole? {
     guard let model = NIMQChatServerRole.yx_model(with: json) else {
       print("❌NIMQChatServerRole.yx_model(with: json) FAILED")
-      return NIMQChatServerRole()
+      return nil
     }
     if let ext = json["extension"] as? String {
       model.ext = ext
@@ -468,6 +467,195 @@ extension NIMQChatGetExistingAccidsOfMemberRolesResult {
   func toDict() -> [String: Any]? {
     var jsonObject = [String: Any]()
     jsonObject["accidList"] = accidArray
+    return jsonObject
+  }
+}
+
+extension NIMQChatAddMemberRoleParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatAddMemberRoleParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let channelId = arguments["channelId"] as? UInt64,
+          let accid = arguments["accid"] as? String else {
+      print("addMemberRole parameter is error, serverId, channelId or accid is nil")
+      return nil
+    }
+    let param = NIMQChatAddMemberRoleParam()
+    param.serverId = serverId
+    param.channelId = channelId
+    param.accid = accid
+    return param
+  }
+}
+
+extension NIMQChatMemberRole {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["serverId"] = serverId
+      jsonObject["id"] = roleId
+      jsonObject["accid"] = accid
+      jsonObject["channelId"] = channelId
+      var resourceAuths = [String: String]()
+      for item in auths {
+        if let key = FLTQChatPermissionType.convert(type: item.type)?.rawValue,
+           let value = FLTQChatPermissionStatus.convert(type: item.status)?.rawValue {
+          resourceAuths[key] = value
+        }
+      }
+      jsonObject["resourceAuths"] = resourceAuths
+      jsonObject["createTime"] = Int(createTime * 1000)
+      jsonObject["updateTime"] = Int(updateTime * 1000)
+      jsonObject["nick"] = nick
+      jsonObject["avatar"] = avatar
+      jsonObject["custom"] = custom
+      jsonObject["type"] = FLTQChatServerMemberType.convert(type: type)?.rawValue
+      jsonObject["joinTime"] = Int(joinTime * 1000)
+      jsonObject["inviter"] = inviter
+
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatRemoveMemberRoleParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatRemoveMemberRoleParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let channelId = arguments["channelId"] as? UInt64,
+          let accid = arguments["accid"] as? String else {
+      print("removeMemberRole parameter is error, serverId, channelId or accid is nil")
+      return nil
+    }
+    let param = NIMQChatRemoveMemberRoleParam()
+    param.serverId = serverId
+    param.channelId = channelId
+    param.accid = accid
+    return param
+  }
+}
+
+extension NIMQChatUpdateMemberRoleParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatUpdateMemberRoleParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let channelId = arguments["channelId"] as? UInt64,
+          let accid = arguments["accid"] as? String,
+          let auths = arguments["resourceAuths"] as? [String: String] else {
+      print(
+        "updateMemberRole parameter is error, serverId, channelId, accid or resourceAuths is nil"
+      )
+      return nil
+    }
+    let param = NIMQChatUpdateMemberRoleParam()
+    param.serverId = serverId
+    param.channelId = channelId
+    param.accid = accid
+
+    var commands = [NIMQChatPermissionStatusInfo]()
+    for (key, value) in auths {
+      if let tp = FLTQChatPermissionType(rawValue: key)?.convertNIMQChatPermissionType(),
+         let stt = FLTQChatPermissionStatus(rawValue: value)?
+         .convertNIMQChatPermissionStatus() {
+        let cmd = NIMQChatPermissionStatusInfo()
+        cmd.type = tp
+        cmd.customType = tp.rawValue
+        cmd.status = stt
+        commands.append(cmd)
+      }
+    }
+    param.commands = commands
+    return param
+  }
+}
+
+extension NIMQChatGetMemberRolesParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatGetMemberRolesParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let limit = arguments["limit"] as? Int,
+          let timeTag = arguments["timeTag"] as? Int,
+          let channelId = arguments["channelId"] as? UInt64 else {
+      print("getMemberRoles parameter is error, serverId, channelId, timeTag or limit is nil")
+      return nil
+    }
+    let param = NIMQChatGetMemberRolesParam()
+    param.serverId = serverId
+    param.channelId = channelId
+    param.limit = limit
+    param.timeTag = TimeInterval(Double(timeTag) / 1000)
+    return param
+  }
+}
+
+extension NIMQChatGetMemberRolesResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["roleList"] = memberRoleArray.map { item in
+        item.toDic()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatCheckPermissionParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatCheckPermissionParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let permission = arguments["permission"] as? String,
+          let permissionType = FLTQChatPermissionType(rawValue: permission)?
+          .convertNIMQChatPermissionType() else {
+      print(
+        "checkPermission parameter is error, serverId is nil"
+      )
+      return nil
+    }
+    let param = NIMQChatCheckPermissionParam()
+    param.serverId = serverId
+    param.permissionType = permissionType
+
+    if let channelId = arguments["channelId"] as? UInt64 {
+      param.channelId = channelId
+    }
+    return param
+  }
+}
+
+extension NIMQChatCheckPermissionsParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatCheckPermissionsParam? {
+    guard let serverId = arguments["serverId"] as? UInt64 else {
+      print("checkPermissions parameter is error, serverId is nil")
+      return nil
+    }
+    let param = NIMQChatCheckPermissionsParam()
+    param.serverId = serverId
+    if let permissionArray = arguments["permissions"] as? [String] {
+      var permissionTypeArray = [NSNumber]()
+      for item in permissionArray {
+        if let permission = FLTQChatPermissionType(rawValue: item)?
+          .convertNIMQChatPermissionType().rawValue {
+          permissionTypeArray.append(NSNumber(value: permission))
+        }
+      }
+      param.permissions = permissionTypeArray
+    }
+    if let channelId = arguments["channelId"] as? UInt64 {
+      param.channelId = channelId
+    }
+    return param
+  }
+}
+
+extension NIMQChatCheckPermissionsResult {
+  func toDic() -> [String: Any]? {
+    var jsonObject = [String: Any]()
+    var permissionDic = [String: String]()
+    for (key, value) in permissions {
+      if let type = NIMQChatPermissionType(rawValue: key.intValue),
+         let status = NIMQChatPermissionStatus(rawValue: value.intValue),
+         let permissionKey = FLTQChatPermissionType.convert(type: type)?.rawValue,
+         let permissionValue = FLTQChatPermissionStatus.convert(type: status)?.rawValue {
+        permissionDic[permissionKey] = permissionValue
+      }
+      jsonObject["permissions"] = permissionDic
+    }
     return jsonObject
   }
 }

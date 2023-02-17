@@ -132,8 +132,9 @@ class FLTSystemNotificationService: FLTBaseService, FLTService {
   }
 
   func querySystemMessageUnread(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    // dart层没有limit，咨询SDK开发@陈吉力后此处传max
     let systemMessageList = NIMSDK.shared().systemNotificationManager
-      .fetchSystemNotifications(nil, limit: 0)
+      .fetchSystemNotifications(nil, limit: Int.max)
     if systemMessageList != nil,
        systemMessageList!.count > 0 {
       var unreadList = [[String: Any?]]()
@@ -162,7 +163,7 @@ class FLTSystemNotificationService: FLTBaseService, FLTService {
     if let systemMessageTypeList = arguments["systemMessageTypeList"] as? [String] {
       let filter = NIMSystemNotificationFilter()
       filter.notificationTypes = systemMessageTypeList.map { type in
-        NSNumber(value: Int(type) ?? -1)
+        NSNumber(value: convertType(type: type).rawValue)
       }
       let systemMessageList = NIMSDK.shared().systemNotificationManager.allUnreadCount(filter)
       let result = NimResult(systemMessageList, 0, nil)
@@ -184,7 +185,7 @@ class FLTSystemNotificationService: FLTBaseService, FLTService {
     if let systemMessageTypeList = arguments["systemMessageTypeList"] as? [String] {
       let filter = NIMSystemNotificationFilter()
       filter.notificationTypes = systemMessageTypeList.map { type in
-        NSNumber(value: Int(type) ?? -1)
+        NSNumber(value: convertType(type: type).rawValue)
       }
       NIMSDK.shared().systemNotificationManager.markAllNotifications(asRead: filter)
       let result = NimResult(nil, 0, nil)
@@ -216,7 +217,7 @@ class FLTSystemNotificationService: FLTBaseService, FLTService {
     if let systemMessageTypeList = arguments["systemMessageTypeList"] as? [String] {
       let filter = NIMSystemNotificationFilter()
       filter.notificationTypes = systemMessageTypeList.map { type in
-        NSNumber(value: Int(type) ?? -1)
+        NSNumber(value: convertType(type: type).rawValue)
       }
       NIMSDK.shared().systemNotificationManager.deleteAllNotifications(filter)
       let result = NimResult(nil, 0, nil)

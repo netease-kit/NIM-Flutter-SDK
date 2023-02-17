@@ -207,3 +207,61 @@ class QChatSystemNotificationUpdateEvent {
   Map<String, dynamic> toJson() =>
       _$QChatSystemNotificationUpdateEventToJson(this);
 }
+
+@JsonSerializable(explicitToJson: true)
+class QChatServerUnreadInfoChangedEvent {
+  /// 变更后服务器未读状态
+  @JsonKey(fromJson: qChatServerUnreadInfoListFromJson)
+  List<QChatServerUnreadInfo>? serverUnreadInfos;
+
+  QChatServerUnreadInfoChangedEvent({this.serverUnreadInfos});
+
+  factory QChatServerUnreadInfoChangedEvent.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatServerUnreadInfoChangedEventFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatServerUnreadInfoChangedEventToJson(this);
+}
+
+List<QChatServerUnreadInfo>? qChatServerUnreadInfoListFromJson(
+    List<dynamic>? infoList) {
+  if (infoList != null) {
+    return infoList
+        .map((e) =>
+            QChatServerUnreadInfo.fromJson((e as Map).cast<String, dynamic>()))
+        .toList();
+  }
+  return null;
+}
+
+/// 未读信息
+@JsonSerializable(explicitToJson: true)
+class QChatServerUnreadInfo {
+  /// 获取serverId
+
+  int serverId;
+
+  /// 获取未读数
+
+  int? unreadCount;
+
+  /// 获取@的未读数
+
+  int? mentionedCount;
+
+  /// 获取最大未读数
+
+  int? maxCount;
+
+  QChatServerUnreadInfo(
+      {required this.serverId,
+      this.unreadCount,
+      this.mentionedCount,
+      this.maxCount});
+
+  factory QChatServerUnreadInfo.fromJson(Map<String, dynamic> json) =>
+      _$QChatServerUnreadInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatServerUnreadInfoToJson(this);
+}

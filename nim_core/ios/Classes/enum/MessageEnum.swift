@@ -189,11 +189,7 @@ enum FLT_NIMMessageStatus: String {
         return .draft
       }
     } else {
-      if message.status == .read {
-        return .read
-      } else {
-        return .unread
-      }
+      return .success
     }
   }
 

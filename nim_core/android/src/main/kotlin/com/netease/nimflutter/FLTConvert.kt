@@ -315,8 +315,13 @@ fun stringFromSessionTypeEnum(type: SessionTypeEnum?) =
 fun stringToMsgStatusEnum(status: String?) =
     msgStatusEnumMap.filterValues { it == status }.keys.firstOrNull() ?: MsgStatusEnum.sending
 
-fun stringFromMsgStatusEnum(status: MsgStatusEnum?) =
-    msgStatusEnumMap[status] ?: msgStatusEnumMap[MsgStatusEnum.sending]
+fun stringFromMsgStatusEnum(status: MsgStatusEnum?, successToRead: Boolean?): String? {
+    return if (successToRead == true && status == MsgStatusEnum.success) {
+        msgStatusEnumMap[MsgStatusEnum.read] ?: msgStatusEnumMap[MsgStatusEnum.sending]
+    } else {
+        msgStatusEnumMap[status] ?: msgStatusEnumMap[MsgStatusEnum.sending]
+    }
+}
 
 fun stringToAttachStatusEnum(status: String?) =
     attachStatusEnumMap.filterValues { it == status }.keys.firstOrNull() ?: AttachStatusEnum.def
@@ -422,7 +427,7 @@ fun convertToSearchOption(param: Map<String, Any?>?): MsgSearchOption? {
             messageSubTypes =
                 (it["messageSubTypes"] as List<*>?)?.map { (it as Number).toInt() }?.toList()
             isAllMessageTypes = it.getOrElse("allMessageTypes") { false } as Boolean
-            searchContent = it["searchContent"] as String
+            searchContent = it["searchContent"] as String?
             fromIds = (it["fromIds"] as List<*>?)?.map { it as String }?.toList()
             isEnableContentTransfer = it.getOrElse("enableContentTransfer") { true } as Boolean
         }

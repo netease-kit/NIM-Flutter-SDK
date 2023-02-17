@@ -51,6 +51,15 @@ extension NIMChatroomEnterRequest: NimDataConvertProtrol {
         model.mode!.token = independentMode["token"] as? String
         model.mode!.chatroomAppKey = independentMode["appKey"] as? String
       }
+      if let nickname = json["nickname"] as? String {
+        model.roomNickname = nickname
+      }
+      if let avatar = json["avatar"] as? String {
+        model.roomAvatar = avatar
+      }
+      if let retryCount = json["retryCount"] as? Int {
+        model.retryCount = retryCount
+      }
       return model
     }
     return nil
@@ -125,13 +134,20 @@ extension NIMChatroomMember: NimDataConvertProtrol {
 
   func toDic(roomId: String?) -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["roomId"] = roomId
+      jsonObject["account"] = userId
       jsonObject["memberType"] = FLT_NIMChatroomMemberType.convert(type)?.rawValue
+      jsonObject["nickname"] = roomNickname != nil ? roomNickname : userId
+      jsonObject["avatar"] = roomAvatar != nil ? roomAvatar : ""
       if let roomExtensionString = roomExt,
          let extensionDic = getDictionaryFromJSONString(roomExtensionString) {
         jsonObject["extension"] = extensionDic
       }
-      jsonObject["roomId"] = roomId
-      jsonObject["enterTime"] = Int(enterTimeInterval)
+      if var tgs = tags {
+        jsonObject["tags"] = getArrayFromJSONString(tgs)
+      }
+      jsonObject["enterTime"] = Int(enterTimeInterval * 1000)
+      jsonObject["isValid"] = jsonObject["isVaild"]
       return jsonObject
     }
     return nil
@@ -178,6 +194,16 @@ extension NIMHistoryMessageSearchOption: NimDataConvertProtrol {
           }
         }
         model.messageTypes = messageTypes
+      }
+      if let startTime = json["startTime"] as? Double {
+        model.startTime = startTime / 1000.0
+      }
+      if let direction = json["direction"] as? Int {
+        if direction == 1 {
+          model.order = .asc
+        } else {
+          model.order = .desc
+        }
       }
       return model
     }

@@ -620,3 +620,286 @@ extension NIMQChatJoinByInviteCodeParam {
     return param
   }
 }
+
+extension NIMQChatUpdateServerMemberInfoParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatUpdateServerMemberInfoParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let accid = arguments["accid"] as? String else {
+      print("updateServerMemberInfo parameter is error, serverId or accid is nil")
+      return nil
+    }
+    let param = NIMQChatUpdateServerMemberInfoParam()
+    param.serverId = serverId
+    param.accid = accid
+    if let nick = arguments["nick"] as? String {
+      param.nick = nick
+    }
+    if let avatar = arguments["avatar"] as? String {
+      param.avatar = avatar
+    }
+    if let antiSpamConfig = arguments["antiSpamConfig"] as? [String: Any],
+       let antiSpamBusinessId = antiSpamConfig["antiSpamBusinessId"] as? String {
+      param.antispamBusinessId = antiSpamBusinessId
+    }
+    return param
+  }
+}
+
+extension NIMQChatUpdateServerMemberBanParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatUpdateServerMemberBanParam? {
+    let param = NIMQChatUpdateServerMemberBanParam()
+    if let serverId = arguments["serverId"] as? UInt64 {
+      param.serverId = serverId
+    }
+    if let targetAccid = arguments["targetAccid"] as? String {
+      param.targetAccid = targetAccid
+    }
+    if let custom = arguments["customExt"] as? String {
+      param.custom = custom
+    }
+    return param
+  }
+}
+
+extension NIMQChatGetServerBanedMembersByPageParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatGetServerBanedMembersByPageParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let timeTag = arguments["timeTag"] as? Int else {
+      print("getBannedServerMembersByPage parameter is error, serverId or accid is nil")
+      return nil
+    }
+    let param = NIMQChatGetServerBanedMembersByPageParam()
+    param.serverId = serverId
+    param.timetag = TimeInterval(Double(timeTag) / 1000)
+    if let limit = arguments["limit"] as? Int {
+      param.limit = NSNumber(value: limit)
+    }
+
+    return param
+  }
+}
+
+extension NIMQChatGetServerBanedMembersByPageResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["hasMore"] = hasMore
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
+      jsonObject["serverMemberBanInfoList"] = memberArray.map { item in
+        item.toDic()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatServerMemberBanInfo {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["serverId"] = serverId
+      jsonObject["accid"] = accId
+      jsonObject["custom"] = custom
+      jsonObject["banTime"] = Int(banTime * 1000)
+      jsonObject["isValid"] = validFlag
+      jsonObject["createTime"] = Int(createTime * 1000)
+      jsonObject["updateTime"] = Int(updateTime * 1000)
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatUserPushNotificationConfig {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["serverId"] = serverId
+      jsonObject["channelId"] = channelId
+      jsonObject["channelCategoryId"] = categoryId
+      jsonObject["pushMsgType"] = FLTQChatPushNotificationProfile.convert(type: profile)?
+        .rawValue
+      jsonObject["dimension"] = FLTQChatUserPushNotificationConfigType.convert(type: type)?
+        .rawValue
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatSearchServerMemberByPageParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatSearchServerMemberByPageParam? {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let keyword = arguments["keyword"] as? String else {
+      print("searchServerMemberByPage parameter is error, serverId or keyword is nil")
+      return nil
+    }
+    let param = NIMQChatSearchServerMemberByPageParam()
+    param.serverId = serverId
+    param.keyword = keyword
+    if let limit = arguments["limit"] as? Int {
+      param.limit = NSNumber(value: limit)
+    }
+
+    return param
+  }
+}
+
+extension NIMQChatSearchServerMemberByPageResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["members"] = serverMembers?.map { item in
+        item.toDic()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetInviteApplyRecordOfServerParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatGetInviteApplyRecordOfServerParam? {
+    guard let serverId = arguments["serverId"] as? UInt64 else {
+      print("getInviteApplyRecordOfServer parameter is error, serverId is nil")
+      return nil
+    }
+    let param = NIMQChatGetInviteApplyRecordOfServerParam()
+    param.serverId = serverId
+    if let limit = arguments["limit"] as? Int {
+      param.limit = NSNumber(value: limit)
+    }
+    if let excludeRecordId = arguments["excludeRecordId"] as? Int {
+      param.excludeRecordId = NSNumber(value: excludeRecordId)
+    }
+    if let reverse = arguments["reverse"] as? Bool {
+      param.reverse = NSNumber(value: reverse)
+    }
+    if let fromTime = arguments["fromTime"] as? Int {
+      param.fromTime = NSNumber(value: Double(fromTime) / 1000)
+    }
+    if let toTime = arguments["toTime"] as? Int {
+      param.toTime = NSNumber(value: Double(toTime) / 1000)
+    }
+    return param
+  }
+}
+
+extension NIMQChatGetInviteApplyHistoryByServerResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["records"] = records?.map { item in
+        item.toDic()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatInviteApplyHistoryRecord {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["accid"] = accid
+      jsonObject["type"] = accid
+      jsonObject["serverId"] = serverId
+      jsonObject["status"] = FLTQChatInviteApplyInfoStatusTag.convert(type: status)?.rawValue
+      jsonObject["requestId"] = requestId
+      jsonObject["createTime"] = Int(createTime * 1000)
+      jsonObject["updateTime"] = Int(updateTime * 1000)
+      jsonObject["expireTime"] = Int(expireTime * 1000)
+//            jsonObject["data"] = data
+      jsonObject["recordId"] = recordId
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetInviteApplyRecordOfSelfParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatGetInviteApplyRecordOfSelfParam? {
+    let param = NIMQChatGetInviteApplyRecordOfSelfParam()
+    if let limit = arguments["limit"] as? Int {
+      param.limit = NSNumber(value: limit)
+    }
+    if let excludeRecordId = arguments["excludeRecordId"] as? Int {
+      param.excludeRecordId = NSNumber(value: excludeRecordId)
+    }
+    if let reverse = arguments["reverse"] as? Bool {
+      param.reverse = NSNumber(value: reverse)
+    }
+    if let fromTime = arguments["fromTime"] as? Int {
+      param.fromTime = NSNumber(value: Double(fromTime) / 1000)
+    }
+    if let toTime = arguments["toTime"] as? Int {
+      param.toTime = NSNumber(value: Double(toTime) / 1000)
+    }
+    return param
+  }
+}
+
+extension NIMQChatGetInviteApplyHistorySelfResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["records"] = records?.map { item in
+        item.toDic()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatMarkServerReadParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatMarkServerReadParam? {
+    guard let serverIds = arguments["serverIds"] as? [UInt64] else {
+      print("markRead parameter is error, serverIds is nil")
+      return nil
+    }
+    let param = NIMQChatMarkServerReadParam()
+    param.serverIds = serverIds.map { item in
+      NSNumber(value: item)
+    }
+    return param
+  }
+}
+
+extension NIMQChatMarkServerReadResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["successServerIds"] = successServerIds
+      jsonObject["failedServerIds"] = failServerIds
+      jsonObject["timestamp"] = Int(ackTimestamp * 1000)
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatSubscribeAllChannelParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatSubscribeAllChannelParam? {
+    guard let serverIds = arguments["serverIds"] as? [UInt64],
+          let type = arguments["type"] as? String,
+          let subcribeType = FLTQChatSubscribeType(rawValue: type)?
+          .convertNIMQChatSubscribeType() else {
+      print("markRead parameter is error, serverIds or type is nil")
+      return nil
+    }
+    let param = NIMQChatSubscribeAllChannelParam()
+    param.serverIds = serverIds.map { item in
+      NSNumber(value: item)
+    }
+    param.subscribeType = subcribeType
+    return param
+  }
+}
+
+extension NIMQChatSubscribeAllChannelResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["failedList"] = failServerIds
+      jsonObject["unreadInfoList"] = unreadInfos.map { item in
+        item.toDict()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}

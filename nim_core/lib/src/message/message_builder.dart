@@ -35,30 +35,36 @@ class MessageBuilder {
   }
 
   /// 创建图片消息
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   static Future<NIMResult<NIMMessage>> createImageMessage(
       {required String sessionId,
       required NIMSessionType sessionType,
       required String filePath,
       required int fileSize,
       String? displayName,
+      String? base64,
       NIMNosScene nosScene = NIMNosScenes.defaultIm}) async {
     var message = NIMMessage.imageEmptyMessage(
         sessionId: sessionId,
         sessionType: sessionType,
         filePath: filePath,
         fileSize: fileSize,
+        base64: base64,
         displayName: displayName,
         nosScene: nosScene);
     return NimCore.instance.messageService._createMessage(message: message);
   }
 
   /// 创建音频消息
+  /// [displayName] 字段无效，不建议使用
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   static Future<NIMResult<NIMMessage>> createAudioMessage(
       {required String sessionId,
       required NIMSessionType sessionType,
       required String filePath,
       required int fileSize,
       required int duration,
+      String? base64,
       String? displayName,
       NIMNosScene nosScene = NIMNosScenes.defaultIm}) async {
     var message = NIMMessage.audioEmptyMessage(
@@ -66,6 +72,7 @@ class MessageBuilder {
         sessionType: sessionType,
         filePath: filePath,
         fileSize: fileSize,
+        base64: base64,
         duration: duration,
         displayName: displayName,
         nosScene: nosScene);
@@ -89,11 +96,13 @@ class MessageBuilder {
   }
 
   /// 创建视频消息
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   static Future<NIMResult<NIMMessage>> createVideoMessage(
       {required String sessionId,
       required NIMSessionType sessionType,
       required String filePath,
       int? fileSize,
+      String? base64,
       required int duration,
       required int width,
       required int height,
@@ -105,6 +114,7 @@ class MessageBuilder {
         filePath: filePath,
         fileSize: fileSize,
         duration: duration,
+        base64: base64,
         width: width,
         height: height,
         displayName: displayName,
@@ -113,16 +123,19 @@ class MessageBuilder {
   }
 
   /// 创建文件消息
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   static Future<NIMResult<NIMMessage>> createFileMessage(
       {required String sessionId,
       required NIMSessionType sessionType,
       required String filePath,
+      String? base64,
       int? fileSize,
       required String displayName,
       NIMNosScene nosScene = NIMNosScenes.defaultIm}) async {
     var message = NIMMessage.fileEmptyMessage(
         sessionId: sessionId,
         sessionType: sessionType,
+        base64: base64,
         filePath: filePath,
         fileSize: fileSize,
         displayName: displayName,
@@ -131,10 +144,14 @@ class MessageBuilder {
   }
 
   /// 创建Tip消息
+  /// /// [content] web端tip内容传这个字段
   static Future<NIMResult<NIMMessage>> createTipMessage(
-      {required String sessionId, required NIMSessionType sessionType}) async {
+      {required String sessionId,
+      required NIMSessionType sessionType,
+      String? content}) async {
     var message = NIMMessage.tipEmptyMessage(
         sessionId: sessionId, sessionType: sessionType);
+    message.content = content;
     return NimCore.instance.messageService._createMessage(message: message);
   }
 

@@ -64,6 +64,32 @@ const _$NIMSessionTypeEnumMap = {
   NIMSessionType.chatRoom: 'chatRoom',
 };
 
+const _$NIMTeamBeInviteModeEnumMap = {
+  NIMTeamBeInviteModeEnum.needAuth: 'needAuth',
+  NIMTeamBeInviteModeEnum.noAuth: 'noAuth',
+};
+
+const _$NIMTeamInviteModeEnumMap = {
+  NIMTeamInviteModeEnum.all: 'all',
+  NIMTeamInviteModeEnum.manager: 'manager',
+};
+
+const _$NIMTeamExtensionUpdateModeEnumMap = {
+  NIMTeamExtensionUpdateModeEnum.all: 'all',
+  NIMTeamExtensionUpdateModeEnum.manager: 'manager',
+};
+
+const _$NIMTeamUpdateModeEnumMap = {
+  NIMTeamUpdateModeEnum.all: 'all',
+  NIMTeamUpdateModeEnum.manager: 'manager',
+};
+
+const _$NIMVerifyTypeEnumMap = {
+  NIMVerifyTypeEnum.free: 'free',
+  NIMVerifyTypeEnum.apply: 'apply',
+  NIMVerifyTypeEnum.private: 'private',
+};
+
 const _$SystemMessageStatusEnumMap = {
   SystemMessageStatus.init: 'init',
   SystemMessageStatus.passed: 'passed',

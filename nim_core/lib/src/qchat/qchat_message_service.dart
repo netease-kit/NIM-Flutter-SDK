@@ -5,6 +5,7 @@ part of nim_core;
 
 ///圈组消息服务
 ///仅支持Android 和 iOS
+@HawkEntryPoint()
 class QChatMessageService {
   factory QChatMessageService() {
     if (_singleton == null) {
@@ -96,5 +97,86 @@ class QChatMessageService {
   Future<NIMResult<QChatGetMessageHistoryResult>> getMessageHistoryByIds(
       QChatGetMessageHistoryByIdsParam param) {
     return _platform.getMessageHistoryByIds(param);
+  }
+
+  ///回复消息
+  Future<NIMResult<QChatSendMessageResult>> replyMessage(
+      QChatReplyMessageParam param) {
+    return _platform.replyMessage(param);
+  }
+
+  /// 清除消息通知栏，仅支持Android 平台
+
+  Future<NIMResult<void>> clearMsgNotifyAndroid() {
+    return _platform.clearMsgNotifyAndroid();
+  }
+
+  /// 根据消息查询被引用的消息详情
+  Future<NIMResult<QChatGetReferMessagesResult>> getReferMessages(
+      QChatGetReferMessagesParam param) {
+    return _platform.getReferMessages(param);
+  }
+
+  /// 查询thread聊天的历史
+
+  Future<NIMResult<QChatGetThreadMessagesResult>> getThreadMessages(
+      QChatGetThreadMessagesParam param) {
+    return _platform.getThreadMessages(param);
+  }
+
+  /// 批量查询thread聊天信息
+
+  Future<NIMResult<QChatGetMessageThreadInfosResult>> getMessageThreadInfos(
+      QChatGetMessageThreadInfosParam param) {
+    return _platform.getMessageThreadInfos(param);
+  }
+
+  /// 添加一条快捷评论
+
+  Future<NIMResult<void>> addQuickComment(QChatAddQuickCommentParam param) {
+    return _platform.addQuickComment(param);
+  }
+
+  /// 删除一条快捷评论
+
+  Future<NIMResult<void>> removeQuickComment(
+      QChatRemoveQuickCommentParam param) {
+    return _platform.removeQuickComment(param);
+  }
+
+  /// 批量查询快捷评论
+
+  Future<NIMResult<QChatGetQuickCommentsResult>> getQuickComments(
+      QChatGetQuickCommentsParam param) {
+    return _platform.getQuickComments(param);
+  }
+
+  /// 指定通道查询消息缓存
+  /// [qchatServerId] 服务器id
+  /// [qchatChannelId] 频道id
+
+  Future<NIMResult<List<QChatMessageCache>?>> getMessageCache(
+      int qchatServerId, int qchatChannelId) {
+    return _platform.getMessageCache(qchatServerId, qchatChannelId);
+  }
+
+  /// 清空消息缓存
+
+  Future<NIMResult<void>> clearMessageCache() {
+    return _platform.clearMessageCache();
+  }
+
+  /// 查询频道的最后一条消息
+
+  Future<NIMResult<QChatGetLastMessageOfChannelsResult>>
+      getLastMessageOfChannels(QChatGetLastMessageOfChannelsParam param) {
+    return _platform.getLastMessageOfChannels(param);
+  }
+
+  /// 检索消息
+
+  Future<NIMResult<QChatSearchMsgByPageResult>> searchMsgByPage(
+      QChatSearchMsgByPageParam param) {
+    return _platform.searchMsgByPage(param);
   }
 }

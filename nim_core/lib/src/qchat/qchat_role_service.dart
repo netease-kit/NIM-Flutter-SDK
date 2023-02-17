@@ -128,4 +128,40 @@ class QChatRoleService {
           QChatGetExistingAccidsOfMemberRolesParam param) async {
     return _platform.getExistingAccidsOfMemberRoles(param);
   }
+
+  /// 为某个人定制某频道的权限
+  Future<NIMResult<QChatAddMemberRoleResult>> addMemberRole(
+      QChatAddMemberRoleParam param) async {
+    return _platform.addMemberRole(param);
+  }
+
+  /// 删除频道下某人的定制权限
+  Future<NIMResult<void>> removeMemberRole(
+      QChatRemoveMemberRoleParam param) async {
+    return _platform.removeMemberRole(param);
+  }
+
+  /// 修改某人的定制权限
+  Future<NIMResult<QChatUpdateMemberRoleResult>> updateMemberRole(
+      QChatUpdateMemberRoleParam param) async {
+    return _platform.updateMemberRole(param);
+  }
+
+  /// 查询channel下某人的定制权限
+  Future<NIMResult<QChatGetMemberRolesResult>> getMemberRoles(
+      QChatGetMemberRolesParam param) async {
+    return _platform.getMemberRoles(param);
+  }
+
+  /// 查询自己是否拥有某个权限
+  Future<NIMResult<QChatCheckPermissionResult>> checkPermission(
+      QChatCheckPermissionParam param) async {
+    return _platform.checkPermission(param);
+  }
+
+  // /// 查询自己是否拥有某些权限
+  // Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
+  //     QChatCheckPermissionsParam param) async {
+  //   return _platform.checkPermissions(param);
+  // }
 }

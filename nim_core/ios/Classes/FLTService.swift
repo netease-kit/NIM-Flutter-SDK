@@ -28,6 +28,7 @@ enum ServiceType: String {
   case QChatChannelService
   case QChatMessageService
   case QChatRoleService
+  case QChatPushService
 }
 
 protocol FLTService {

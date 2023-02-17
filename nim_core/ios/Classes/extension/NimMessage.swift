@@ -120,7 +120,7 @@ extension NIMMessage {
   /// 消息是否需要刷新到session服务
   /// 只有消息存离线的情况下，才会判断该参数，默认：是
   // setting => isSessionUpdate
-  dynamic var sessionUpdate: Bool? {
+  dynamic var sessionUpdate: Bool {
     get {
       if let T = objc_getAssociatedObject(
         self,
@@ -128,7 +128,7 @@ extension NIMMessage {
       ) as? Bool {
         return T
       } else {
-        return nil
+        return true
       }
     }
     set {
@@ -260,7 +260,7 @@ extension NIMMessage {
   }
 
   /// 消息的选中状态
-  dynamic var isChecked: Bool? {
+  dynamic var isChecked: Bool {
     get {
       if let T = objc_getAssociatedObject(
         self,
@@ -268,7 +268,7 @@ extension NIMMessage {
       ) as? Bool {
         return T
       } else {
-        return nil
+        return false
       }
     }
     set {
@@ -559,7 +559,7 @@ extension NIMMessage {
         }
       }
 
-      message.setting?.isSessionUpdate = message.sessionUpdate ?? true
+      message.setting?.isSessionUpdate = message.sessionUpdate
       if let messageAck = arguments["messageAck"] as? Bool {
         message.setting?.teamReceiptEnabled = messageAck
       }
@@ -576,10 +576,26 @@ extension NIMMessage {
         message.setValue(String(serverId), forKeyPath: #keyPath(NIMMessage.serverID))
       }
 
+      if let fromAccount = target["fromAccount"] as? String {
+        message.from = fromAccount
+      }
+
+      if let messageSubType = target["messageSubType"] as? Int,
+         messageSubType > 0 {
+        message.messageSubType = messageSubType
+      }
+
       message.remoteExt = target["remoteExtension"] as? [String: Any]
       message.localExt = target["localExtension"] as? [String: Any]
       if let time = target["timestamp"] as? Int {
         message.timestamp = TimeInterval(Double(time) / 1000)
+      }
+
+      if let replyTime = message.value(forKey: "_repliedMessageTime") as? Double {
+        message.setValue(replyTime / 1000, forKey: "_repliedMessageTime")
+      }
+      if let threadMessageTime = message.value(forKey: "_threadMessageTime") as? Double {
+        message.setValue(threadMessageTime / 1000, forKey: "_threadMessageTime")
       }
 
       return message
@@ -623,36 +639,47 @@ extension NIMMessage {
   // 结构转换
   func toDic() -> [String: Any]? {
     if var arguments = yx_modelToJSONObject() as? [String: Any] {
-      arguments["serverId"] = Int(serverID)
+      if let sid = Int(serverID) {
+        arguments["serverId"] = sid
+      } else {
+        arguments["serverId"] = 0
+      }
       arguments["senderClientType"] = FLT_NIMLoginClientType
         .convertClientType(senderClientType)?.rawValue
       arguments["status"] = FLT_NIMMessageStatus.convertFLTStatus(self).rawValue
       arguments["messageType"] = FLT_NIMMessageType.convert(messageType)?.rawValue
-      arguments["attachmentStatus"] = FLT_NIMMessageAttachmentDownloadState
-        .convertFLTState(attachmentDownloadState)?.rawValue
-      if let subType = NIMMessageType(rawValue: messageSubType) {
-        arguments["messageSubType"] = FLT_NIMMessageType.convert(subType)?.rawValue
-      } else {
-        arguments.removeValue(forKey: "messageSubType")
+      switch messageType {
+      case .text, .tip, .custom:
+        //  对齐dart: 文本、提醒消息、自定义消息无附件，attachmentStatus 字段对应flutter应该为 initial
+        arguments["attachmentStatus"] = FLT_NIMMessageAttachmentDownloadState.initial.rawValue
+      default:
+        arguments["attachmentStatus"] = FLT_NIMMessageAttachmentDownloadState
+          .convertFLTState(attachmentDownloadState)?.rawValue
       }
+//      if let subType = NIMMessageType(rawValue: messageSubType) {
+//        arguments["messageSubType"] = FLT_NIMMessageType.convert(subType)?.rawValue
+//      } else {
+//        arguments.removeValue(forKey: "messageSubType")
+//      }
+      arguments["messageSubType"] = messageSubType
 
       if let attachment = messageObject as? NSObject {
         if let convert = attachment as? NimDataConvertProtrol {
           var att = convert.toDic()
-          if let attachement = gArgument?["messageAttachment"] as? [String: Any],
-             let size = attachement["size"] as? Int {
-            att?["size"] = size
-          }
-          att?["force_upload"] = true
+//          if let attachement = gArgument?["messageAttachment"] as? [String: Any],
+//             let size = attachement["size"] as? Int {
+//            att?["size"] = size
+//          }
+          att?["force_upload"] = false
           if let mt = arguments["messageType"] as? String {
             att?["messageType"] = mt
           } else if let messagetype = FLT_NIMMessageType.convert(messageType) {
             att?["messageType"] = messagetype.rawValue
           }
-          if att?["messageType"] as? String == FLT_NIMMessageType.image.rawValue,
-             let image = messageObject as? NIMImageObject {
-            att?["size"] = Int(image.size.width * image.size.height)
-          }
+//          if att?["messageType"] as? String == FLT_NIMMessageType.image.rawValue,
+//             let image = messageObject as? NIMImageObject {
+//            att?["size"] = Int(image.size.width * image.size.height)
+//          }
           // messageAttachment返回为空问题修改
           if let location = messageObject as? NIMLocationObject {
             att?["lat"] = location.latitude
@@ -660,6 +687,22 @@ extension NIMMessage {
             att?["title"] = location.title
           }
 
+          if let robot = messageObject as? NIMRobotObject {
+            att?["robotAccid"] = robot.robotId
+            att?["target"] = robot.value(forKeyPath: "target")
+            att?["param"] = robot.value(forKeyPath: "param")
+          }
+          if let expire = att?["expire"] as? Int {
+            att?["expire"] = expire
+          } else {
+            att?["expire"] = 0
+          }
+          if let noscene = att?["sen"] as? String {
+            att?["sen"] = NIMNosScene.toDic(scene: noscene)
+          }
+          if let name = att?["displayName"] as? String {
+            att?["name"] = name
+          }
           arguments["messageAttachment"] = att
         } else if let object = attachment as? NIMCustomObject,
                   let customObject = object.attachment as? NimAttachment,
@@ -687,11 +730,14 @@ extension NIMMessage {
         }
       }
 
-      arguments["sessionUpdate"] = setting?.isSessionUpdate
-      arguments["messageAck"] = setting?.teamReceiptEnabled
-      arguments["ackCount"] = teamReceiptInfo?.readCount
-      arguments["unAckCount"] = teamReceiptInfo?.unreadCount
-      arguments["clientAntiSpam"] = antiSpamOption?.hitClientAntispam
+      arguments["sessionUpdate"] = setting?.isSessionUpdate ?? true
+      arguments["messageAck"] = setting?.teamReceiptEnabled ?? false
+      arguments["isChecked"] = isChecked
+      arguments["ackCount"] = teamReceiptInfo?.readCount ?? 0
+      arguments["unAckCount"] = teamReceiptInfo?.unreadCount ?? 0
+      arguments["clientAntiSpam"] = antiSpamOption?.hitClientAntispam ?? false
+      arguments["messageThreadOption"] = convertThreadOption(message: self)
+      arguments["config"] = convertConfig(setting: setting ?? NIMMessageSetting())
 
       if let sType = session?.sessionType {
         arguments["sessionType"] = FLT_NIMSessionType.convertFLTSessionType(sType)?.rawValue
@@ -719,15 +765,15 @@ extension NIMMessage {
         arguments["timestamp"] = Int(timestamp.doubleValue * 1000)
       }
 
-      if repliedMessageFrom != nil {
-        // 把 NIMMessage 的一级结构中的 thread 相关转化到 messageThreadOption 子结构
-        let threadKeyPaths = NIMMessageThreadOption.getKeyPaths(NIMMessageThreadOption.self)
-        let threadOption = NIMMessageThreadOption()
-        threadKeyPaths.forEach { key, value in
-          threadOption.setValue(self.value(forKeyPath: key), forKey: key)
-        }
-        arguments["messageThreadOption"] = threadOption.toDic()
-      }
+      arguments["fromAccount"] = from
+
+//        // 把 NIMMessage 的一级结构中的 thread 相关转化到 messageThreadOption 子结构
+//        let threadKeyPaths = NIMMessageThreadOption.getKeyPaths(NIMMessageThreadOption.self)
+//        let threadOption = NIMMessageThreadOption()
+//        threadKeyPaths.forEach { key, value in
+//          threadOption.setValue(self.value(forKeyPath: key), forKey: key)
+//        }
+//        arguments["messageThreadOption"] = threadOption.toDic()
 
       arguments.removeValue(forKey: "flt_messageType")
       arguments.removeValue(forKey: "flt_status")
@@ -758,9 +804,54 @@ extension NIMMessage {
       if arguments["fromNickname"] == nil {
         arguments["fromNickname"] = from
       }
+
+      // 赋予默认值, 对齐AOS
+      if !arguments.keys.contains("quickCommentUpdateTime") {
+        arguments["quickCommentUpdateTime"] = 0
+      }
+      arguments["messageAttachment"] = (arguments["messageAttachment"] != nil) ? arguments["messageAttachment"] : [:]
+      arguments["yidunAntiCheating"] = (arguments["yidunAntiCheating"] != nil) ? arguments["yidunAntiCheating"] : [:]
+      arguments["yidunAntiSpamRes"] = (arguments["yidunAntiSpamRes"] != nil) ? arguments["yidunAntiSpamRes"] : ""
+      arguments["extension"] = (arguments["extension"] != nil) ? arguments["extension"] : [:]
+      arguments["pushContent"] = (arguments["pushContent"] != nil) ? arguments["pushContent"] : ""
+
+      // chat room
+      if session?.sessionType == .chatroom {
+        if let historyEnabled = setting?.historyEnabled {
+          arguments["enableHistory"] = historyEnabled
+        }
+      }
       return arguments
     }
     return nil
+  }
+
+  func convertThreadOption(message: NIMMessage) -> [String: Any] {
+    var threadOption = [String: Any]()
+    threadOption["replyMessageFromAccount"] = repliedMessageFrom ?? ""
+    threadOption["replyMessageToAccount"] = repliedMessageTo ?? ""
+    threadOption["replyMessageTime"] = Int(repliedMessageTime * 1000)
+    threadOption["replyMessageIdServer"] = Int(repliedMessageServerId ?? "0") ?? 0
+    threadOption["replyMessageIdClient"] = repliedMessageId ?? ""
+    threadOption["threadMessageFromAccount"] = threadMessageFrom ?? ""
+    threadOption["threadMessageToAccount"] = threadMessageTo ?? ""
+    threadOption["threadMessageTime"] = Int(threadMessageTime * 1000)
+    threadOption["threadMessageIdServer"] = Int(threadMessageServerId ?? "0") ?? 0
+    threadOption["threadMessageIdClient"] = threadMessageId ?? ""
+    return threadOption
+  }
+
+  func convertConfig(setting: NIMMessageSetting) -> [String: Any] {
+    var config = [String: Any]()
+    config["enableUnreadCount"] = setting.shouldBeCounted
+    config["enableRoaming"] = setting.roamingEnabled
+    config["enableSelfSync"] = setting.syncEnabled
+    config["enablePushNick"] = setting.apnsWithPrefix
+    config["enableHistory"] = setting.historyEnabled
+    config["enablePersist"] = setting.persistEnable
+    config["enableRoute"] = setting.routeEnabled
+    config["enablePush"] = setting.apnsEnabled
+    return config
   }
 
   func dealNotificationObject(_ object: NIMNotificationObject) -> [String: Any] {
@@ -1048,37 +1139,25 @@ extension NIMAntiSpamOption {
 
 extension NIMImageObject: NimDataConvertProtrol {
   func convertVar() -> [String: String] {
-    ["_scene": "sen", "_sourceFilepath": "path"]
+    ["_scene": "sen", "_fileLength": "size", "_sourceFilepath": "path", "_sourceExtension": "ext"]
   }
 
   func toDic() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       extensionIvaToJson(&jsonObject, NIMImageObject.self)
-      jsonObject["size"] = Int(size.height * size.width)
+//      jsonObject["size"] = Int(size.height * size.width)
       jsonObject["w"] = Int(size.width)
       jsonObject["h"] = Int(size.height)
+      jsonObject["hash"] = nil
       return jsonObject
     }
     return nil
   }
 
   static func fromDic(_ json: [String: Any]) -> Any? {
-//    if let model = NIMImageObject.yx_model(with: json) {
-//      model.extensionModelIva(json, NIMImageObject.self)
-//      return model
-//    }
-    if let urlString = json["url"] as? String,
-       let url = URL(string: urlString) {
-      do {
-        let data = try Data(contentsOf: url)
-        let model = NIMImageObject(data: data, extension: "")
-        if let name = json["name"] as? String {
-          model.displayName = name
-        }
-        return model
-      } catch {
-        print(error)
-      }
+    if let model = NIMImageObject.yx_model(with: json) {
+      model.extensionModelIva(json, NIMImageObject.self)
+      return model
     }
     return nil
   }
@@ -1091,13 +1170,14 @@ extension NIMImageObject: NimDataConvertProtrol {
     var keyPaths = getKeyPaths(self)
     keyPaths[#keyPath(NIMImageObject.thumbUrl)] = "thumbUrl"
     keyPaths[#keyPath(NIMImageObject.thumbPath)] = "thumbPath"
+    keyPaths[#keyPath(NIMImageObject.displayName)] = "name"
     return keyPaths
   }
 }
 
 extension NIMAudioObject: NimDataConvertProtrol {
   func convertVar() -> [String: String] {
-    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path"]
+    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path", "_sourceExtension": "ext"]
   }
 
   func toDic() -> [String: Any]? {
@@ -1106,6 +1186,7 @@ extension NIMAudioObject: NimDataConvertProtrol {
       if let p = path {
         jsonObject["path"] = p
       }
+      jsonObject["ext"] = value(forKeyPath: "_sourceExtension")
       return jsonObject
     }
     return nil
@@ -1129,11 +1210,16 @@ extension NIMAudioObject: NimDataConvertProtrol {
   @objc static func modelCustomPropertyMapper() -> [String: Any]? {
     var keyPaths = getKeyPaths(self)
     keyPaths[#keyPath(NIMAudioObject.duration)] = "dur"
+    keyPaths[#keyPath(NIMAudioObject.displayName)] = "name"
     return keyPaths
   }
 }
 
 extension NIMRobotObject: NimDataConvertProtrol {
+  @objc static func modelPropertyBlacklist() -> [String] {
+    [#keyPath(NIMRobotObject.message)]
+  }
+
   func toDic() -> [String: Any]? {
     if let jsonObject = yx_modelToJSONObject() as? [String: Any] {
       //            extensionIvaToJson(&jsonObject, NIMFileObject.self)
@@ -1143,9 +1229,10 @@ extension NIMRobotObject: NimDataConvertProtrol {
   }
 
   static func fromDic(_ json: [String: Any]) -> Any? {
-    if let model = NIMRobotObject.yx_model(with: json) {
-      //            model.extensionModelIva(json, NIMFileObject.self)
-      return model
+    if let robotID = json["robotAccid"] as? String,
+       let target = json["target"] as? String,
+       let param = json["param"] as? String {
+      return NIMRobotObject(robotId: robotID, target: target, param: param)
     }
     return nil
   }
@@ -1165,22 +1252,9 @@ extension NIMFileObject: NimDataConvertProtrol {
   }
 
   static func fromDic(_ json: [String: Any]) -> Any? {
-//    if let model = NIMFileObject.yx_model(with: json) {
-//      model.extensionModelIva(json, NIMFileObject.self)
-//      return model
-//    }
-    if let urlString = json["url"] as? String,
-       let url = URL(string: urlString) {
-      do {
-        let data = try Data(contentsOf: url)
-        let model = NIMImageObject(data: data, extension: "")
-        if let name = json["name"] as? String {
-          model.displayName = name
-        }
-        return model
-      } catch {
-        print(error)
-      }
+    if let model = NIMFileObject.yx_model(with: json) {
+      model.extensionModelIva(json, NIMFileObject.self)
+      return model
     }
     return nil
   }
@@ -1199,7 +1273,7 @@ extension NIMFileObject: NimDataConvertProtrol {
 
 extension NIMVideoObject: NimDataConvertProtrol {
   func convertVar() -> [String: String] {
-    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path"]
+    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path", "_sourceExtension": "ext"]
   }
 
   func toDic() -> [String: Any]? {
@@ -1207,6 +1281,9 @@ extension NIMVideoObject: NimDataConvertProtrol {
       extensionIvaToJson(&jsonObject, NIMVideoObject.self)
       jsonObject["w"] = Int(coverSize.width)
       jsonObject["h"] = Int(coverSize.height)
+      if jsonObject["thumbPath"] == nil {
+        jsonObject["thumbPath"] = ""
+      }
       return jsonObject
     }
     return nil
@@ -1215,20 +1292,12 @@ extension NIMVideoObject: NimDataConvertProtrol {
   static func fromDic(_ json: [String: Any]) -> Any? {
     if let model = NIMVideoObject.yx_model(with: json) {
       model.extensionModelIva(json, NIMVideoObject.self)
+      if let w = json["w"] as? Double,
+         let h = json["h"] as? Double {
+        model.setValue(CGSize(width: w, height: h), forKeyPath: #keyPath(NIMVideoObject.coverSize))
+      }
       return model
     }
-//      if let urlString = json["url"] as? String,
-//         let url = URL(string: urlString){
-//
-//          do {
-//              let data = try Data(contentsOf: url)
-//              let model = NIMVideoObject(data: data, extension: "")
-//              return model
-//          } catch  {
-//              print(error)
-//          }
-//
-//      }
     return nil
   }
 
@@ -1242,6 +1311,7 @@ extension NIMVideoObject: NimDataConvertProtrol {
     keyPaths[#keyPath(NIMVideoObject.fileLength)] = "size"
     keyPaths[#keyPath(NIMVideoObject.coverUrl)] = "thumbUrl"
     keyPaths[#keyPath(NIMVideoObject.coverPath)] = "thumbPath"
+    keyPaths[#keyPath(NIMVideoObject.displayName)] = "name"
     return keyPaths
   }
 }
@@ -1324,17 +1394,17 @@ extension NIMRevokeMessageNotification {
     dic["callbackExt"] = callbackExt
     switch notificationType {
     case .P2P:
-      dic["revokeType"] = 1
+      dic["revokeType"] = "p2pDeleteMsg"
     case .team:
-      dic["revokeType"] = 2
+      dic["revokeType"] = "teamDeleteMsg"
     case .superTeam:
-      dic["revokeType"] = 3
+      dic["revokeType"] = "superTeamDeleteMsg"
     case .p2POneWay:
-      dic["revokeType"] = 4
+      dic["revokeType"] = "p2pOneWayDeleteMsg"
     case .teamOneWay:
-      dic["revokeType"] = 5
+      dic["revokeType"] = "teamOneWayDeleteMsg"
     default:
-      dic["revokeType"] = 0
+      dic["revokeType"] = "undefined"
     }
     return dic
   }
@@ -1438,8 +1508,63 @@ extension NIMMessageSearchOption {
       }
       model.order = json["order"] as? Int == 1 ? NIMMessageSearchOrder
         .asc : NIMMessageSearchOrder.desc
+
+      if let startTime = json["startTime"] as? Int {
+        model.startTime = TimeInterval(Double(startTime) / 1000)
+      }
+      if let endTime = json["endTime"] as? Int {
+        model.endTime = TimeInterval(Double(endTime) / 1000)
+      }
+
       return model
     }
     return NIMMessageSearchOption()
+  }
+}
+
+extension NIMMessageFullKeywordSearchOption {
+  static func fromDic(_ json: [String: Any]) -> NIMMessageFullKeywordSearchOption? {
+    if let model = NIMMessageFullKeywordSearchOption.yx_model(with: json) {
+      if let fromTime = json["fromTime"] as? Int {
+        model.startTime = TimeInterval(Double(fromTime) / 1000)
+      }
+      if let toTime = json["toTime"] as? Int {
+        model.endTime = TimeInterval(Double(toTime) / 1000)
+      }
+      if let p2pList = json["p2pList"] as? [String] {
+        model.p2pArray = p2pList
+      }
+      if let teamList = json["teamList"] as? [String] {
+        model.teamArray = teamList
+      }
+      if let senderList = json["senderList"] as? [String] {
+        model.senderArray = senderList
+      }
+      if let msgTypeList = json["msgTypeList"] as? [String] {
+        var msgTypeArray = [Int]()
+        for s in msgTypeList {
+          if let messageType = try? NIMMessageType.getType(s) {
+            msgTypeArray.append(messageType.rawValue)
+          }
+        }
+        model.msgTypeArray = msgTypeArray
+      }
+      if let msgSubtypeList = json["msgSubtypeList"] as? [Int] {
+        model.msgSubtypeArray = msgSubtypeList
+      }
+      return model
+    }
+    return nil
+  }
+}
+
+extension NIMLocalAntiSpamCheckResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["content"] = content
+      jsonObject["operator"] = (type.rawValue > 3) ? 0 : type.rawValue
+      return jsonObject
+    }
+    return nil
   }
 }

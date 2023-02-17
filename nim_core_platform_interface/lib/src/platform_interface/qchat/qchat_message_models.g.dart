@@ -606,7 +606,7 @@ QChatSystemNotification _$QChatSystemNotificationFromJson(
       fromClientType: json['fromClientType'] as int?,
       callbackExtension: json['callbackExtension'] as String?,
       attachment: QChatSystemNotificationAttachment._fromJson(
-          json['attachment'] as Map?),
+          json['attachment'] as Map?, json['type'] as String?),
       updateTime: json['updateTime'] as int?,
       msgIdClient: json['msgIdClient'] as String?,
       toAccids: (json['toAccids'] as List<dynamic>?)
@@ -1380,4 +1380,375 @@ Map<String, dynamic> _$QChatUpdateServerRoleAuthsAttachmentToJson(
       'serverId': instance.serverId,
       'updateAuths': instance.updateAuths?.map((k, e) => MapEntry(
           _$QChatRoleResourceEnumMap[k]!, _$QChatRoleOptionEnumMap[e]!)),
+    };
+
+QChatReplyMessageParam _$QChatReplyMessageParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatReplyMessageParam(
+      message: QChatSendMessageParam.fromJson(
+          json['message'] as Map<String, dynamic>),
+      replyMessage:
+          QChatMessage.fromJson(json['replyMessage'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$QChatReplyMessageParamToJson(
+        QChatReplyMessageParam instance) =>
+    <String, dynamic>{
+      'message': instance.message.toJson(),
+      'replyMessage': instance.replyMessage.toJson(),
+    };
+
+QChatGetReferMessagesParam _$QChatGetReferMessagesParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetReferMessagesParam(
+      message: QChatMessage.fromJson(json['message'] as Map<String, dynamic>),
+      referType: $enumDecode(_$QChatMessageReferTypeEnumMap, json['referType']),
+    );
+
+Map<String, dynamic> _$QChatGetReferMessagesParamToJson(
+        QChatGetReferMessagesParam instance) =>
+    <String, dynamic>{
+      'message': instance.message.toJson(),
+      'referType': _$QChatMessageReferTypeEnumMap[instance.referType]!,
+    };
+
+const _$QChatMessageReferTypeEnumMap = {
+  QChatMessageReferType.replay: 'replay',
+  QChatMessageReferType.thread: 'thread',
+  QChatMessageReferType.all: 'all',
+};
+
+QChatGetReferMessagesResult _$QChatGetReferMessagesResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetReferMessagesResult(
+      replyMessage: qChatMessageFromJson(json['replyMessage'] as Map?),
+      threadMessage: qChatMessageFromJson(json['threadMessage'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatGetReferMessagesResultToJson(
+        QChatGetReferMessagesResult instance) =>
+    <String, dynamic>{
+      'replyMessage': instance.replyMessage?.toJson(),
+      'threadMessage': instance.threadMessage?.toJson(),
+    };
+
+QChatGetThreadMessagesParam _$QChatGetThreadMessagesParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetThreadMessagesParam(
+      message: QChatMessage.fromJson(json['message'] as Map<String, dynamic>),
+      messageQueryOption: json['messageQueryOption'] == null
+          ? null
+          : QChatMessageQueryOption.fromJson(
+              json['messageQueryOption'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$QChatGetThreadMessagesParamToJson(
+        QChatGetThreadMessagesParam instance) =>
+    <String, dynamic>{
+      'message': instance.message.toJson(),
+      'messageQueryOption': instance.messageQueryOption?.toJson(),
+    };
+
+QChatMessageQueryOption _$QChatMessageQueryOptionFromJson(
+        Map<String, dynamic> json) =>
+    QChatMessageQueryOption(
+      toTime: json['toTime'] as int?,
+      fromTime: json['fromTime'] as int?,
+      reverse: json['reverse'] as bool? ?? false,
+      excludeMessageId: json['excludeMessageId'] as int?,
+      limit: json['limit'] as int?,
+    );
+
+Map<String, dynamic> _$QChatMessageQueryOptionToJson(
+        QChatMessageQueryOption instance) =>
+    <String, dynamic>{
+      'fromTime': instance.fromTime,
+      'toTime': instance.toTime,
+      'excludeMessageId': instance.excludeMessageId,
+      'limit': instance.limit,
+      'reverse': instance.reverse,
+    };
+
+QChatGetThreadMessagesResult _$QChatGetThreadMessagesResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetThreadMessagesResult(
+      threadMessage: qChatMessageFromJson(json['threadMessage'] as Map?),
+      messages: _qChatMessageListFromJson(json['messages'] as List?),
+      threadInfo: _qChatMessageThreadInfoFromJson(json['threadInfo'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatGetThreadMessagesResultToJson(
+        QChatGetThreadMessagesResult instance) =>
+    <String, dynamic>{
+      'threadMessage': instance.threadMessage?.toJson(),
+      'threadInfo': instance.threadInfo?.toJson(),
+      'messages': instance.messages?.map((e) => e.toJson()).toList(),
+    };
+
+QChatMessageThreadInfo _$QChatMessageThreadInfoFromJson(
+        Map<String, dynamic> json) =>
+    QChatMessageThreadInfo(
+      total: json['total'] as int?,
+      lastMsgTime: json['lastMsgTime'] as int?,
+    );
+
+Map<String, dynamic> _$QChatMessageThreadInfoToJson(
+        QChatMessageThreadInfo instance) =>
+    <String, dynamic>{
+      'total': instance.total,
+      'lastMsgTime': instance.lastMsgTime,
+    };
+
+QChatGetMessageThreadInfosParam _$QChatGetMessageThreadInfosParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetMessageThreadInfosParam(
+      channelId: json['channelId'] as int,
+      serverId: json['serverId'] as int,
+      msgList: _qChatMessageListFromJson(json['msgList'] as List?),
+    );
+
+Map<String, dynamic> _$QChatGetMessageThreadInfosParamToJson(
+        QChatGetMessageThreadInfosParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'msgList': instance.msgList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatGetMessageThreadInfosResult _$QChatGetMessageThreadInfosResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetMessageThreadInfosResult(
+      messageThreadInfoMap: _qChatMessageThreadInfoStringMapFromJson(
+          json['messageThreadInfoMap'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatGetMessageThreadInfosResultToJson(
+        QChatGetMessageThreadInfosResult instance) =>
+    <String, dynamic>{
+      'messageThreadInfoMap':
+          instance.messageThreadInfoMap?.map((k, e) => MapEntry(k, e.toJson())),
+    };
+
+QChatQuickCommentParam _$QChatQuickCommentParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatQuickCommentParam(
+      QChatMessage.fromJson(json['commentMessage'] as Map<String, dynamic>),
+      json['type'] as int,
+    );
+
+Map<String, dynamic> _$QChatQuickCommentParamToJson(
+        QChatQuickCommentParam instance) =>
+    <String, dynamic>{
+      'commentMessage': instance.commentMessage.toJson(),
+      'type': instance.type,
+    };
+
+QChatAddQuickCommentParam _$QChatAddQuickCommentParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatAddQuickCommentParam(
+      QChatMessage.fromJson(json['commentMessage'] as Map<String, dynamic>),
+      json['type'] as int,
+    );
+
+Map<String, dynamic> _$QChatAddQuickCommentParamToJson(
+        QChatAddQuickCommentParam instance) =>
+    <String, dynamic>{
+      'commentMessage': instance.commentMessage.toJson(),
+      'type': instance.type,
+    };
+
+QChatRemoveQuickCommentParam _$QChatRemoveQuickCommentParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatRemoveQuickCommentParam(
+      QChatMessage.fromJson(json['commentMessage'] as Map<String, dynamic>),
+      json['type'] as int,
+    );
+
+Map<String, dynamic> _$QChatRemoveQuickCommentParamToJson(
+        QChatRemoveQuickCommentParam instance) =>
+    <String, dynamic>{
+      'commentMessage': instance.commentMessage.toJson(),
+      'type': instance.type,
+    };
+
+QChatGetQuickCommentsParam _$QChatGetQuickCommentsParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetQuickCommentsParam(
+      serverId: json['serverId'] as int,
+      channelId: json['channelId'] as int,
+      msgList: _qChatMessageListFromJson(json['msgList'] as List?),
+    );
+
+Map<String, dynamic> _$QChatGetQuickCommentsParamToJson(
+        QChatGetQuickCommentsParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'msgList': instance.msgList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatGetQuickCommentsResult _$QChatGetQuickCommentsResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetQuickCommentsResult(
+      messageQuickCommentDetailMap:
+          _qChatMessageQuickCommentDetailMapIntFromJson(
+              json['messageQuickCommentDetailMap'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatGetQuickCommentsResultToJson(
+        QChatGetQuickCommentsResult instance) =>
+    <String, dynamic>{
+      'messageQuickCommentDetailMap': instance.messageQuickCommentDetailMap
+          ?.map((k, e) => MapEntry(k.toString(), e.toJson())),
+    };
+
+QChatMessageQuickCommentDetail _$QChatMessageQuickCommentDetailFromJson(
+        Map<String, dynamic> json) =>
+    QChatMessageQuickCommentDetail(
+      channelId: json['channelId'] as int?,
+      serverId: json['serverId'] as int?,
+      msgIdServer: json['msgIdServer'] as int?,
+      details: _qChatQuickCommentDetailListFromJson(json['details'] as List?),
+      lastUpdateTime: json['lastUpdateTime'] as int?,
+      totalCount: json['totalCount'] as int?,
+    );
+
+Map<String, dynamic> _$QChatMessageQuickCommentDetailToJson(
+        QChatMessageQuickCommentDetail instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'msgIdServer': instance.msgIdServer,
+      'totalCount': instance.totalCount,
+      'lastUpdateTime': instance.lastUpdateTime,
+      'details': instance.details?.map((e) => e.toJson()).toList(),
+    };
+
+QChatQuickCommentDetail _$QChatQuickCommentDetailFromJson(
+        Map<String, dynamic> json) =>
+    QChatQuickCommentDetail(
+      type: json['type'] as int?,
+      count: json['count'] as int?,
+      hasSelf: json['hasSelf'] as bool?,
+      severalAccids: (json['severalAccids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$QChatQuickCommentDetailToJson(
+        QChatQuickCommentDetail instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'count': instance.count,
+      'hasSelf': instance.hasSelf,
+      'severalAccids': instance.severalAccids,
+    };
+
+QChatMessageCache _$QChatMessageCacheFromJson(Map<String, dynamic> json) =>
+    QChatMessageCache(
+      threadMessage: qChatMessageFromJson(json['threadMessage'] as Map?),
+      message: qChatMessageFromJson(json['message'] as Map?),
+      replyMessage: qChatMessageFromJson(json['replyMessage'] as Map?),
+      messageQuickCommentDetail: _qChatMessageQuickCommentDetailFromJson(
+          json['messageQuickCommentDetail'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatMessageCacheToJson(QChatMessageCache instance) =>
+    <String, dynamic>{
+      'message': instance.message?.toJson(),
+      'replyMessage': instance.replyMessage?.toJson(),
+      'threadMessage': instance.threadMessage?.toJson(),
+      'messageQuickCommentDetail': instance.messageQuickCommentDetail?.toJson(),
+    };
+
+QChatGetLastMessageOfChannelsParam _$QChatGetLastMessageOfChannelsParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetLastMessageOfChannelsParam(
+      serverId: json['serverId'] as int,
+      channelIds:
+          (json['channelIds'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatGetLastMessageOfChannelsParamToJson(
+        QChatGetLastMessageOfChannelsParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelIds': instance.channelIds,
+    };
+
+QChatGetLastMessageOfChannelsResult
+    _$QChatGetLastMessageOfChannelsResultFromJson(Map<String, dynamic> json) =>
+        QChatGetLastMessageOfChannelsResult(
+          channelMsgMap:
+              _qChatMessageMapIntFromJson(json['channelMsgMap'] as Map?),
+        );
+
+Map<String, dynamic> _$QChatGetLastMessageOfChannelsResultToJson(
+        QChatGetLastMessageOfChannelsResult instance) =>
+    <String, dynamic>{
+      'channelMsgMap': instance.channelMsgMap
+          ?.map((k, e) => MapEntry(k.toString(), e.toJson())),
+    };
+
+QChatSearchMsgByPageParam _$QChatSearchMsgByPageParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatSearchMsgByPageParam(
+      serverId: json['serverId'] as int,
+      msgTypes: (json['msgTypes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$NIMMessageTypeEnumMap, e))
+          .toList(),
+      channelId: json['channelId'] as int?,
+      limit: json['limit'] as int?,
+      fromTime: json['fromTime'] as int?,
+      toTime: json['toTime'] as int?,
+      sort: $enumDecodeNullable(
+          _$QChatMessageSearchSortEnumEnumMap, json['sort']),
+      fromAccount: json['fromAccount'] as String?,
+      keyword: json['keyword'] as String?,
+      cursor: json['cursor'] as String?,
+      isIncludeSelf: json['isIncludeSelf'] as bool?,
+      order: json['order'] as bool?,
+      subTypes:
+          (json['subTypes'] as List<dynamic>?)?.map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatSearchMsgByPageParamToJson(
+        QChatSearchMsgByPageParam instance) =>
+    <String, dynamic>{
+      'keyword': instance.keyword,
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'fromAccount': instance.fromAccount,
+      'fromTime': instance.fromTime,
+      'toTime': instance.toTime,
+      'msgTypes':
+          instance.msgTypes.map((e) => _$NIMMessageTypeEnumMap[e]!).toList(),
+      'subTypes': instance.subTypes,
+      'isIncludeSelf': instance.isIncludeSelf,
+      'order': instance.order,
+      'limit': instance.limit,
+      'sort': _$QChatMessageSearchSortEnumEnumMap[instance.sort],
+      'cursor': instance.cursor,
+    };
+
+const _$QChatMessageSearchSortEnumEnumMap = {
+  QChatMessageSearchSortEnum.createTime: 'createTime',
+};
+
+QChatSearchMsgByPageResult _$QChatSearchMsgByPageResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatSearchMsgByPageResult(
+      json['hasMore'] as bool?,
+      json['nextTimeTag'] as int?,
+      json['cursor'] as String?,
+      messages: _qChatMessageListFromJson(json['messages'] as List?),
+    );
+
+Map<String, dynamic> _$QChatSearchMsgByPageResultToJson(
+        QChatSearchMsgByPageResult instance) =>
+    <String, dynamic>{
+      'hasMore': instance.hasMore,
+      'nextTimeTag': instance.nextTimeTag,
+      'cursor': instance.cursor,
+      'messages': instance.messages?.map((e) => e.toJson()).toList(),
     };

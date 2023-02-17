@@ -5,6 +5,7 @@ part of nim_core;
 
 ///圈组频道服务
 ///仅支持Android 和 iOS
+@HawkEntryPoint()
 class QChatChannelService {
   factory QChatChannelService() {
     if (_singleton == null) {
@@ -86,4 +87,71 @@ class QChatChannelService {
       QChatSearchChannelMembersParam param) {
     return _platform.searchChannelMembers(param);
   }
+
+  /// 更新频道黑白名单身份组
+
+  Future<NIMResult<void>> updateChannelBlackWhiteRoles(
+      QChatUpdateChannelBlackWhiteRolesParam param) {
+    return _platform.updateChannelBlackWhiteRoles(param);
+  }
+
+  /// 分页查询频道黑白名单身份组列表
+
+  Future<NIMResult<QChatGetChannelBlackWhiteRolesByPageResult>>
+      getChannelBlackWhiteRolesByPage(
+          QChatGetChannelBlackWhiteRolesByPageParam param) {
+    return _platform.getChannelBlackWhiteRolesByPage(param);
+  }
+
+  /// 批量查询频道黑白名单身份组列表
+
+  Future<NIMResult<QChatGetExistingChannelBlackWhiteRolesResult>>
+      getExistingChannelBlackWhiteRoles(
+          QChatGetExistingChannelBlackWhiteRolesParam param) {
+    return _platform.getExistingChannelBlackWhiteRoles(param);
+  }
+
+  /// 更新频道黑白名单成员
+
+  Future<NIMResult<void>> updateChannelBlackWhiteMembers(
+      QChatUpdateChannelBlackWhiteMembersParam param) {
+    return _platform.updateChannelBlackWhiteMembers(param);
+  }
+
+  /// 分页查询频道黑白名单成员列表
+
+  Future<NIMResult<QChatGetChannelBlackWhiteMembersByPageResult>>
+      getChannelBlackWhiteMembersByPage(
+          QChatGetChannelBlackWhiteMembersByPageParam param) {
+    return _platform.getChannelBlackWhiteMembersByPage(param);
+  }
+
+  /// 批量查询频道黑白名单成员列表
+
+  Future<NIMResult<QChatGetExistingChannelBlackWhiteMembersResult>>
+      getExistingChannelBlackWhiteMembers(
+          QChatGetExistingChannelBlackWhiteMembersParam param) {
+    return _platform.getExistingChannelBlackWhiteMembers(param);
+  }
+
+  /// 更新用户频道推送配置
+
+  Future<NIMResult<void>> updateUserChannelPushConfig(
+      QChatUpdateUserChannelPushConfigParam param) {
+    return _platform.updateUserChannelPushConfig(param);
+  }
+
+  /// 获取用户频道推送配置列表
+
+  Future<NIMResult<QChatGetUserPushConfigsResult>> getUserChannelPushConfigs(
+      QChatGetUserChannelPushConfigsParam param) {
+    return _platform.getUserChannelPushConfigs(param);
+  }
+
+  //// 分页查询服务器下频道类别列表
+
+  // Future<NIMResult<QChatGetChannelCategoriesByPageResult>>
+  //     getChannelCategoriesByPage(QChatGetChannelCategoriesByPageParam param) {
+  //   return _platform.getChannelCategoriesByPage(param);
+  // }
 }

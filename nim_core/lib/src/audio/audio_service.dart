@@ -22,7 +22,7 @@ class AudioService {
   Stream<RecordInfo> get onAudioRecordStatus =>
       AudioRecordServicePlatform.instance.onAudioRecordStatus.stream;
 
-  ///开始录制，支持参数设置录音格式和最大录音长度，如果不传，则默认为AAC和120s
+  ///开始录制，支持参数设置录音格式和最大录音长度，默认为AAC和120s
   Future<NIMResult<bool>> startRecord(
       AudioOutputFormat recordType, int maxDuration) async {
     return _platform.startAudioRecord(recordType, maxDuration);

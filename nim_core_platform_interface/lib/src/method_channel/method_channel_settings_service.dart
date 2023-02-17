@@ -4,6 +4,7 @@
 
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_android_options.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/settings/platform_interface_settings_service.dart';
@@ -20,6 +21,16 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
 
   @override
   Future<NIMResult<void>> enableMobilePushWhenPCOnline(bool enable) async {
+    if (kIsWeb) {
+      return NIMResult.fromMap(
+        await invokeMethod(
+          'enableMobilePushWhenPCOnline',
+          arguments: {
+            'enable': enable,
+          },
+        ),
+      );
+    }
     return NIMResult(-1, null, 'Support Mobile platform only');
   }
 

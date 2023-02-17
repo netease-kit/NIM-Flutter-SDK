@@ -107,7 +107,7 @@ extension NIMQChatMessageRefer {
 
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
-      jsonObject["msgIdServer"] = serverIdInfo.serverID
+      jsonObject["msgIdServer"] = Int(serverIdInfo.serverID)
       jsonObject["time"] = Int(serverIdInfo.timestamp * 1000)
       jsonObject["uuid"] = messageId
       jsonObject["fromAccount"] = from
@@ -125,7 +125,9 @@ extension NIMQChatMessageAntispamSetting {
       jsonObject["antiSpamBusinessId"] = antiSpamBusinessId
       jsonObject["isAntiSpamUsingYidun"] = antiSpamUsingYidun
       jsonObject["yidunCallback"] = yidunCallback
-      jsonObject["yidunAntiCheating"] = yidunAntiCheating
+      if let ydAntiCheating = yidunAntiCheating as? [String: Any] {
+        jsonObject["yidunAntiCheating"] = getJsonStringFromDictionary(ydAntiCheating)
+      }
       jsonObject["yidunAntiSpamExt"] = yidunAntiSpamExt
       return jsonObject
     }
@@ -199,7 +201,9 @@ extension NIMQChatMessageUpdateOperatorInfo {
       jsonObject["msg"] = postscript
       jsonObject["ext"] = self.extension
       jsonObject["pushContent"] = pushContent
-//      jsonObject["pushPayload"] = pushPayload
+//      if let psPayload = pushPayload as? [String: Any] {
+//        jsonObject["pushPayload"] = getJsonStringFromDictionary(psPayload)
+//      }
       jsonObject["routeEnable"] = routeEnable
       jsonObject["env"] = env
       return jsonObject
@@ -218,30 +222,29 @@ extension NIMQChatUpdateParam {
     return model
   }
 
-  func toDict() -> [String: Any]? {
-    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
-      jsonObject["msg"] = postscript
-      jsonObject["ext"] = self.extension
-      jsonObject["pushContent"] = pushContent
-      jsonObject["pushPayload"] = pushPayload
-      jsonObject["env"] = env
-      jsonObject["routeEnable"] = routeEnable
-      jsonObject["operatorAccount"] = operatorAccid
-      jsonObject["operatorClientType"] = operatorClientType
-      return jsonObject
+  func toDict() -> [String: Any] {
+    var jsonObject = [String: Any]()
+    jsonObject["msg"] = postscript
+    jsonObject["ext"] = self.extension
+    jsonObject["pushContent"] = pushContent
+//      jsonObject["pushPayload"] = pushPayload
+    if let ppLoad = pushPayload as? [String: Any] {
+      jsonObject["pushPayload"] = NSObject().getJsonStringFromDictionary(ppLoad)
     }
-    return nil
+    jsonObject["env"] = env
+    jsonObject["routeEnable"] = routeEnable
+    jsonObject["operatorAccount"] = operatorAccid
+    jsonObject["operatorClientType"] = operatorClientType
+    return jsonObject
   }
 }
 
 extension NIMQChatUpdateMessageEvent {
   func toDict() -> [String: Any]? {
-    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
-      jsonObject["message"] = message.toDict()
-      jsonObject["msgUpdateInfo"] = updateParam.toDict()
-      return jsonObject
-    }
-    return nil
+    var jsonObject = [String: Any]()
+    jsonObject["message"] = message.toDict()
+    jsonObject["msgUpdateInfo"] = updateParam.toDict()
+    return jsonObject
   }
 }
 

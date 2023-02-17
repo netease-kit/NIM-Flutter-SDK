@@ -70,7 +70,7 @@ class MessageSearchOption {
       order: (param['order'] as String?) == 'DESC'
           ? SearchOrder.DESC
           : SearchOrder.ASC,
-      msgTypeList: (param['messageTypeList'] as List<dynamic>?)
+      msgTypeList: (param['msgTypeList'] as List<dynamic>?)
           ?.map((e) => NIMMessageTypeConverter().fromValue(e))
           .toList(),
       messageSubTypes: (param['messageSubTypes'] as List<dynamic>?)

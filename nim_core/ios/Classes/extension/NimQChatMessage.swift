@@ -6,10 +6,10 @@ import NIMSDK
 import Foundation
 
 extension NIMQChatMessageAntispamSetting {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatMessageAntispamSetting {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatMessageAntispamSetting? {
     guard let model = NIMQChatMessageAntispamSetting.yx_model(with: json) else {
       print("❌NIMQChatMessageAntispamSetting.yx_model(with: json) FAILED")
-      return NIMQChatMessageAntispamSetting()
+      return nil
     }
     if let isCustomAntiSpamEnable = json["isCustomAntiSpamEnable"] as? Bool {
       model.enableAntiSpamContent = isCustomAntiSpamEnable
@@ -52,11 +52,11 @@ extension NIMQChatMessage {
       jsonObject["qChatServerId"] = qchatServerId
       jsonObject["fromAccount"] = from
       jsonObject["fromClientType"] = senderClientType.rawValue
-      jsonObject["fromNick"] = senderName
+      jsonObject["fromNick"] = senderName ?? ""
       jsonObject["time"] = Int(timestamp * 1000)
       jsonObject["updateTime"] = Int(updateTimestamp * 1000)
       jsonObject["content"] = text
-      jsonObject["remoteExtension"] = remoteExt
+      jsonObject["remoteExtension"] = remoteExt ?? [String: Any]()
       jsonObject["uuid"] = messageId
       jsonObject["msgIdServer"] = Int(serverID)
       jsonObject["resend"] = false
@@ -74,11 +74,11 @@ extension NIMQChatMessage {
       jsonObject["needBadge"] = setting?.shouldBeCounted
       jsonObject["needPushNick"] = setting?.apnsWithPrefix
       jsonObject["routeEnable"] = setting?.routeEnabled
-      jsonObject["env"] = env
+      jsonObject["env"] = env ?? ""
       jsonObject["callbackExtension"] = callbackExt
       jsonObject["replyRefer"] = replyRefer?.toDict()
       jsonObject["threadRefer"] = threadRefer?.toDict()
-      jsonObject["rootThread"] = (threadRefer == nil) ? true : threadRefer?.messageId
+      jsonObject["rootThread"] = (threadRefer == nil)
       jsonObject["antiSpamOption"] = yidunAntiSpamSetting?.toDict()
       jsonObject["antiSpamResult"] = jsonObject["yidunAntiSpamResult"]
       jsonObject["updateContent"] = updateContent?.toDict()
@@ -153,11 +153,13 @@ extension NIMQChatMessage {
         attachment = attachment2
       }
 
-      if let attachment = attachment, let mType = type {
+      if let msgType = type {
         qChatMessage.setValue(
-          mType.rawValue,
+          msgType.rawValue,
           forKeyPath: #keyPath(NIMQChatMessage.messageType)
         )
+      }
+      if let attachment = attachment, let mType = type {
         switch mType {
         case NIMMessageType.image:
           if let object = NIMImageObject.fromDic(attachment) as? NIMImageObject {
@@ -370,10 +372,10 @@ extension NIMQChatMessage {
 }
 
 extension NIMQChatUpdateMessageInfo {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateMessageInfo {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateMessageInfo? {
     guard let model = NIMQChatUpdateMessageInfo.yx_model(with: json) else {
       print("❌NIMQChatUpdateMessageInfo.yx_model(with: json) FAILED")
-      return NIMQChatUpdateMessageInfo()
+      return nil
     }
     if let serverStatus = json["serverStatus"] as? Int {
       model.status = serverStatus
@@ -395,26 +397,28 @@ extension NIMQChatUpdateMessageInfo {
 }
 
 extension NIMQChatUpdateMessageParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateMessageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateMessageParam? {
     guard let model = NIMQChatUpdateMessageParam.yx_model(with: json) else {
       print("❌NIMQChatUpdateMessageParam.yx_model(with: json) FAILED")
-      return NIMQChatUpdateMessageParam()
+      return nil
     }
     if let updateParam = json["updateParam"] as? [String: Any] {
       model.updateParam = NIMQChatUpdateParam.fromDic(updateParam)
     }
 
-    model.updateInfo = NIMQChatUpdateMessageInfo.fromDic(json)
+    if let updateInfo = NIMQChatUpdateMessageInfo.fromDic(json) {
+      model.updateInfo = updateInfo
+    }
 
     return model
   }
 }
 
 extension NIMQChatRevokeMessageParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatRevokeMessageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatRevokeMessageParam? {
     guard let model = NIMQChatRevokeMessageParam.yx_model(with: json) else {
       print("❌NIMQChatRevokeMessageParam.yx_model(with: json) FAILED")
-      return NIMQChatRevokeMessageParam()
+      return nil
     }
     if let updateParam = json["updateParam"] as? [String: Any] {
       model.updateParam = NIMQChatUpdateParam.fromDic(updateParam)
@@ -425,10 +429,10 @@ extension NIMQChatRevokeMessageParam {
 }
 
 extension NIMQChatDeleteMessageParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatDeleteMessageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatDeleteMessageParam? {
     guard let model = NIMQChatDeleteMessageParam.yx_model(with: json) else {
       print("❌NIMQChatDeleteMessageParam.yx_model(with: json) FAILED")
-      return NIMQChatDeleteMessageParam()
+      return nil
     }
     if let updateParam = json["updateParam"] as? [String: Any] {
       model.updateParam = NIMQChatUpdateParam.fromDic(updateParam)
@@ -439,30 +443,34 @@ extension NIMQChatDeleteMessageParam {
 }
 
 extension NIMQChatGetMessageHistoryParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetMessageHistoryParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetMessageHistoryParam? {
     guard let model = NIMQChatGetMessageHistoryParam.yx_model(with: json) else {
       print("❌NIMQChatGetMessageHistoryParam.yx_model(with: json) FAILED")
-      return NIMQChatGetMessageHistoryParam()
+      return nil
     }
     if let excludeMessageId = json["excludeMessageId"] as? NSNumber {
       model.excludeMsgId = excludeMessageId
+    }
+    if let fromTime = json["fromTime"] as? Int64 {
+      model.fromTime = Double(fromTime) / 1000.0
+    }
+    if let toTime = json["toTime"] as? Int64 {
+      model.toTime = NSNumber(value: Double(toTime) / 1000.0)
     }
     return model
   }
 }
 
 extension NIMQChatGetMessageHistoryByIdsParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetMessageHistoryByIdsParam {
-    guard let model = NIMQChatGetMessageHistoryByIdsParam.yx_model(with: json) else {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetMessageHistoryByIdsParam? {
+    guard let model = NIMQChatGetMessageHistoryByIdsParam.yx_model(with: json),
+          let serverId = json["serverId"] as? UInt64,
+          let channelId = json["channelId"] as? UInt64 else {
       print("❌NIMQChatGetMessageHistoryByIdsParam.yx_model(with: json) FAILED")
-      return NIMQChatGetMessageHistoryByIdsParam()
+      return nil
     }
-    if let serverId = json["serverId"] as? UInt64 {
-      model.serverId = serverId
-    }
-    if let channelId = json["channelId"] as? UInt64 {
-      model.channelId = channelId
-    }
+    model.serverId = serverId
+    model.channelId = channelId
     if let messageReferList = json["messageReferList"] as? [[String: Any]] {
       let ids = messageReferList.map { item in
         NIMQChatMessageServerIdInfo.fromDic(item)
@@ -476,17 +484,15 @@ extension NIMQChatGetMessageHistoryByIdsParam {
 }
 
 extension NIMQChatMarkMessageReadParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatMarkMessageReadParam {
-    guard let model = NIMQChatMarkMessageReadParam.yx_model(with: json) else {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatMarkMessageReadParam? {
+    guard let model = NIMQChatMarkMessageReadParam.yx_model(with: json),
+          let serverId = json["serverId"] as? UInt64,
+          let channelId = json["channelId"] as? UInt64 else {
       print("❌NIMQChatMarkMessageReadParam.yx_model(with: json) FAILED")
-      return NIMQChatMarkMessageReadParam()
+      return nil
     }
-    if let serverId = json["serverId"] as? UInt64 {
-      model.serverId = serverId
-    }
-    if let channelId = json["channelId"] as? UInt64 {
-      model.channelId = channelId
-    }
+    model.serverId = serverId
+    model.channelId = channelId
     if let ackTimestamp = json["ackTimestamp"] as? Double {
       model.ackTimestamp = TimeInterval(ackTimestamp / 1000)
     }
@@ -513,10 +519,10 @@ extension NIMQChatMarkSystemNotificationsReadItem {
 }
 
 extension NIMQChatMarkSystemNotificationsReadParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatMarkSystemNotificationsReadParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatMarkSystemNotificationsReadParam? {
     guard let model = NIMQChatMarkSystemNotificationsReadParam.yx_model(with: json) else {
       print("❌NIMQChatMarkSystemNotificationsReadParam.yx_model(with: json) FAILED")
-      return NIMQChatMarkSystemNotificationsReadParam()
+      return nil
     }
     if let pairs = json["pairs"] as? [[String: Any]] {
       let items = pairs.map { item in
@@ -529,21 +535,20 @@ extension NIMQChatMarkSystemNotificationsReadParam {
 }
 
 extension NIMQChatSendSystemNotificationParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatSendSystemNotificationParam {
-    var model = NIMQChatSendSystemNotificationParam()
-    if let serverId = json["serverId"] as? UInt64 {
-      if let channelId = json["channelId"] as? UInt64 {
-        if let toAccids = json["toAccids"] as? [String] {
-          model = NIMQChatSendSystemNotificationParam(
-            serverId: serverId,
-            channelId: channelId,
-            toAccids: toAccids
-          )
-        } else {
-          model = NIMQChatSendSystemNotificationParam(serverId: serverId, channelId: channelId)
-        }
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSendSystemNotificationParam? {
+    guard let serverId = json["serverId"] as? UInt64 else {
+      return nil
+    }
+    var model = NIMQChatSendSystemNotificationParam(serverId: serverId)
+    if let channelId = json["channelId"] as? UInt64 {
+      if let toAccids = json["toAccids"] as? [String] {
+        model = NIMQChatSendSystemNotificationParam(
+          serverId: serverId,
+          channelId: channelId,
+          toAccids: toAccids
+        )
       } else {
-        model = NIMQChatSendSystemNotificationParam(serverId: serverId)
+        model = NIMQChatSendSystemNotificationParam(serverId: serverId, channelId: channelId)
       }
     }
 
@@ -554,6 +559,10 @@ extension NIMQChatSendSystemNotificationParam {
     if let ext = json["extension"] as? String {
       model.ext = ext
     }
+    if let body = json["body"] as? String {
+      model.body = body
+    }
+
     if let pushPayload = json["pushPayload"] as? String {
       model.pushPayload = pushPayload
     }
@@ -563,10 +572,10 @@ extension NIMQChatSendSystemNotificationParam {
 }
 
 extension NIMQChatSystemNotification {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatSystemNotification {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSystemNotification? {
     guard let model = NIMQChatSystemNotification.yx_model(with: json) else {
       print("❌NIMQChatSystemNotification.yx_model(with: json) FAILED")
-      return NIMQChatSystemNotification()
+      return nil
     }
     if let toType = json["toType"] as? String,
        let nimToType = FLTQChatSystemNotificationToType(rawValue: toType)?
@@ -714,13 +723,14 @@ extension NIMQChatSystemNotification {
 }
 
 extension NIMQChatResendSystemNotificationParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatResendSystemNotificationParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatResendSystemNotificationParam? {
     guard let model = NIMQChatResendSystemNotificationParam.yx_model(with: json) else {
       print("❌NIMQChatResendSystemNotificationParam.yx_model(with: json) FAILED")
-      return NIMQChatResendSystemNotificationParam()
+      return nil
     }
-    if let systemNotification = json["systemNotification"] as? [String: Any] {
-      model.systemNotification = NIMQChatSystemNotification.fromDic(systemNotification)
+    if let systemNotificationJson = json["systemNotification"] as? [String: Any],
+       let systemNotification = NIMQChatSystemNotification.fromDic(systemNotificationJson) {
+      model.systemNotification = systemNotification
     }
 
     return model
@@ -728,10 +738,10 @@ extension NIMQChatResendSystemNotificationParam {
 }
 
 extension NIMQChatUpdateSystemNotificationParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateSystemNotificationParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateSystemNotificationParam? {
     guard let model = NIMQChatUpdateSystemNotificationParam.yx_model(with: json) else {
       print("❌NIMQChatUpdateSystemNotificationParam.yx_model(with: json) FAILED")
-      return NIMQChatUpdateSystemNotificationParam()
+      return nil
     }
     if let updateParam = json["updateParam"] as? [String: Any] {
       model.updateParam = NIMQChatUpdateParam.fromDic(updateParam)
@@ -855,6 +865,93 @@ extension NIMQChatUpdateQuickCommentInfo {
   }
 }
 
+extension NIMQChatGetThreadMessagesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetThreadMessagesParam {
+    guard let model = NIMQChatGetThreadMessagesParam.yx_model(with: json) else {
+      print("❌NIMQChatGetThreadMessagesParam.yx_model(with: json) FAILED")
+      return NIMQChatGetThreadMessagesParam()
+    }
+    if let fromTime = json["fromTime"] as? Double {
+      model.fromTime = TimeInterval(fromTime / 1000)
+    }
+    if let toTime = json["toTime"] as? Double {
+      model.toTime = NSNumber(floatLiteral: toTime / 1000)
+    }
+    if let excludeMessageId = json["excludeMessageId"] as? Int {
+      model.excludeMsgId = "\(excludeMessageId)"
+    }
+    if let limit = json["limit"] as? Int {
+      model.limit = NSNumber(value: limit)
+    }
+    if let reverse = json["reverse"] as? Bool {
+      model.reverse = NSNumber(booleanLiteral: reverse)
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetMessageCacheParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetMessageCacheParam? {
+    guard let model = NIMQChatGetMessageCacheParam.yx_model(with: json),
+          let qchatServerId = json["qchatServerId"] as? UInt64,
+          let qchatChannelId = json["qchatChannelId"] as? UInt64 else {
+      print("❌NIMQChatGetMessageCacheParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    model.serverId = qchatServerId
+    model.channelId = qchatChannelId
+    model.withRefer = true
+    model.withQuickComment = true
+    return model
+  }
+}
+
+extension NIMQChatGetLastMessageOfChannelsParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetLastMessageOfChannelsParam? {
+    guard let model = NIMQChatGetLastMessageOfChannelsParam.yx_model(with: json),
+          let serverId = json["serverId"] as? UInt64,
+          let channelIds = json["channelIds"] as? [Int] else {
+      print("❌NIMQChatGetLastMessageOfChannelsParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    model.serverId = serverId
+    model.channelIds = channelIds.map { chan in
+      NSNumber(value: chan)
+    }
+    return model
+  }
+}
+
+extension NIMQChatSearchMsgByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSearchMsgByPageParam? {
+    guard let model = NIMQChatSearchMsgByPageParam.yx_model(with: json) else {
+      print("❌NIMQChatSearchMsgByPageParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let fromTime = json["fromTime"] as? Double {
+      model.fromTime = TimeInterval(fromTime / 1000)
+    }
+    if let toTime = json["toTime"] as? Double {
+      model.toTime = TimeInterval(toTime / 1000)
+    }
+    if let msgTypes = json["msgTypes"] as? [String] {
+      model.msgTypes = msgTypes.map { item in
+        NSNumber(value: FLT_NIMMessageType(rawValue: item)?.convertToNIMMessageType()?
+          .rawValue ?? 0)
+      }
+    }
+    if let isIncludeSelf = json["isIncludeSelf"] as? Bool {
+      model.includeSelf = isIncludeSelf
+    }
+    if let sort = json["sort"] as? String,
+       let sortType = FLTQChatSearchMessageSortType(rawValue: sort)?
+       .convertNIMQChatSearchMessageSortType() {
+      model.sortType = sortType
+    }
+    return model
+  }
+}
+
 // MARK: reault
 
 extension NIMQChatUpdateMessageResult {
@@ -893,6 +990,118 @@ extension NIMQChatUpdateSystemNotificationResult {
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       jsonObject["sentCustomNotification"] = systemNotification?.toDict()
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatMessageThreadInfo {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["total"] = messageCount
+      jsonObject["lastMsgTime"] = Int(lastMessageTimestamp * 1000)
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetThreadMessagesResult {
+  func toDict() -> [String: Any]? {
+    var jsonObject = [String: Any]()
+    jsonObject["threadInfo"] = threadInfo?.toDict()
+    jsonObject["threadMessage"] = threadMessage?.toDict()
+    if let msgs = messages {
+      let msgsList = msgs.map { msg in
+        msg.toDict()
+      }
+      jsonObject["messages"] = msgsList
+    }
+    return jsonObject
+  }
+}
+
+extension NIMQChatMessageQuickCommentsDetail {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["type"] = replyType
+      jsonObject["hasSelf"] = selfReplyed
+      jsonObject["severalAccids"] = replyAccIds
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatMessageQuickCommentInfo {
+  func toDict() -> [String: Any]? {
+    var jsonObject = [String: Any]()
+    jsonObject["msgIdServer"] = Int64(msgServerId)
+    jsonObject["totalCount"] = count
+    jsonObject["lastUpdateTime"] = Int(updateTime * 1000)
+    let details = commentArray.map { msg in
+      msg.toDict()
+    }
+    jsonObject["details"] = details
+    return jsonObject
+  }
+}
+
+extension NIMQChatGetMessageCacheResult {
+  func toDict() -> [[String: Any]]? {
+    var jsonObject = [[String: Any]]()
+    for index in 0 ..< (messages?.count ?? 0) {
+      var jsonItem = [String: Any]()
+      jsonItem["message"] = messages![index].toDict()
+      if let msgsRef = messagesRefered,
+         let refKey = messages![index].replyRefer?.messageId {
+        jsonItem["replyMessage"] = msgsRef[refKey]?.toDict()
+      }
+      if let msgsRef = messagesRefered,
+         let refKey = messages![index].threadRefer?.messageId {
+        jsonItem["threadMessage"] = msgsRef[refKey]?.toDict()
+      }
+      if let cmts = comments,
+         let comment = cmts[messages![index].serverID]?.toDict() {
+        jsonItem["messageQuickCommentDetail"] = comment
+      }
+      jsonObject.append(jsonItem)
+    }
+    return jsonObject
+  }
+}
+
+extension NIMQChatGetLastMessageOfChannelsResult {
+  func toDict() -> [String: Any]? {
+    var jsonObject = [String: Any]()
+    var channelMsgMap = [Int: [String: Any]]()
+    for (key, value) in lastMessageOfChannelDic {
+      channelMsgMap[key.intValue] = value.toDict()
+    }
+    jsonObject["channelMsgMap"] = channelMsgMap
+    return jsonObject
+  }
+}
+
+extension NIMQChatSearchMsgByPageResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimetag"] = Int(nextTimetag * 1000)
+      if let msgs = messages {
+        jsonObject["messages"] = msgs.map { msg in
+          msg.toDict()
+        }
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatServerUnreadInfo {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       return jsonObject
     }
     return nil

@@ -19,14 +19,14 @@ extension NIMRecentSession: NimDataConvertProtrol {
 
   func toDic() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
-      jsonObject["sessionId"] = session?.sessionId
+      jsonObject["sessionId"] = session?.sessionId ?? ""
       if let sessionType = session?.sessionType,
          let flt_sessionType = FLT_NIMSessionType.convertFLTSessionType(sessionType) {
         jsonObject["sessionType"] = flt_sessionType.rawValue
       }
       jsonObject["lastMessageId"] = lastMessage?.messageId
-      jsonObject["senderAccount"] = lastMessage?.from
-      jsonObject["senderNickname"] = lastMessage?.senderName
+      jsonObject["senderAccount"] = lastMessage?.from ?? ""
+      jsonObject["senderNickname"] = lastMessage?.senderName ?? ""
 
       if let contnet = lastMessage?.content {
         jsonObject["lastMessageContent"] = contnet
@@ -44,12 +44,14 @@ extension NIMRecentSession: NimDataConvertProtrol {
         let flt_status = FLT_NIMMessageStatus.convertFLTStatus(lastMessage!)
         jsonObject["lastMessageStatus"] = flt_status.rawValue
       }
+
+      jsonObject["lastMessageAttachment"] = [:]
       if let dic = lastMessage?.toDic(),
          let attachment = dic["messageAttachment"] as? [String: Any?] {
         jsonObject["lastMessageAttachment"] = attachment
       }
       jsonObject["unreadCount"] = unreadCount
-      jsonObject["extension"] = localExt
+      jsonObject["extension"] = localExt ?? ["ext": serverExt]
       return jsonObject
     }
     return nil
@@ -58,19 +60,27 @@ extension NIMRecentSession: NimDataConvertProtrol {
   // 跟Android同步，需要两层
   func toDicEx() -> [String: Any] {
     var map = [String: Any]()
-    map["sessionId"] = session?.sessionId
+    map["sessionId"] = session?.sessionId ?? ""
+    map["sessionTypePair"] = session?.sessionId
     if let sessionType = session?.sessionType,
        let flt_sessionType = FLT_NIMSessionType.convertFLTSessionType(sessionType) {
       map["sessionType"] = flt_sessionType.rawValue
     }
     map["updateTime"] = Int(updateTime * 1000)
-    map["ext"] = localExt
-    map["lastMsg"] = lastMessage?.content
-    if let type = lastMessage?.messageType,
-       let flt_type = FLT_NIMMessageType.convert(type) {
-      map["lastMessageType"] = flt_type.rawValue
+    map["ext"] = serverExt
+    if let contnet = lastMessage?.content {
+      map["lastMsg"] = contnet
+    } else {
+      map["lastMsg"] = lastMessage?.convertLastMessage()
     }
-    map["revokeNotification"] = lastRevokeNotification?.toDic
+    if lastMessageType == .normalMessage,
+       lastRevokeNotification == nil {
+      map["lastMsgType"] = 0
+    } else if lastMessageType == .revokeNotication,
+              lastMessage == nil {
+      map["lastMsgType"] = 1
+    }
+    map["revokeNotification"] = lastRevokeNotification?.toDic()
     map["recentSession"] = toDic()
     return map
   }

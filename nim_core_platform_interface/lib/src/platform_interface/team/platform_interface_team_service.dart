@@ -191,4 +191,12 @@ abstract class TeamServicePlatform extends Service {
   Future<NIMResult<List<NIMTeam>>> searchTeamsByKeyword(String keyword) async {
     throw UnimplementedError('searchTeamsByKeyword() is not implemented');
   }
+
+  /// 修改自己的群昵称
+  ///
+  /// [teamId] 所在群组ID
+  /// [nick] 新的群昵称
+  Future<NIMResult<void>> updateMyTeamNick(String teamId, String nick) async {
+    throw UnimplementedError('updateMyTeamNick() is not implemented');
+  }
 }

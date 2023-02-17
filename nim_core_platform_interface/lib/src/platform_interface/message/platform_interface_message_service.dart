@@ -111,13 +111,21 @@ abstract class MessageServicePlatform extends Service {
     throw UnimplementedError('saveMessage() is not implemented');
   }
 
+  Future<NIMResult<NIMMessage>> saveMessageToLocalEx(
+      {required NIMMessage message, required int time}) async {
+    throw UnimplementedError('saveMessageToLocalEx() is not implemented');
+  }
+
   Future<NIMResult<NIMMessage>> createMessage(
       {required NIMMessage message}) async {
     throw UnimplementedError('createMessage() is not implemented');
   }
 
   Future<NIMResult<String>> voiceToText(
-      {required NIMMessage message, String? scene}) async {
+      {required NIMMessage message,
+      String? scene,
+      String? mimeType,
+      String? sampleRate}) async {
     throw UnimplementedError('voiceToText() is not implemented');
   }
 
@@ -151,7 +159,7 @@ abstract class MessageServicePlatform extends Service {
   }
 
   Future<void> clearChattingHistory(
-      String account, NIMSessionType sessionType) async {
+      String account, NIMSessionType sessionType, bool? ignore) async {
     throw UnimplementedError('clearChattingHistory() is not implemented');
   }
 

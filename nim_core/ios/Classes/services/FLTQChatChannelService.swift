@@ -15,9 +15,21 @@ enum QChatChannelMethod: String {
   case subscribeChannel
   case searchChannelByPage
   case searchChannelMembers
+  case updateChannelBlackWhiteRoles
+  case getChannelBlackWhiteRolesByPage
+  case getExistingChannelBlackWhiteRoles
+  case updateChannelBlackWhiteMembers
+  case getChannelBlackWhiteMembersByPage
+  case getExistingChannelBlackWhiteMembers
+  case updateUserChannelPushConfig
+  case getUserChannelPushConfigs
+  case getChannelCategoriesByPage
 }
 
 class FLTQChatChannelService: FLTBaseService, FLTService {
+  private let paramErrorTip = "参数错误"
+  private let paramErrorCode = 414
+
   override func onInitialized() {
     NIMSDK.shared().qchatChannelManager.add(self)
   }
@@ -58,6 +70,24 @@ class FLTQChatChannelService: FLTBaseService, FLTService {
       qChatSearchChannelByPage(arguments, resultCallback)
     case QChatChannelMethod.searchChannelMembers.rawValue:
       qChatSearchChannelMembers(arguments, resultCallback)
+    case QChatChannelMethod.updateChannelBlackWhiteRoles.rawValue:
+      qChatUpdateChannelBlackWhiteRoles(arguments, resultCallback)
+    case QChatChannelMethod.getChannelBlackWhiteRolesByPage.rawValue:
+      qChatGetChannelBlackWhiteRolesByPage(arguments, resultCallback)
+    case QChatChannelMethod.getExistingChannelBlackWhiteRoles.rawValue:
+      qChatGetExistingChannelBlackWhiteRoles(arguments, resultCallback)
+    case QChatChannelMethod.updateChannelBlackWhiteMembers.rawValue:
+      qChatUpdateChannelBlackWhiteMembers(arguments, resultCallback)
+    case QChatChannelMethod.getChannelBlackWhiteMembersByPage.rawValue:
+      qChatGetChannelBlackWhiteMembersByPage(arguments, resultCallback)
+    case QChatChannelMethod.getExistingChannelBlackWhiteMembers.rawValue:
+      qChatGetExistingChannelBlackWhiteMembers(arguments, resultCallback)
+    case QChatChannelMethod.updateUserChannelPushConfig.rawValue:
+      qChatUpdateUserChannelPushConfig(arguments, resultCallback)
+    case QChatChannelMethod.getUserChannelPushConfigs.rawValue:
+      qChatGetUserChannelPushConfigs(arguments, resultCallback)
+    case QChatChannelMethod.getChannelCategoriesByPage.rawValue:
+      qChatGetChannelCategoriesByPage(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -65,101 +95,256 @@ class FLTQChatChannelService: FLTBaseService, FLTService {
 
   func qChatChannelCallback(_ error: Error?, _ data: Any?, _ resultCallback: ResultCallback) {
     if let ns_error = error as NSError? {
-      // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
-      let code = ns_error.code == 1 ? 414 : ns_error.code
-      errorCallBack(resultCallback, ns_error.description, code)
+      errorCallBack(resultCallback, ns_error.description, ns_error.code)
     } else {
       successCallBack(resultCallback, data)
     }
   }
 
   func qChatCreateChannel(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatCreateChannelParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.createChannel(request) { error, result in
-      self.qChatChannelCallback(error, ["channel": result?.toDict()], resultCallback)
+    guard let request = NIMQChatCreateChannelParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.createChannel(request) { [weak self] error, result in
+      self?.qChatChannelCallback(error, ["channel": result?.toDict()], resultCallback)
     }
   }
 
   func qChatDeleteChannel(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatDeleteChannelParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.deleteChannel(request) { error in
-      self.qChatChannelCallback(error, nil, resultCallback)
+    guard let request = NIMQChatDeleteChannelParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.deleteChannel(request) { [weak self] error in
+      self?.qChatChannelCallback(error, nil, resultCallback)
     }
   }
 
   func qChatUpdateChannel(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatUpdateChannelParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.updateChannel(request) { error, result in
-      self.qChatChannelCallback(error, ["channel": result?.toDict()], resultCallback)
+    guard let request = NIMQChatUpdateChannelParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.updateChannel(request) { [weak self] error, result in
+      self?.qChatChannelCallback(error, ["channel": result?.toDict()], resultCallback)
     }
   }
 
   func qChatGetChannels(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetChannelsParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.getChannels(request) { error, result in
-      self.qChatChannelCallback(error, result?.toDict(), resultCallback)
+    guard let request = NIMQChatGetChannelsParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.getChannels(request) { [weak self] error, result in
+      self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
     }
   }
 
   func qChatGetChannelsByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetChannelsByPageParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.getChannelsByPage(request) { error, result in
-      self.qChatChannelCallback(error, result?.toDict(), resultCallback)
+    guard let request = NIMQChatGetChannelsByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.getChannelsByPage(request) { [weak self] error, result in
+      self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
     }
   }
 
   func qChatGetChannelMembersByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetChannelMembersByPageParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.getChannelMembers(byPage: request) { error, result in
-      self.qChatChannelCallback(error, result?.toDict(), resultCallback)
+    guard let request = NIMQChatGetChannelMembersByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
+    NIMSDK.shared().qchatChannelManager
+      .getChannelMembers(byPage: request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
   }
 
   func qChatGetChannelUnreadInfos(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetChannelUnreadInfosParam.fromDic(arguments)
-    NIMSDK.shared().qchatChannelManager.getChannelUnreadInfos(request) { error, result in
-      self.qChatChannelCallback(error, ["unreadInfoList": result?.toDict()], resultCallback)
+    guard let request = NIMQChatGetChannelUnreadInfosParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
+    NIMSDK.shared().qchatChannelManager
+      .getChannelUnreadInfos(request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, ["unreadInfoList": result?.toDict()], resultCallback)
+      }
   }
 
   func qChatSubscribeChannel(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatSubscribeChannelParam.fromDic(arguments)
+    guard let request = NIMQChatSubscribeChannelParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     let targets = NIMQChatGetChannelUnreadInfosParam()
     targets.targets = request.targets
     var unreadInfoList = [[String: Any]?]()
-    NIMSDK.shared().qchatChannelManager.getChannelUnreadInfos(targets) { error, result in
-      if let err = error {
-        print(
-          "❌qChatSubscribeChannel() -> getChannelUnreadInfos() FAILED: \(err.localizedDescription)"
-        )
-      } else {
-        if let res = result {
-          unreadInfoList = res.toDict()
+    NIMSDK.shared().qchatChannelManager
+      .getChannelUnreadInfos(targets) { [weak self] error, result in
+        if let err = error {
+          print(
+            "@@#❌qChatSubscribeChannel() -> getChannelUnreadInfos() FAILED: \(err.localizedDescription)"
+          )
+          self?.qChatChannelCallback(error, nil, resultCallback)
+        } else {
+          if let res = result {
+            unreadInfoList = res.toDict()
+          }
+        }
+        NIMSDK.shared().qchatChannelManager.subscribeChannel(request) { error, result in
+          self?.qChatChannelCallback(
+            error,
+            ["unreadInfoList": unreadInfoList, "failedList": result?.toDict()],
+            resultCallback
+          )
         }
       }
-      NIMSDK.shared().qchatChannelManager.subscribeChannel(request) { error, result in
-        self.qChatChannelCallback(
-          error,
-          ["unreadInfoList": unreadInfoList, "failedList": result?.toDict()],
-          resultCallback
-        )
-      }
-    }
   }
 
   func qChatSearchChannelByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatSearchChannelByPageParam.fromDic(arguments)
-//      request.endTime = NSNumber(value: 0)
-    NIMSDK.shared().qchatChannelManager.searchChannel(byPage: request) { error, result in
-      self.qChatChannelCallback(error, result?.toDict(), resultCallback)
+    guard let request = NIMQChatSearchChannelByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
+    NIMSDK.shared().qchatChannelManager
+      .searchChannel(byPage: request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
   }
 
   func qChatSearchChannelMembers(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatSearchServerChannelMemberParam.fromDic(arguments)
-    NIMSDK.shared().qchatServerManager.searchServerChannelMember(request) { error, result in
-      self.qChatChannelCallback(error, result?.toDict(), resultCallback)
+    guard let request = NIMQChatSearchServerChannelMemberParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
     }
+    NIMSDK.shared().qchatServerManager
+      .searchServerChannelMember(request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatUpdateChannelBlackWhiteRoles(_ arguments: [String: Any],
+                                         _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatUpdateChannelBlackWhiteRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.updateBlackWhiteRole(request) { [weak self] error in
+      self?.qChatChannelCallback(error, nil, resultCallback)
+    }
+  }
+
+  func qChatGetChannelBlackWhiteRolesByPage(_ arguments: [String: Any],
+                                            _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetChannelBlackWhiteRolesByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager
+      .getBlackWhiteRoles(byPage: request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatGetExistingChannelBlackWhiteRoles(_ arguments: [String: Any],
+                                              _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetExistingChannelBlackWhiteRolesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager
+      .getExistingChannelBlackWhiteRoles(request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatUpdateChannelBlackWhiteMembers(_ arguments: [String: Any],
+                                           _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatUpdateChannelBlackWhiteMembersParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.updateBlackWhiteMembers(request) { [weak self] error in
+      self?.qChatChannelCallback(error, nil, resultCallback)
+    }
+  }
+
+  func qChatGetChannelBlackWhiteMembersByPage(_ arguments: [String: Any],
+                                              _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetChannelBlackWhiteMembersByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager
+      .getBlackWhiteMembers(byPage: request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatGetExistingChannelBlackWhiteMembers(_ arguments: [String: Any],
+                                                _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetExistingChannelBlackWhiteMembersParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager
+      .getExistingChannelBlackWhiteMembers(request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func qChatUpdateUserChannelPushConfig(_ arguments: [String: Any],
+                                        _ resultCallback: ResultCallback) {
+    guard let pushMsgType = arguments["pushMsgType"] as? String,
+          let profile = FLTQChatPushNotificationProfile(rawValue: pushMsgType)?
+          .convertToPushNotificationProfile(),
+          let serverId = arguments["serverId"] as? UInt64,
+          let channelId = arguments["channelId"] as? UInt64 else {
+      print("qChatGetUserChannelPushConfigs parameter error")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    let chan = NIMQChatChannelIdInfo(channelId: channelId, serverId: serverId)
+    NIMSDK.shared().qchatApnsManager.update(profile, channel: chan) { [weak self] error in
+      self?.qChatChannelCallback(error, nil, resultCallback)
+    }
+  }
+
+  func qChatGetUserChannelPushConfigs(_ arguments: [String: Any],
+                                      _ resultCallback: ResultCallback) {
+    guard let channelIdInfos = arguments["channelIdInfos"] as? [[String: Any]] else {
+      print("qChatGetUserChannelPushConfigs parameter error, channelIdInfos is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    let request = channelIdInfos.map { item in
+      NIMQChatChannelIdInfo.fromDic(item)
+    }
+    NIMSDK.shared().qchatApnsManager
+      .getUserPushNotificationConfig(byChannel: request) { [weak self] error, result in
+        var resDict = [[String: Any]]()
+        for item in result ?? [] {
+          if let res = item.toDic() {
+            resDict.append(res)
+          }
+        }
+        self?.qChatChannelCallback(error, ["userPushConfigs": resDict], resultCallback)
+      }
+  }
+
+  func qChatGetChannelCategoriesByPage(_ arguments: [String: Any],
+                                       _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetCategoriesInServerByPageParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager
+      .getCategoriesInServer(byPage: request) { [weak self] error, result in
+        self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+      }
   }
 }
 

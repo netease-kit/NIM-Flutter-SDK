@@ -1,6 +1,6 @@
 name: nim_core_web
 description: web implementation of the nim_core plugin. that is a Flutter plugin for NetEase IM SDK.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 #remove before publish
 publish_to: none
@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-#  nim_core_platform_interface: ^1.0.3
+#  nim_core_platform_interface: ^1.4.1
   nim_core_platform_interface:
     path: ../nim_core_platform_interface
 

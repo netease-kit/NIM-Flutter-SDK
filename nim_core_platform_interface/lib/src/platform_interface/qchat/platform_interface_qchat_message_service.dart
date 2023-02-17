@@ -84,4 +84,61 @@ abstract class QChatMessageServicePlatform extends Service {
 
   Future<NIMResult<QChatGetMessageHistoryResult>> getMessageHistoryByIds(
       QChatGetMessageHistoryByIdsParam param);
+
+  ///回复消息
+  Future<NIMResult<QChatSendMessageResult>> replyMessage(
+      QChatReplyMessageParam param);
+
+  /// 清除消息通知栏
+
+  Future<NIMResult<void>> clearMsgNotifyAndroid();
+
+  /// 根据消息查询被引用的消息详情
+  Future<NIMResult<QChatGetReferMessagesResult>> getReferMessages(
+      QChatGetReferMessagesParam param);
+
+  /// 查询thread聊天的历史
+
+  Future<NIMResult<QChatGetThreadMessagesResult>> getThreadMessages(
+      QChatGetThreadMessagesParam param);
+
+  /// 批量查询thread聊天信息
+
+  Future<NIMResult<QChatGetMessageThreadInfosResult>> getMessageThreadInfos(
+      QChatGetMessageThreadInfosParam param);
+
+  /// 添加一条快捷评论
+
+  Future<NIMResult<void>> addQuickComment(QChatAddQuickCommentParam param);
+
+  /// 删除一条快捷评论
+
+  Future<NIMResult<void>> removeQuickComment(
+      QChatRemoveQuickCommentParam param);
+
+  /// 批量查询快捷评论
+
+  Future<NIMResult<QChatGetQuickCommentsResult>> getQuickComments(
+      QChatGetQuickCommentsParam param);
+
+  /// 指定通道查询消息缓存
+  /// [qchatServerId] 服务器id
+  /// [qchatChannelId] 频道id
+
+  Future<NIMResult<List<QChatMessageCache>?>> getMessageCache(
+      int qchatServerId, int qchatChannelId);
+
+  /// 清空消息缓存
+
+  Future<NIMResult<void>> clearMessageCache();
+
+  /// 查询频道的最后一条消息
+
+  Future<NIMResult<QChatGetLastMessageOfChannelsResult>>
+      getLastMessageOfChannels(QChatGetLastMessageOfChannelsParam param);
+
+  /// 检索消息
+
+  Future<NIMResult<QChatSearchMsgByPageResult>> searchMsgByPage(
+      QChatSearchMsgByPageParam param);
 }

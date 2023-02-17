@@ -164,4 +164,90 @@ class MethodChannelQChatServerService extends QChatServerServicePlatform {
     return NIMResult<void>.fromMap(
         await invokeMethod('joinByInviteCode', arguments: param.toJson()));
   }
+
+  Future<NIMResult<QChatUpdateServerMemberInfoResult>> updateServerMemberInfo(
+      QChatUpdateServerMemberInfoParam param) async {
+    return NIMResult<QChatUpdateServerMemberInfoResult>.fromMap(
+        await invokeMethod('updateServerMemberInfo', arguments: param.toJson()),
+        convert: (json) => QChatUpdateServerMemberInfoResult.fromJson(json));
+  }
+
+  Future<NIMResult<void>> banServerMember(
+      QChatBanServerMemberParam param) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('banServerMember', arguments: param.toJson()));
+  }
+
+  Future<NIMResult<void>> unbanServerMember(
+      QChatUnbanServerMemberParam param) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('unbanServerMember', arguments: param.toJson()));
+  }
+
+  Future<NIMResult<QChatGetBannedServerMembersByPageResult>>
+      getBannedServerMembersByPage(
+          QChatGetBannedServerMembersByPageParam param) async {
+    return NIMResult<QChatGetBannedServerMembersByPageResult>.fromMap(
+        await invokeMethod('getBannedServerMembersByPage',
+            arguments: param.toJson()),
+        convert: (json) =>
+            QChatGetBannedServerMembersByPageResult.fromJson(json));
+  }
+
+  Future<NIMResult<void>> updateUserServerPushConfig(
+      QChatUpdateUserServerPushConfigParam param) async {
+    return NIMResult<void>.fromMap(await invokeMethod(
+        'updateUserServerPushConfig',
+        arguments: param.toJson()));
+  }
+
+  Future<NIMResult<QChatGetUserPushConfigsResult>> getUserServerPushConfigs(
+      QChatGetUserServerPushConfigsParam param) async {
+    return NIMResult<QChatGetUserPushConfigsResult>.fromMap(
+        await invokeMethod('getUserServerPushConfigs',
+            arguments: param.toJson()),
+        convert: (json) => QChatGetUserPushConfigsResult.fromJson(json));
+  }
+
+  Future<NIMResult<QChatSearchServerMemberByPageResult>>
+      searchServerMemberByPage(QChatSearchServerMemberByPageParam param) async {
+    return NIMResult<QChatSearchServerMemberByPageResult>.fromMap(
+        await invokeMethod('searchServerMemberByPage',
+            arguments: param.toJson()),
+        convert: (json) => QChatSearchServerMemberByPageResult.fromJson(json));
+  }
+
+  // Future<NIMResult<QChatGetInviteApplyRecordOfServerResult>>
+  //     getInviteApplyRecordOfServer(
+  //         QChatGetInviteApplyRecordOfServerParam param) async {
+  //   return NIMResult<QChatGetInviteApplyRecordOfServerResult>.fromMap(
+  //       await invokeMethod('getInviteApplyRecordOfServer',
+  //           arguments: param.toJson()),
+  //       convert: (json) =>
+  //           QChatGetInviteApplyRecordOfServerResult.fromJson(json));
+  // }
+  //
+  // Future<NIMResult<QChatGetInviteApplyRecordOfSelfResult>>
+  //     getInviteApplyRecordOfSelf(
+  //         QChatGetInviteApplyRecordOfSelfParam param) async {
+  //   return NIMResult<QChatGetInviteApplyRecordOfSelfResult>.fromMap(
+  //       await invokeMethod('getInviteApplyRecordOfSelf',
+  //           arguments: param.toJson()),
+  //       convert: (json) =>
+  //           QChatGetInviteApplyRecordOfSelfResult.fromJson(json));
+  // }
+
+  Future<NIMResult<QChatServerMarkReadResult>> markRead(
+      QChatServerMarkReadParam param) async {
+    return NIMResult<QChatServerMarkReadResult>.fromMap(
+        await invokeMethod('markRead', arguments: param.toJson()),
+        convert: (json) => QChatServerMarkReadResult.fromJson(json));
+  }
+
+  Future<NIMResult<QChatSubscribeAllChannelResult>> subscribeAllChannel(
+      QChatSubscribeAllChannelParam param) async {
+    return NIMResult<QChatSubscribeAllChannelResult>.fromMap(
+        await invokeMethod('subscribeAllChannel', arguments: param.toJson()),
+        convert: (json) => QChatSubscribeAllChannelResult.fromJson(json));
+  }
 }

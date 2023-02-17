@@ -105,4 +105,93 @@ class MethodChannelQChatChannelService extends QChatChannelServicePlatform {
         await invokeMethod('searchChannelMembers', arguments: param.toJson()),
         convert: (json) => QChatSearchChannelMembersResult.fromJson(json));
   }
+
+  @override
+  Future<NIMResult<QChatGetChannelBlackWhiteMembersByPageResult>>
+      getChannelBlackWhiteMembersByPage(
+          QChatGetChannelBlackWhiteMembersByPageParam param) async {
+    return NIMResult<QChatGetChannelBlackWhiteMembersByPageResult>.fromMap(
+        await invokeMethod('getChannelBlackWhiteMembersByPage',
+            arguments: param.toJson()),
+        convert: (json) =>
+            QChatGetChannelBlackWhiteMembersByPageResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetChannelBlackWhiteRolesByPageResult>>
+      getChannelBlackWhiteRolesByPage(
+          QChatGetChannelBlackWhiteRolesByPageParam param) async {
+    return NIMResult<QChatGetChannelBlackWhiteRolesByPageResult>.fromMap(
+        await invokeMethod('getChannelBlackWhiteRolesByPage',
+            arguments: param.toJson()),
+        convert: (json) =>
+            QChatGetChannelBlackWhiteRolesByPageResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetChannelCategoriesByPageResult>>
+      getChannelCategoriesByPage(
+          QChatGetChannelCategoriesByPageParam param) async {
+    return NIMResult<QChatGetChannelCategoriesByPageResult>.fromMap(
+        await invokeMethod('getChannelCategoriesByPage',
+            arguments: param.toJson()),
+        convert: (json) =>
+            QChatGetChannelCategoriesByPageResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetExistingChannelBlackWhiteMembersResult>>
+      getExistingChannelBlackWhiteMembers(
+          QChatGetExistingChannelBlackWhiteMembersParam param) async {
+    return NIMResult<QChatGetExistingChannelBlackWhiteMembersResult>.fromMap(
+        await invokeMethod('getExistingChannelBlackWhiteMembers',
+            arguments: param.toJson()),
+        convert: (json) =>
+            QChatGetExistingChannelBlackWhiteMembersResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetExistingChannelBlackWhiteRolesResult>>
+      getExistingChannelBlackWhiteRoles(
+          QChatGetExistingChannelBlackWhiteRolesParam param) async {
+    return NIMResult<QChatGetExistingChannelBlackWhiteRolesResult>.fromMap(
+        await invokeMethod('getExistingChannelBlackWhiteRoles',
+            arguments: param.toJson()),
+        convert: (json) =>
+            QChatGetExistingChannelBlackWhiteRolesResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetUserPushConfigsResult>> getUserChannelPushConfigs(
+      QChatGetUserChannelPushConfigsParam param) async {
+    return NIMResult<QChatGetUserPushConfigsResult>.fromMap(
+        await invokeMethod('getUserChannelPushConfigs',
+            arguments: param.toJson()),
+        convert: (json) => QChatGetUserPushConfigsResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<void>> updateChannelBlackWhiteMembers(
+      QChatUpdateChannelBlackWhiteMembersParam param) async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod('updateChannelBlackWhiteMembers',
+          arguments: param.toJson()),
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> updateChannelBlackWhiteRoles(
+      QChatUpdateChannelBlackWhiteRolesParam param) async {
+    return NIMResult<void>.fromMap(await invokeMethod(
+        'updateChannelBlackWhiteRoles',
+        arguments: param.toJson()));
+  }
+
+  @override
+  Future<NIMResult<void>> updateUserChannelPushConfig(
+      QChatUpdateUserChannelPushConfigParam param) async {
+    return NIMResult<void>.fromMap(await invokeMethod(
+        'updateUserChannelPushConfig',
+        arguments: param.toJson()));
+  }
 }

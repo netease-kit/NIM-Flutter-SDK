@@ -7,6 +7,7 @@
 package com.netease.nimflutter.services
 
 import android.content.Context
+import android.text.TextUtils
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
@@ -88,7 +89,8 @@ class FLTTeamService(
             "muteTeam" to ::muteTeam,
             "searchTeamIdByName" to ::searchTeamIdByName,
             "searchTeamsByKeyword" to ::searchTeamsByKeyword,
-            "updateMyMemberExtension" to ::updateMyMemberExtension
+            "updateMyMemberExtension" to ::updateMyMemberExtension,
+            "updateMyTeamNick" to ::updateMyTeamNick
         )
 
         nimCore.onInitialized {
@@ -287,6 +289,12 @@ class FLTTeamService(
 
     private suspend fun dismissTeam(arguments: Map<String, *>): NimResult<Nothing> {
         val teamId = arguments["teamId"] as? String
+        if (TextUtils.isEmpty(teamId)) {
+            return NimResult(
+                code = 414,
+                errorDetails = "parameter is error"
+            )
+        }
         return suspendCancellableCoroutine { cont ->
             teamService.dismissTeam(teamId)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
@@ -399,6 +407,12 @@ class FLTTeamService(
     private suspend fun removeMembers(arguments: Map<String, *>): NimResult<Nothing> {
         val teamId = arguments["teamId"] as? String
         val members = arguments["members"] as? List<String>
+        if (members.isNullOrEmpty() || TextUtils.isEmpty(teamId)) {
+            return NimResult(
+                code = 414,
+                errorDetails = "parameter is error"
+            )
+        }
         return suspendCancellableCoroutine { cont ->
             teamService.removeMembers(teamId, members)
                 .setCallback(NimResultContinuationCallbackOfNothing(cont))
@@ -415,32 +429,38 @@ class FLTTeamService(
 
     private suspend fun queryMemberList(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
         val teamId = arguments["teamId"] as? String
-        return suspendCancellableCoroutine { cont ->
-            teamService.queryMemberList(teamId)
-                .setCallback(object : RequestCallback<List<TeamMember>?> {
-                    override fun onSuccess(param: List<TeamMember>?) =
-                        cont.resumeWith(
-                            Result.success(
-                                NimResult(
-                                    code = 0,
-                                    data = param ?: listOf(),
-                                    convert = {
-                                        mapOf(
-                                            "teamMemberList" to it?.map { msg -> msg.toMap() }
-                                                ?.toList()
-                                        )
-                                    }
+        if (teamId != null && teamId.length > 0) {
+            return suspendCancellableCoroutine { cont ->
+                teamService.queryMemberList(teamId)
+                    .setCallback(object : RequestCallback<List<TeamMember>?> {
+                        override fun onSuccess(param: List<TeamMember>?) =
+                            cont.resumeWith(
+                                Result.success(
+                                    NimResult(
+                                        code = 0,
+                                        data = param ?: listOf(),
+                                        convert = {
+                                            mapOf(
+                                                "teamMemberList" to it?.map { msg -> msg.toMap() }
+                                                    ?.toList()
+                                            )
+                                        }
+                                    )
                                 )
                             )
-                        )
 
-                    override fun onFailed(code: Int) =
-                        cont.resumeWith(Result.success(NimResult(code = code)))
+                        override fun onFailed(code: Int) =
+                            cont.resumeWith(Result.success(NimResult(code = code)))
 
-                    override fun onException(exception: Throwable?) =
-                        cont.resumeWith(Result.success(NimResult.failure(exception)))
-                })
+                        override fun onException(exception: Throwable?) =
+                            cont.resumeWith(Result.success(NimResult.failure(exception)))
+                    })
+            }
         }
+        return NimResult(
+            code = 414,
+            errorDetails = "parameter is error"
+        )
     }
 
     private suspend fun queryTeamMember(arguments: Map<String, *>): NimResult<TeamMember> {
@@ -515,6 +535,12 @@ class FLTTeamService(
     private suspend fun addManagers(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
         val teamId = arguments["teamId"] as? String
         val accounts = arguments["accounts"] as? List<String>
+        if (accounts.isNullOrEmpty() || TextUtils.isEmpty(teamId)) {
+            return NimResult(
+                code = 414,
+                errorDetails = "parameter is error"
+            )
+        }
         return suspendCancellableCoroutine { cont ->
             teamService.addManagers(teamId, accounts)
                 .setCallback(object : RequestCallback<List<TeamMember>?> {
@@ -547,6 +573,13 @@ class FLTTeamService(
     private suspend fun removeManagers(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
         val teamId = arguments["teamId"] as? String
         val accounts = arguments["managers"] as? List<String>
+        if (accounts.isNullOrEmpty() || TextUtils.isEmpty(teamId)) {
+            return NimResult(
+                code = 414,
+                errorDetails = "parameter is error"
+            )
+        }
+
         return suspendCancellableCoroutine { cont ->
             teamService.removeManagers(teamId, accounts)
                 .setCallback(object : RequestCallback<List<TeamMember>?> {
@@ -596,8 +629,8 @@ class FLTTeamService(
 
     private suspend fun queryMutedTeamMembers(arguments: Map<String, *>): NimResult<List<TeamMember>?> {
         val teamId = arguments["teamId"] as? String
-        return if (teamId.isNullOrEmpty()) {
-            NimResult(code = -1, null)
+        return if (TextUtils.isEmpty(teamId)) {
+            NimResult(code = 414, null, "parameter is error")
         } else {
             NimResult(
                 code = 0,
@@ -657,6 +690,9 @@ class FLTTeamService(
             } else if (key == "maxMemberCount") {
                 newFields[TeamFieldEnum.MaxMemberCount] = value as Int
             }
+        }
+        if (request.isNullOrEmpty() || TextUtils.isEmpty(teamId) || newFields.isNullOrEmpty()) {
+            return NimResult(code = 414, null, "parameter is error")
         }
         return suspendCancellableCoroutine { cont ->
             teamService.updateTeamFields(teamId, newFields)
@@ -729,6 +765,15 @@ class FLTTeamService(
                     override fun onException(exception: Throwable?) =
                         cont.resumeWith(Result.success(NimResult.failure(exception)))
                 })
+        }
+    }
+
+    private suspend fun updateMyTeamNick(arguments: Map<String, *>): NimResult<Nothing> {
+        val teamId = arguments["teamId"] as? String
+        val nick = arguments["nick"] as? String
+        return suspendCancellableCoroutine { cont ->
+            teamService.updateMyTeamNick(teamId, nick)
+                .setCallback(NimResultContinuationCallbackOfNothing(cont))
         }
     }
 }

@@ -73,7 +73,6 @@ class TeamService {
   /// 用户申请加入群。
   /// teamId 申请加入的群ID
   ///postscript 申请附言
-  /// InvocationFuture 可以设置回调函数，如果成功，参数为群资料
   Future<NIMResult<NIMTeam>> applyJoinTeam(String teamId, String postscript) {
     return _platform.applyJoinTeam(teamId, postscript);
   }
@@ -251,5 +250,13 @@ class TeamService {
   /// 群ID列表
   Future<NIMResult<List<NIMTeam>>> searchTeamsByKeyword(String keyword) {
     return _platform.searchTeamsByKeyword(keyword);
+  }
+
+  /// 修改自己的群昵称
+  ///
+  /// [teamId] 所在群组ID
+  /// [nick] 新的群昵称
+  Future<NIMResult<void>> updateMyTeamNick(String teamId, String nick) {
+    return _platform.updateMyTeamNick(teamId, nick);
   }
 }

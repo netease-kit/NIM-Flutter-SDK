@@ -85,6 +85,8 @@ class FLTMessageService : public FLTService {
                                         FLTService::MethodResult result);
   void queryThreadTalkHistory(const flutter::EncodableMap* arguments,
                               FLTService::MethodResult result);
+  void clearAllSessionUnreadCount(const flutter::EncodableMap* arguments,
+                                  FLTService::MethodResult result);
 
   // session
   DECLARE_FUN(querySessionList);

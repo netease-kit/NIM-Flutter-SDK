@@ -35,7 +35,8 @@ abstract class NOSServicePlatform extends Service {
     throw UnimplementedError('upload() is not implemented');
   }
 
-  Future<NIMResult<void>> download({required String url, String? path}) async {
+  Future<NIMResult<void>> download(
+      {required String url, required String path}) async {
     throw UnimplementedError('download() is not implemented');
   }
 }

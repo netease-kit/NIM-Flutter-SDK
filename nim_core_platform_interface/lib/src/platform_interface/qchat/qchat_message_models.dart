@@ -650,6 +650,13 @@ List<QChatMessage>? _qChatMessageListFromJson(List<dynamic>? messageList) {
       .toList();
 }
 
+Map<int, QChatMessage>? _qChatMessageMapIntFromJson(Map? map) {
+  return map?.cast<dynamic, dynamic>().map(
+        (k, e) => MapEntry(int.parse(k.toString()),
+            QChatMessage.fromJson((e as Map).cast<String, dynamic>())),
+      );
+}
+
 @JsonSerializable(explicitToJson: true)
 class QChatGetMessageHistoryResult {
   ///查询到的历史消息
@@ -1449,12 +1456,11 @@ abstract class QChatSystemNotificationAttachment {
   }
 
   static QChatSystemNotificationAttachment? _fromJson(
-      Map<Object?, Object?>? json) {
-    if (json == null || json['type'] == null) return null;
+      Map<Object?, Object?>? json, String? type) {
+    if (json == null || type?.isNotEmpty != true) return null;
     var map = Map<String, dynamic>.from(json);
-    var messageType = QChatSystemNotificationTypeConverter().fromValue(
-        map['type'],
-        defaultType: QChatSystemNotificationType.custom);
+    var messageType = QChatSystemNotificationTypeConverter()
+        .fromValue(type!, defaultType: QChatSystemNotificationType.custom);
     switch (messageType) {
       case QChatSystemNotificationType.server_member_invite:
         return QChatInviteServerMemberAttachment.fromJson(map);
@@ -2441,4 +2447,564 @@ class QChatUpdateServerRoleAuthsAttachment
   @override
   Map<String, dynamic> toJson() =>
       _$QChatUpdateServerRoleAuthsAttachmentToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatReplyMessageParam {
+  /// 发送消息入参
+  QChatSendMessageParam message;
+
+  /// 被回复消息体
+  QChatMessage replyMessage;
+
+  QChatReplyMessageParam({required this.message, required this.replyMessage});
+
+  factory QChatReplyMessageParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatReplyMessageParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatReplyMessageParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetReferMessagesParam {
+  /// 查询消息
+
+  final QChatMessage message;
+
+  /// 消息引用类型
+
+  final QChatMessageReferType referType;
+
+  QChatGetReferMessagesParam({required this.message, required this.referType});
+
+  factory QChatGetReferMessagesParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetReferMessagesParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetReferMessagesParamToJson(this);
+}
+
+enum QChatMessageReferType {
+  ///回复的
+  replay,
+
+  ///根Thread
+  thread,
+
+  ///所有
+  all
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetReferMessagesResult {
+  /// 被回复的消息
+
+  @JsonKey(fromJson: qChatMessageFromJson)
+  final QChatMessage? replyMessage;
+
+  /// 根消息
+
+  @JsonKey(fromJson: qChatMessageFromJson)
+  final QChatMessage? threadMessage;
+
+  QChatGetReferMessagesResult({this.replyMessage, this.threadMessage});
+
+  factory QChatGetReferMessagesResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetReferMessagesResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetReferMessagesResultToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetThreadMessagesParam {
+  /// 消息
+
+  final QChatMessage message;
+
+  /// 查询选项
+
+  final QChatMessageQueryOption? messageQueryOption;
+
+  QChatGetThreadMessagesParam({required this.message, this.messageQueryOption});
+
+  factory QChatGetThreadMessagesParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetThreadMessagesParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetThreadMessagesParamToJson(this);
+}
+
+///消息查询选项
+@JsonSerializable(explicitToJson: true)
+class QChatMessageQueryOption {
+  /// 起始时间
+
+  int? fromTime;
+
+  /// 结束时间
+
+  int? toTime;
+
+  /// excludeMsgId，排除消息id
+
+  int? excludeMessageId;
+
+  /// limit，条数限制，默认100
+
+  int? limit;
+
+  /// reverse，是否反向
+
+  bool? reverse = false;
+
+  QChatMessageQueryOption(
+      {this.toTime,
+      this.fromTime,
+      this.reverse = false,
+      this.excludeMessageId,
+      this.limit});
+
+  factory QChatMessageQueryOption.fromJson(Map<String, dynamic> json) =>
+      _$QChatMessageQueryOptionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatMessageQueryOptionToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetThreadMessagesResult {
+  /// thread消息
+
+  @JsonKey(fromJson: qChatMessageFromJson)
+  final QChatMessage? threadMessage;
+
+  /// thread聊天信息
+
+  @JsonKey(fromJson: _qChatMessageThreadInfoFromJson)
+  final QChatMessageThreadInfo? threadInfo;
+
+  /// 查询到的thread历史消息
+
+  @JsonKey(fromJson: _qChatMessageListFromJson)
+  final List<QChatMessage>? messages;
+
+  QChatGetThreadMessagesResult(
+      {this.threadMessage, this.messages, this.threadInfo});
+
+  factory QChatGetThreadMessagesResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetThreadMessagesResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetThreadMessagesResultToJson(this);
+}
+
+QChatMessageThreadInfo? _qChatMessageThreadInfoFromJson(Map? map) {
+  if (map != null) {
+    return QChatMessageThreadInfo.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatMessageThreadInfo {
+  /// 获取thread聊天里的总回复数
+
+  int? total;
+
+  /// 获取thread聊天里最后一条消息的时间戳
+
+  int? lastMsgTime;
+
+  QChatMessageThreadInfo({this.total, this.lastMsgTime});
+
+  factory QChatMessageThreadInfo.fromJson(Map<String, dynamic> json) =>
+      _$QChatMessageThreadInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatMessageThreadInfoToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetMessageThreadInfosParam {
+  /// 服务器Id
+
+  final int serverId;
+
+  /// 频道Id
+
+  final int channelId;
+
+  /// 消息列表，一次最多查询100条
+
+  @JsonKey(fromJson: _qChatMessageListFromJson)
+  final List<QChatMessage>? msgList;
+
+  QChatGetMessageThreadInfosParam(
+      {required this.channelId, required this.serverId, this.msgList});
+
+  factory QChatGetMessageThreadInfosParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetMessageThreadInfosParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetMessageThreadInfosParamToJson(this);
+}
+
+Map<String, QChatMessageThreadInfo>? _qChatMessageThreadInfoStringMapFromJson(
+    Map? map) {
+  return map?.cast<String, dynamic>().map(
+        (k, e) => MapEntry(
+            k,
+            QChatMessageThreadInfo.fromJson(
+                (e as Map).cast<String, dynamic>())),
+      );
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetMessageThreadInfosResult {
+  /// 消息Thread聊天信息Map，key为uuid
+
+  @JsonKey(fromJson: _qChatMessageThreadInfoStringMapFromJson)
+  final Map<String, QChatMessageThreadInfo>? messageThreadInfoMap;
+
+  QChatGetMessageThreadInfosResult({this.messageThreadInfoMap});
+
+  factory QChatGetMessageThreadInfosResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetMessageThreadInfosResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetMessageThreadInfosResultToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatQuickCommentParam {
+  /// 被评论消息
+
+  final QChatMessage commentMessage;
+
+  /// 评论类型
+
+  final int type;
+
+  QChatQuickCommentParam(this.commentMessage, this.type);
+
+  factory QChatQuickCommentParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatQuickCommentParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatQuickCommentParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatAddQuickCommentParam extends QChatQuickCommentParam {
+  QChatAddQuickCommentParam(QChatMessage commentMessage, int type)
+      : super(commentMessage, type);
+
+  factory QChatAddQuickCommentParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatAddQuickCommentParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatAddQuickCommentParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatRemoveQuickCommentParam extends QChatQuickCommentParam {
+  QChatRemoveQuickCommentParam(QChatMessage commentMessage, int type)
+      : super(commentMessage, type);
+
+  factory QChatRemoveQuickCommentParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatRemoveQuickCommentParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatRemoveQuickCommentParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetQuickCommentsParam {
+  /// 服务器Id
+
+  final int serverId;
+
+  /// 频道Id
+
+  final int channelId;
+
+  /// 消息列表，1次最多20条
+
+  @JsonKey(fromJson: _qChatMessageListFromJson)
+  final List<QChatMessage>? msgList;
+
+  QChatGetQuickCommentsParam(
+      {required this.serverId, required this.channelId, this.msgList});
+
+  factory QChatGetQuickCommentsParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetQuickCommentsParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetQuickCommentsParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetQuickCommentsResult {
+  /// 消息快捷评论详情Map，key为MsgIdServer
+
+  @JsonKey(fromJson: _qChatMessageQuickCommentDetailMapIntFromJson)
+  final Map<int, QChatMessageQuickCommentDetail>? messageQuickCommentDetailMap;
+
+  QChatGetQuickCommentsResult({this.messageQuickCommentDetailMap});
+
+  factory QChatGetQuickCommentsResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetQuickCommentsResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetQuickCommentsResultToJson(this);
+}
+
+Map<int, QChatMessageQuickCommentDetail>?
+    _qChatMessageQuickCommentDetailMapIntFromJson(Map? map) {
+  return map?.cast<dynamic, dynamic>().map(
+        (k, e) => MapEntry(
+            int.parse(k.toString()),
+            QChatMessageQuickCommentDetail.fromJson(
+                (e as Map).cast<String, dynamic>())),
+      );
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatMessageQuickCommentDetail {
+  /// 获取服务器Id
+
+  int? serverId;
+
+  /// 获取channelId
+
+  int? channelId;
+
+  /// 获取消息服务端Id
+
+  int? msgIdServer;
+
+  /// 获取总评论数
+
+  int? totalCount;
+
+  /// 获取消息评论最后一次操作的时间
+
+  int? lastUpdateTime;
+
+  /// 获取评论详情列表
+
+  @JsonKey(fromJson: _qChatQuickCommentDetailListFromJson)
+  List<QChatQuickCommentDetail>? details;
+
+  QChatMessageQuickCommentDetail(
+      {this.channelId,
+      this.serverId,
+      this.msgIdServer,
+      this.details,
+      this.lastUpdateTime,
+      this.totalCount});
+
+  factory QChatMessageQuickCommentDetail.fromJson(Map<String, dynamic> json) =>
+      _$QChatMessageQuickCommentDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatMessageQuickCommentDetailToJson(this);
+}
+
+QChatMessageQuickCommentDetail? _qChatMessageQuickCommentDetailFromJson(
+    Map? map) {
+  if (map != null) {
+    return QChatMessageQuickCommentDetail.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+List<QChatQuickCommentDetail>? _qChatQuickCommentDetailListFromJson(
+    List<dynamic>? details) {
+  return details
+      ?.map((e) =>
+          QChatQuickCommentDetail.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatQuickCommentDetail {
+  /// 获取评论类型
+
+  int? type;
+
+  /// 获取评论数量
+
+  int? count;
+
+  /// 自己是否添加了该类型评论
+
+  bool? hasSelf;
+
+  /// 获取若干个添加了此类型评论的accid列表，不是按照操作时间排序的，可以认为是随机取了N个
+
+  List<String>? severalAccids;
+
+  QChatQuickCommentDetail(
+      {this.type, this.count, this.hasSelf, this.severalAccids});
+
+  factory QChatQuickCommentDetail.fromJson(Map<String, dynamic> json) =>
+      _$QChatQuickCommentDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatQuickCommentDetailToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatMessageCache {
+  /// 获取消息体
+  @JsonKey(fromJson: qChatMessageFromJson)
+  QChatMessage? message;
+
+  /// 获取消息的回复对象
+  @JsonKey(fromJson: qChatMessageFromJson)
+  QChatMessage? replyMessage;
+
+  /// 获取消息的Thread消息
+  @JsonKey(fromJson: qChatMessageFromJson)
+  QChatMessage? threadMessage;
+
+  /// 获取消息的快捷评论
+
+  @JsonKey(fromJson: _qChatMessageQuickCommentDetailFromJson)
+  QChatMessageQuickCommentDetail? messageQuickCommentDetail;
+
+  QChatMessageCache(
+      {this.threadMessage,
+      this.message,
+      this.replyMessage,
+      this.messageQuickCommentDetail});
+
+  factory QChatMessageCache.fromJson(Map<String, dynamic> json) =>
+      _$QChatMessageCacheFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatMessageCacheToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetLastMessageOfChannelsParam {
+  /// 服务器Id
+
+  final int serverId;
+
+  /// 频道Id列表，最多20个，要求都是serverId下的
+
+  final List<int> channelIds;
+
+  QChatGetLastMessageOfChannelsParam(
+      {required this.serverId, required this.channelIds});
+
+  factory QChatGetLastMessageOfChannelsParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetLastMessageOfChannelsParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetLastMessageOfChannelsParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetLastMessageOfChannelsResult {
+  /// 查询到的消息map,key为channelId
+  @JsonKey(fromJson: _qChatMessageMapIntFromJson)
+  final Map<int, QChatMessage>? channelMsgMap;
+
+  QChatGetLastMessageOfChannelsResult({this.channelMsgMap});
+
+  factory QChatGetLastMessageOfChannelsResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetLastMessageOfChannelsResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetLastMessageOfChannelsResultToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSearchMsgByPageParam {
+  /// 检索关键字，目标检索消息名称
+
+  String? keyword;
+
+  /// 服务器ID
+
+  final int serverId;
+
+  /// 频道ID
+
+  int? channelId;
+
+  /// 消息发送者accid
+
+  String? fromAccount;
+
+  /// 查询时间范围的开始时间
+
+  int? fromTime;
+
+  /// 查询时间范围的结束时间，要求比开始时间大
+
+  int? toTime;
+
+  /// 搜索的消息类型列表，目前仅支持[ NIMMessageType.text],[NIMMessageType.image],[NIMMessageType.video],[NIMMessageType.file]
+
+  final List<NIMMessageType> msgTypes;
+
+  /// 搜索的消息子类型列表
+
+  List<int>? subTypes;
+
+  /// 是否包含自己的消息
+
+  bool? isIncludeSelf;
+
+  /// 排序规则 true：正序；false：倒序（默认）
+
+  bool? order;
+
+  /// 检索返回的最大记录数，最大和默认都是100
+
+  int? limit;
+
+  /// 排序条件
+
+  QChatMessageSearchSortEnum? sort;
+
+  /// 查询游标，下次查询的起始位置,第一页设置为null，查询下一页是传入上一页返回的cursor
+
+  String? cursor;
+
+  QChatSearchMsgByPageParam(
+      {required this.serverId,
+      required this.msgTypes,
+      this.channelId,
+      this.limit,
+      this.fromTime,
+      this.toTime,
+      this.sort,
+      this.fromAccount,
+      this.keyword,
+      this.cursor,
+      this.isIncludeSelf,
+      this.order,
+      this.subTypes});
+
+  factory QChatSearchMsgByPageParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatSearchMsgByPageParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatSearchMsgByPageParamToJson(this);
+}
+
+enum QChatMessageSearchSortEnum {
+  /// 创建时间，默认
+  createTime,
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSearchMsgByPageResult extends QChatGetByPageWithCursorResult {
+  /// 查询到的消息列表
+
+  @JsonKey(fromJson: _qChatMessageListFromJson)
+  final List<QChatMessage>? messages;
+
+  QChatSearchMsgByPageResult(bool? hasMore, int? nextTimeTag, String? cursor,
+      {this.messages})
+      : super(hasMore, nextTimeTag, cursor);
+
+  factory QChatSearchMsgByPageResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatSearchMsgByPageResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatSearchMsgByPageResultToJson(this);
 }

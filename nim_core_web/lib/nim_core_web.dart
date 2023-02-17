@@ -53,7 +53,10 @@ class NimCoreWebPlugin extends PlatformMethodCallHandler {
         completer.complete(map);
       }),
       'errorCallback': allowInterop((err) {
-        completer.completeError(err);
+        Map<String, dynamic> map =
+            jsonDecode(context['JSON'].callMethod('stringify', [err]));
+        completer.complete(map);
+        // completer.completeError(err);
       })
     };
 

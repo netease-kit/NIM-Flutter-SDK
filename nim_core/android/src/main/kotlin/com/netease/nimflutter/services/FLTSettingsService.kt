@@ -171,7 +171,14 @@ class FLTSettingsService(
         return suspendCancellableCoroutine { cont ->
             NIMClient.getService(MiscService::class.java)
                 .getSizeOfDirCache(dirCacheFileTypes, startTime.toLong(), endTime.toLong())
-                .setCallback(NimResultContinuationCallback(cont))
+                .setCallback(
+                    NimResultContinuationCallback(cont) { size ->
+                        NimResult(
+                            code = 0,
+                            data = size
+                        )
+                    }
+                )
         }
     }
 

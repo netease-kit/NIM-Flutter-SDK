@@ -236,7 +236,7 @@ QChatGetServerRolesResult _$QChatGetServerRolesResultFromJson(
     QChatGetServerRolesResult(
       roleList: json['roleList'] == null
           ? []
-          : _serverRoleListFromJsonNullable(json['roleList'] as List?),
+          : serverRoleListFromJsonNullable(json['roleList'] as List?),
       isMemberSet:
           (json['isMemberSet'] as List<dynamic>?)?.map((e) => e as int).toSet(),
     );
@@ -548,7 +548,7 @@ Map<String, dynamic> _$QChatGetServerRolesByAccidParamToJson(
 QChatGetServerRolesByAccidResult _$QChatGetServerRolesByAccidResultFromJson(
         Map<String, dynamic> json) =>
     QChatGetServerRolesByAccidResult(
-      _serverRoleListFromJsonNullable(json['roleList'] as List?),
+      serverRoleListFromJsonNullable(json['roleList'] as List?),
     );
 
 Map<String, dynamic> _$QChatGetServerRolesByAccidResultToJson(
@@ -679,4 +679,208 @@ Map<String, dynamic> _$QChatGetExistingAccidsOfMemberRolesResultToJson(
         QChatGetExistingAccidsOfMemberRolesResult instance) =>
     <String, dynamic>{
       'accidList': instance.accidList,
+    };
+
+QChatAddMemberRoleParam _$QChatAddMemberRoleParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatAddMemberRoleParam(
+      json['serverId'] as int,
+      json['channelId'] as int,
+      json['accid'] as String,
+    );
+
+Map<String, dynamic> _$QChatAddMemberRoleParamToJson(
+        QChatAddMemberRoleParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'accid': instance.accid,
+    };
+
+QChatAddMemberRoleResult _$QChatAddMemberRoleResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatAddMemberRoleResult(
+      _roleFromJsonNullable(json['role'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatAddMemberRoleResultToJson(
+        QChatAddMemberRoleResult instance) =>
+    <String, dynamic>{
+      'role': instance.role?.toJson(),
+    };
+
+QChatMemberRole _$QChatMemberRoleFromJson(Map<String, dynamic> json) =>
+    QChatMemberRole()
+      ..serverId = json['serverId'] as int?
+      ..id = json['id'] as int?
+      ..accid = json['accid'] as String?
+      ..channelId = json['channelId'] as int?
+      ..resourceAuths =
+          _resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
+      ..createTime = json['createTime'] as int?
+      ..updateTime = json['updateTime'] as int?
+      ..nick = json['nick'] as String?
+      ..avatar = json['avatar'] as String?
+      ..custom = json['custom'] as String?
+      ..type = $enumDecodeNullable(_$QChatMemberTypeEnumMap, json['type'])
+      ..joinTime = json['joinTime'] as int?
+      ..inviter = json['inviter'] as String?;
+
+Map<String, dynamic> _$QChatMemberRoleToJson(QChatMemberRole instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'id': instance.id,
+      'accid': instance.accid,
+      'channelId': instance.channelId,
+      'resourceAuths': instance.resourceAuths?.map((k, e) => MapEntry(
+          _$QChatRoleResourceEnumMap[k]!, _$QChatRoleOptionEnumMap[e]!)),
+      'createTime': instance.createTime,
+      'updateTime': instance.updateTime,
+      'nick': instance.nick,
+      'avatar': instance.avatar,
+      'custom': instance.custom,
+      'type': _$QChatMemberTypeEnumMap[instance.type],
+      'joinTime': instance.joinTime,
+      'inviter': instance.inviter,
+    };
+
+QChatRemoveMemberRoleParam _$QChatRemoveMemberRoleParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatRemoveMemberRoleParam(
+      json['serverId'] as int,
+      json['channelId'] as int,
+      json['accid'] as String,
+    );
+
+Map<String, dynamic> _$QChatRemoveMemberRoleParamToJson(
+        QChatRemoveMemberRoleParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'accid': instance.accid,
+    };
+
+QChatUpdateMemberRoleParam _$QChatUpdateMemberRoleParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatUpdateMemberRoleParam(
+      json['serverId'] as int,
+      json['channelId'] as int,
+      json['accid'] as String,
+      (json['resourceAuths'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry($enumDecode(_$QChatRoleResourceEnumMap, k),
+            $enumDecode(_$QChatRoleOptionEnumMap, e)),
+      ),
+    );
+
+Map<String, dynamic> _$QChatUpdateMemberRoleParamToJson(
+        QChatUpdateMemberRoleParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'accid': instance.accid,
+      'resourceAuths': instance.resourceAuths.map((k, e) => MapEntry(
+          _$QChatRoleResourceEnumMap[k]!, _$QChatRoleOptionEnumMap[e]!)),
+    };
+
+QChatUpdateMemberRoleResult _$QChatUpdateMemberRoleResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatUpdateMemberRoleResult(
+      _roleFromJsonNullable(json['role'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatUpdateMemberRoleResultToJson(
+        QChatUpdateMemberRoleResult instance) =>
+    <String, dynamic>{
+      'role': instance.role?.toJson(),
+    };
+
+QChatGetMemberRolesParam _$QChatGetMemberRolesParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetMemberRolesParam(
+      json['serverId'] as int,
+      json['channelId'] as int,
+      json['timeTag'] as int,
+      json['limit'] as int,
+    );
+
+Map<String, dynamic> _$QChatGetMemberRolesParamToJson(
+        QChatGetMemberRolesParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'timeTag': instance.timeTag,
+      'limit': instance.limit,
+    };
+
+QChatGetMemberRolesResult _$QChatGetMemberRolesResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetMemberRolesResult(
+      _memberRoleListFromJsonNullable(json['roleList'] as List?),
+    );
+
+Map<String, dynamic> _$QChatGetMemberRolesResultToJson(
+        QChatGetMemberRolesResult instance) =>
+    <String, dynamic>{
+      'roleList': instance.roleList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatCheckPermissionParam _$QChatCheckPermissionParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatCheckPermissionParam(
+      json['serverId'] as int,
+      $enumDecode(_$QChatRoleResourceEnumMap, json['permission']),
+      json['channelId'] as int?,
+    );
+
+Map<String, dynamic> _$QChatCheckPermissionParamToJson(
+        QChatCheckPermissionParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'permission': _$QChatRoleResourceEnumMap[instance.permission]!,
+    };
+
+QChatCheckPermissionResult _$QChatCheckPermissionResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatCheckPermissionResult(
+      json['hasPermission'] as bool?,
+    );
+
+Map<String, dynamic> _$QChatCheckPermissionResultToJson(
+        QChatCheckPermissionResult instance) =>
+    <String, dynamic>{
+      'hasPermission': instance.hasPermission,
+    };
+
+QChatCheckPermissionsParam _$QChatCheckPermissionsParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatCheckPermissionsParam(
+      json['serverId'] as int,
+      (json['permissions'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$QChatRoleResourceEnumMap, e))
+          .toList(),
+      json['channelId'] as int?,
+    );
+
+Map<String, dynamic> _$QChatCheckPermissionsParamToJson(
+        QChatCheckPermissionsParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'permissions': instance.permissions
+          ?.map((e) => _$QChatRoleResourceEnumMap[e]!)
+          .toList(),
+    };
+
+QChatCheckPermissionsResult _$QChatCheckPermissionsResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatCheckPermissionsResult(
+      _resourceAuthsFromJsonNullable(json['permissions'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatCheckPermissionsResultToJson(
+        QChatCheckPermissionsResult instance) =>
+    <String, dynamic>{
+      'permissions': instance.permissions?.map((k, e) => MapEntry(
+          _$QChatRoleResourceEnumMap[k]!, _$QChatRoleOptionEnumMap[e]!)),
     };

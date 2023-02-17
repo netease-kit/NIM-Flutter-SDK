@@ -24,7 +24,7 @@ class QChatCreateServerRoleParam extends QChatAntiSpamConfigParam {
   /// 身份组扩展字段
   String? extension;
 
-  /// 身份组优先级，everyone最低为0，数字越大优先级越高
+  /// 身份组优先级，everyone最低为0，数字越小优先级越高
   int? priority;
 
   QChatCreateServerRoleParam(this.serverId, this.name, this.type,
@@ -72,8 +72,7 @@ QChatServerRole? _serverRoleFromJsonNullable(Map? map) {
   return QChatServerRole.fromJson(map.cast<String, dynamic>());
 }
 
-List<QChatServerRole>? _serverRoleListFromJsonNullable(
-    List<dynamic>? dataList) {
+List<QChatServerRole>? serverRoleListFromJsonNullable(List<dynamic>? dataList) {
   return dataList
       ?.map((e) => QChatServerRole.fromJson((e as Map).cast<String, dynamic>()))
       .toList();
@@ -106,7 +105,7 @@ class QChatServerRole {
   /// 该身份组的成员数量，everyone身份组数量为-1
   int? memberCount = 0;
 
-  /// 身份组优先级，everyone最低为0，数字越大优先级越高
+  /// 身份组优先级，everyone最低为0，数字越小优先级越高
   int? priority = 0;
 
   /// 创建时间
@@ -490,7 +489,7 @@ class QChatGetServerRolesParam {
 @JsonSerializable(explicitToJson: true)
 class QChatGetServerRolesResult {
   /// 服务器身份组列表
-  @JsonKey(fromJson: _serverRoleListFromJsonNullable, defaultValue: [])
+  @JsonKey(fromJson: serverRoleListFromJsonNullable, defaultValue: [])
   final List<QChatServerRole> roleList = [];
 
   /// 我所在的服务器身份组Id集合
@@ -962,7 +961,7 @@ class QChatGetServerRolesByAccidParam {
 @JsonSerializable(explicitToJson: true)
 class QChatGetServerRolesByAccidResult {
   /// 用户自定义身份组列表
-  @JsonKey(fromJson: _serverRoleListFromJsonNullable)
+  @JsonKey(fromJson: serverRoleListFromJsonNullable)
   final List<QChatServerRole>? roleList;
 
   QChatGetServerRolesByAccidResult(this.roleList);
@@ -1161,5 +1160,320 @@ class QChatGetExistingAccidsOfMemberRolesResult {
   @override
   String toString() {
     return 'QChatGetExistingAccidsOfMemberRolesResult{accidList: $accidList}';
+  }
+}
+
+@JsonSerializable()
+class QChatAddMemberRoleParam {
+  /// 服务器id，必填
+  final int serverId;
+
+  /// 频道id，必填
+  final int channelId;
+
+  /// 用户账号，必填
+  final String accid;
+
+  QChatAddMemberRoleParam(this.serverId, this.channelId, this.accid);
+
+  factory QChatAddMemberRoleParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatAddMemberRoleParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatAddMemberRoleParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatAddMemberRoleParam{serverId: $serverId, channelId: $channelId, accid: $accid}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatAddMemberRoleResult {
+  /// 用户所在身份组
+  @JsonKey(fromJson: _roleFromJsonNullable)
+  final QChatMemberRole? role;
+
+  QChatAddMemberRoleResult(this.role);
+
+  factory QChatAddMemberRoleResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatAddMemberRoleResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatAddMemberRoleResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatAddMemberRoleResult{role: $role}';
+  }
+}
+
+QChatMemberRole? _roleFromJsonNullable(Map? map) {
+  if (map == null) {
+    return null;
+  }
+  return QChatMemberRole.fromJson(map.cast<String, dynamic>());
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatMemberRole {
+  /// 服务器id
+  int? serverId;
+
+  /// id
+  int? id;
+
+  /// 用户账号
+  String? accid;
+
+  /// 频道id
+  int? channelId;
+
+  /// 资源的权限列表
+  @JsonKey(fromJson: _resourceAuthsFromJsonNullable)
+  Map<QChatRoleResource, QChatRoleOption>? resourceAuths;
+
+  /// 创建时间
+  int? createTime;
+
+  /// 更新时间
+  int? updateTime;
+
+  /// 昵称
+  String? nick;
+
+  /// 头像
+  String? avatar;
+
+  /// 自定义字段
+  String? custom;
+
+  /// 成员类型
+  QChatMemberType? type;
+
+  /// 加入时间
+  int? joinTime;
+
+  /// 邀请者accid
+  String? inviter;
+
+  QChatMemberRole();
+
+  factory QChatMemberRole.fromJson(Map<String, dynamic> json) =>
+      _$QChatMemberRoleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatMemberRoleToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatMemberRole{serverId: $serverId, id: $id, accid: $accid, channelId: $channelId, resourceAuths: $resourceAuths, createTime: $createTime, updateTime: $updateTime, nick: $nick, avatar: $avatar, custom: $custom, type: $type, joinTime: $joinTime, inviter: $inviter}';
+  }
+}
+
+@JsonSerializable()
+class QChatRemoveMemberRoleParam {
+  /// 服务器id，必填
+  final int serverId;
+
+  /// 频道id，必填
+  final int channelId;
+
+  /// 用户账号，必填
+  final String accid;
+
+  QChatRemoveMemberRoleParam(this.serverId, this.channelId, this.accid);
+
+  factory QChatRemoveMemberRoleParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatRemoveMemberRoleParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatRemoveMemberRoleParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatRemoveMemberRoleParam{serverId: $serverId, channelId: $channelId, accid: $accid}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateMemberRoleParam {
+  /// 服务器id，必填
+  final int serverId;
+
+  /// 频道id，必填
+  final int channelId;
+
+  /// 用户账号，必填
+  final String accid;
+
+  /// 更新的权限Map，最多50个
+  final Map<QChatRoleResource, QChatRoleOption> resourceAuths;
+
+  QChatUpdateMemberRoleParam(
+      this.serverId, this.channelId, this.accid, this.resourceAuths);
+
+  factory QChatUpdateMemberRoleParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatUpdateMemberRoleParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatUpdateMemberRoleParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatUpdateMemberRoleParam{serverId: $serverId, channelId: $channelId, accid: $accid, resourceAuths: $resourceAuths}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateMemberRoleResult {
+  /// 更新后的用户身份组
+  @JsonKey(fromJson: _roleFromJsonNullable)
+  final QChatMemberRole? role;
+
+  QChatUpdateMemberRoleResult(this.role);
+
+  factory QChatUpdateMemberRoleResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatUpdateMemberRoleResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatUpdateMemberRoleResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatUpdateMemberRoleResult{role: $role}';
+  }
+}
+
+@JsonSerializable()
+class QChatGetMemberRolesParam {
+  /// 服务器Id
+  final int serverId;
+
+  /// channelId
+  final int channelId;
+
+  /// 查询锚点时间戳
+  final int timeTag;
+
+  /// 查询数量限制
+  final int limit;
+
+  QChatGetMemberRolesParam(
+      this.serverId, this.channelId, this.timeTag, this.limit);
+
+  factory QChatGetMemberRolesParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetMemberRolesParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetMemberRolesParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetMemberRolesParam{serverId: $serverId, channelId: $channelId, timeTag: $timeTag, limit: $limit}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetMemberRolesResult {
+  /// 用户所在身份组列表
+  @JsonKey(fromJson: _memberRoleListFromJsonNullable)
+  final List<QChatMemberRole>? roleList;
+
+  QChatGetMemberRolesResult(this.roleList);
+
+  factory QChatGetMemberRolesResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatGetMemberRolesResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatGetMemberRolesResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatGetMemberRolesResult{roleList: $roleList}';
+  }
+}
+
+List<QChatMemberRole>? _memberRoleListFromJsonNullable(
+    List<dynamic>? dataList) {
+  return dataList
+      ?.map((e) => QChatMemberRole.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatCheckPermissionParam {
+  /// 服务器id，必填
+  final int serverId;
+
+  /// 频道id，查询 server 权限时不需要传channelId
+  final int? channelId;
+
+  /// 身份组权限资源项
+  final QChatRoleResource permission;
+
+  QChatCheckPermissionParam(this.serverId, this.permission, [this.channelId]);
+
+  factory QChatCheckPermissionParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatCheckPermissionParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatCheckPermissionParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatCheckPermissionParam{serverId: $serverId, channelId: $channelId, permission: $permission}';
+  }
+}
+
+@JsonSerializable()
+class QChatCheckPermissionResult {
+  /// 频道身份组
+  final bool? hasPermission;
+
+  QChatCheckPermissionResult(this.hasPermission);
+
+  factory QChatCheckPermissionResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatCheckPermissionResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatCheckPermissionResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatCheckPermissionResult{hasPermission: $hasPermission}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatCheckPermissionsParam {
+  /// 服务器Id，必填
+  final int serverId;
+
+  /// 频道Id，查询 server 权限时不需要传channelId
+  final int? channelId;
+
+  /// 身份组权限资源项列表，一次最多可查10个权限项
+  final List<QChatRoleResource>? permissions;
+
+  QChatCheckPermissionsParam(this.serverId, this.permissions, [this.channelId]);
+
+  factory QChatCheckPermissionsParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatCheckPermissionsParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatCheckPermissionsParamToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatCheckPermissionsParam{serverId: $serverId, channelId: $channelId, permissions: $permissions}';
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatCheckPermissionsResult {
+  /// 权限结果
+  @JsonKey(fromJson: _resourceAuthsFromJsonNullable)
+  final Map<QChatRoleResource, QChatRoleOption>? permissions;
+
+  QChatCheckPermissionsResult(this.permissions);
+
+  factory QChatCheckPermissionsResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatCheckPermissionsResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatCheckPermissionsResultToJson(this);
+
+  @override
+  String toString() {
+    return 'QChatCheckPermissionsResult{permissions: $permissions}';
   }
 }

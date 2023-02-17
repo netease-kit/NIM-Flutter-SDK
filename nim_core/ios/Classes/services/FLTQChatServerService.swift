@@ -25,9 +25,23 @@ enum QChatServerMethod: String {
   case searchServerByPage
   case generateInviteCode
   case joinByInviteCode
+  case updateServerMemberInfo
+  case banServerMember
+  case unbanServerMember
+  case getBannedServerMembersByPage
+  case updateUserServerPushConfig
+  case getUserServerPushConfigs
+  case searchServerMemberByPage
+  case getInviteApplyRecordOfServer
+  case getInviteApplyRecordOfSelf
+  case markRead
+  case subscribeAllChannel
 }
 
 class FLTQChatServerService: FLTBaseService, FLTService {
+  private let paramErrorTip = "参数错误"
+  private let paramErrorCode = 414
+
   override func onInitialized() {
     NIMSDK.shared().qchatServerManager.add(self)
   }
@@ -83,6 +97,28 @@ class FLTQChatServerService: FLTBaseService, FLTService {
       generateInviteCode(arguments, resultCallback)
     case QChatServerMethod.joinByInviteCode.rawValue:
       joinByInviteCode(arguments, resultCallback)
+    case QChatServerMethod.updateServerMemberInfo.rawValue:
+      updateServerMemberInfo(arguments, resultCallback)
+    case QChatServerMethod.banServerMember.rawValue:
+      banServerMember(arguments, resultCallback)
+    case QChatServerMethod.unbanServerMember.rawValue:
+      unbanServerMember(arguments, resultCallback)
+    case QChatServerMethod.getBannedServerMembersByPage.rawValue:
+      getBannedServerMembersByPage(arguments, resultCallback)
+    case QChatServerMethod.updateUserServerPushConfig.rawValue:
+      updateUserServerPushConfig(arguments, resultCallback)
+    case QChatServerMethod.getUserServerPushConfigs.rawValue:
+      getUserServerPushConfigs(arguments, resultCallback)
+    case QChatServerMethod.searchServerMemberByPage.rawValue:
+      searchServerMemberByPage(arguments, resultCallback)
+    case QChatServerMethod.getInviteApplyRecordOfServer.rawValue:
+      getInviteApplyRecordOfServer(arguments, resultCallback)
+    case QChatServerMethod.getInviteApplyRecordOfSelf.rawValue:
+      getInviteApplyRecordOfSelf(arguments, resultCallback)
+    case QChatServerMethod.markRead.rawValue:
+      markRead(arguments, resultCallback)
+    case QChatServerMethod.subscribeAllChannel.rawValue:
+      subscribeAllChannel(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -95,9 +131,7 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func qChatServerCallback(_ error: Error?, _ data: Any?, _ resultCallback: ResultCallback) {
     if let ns_error = error as NSError? {
-      // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
-      let code = ns_error.code == 1 ? 414 : ns_error.code
-      errorCallBack(resultCallback, ns_error.description, code)
+      errorCallBack(resultCallback, ns_error.description, ns_error.code)
     } else {
       successCallBack(resultCallback, data)
     }
@@ -105,8 +139,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func acceptServerApply(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatAcceptServerApplyParam.fromDic(arguments) else {
-      print("acceptServerApply parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("acceptServerApply parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
     NIMSDK.shared().qchatServerManager.acceptServerApply(param) { error in
@@ -116,8 +150,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func acceptServerInvite(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatAcceptServerInviteParam.fromDic(arguments) else {
-      print("acceptServerInvite parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("acceptServerInvite parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -128,8 +162,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func applyServerJoin(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatApplyServerJoinParam.fromDic(arguments) else {
-      print("applyServerJoin parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("applyServerJoin parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -140,8 +174,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func createServer(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatCreateServerParam.fromDic(arguments) else {
-      print("createServer parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("createServer parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -152,8 +186,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func deleteServere(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatDeleteServerParam.fromDic(arguments) else {
-      print("deleteServere parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("deleteServere parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -164,8 +198,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func getServerMembers(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatGetServerMembersParam.fromDic(arguments) else {
-      print("getServerMembers parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("getServerMembers parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -176,8 +210,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func getServers(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatGetServersParam.fromDic(arguments) else {
-      print("getServers parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("getServers parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -188,8 +222,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func getServerMembersByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatGetServerMembersByPageParam.fromDic(arguments) else {
-      print("getServerMembersByPage parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("getServerMembersByPage parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -200,8 +234,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func getServersByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatGetServersByPageParam.fromDic(arguments) else {
-      print("getServersByPage parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("getServersByPage parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -212,8 +246,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func inviteServerMembers(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatInviteServerMembersParam.fromDic(arguments) else {
-      print("inviteServerMembers parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("inviteServerMembers parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -224,8 +258,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func kickServerMembers(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatKickServerMembersParam.fromDic(arguments) else {
-      print("kickServerMembers parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("kickServerMembers parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -236,8 +270,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func leaveServer(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatLeaveServerParam.fromDic(arguments) else {
-      print("leaveServer parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("leaveServer parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -248,8 +282,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func rejectServerApply(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatRejectServerApplyParam.fromDic(arguments) else {
-      print("rejectServerApply parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("rejectServerApply parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -260,8 +294,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func rejectServerInvite(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatRejectServerInviteParam.fromDic(arguments) else {
-      print("rejectServerInvite parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("rejectServerInvite parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -272,8 +306,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func updateServer(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatUpdateServerParam.fromDic(arguments) else {
-      print("updateServer parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("updateServer parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -284,8 +318,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func updateMyMemberInfo(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatUpdateMyMemberInfoParam.fromDic(arguments) else {
-      print("updateMyMemberInfo parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("updateMyMemberInfo parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -296,8 +330,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func subscribeServer(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatSubscribeServerParam.fromDic(arguments) else {
-      print("subscribeServer parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("subscribeServer parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -308,8 +342,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func searchServerByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatSearchServerByPageParam.fromDic(arguments) else {
-      print("searchServerByPage parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("searchServerByPage parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -320,8 +354,8 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func generateInviteCode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatGenerateInviteCodeParam.fromDic(arguments) else {
-      print("generateInviteCode parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("generateInviteCode parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
@@ -332,13 +366,154 @@ class FLTQChatServerService: FLTBaseService, FLTService {
 
   func joinByInviteCode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let param = NIMQChatJoinByInviteCodeParam.fromDic(arguments) else {
-      print("joinByInviteCode parameter error  is nil")
-      errorCallBack(resultCallback, "parameter error is nil")
+      print("joinByInviteCode parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
     NIMSDK.shared().qchatServerManager.join(byInviteCode: param) { error in
       self.qChatServerCallback(error, nil, resultCallback)
+    }
+  }
+
+  func updateServerMemberInfo(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatUpdateServerMemberInfoParam.fromDic(arguments) else {
+      print("updateServerMemberInfo parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.updateServerMemberInfo(param) { error, info in
+      self.qChatServerCallback(error, ["member": info?.toDic()], resultCallback)
+    }
+  }
+
+  func banServerMember(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatUpdateServerMemberBanParam.fromDic(arguments) else {
+      print("banServerMember parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.banServerMember(param) { error in
+      self.qChatServerCallback(error, nil, resultCallback)
+    }
+  }
+
+  func unbanServerMember(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatUpdateServerMemberBanParam.fromDic(arguments) else {
+      print("unbanServerMember parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.unbanServerMember(param) { error in
+      self.qChatServerCallback(error, nil, resultCallback)
+    }
+  }
+
+  func getBannedServerMembersByPage(_ arguments: [String: Any],
+                                    _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatGetServerBanedMembersByPageParam.fromDic(arguments) else {
+      print("getBannedServerMembersByPage parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.getServerBanedMembers(byPage: param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func updateUserServerPushConfig(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let serverId = arguments["serverId"] as? UInt64,
+          let pushMsgType = arguments["pushMsgType"] as? String,
+          let notificationProfile = FLTQChatPushNotificationProfile(rawValue: pushMsgType)?
+          .convertToPushNotificationProfile() else {
+      print("updateUserServerPushConfig parameter error, serverId is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatApnsManager.update(notificationProfile, server: serverId) { error in
+      self.qChatServerCallback(error, nil, resultCallback)
+    }
+  }
+
+  func getUserServerPushConfigs(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let serverIdList = (arguments["serverIdList"] as? [UInt64])?.map({ item in
+      NSNumber(value: item)
+    }) else {
+      print("getUserServerPushConfigs parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatApnsManager
+      .getUserPushNotificationConfig(byServer: serverIdList) { error, info in
+        self.qChatServerCallback(error, ["userPushConfigs": info?.map { item in
+          item.toDic()
+        }], resultCallback)
+      }
+  }
+
+  func searchServerMemberByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatSearchServerMemberByPageParam.fromDic(arguments) else {
+      print("searchServerMemberByPage parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.searchServerMember(byPage: param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func getInviteApplyRecordOfServer(_ arguments: [String: Any],
+                                    _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatGetInviteApplyRecordOfServerParam.fromDic(arguments) else {
+      print("getInviteApplyRecordOfServer parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.getInviteApplyRecord(ofServer: param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func getInviteApplyRecordOfSelf(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatGetInviteApplyRecordOfSelfParam.fromDic(arguments) else {
+      print("getInviteApplyRecordOfSelf parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.getInviteApplyRecord(ofSelf: param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func markRead(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatMarkServerReadParam.fromDic(arguments) else {
+      print("searchServerMemberByPage parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.markServerRead(param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func subscribeAllChannel(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatSubscribeAllChannelParam.fromDic(arguments) else {
+      print("subscribeAllChannel parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.subscribeAllChannel(param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
     }
   }
 }

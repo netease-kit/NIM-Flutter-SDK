@@ -12,7 +12,7 @@ enum MessageType: String {
   case CreateMessage = "createMessage"
 
   case QueryMessageList = "queryMessageList"
-  case QueryMessageListEx = "queryMessageListEx" // 不支持asc参数
+  case QueryMessageListEx = "queryMessageListEx" // 手动支持asc参数
   case QueryLastMessage = "queryLastMessage"
   case QueryMessageListByUuid = "queryMessageListByUuid"
   case DeleteChattingHistory = "deleteChattingHistory"
@@ -72,6 +72,7 @@ enum MessageType: String {
   case StickTopInfoForSession = "stickTopInfoForSession"
   case LoadRecentSessions = "loadRecentSessions"
   case SortRecentSessions = "sortRecentSessions"
+  case SaveMessageToLocalEx = "saveMessageToLocalEx"
 }
 
 class FLTMessageService: FLTBaseService, FLTService {
@@ -128,21 +129,35 @@ class FLTMessageService: FLTBaseService, FLTService {
     case MessageType.VoiceToText.rawValue:
       voiceToText(arguments, resultCallback)
     case MessageType.CreateMessage.rawValue:
-      if let messages = createMessage(arguments) {
-        let message = messages.message
-        let session = messages.session
-        message.gArgument = arguments
-        message.sessionId = session.sessionId
-        message.setValue(session, forKeyPath: #keyPath(NIMMessage.session))
 
-        if let direction = arguments["messageDirection"] as? String,
-           let messageDirection = FLT_NIMMessageDirection(rawValue: direction) {
-          message.messageDirection = messageDirection
-        }
-
+      if let message = createMessagePlus(arguments) {
         var targetMsg = message.toDic()
+        if let serviceName = arguments[kFLTNimCoreService] as? String,
+           serviceName == ServiceType.ChatroomService.rawValue {
+          targetMsg?["enableHistory"] = message.setting?.routeEnabled ?? true
+        }
+        if targetMsg?["serverId"] == nil {
+          targetMsg?["serverId"] = 0 // 消息未发送，iOS SDK 不会生成serverId，此处对齐android, 取传递进来的值
+        }
+        if targetMsg?["fromAccount"] == nil {
+          targetMsg?["fromAccount"] = NIMSDK.shared().loginManager.currentAccount()
+        }
+        if targetMsg?["fromNickname"] == nil {
+          targetMsg?["fromNickname"] = NIMSDK.shared().loginManager.currentAccount()
+        }
         if let _ = targetMsg?["status"] {
           targetMsg?["status"] = FLT_NIMMessageStatus.sending.rawValue
+        }
+        if let paramAttachment = arguments["messageAttachment"] as? [String: Any],
+           let ext = paramAttachment["ext"],
+           var attachment = targetMsg?["messageAttachment"] as? [String: Any] {
+          attachment["ext"] = ext
+          targetMsg?["messageAttachment"] = attachment
+        }
+        if message.messageType == .location {
+          targetMsg?["attachmentStatus"] = FLT_NIMMessageAttachmentDownloadState.transferred.rawValue
+        } else {
+          targetMsg?["attachmentStatus"] = FLT_NIMMessageAttachmentDownloadState.initial.rawValue
         }
         let messageJson = NimResult.success(targetMsg).toDic()
         print("create message : ", messageJson)
@@ -189,14 +204,36 @@ class FLTMessageService: FLTBaseService, FLTService {
       if let message = NIMMessage.convertToMessage(arguments),
          let sessionId = message.session?.sessionId,
          let sessionType = message.session?.sessionType {
-        if let databaseMessage = NIMSDK.shared().conversationManager.messages(
-          in: NIMSession(sessionId, type: sessionType),
-          messageIds: [message.messageId]
-        )?.first {
-          fetchMessageAttachment(databaseMessage, resultCallback)
+        let serviceName = arguments[kFLTNimCoreService] as? String ?? ""
+        if serviceName == ServiceType.ChatroomService.rawValue {
+          let option = NIMHistoryMessageSearchOption()
+          if let startTime = arguments["timestamp"] as? Int {
+            option.startTime = TimeInterval(Double(startTime) / 1000)
+          }
+          option.limit = 1
+          option.endTime = 0
+          NIMSDK.shared().chatroomManager
+            .fetchMessageHistory(sessionId, option: option) { [weak self] error, result in
+              if let err = error {
+                resultCallback
+                  .result(NimResult
+                    .error("message not exist, error: \(err.localizedDescription)")
+                    .toDic() as Any)
+              } else if let res = result,
+                        let databaseMessage = res.first {
+                self?.fetchMessageAttachment(databaseMessage, resultCallback)
+              }
+            }
         } else {
-          resultCallback
-            .result(NimResult.error("resend message not exist").toDic() as Any)
+          if let databaseMessage = NIMSDK.shared().conversationManager.messages(
+            in: NIMSession(sessionId, type: sessionType),
+            messageIds: [message.messageId]
+          )?.first {
+            fetchMessageAttachment(databaseMessage, resultCallback)
+          } else {
+            resultCallback
+              .result(NimResult.error("resend message not exist").toDic() as Any)
+          }
         }
       }
     case MessageType.SaveMessage.rawValue:
@@ -269,6 +306,8 @@ class FLTMessageService: FLTBaseService, FLTService {
       loadRecentSessionsWithOptions(arguments, resultCallback)
     case MessageType.SortRecentSessions.rawValue:
       sortRecentSessions(arguments, resultCallback)
+    case MessageType.SaveMessageToLocalEx.rawValue:
+      saveMessageToLocalEx(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -384,7 +423,28 @@ class FLTMessageService: FLTBaseService, FLTService {
     }
     if let messageTypeValue = arguments["messageType"] as? String,
        let messageType = try? NIMMessageType.getType(messageTypeValue) {
-      let attatchment = getMessageAttachment(arguments)
+      var attatchment = getMessageAttachment(arguments)
+      if serviceName == ServiceType.ChatroomService.rawValue {
+        attatchment = (attatchment != nil) ? attatchment : [String: Any]()
+        if let filePath = arguments["filePath"] as? String {
+          attatchment?["path"] = filePath
+        }
+        if let displayName = arguments["displayName"] as? String {
+          attatchment?["displayName"] = displayName
+        }
+        if let duration = arguments["duration"] as? Int {
+          attatchment?["dur"] = duration
+        }
+        if let nosScene = arguments["nosScene"] as? String {
+          attatchment?["sen"] = nosScene
+        }
+        if let duration = arguments["width"] as? Double {
+          attatchment?["w"] = duration
+        }
+        if let duration = arguments["height"] as? Double {
+          attatchment?["h"] = duration
+        }
+      }
 
       switch messageType {
       case NIMMessageType.text:
@@ -433,6 +493,74 @@ class FLTMessageService: FLTBaseService, FLTService {
     return nil
   }
 
+  func createMessagePlus(_ arguments: [String: Any]) -> NIMMessage? {
+    if let messages = createMessage(arguments) {
+      let message = messages.message
+      let session = messages.session
+      message.gArgument = arguments
+      message.sessionId = session.sessionId
+      message.setValue(session, forKeyPath: #keyPath(NIMMessage.session))
+      if let content = arguments["content"] as? String {
+        message.text = content
+      } else if let text = arguments["text"] as? String {
+        message.text = text
+      } else {
+        message.text = ""
+      }
+      if let config = arguments["config"] as? [String: Any] {
+        let setting = NIMMessageSetting()
+        if let enableUnreadCount = config["enableUnreadCount"] as? Bool {
+          setting.shouldBeCounted = enableUnreadCount
+        }
+        if let enableRoaming = config["enableRoaming"] as? Bool {
+          setting.roamingEnabled = enableRoaming
+        }
+        if let enableSelfSync = config["enableSelfSync"] as? Bool {
+          setting.syncEnabled = enableSelfSync
+        }
+        if let enablePushNick = config["enablePushNick"] as? Bool {
+          setting.apnsWithPrefix = enablePushNick
+        }
+        if let enableHistory = config["enableHistory"] as? Bool {
+          setting.historyEnabled = enableHistory
+        }
+        if let enablePersist = config["enablePersist"] as? Bool {
+          setting.persistEnable = enablePersist
+        }
+        if let enableRoute = config["enableRoute"] as? Bool {
+          setting.routeEnabled = enableRoute
+        }
+        if let enablePush = config["enablePush"] as? Bool {
+          setting.apnsEnabled = enablePush
+        }
+        message.setting = setting
+      }
+
+      if let direction = arguments["messageDirection"] as? String,
+         let messageDirection = FLT_NIMMessageDirection(rawValue: direction) {
+        message.messageDirection = messageDirection
+      }
+
+      return message
+    }
+    return nil
+  }
+
+  func getAttachSize(path: String) -> Int {
+    let pathExist = FileManager.default.fileExists(atPath: path)
+    if pathExist {
+      do {
+        let attr = try FileManager.default.attributesOfItem(atPath: path)
+        let size = attr[FileAttributeKey.size] as! UInt64
+        return Int(size)
+      } catch {
+        print("getAttachSize error :\(error)")
+        return 0
+      }
+    }
+    return 0
+  }
+
   private func createTextMessage(_ sessionId: String?, _ sessionType: NIMSessionType,
                                  _ text: String?) -> (message: NIMMessage, session: NIMSession)? {
     if let sid = sessionId, let content = text {
@@ -447,10 +575,15 @@ class FLTMessageService: FLTBaseService, FLTService {
   private func createImageMessage(_ sessionId: String?, _ sessionType: NIMSessionType,
                                   _ attachment: [String: Any]?)
     -> (message: NIMMessage, session: NIMSession)? {
-    if let sid = sessionId, let imagePath = getAttachmentPath(attachment) {
+    if let sid = sessionId, let imagePath = getAttachmentPath(attachment), imagePath.count > 0 {
       let message = NIMMessage()
       let session = NIMSession(sid, type: sessionType)
       let imageObject = NIMImageObject(filepath: imagePath, scene: getScene(attachment))
+      imageObject.displayName = getAttachmentDisplayName(attachment)
+      if let path = imageObject.value(forKeyPath: "sourceFilepath") as? String {
+        let size = getAttachSize(path: path)
+        imageObject.setValue(size, forKeyPath: "fileLength")
+      }
       message.messageObject = imageObject
       return (message: message, session: session)
     }
@@ -460,11 +593,16 @@ class FLTMessageService: FLTBaseService, FLTService {
   private func createAudioMessage(_ sessionId: String?, _ sessionType: NIMSessionType,
                                   _ attachment: [String: Any]?)
     -> (message: NIMMessage, session: NIMSession)? {
-    if let sid = sessionId, let filePath = getAttachmentPath(attachment) {
+    if let sid = sessionId, let filePath = getAttachmentPath(attachment), filePath.count > 0 {
       let message = NIMMessage()
       let session = NIMSession(sid, type: sessionType)
       let audioObject = NIMAudioObject(sourcePath: filePath, scene: getScene(attachment))
       audioObject.duration = getDur(attachment)
+      audioObject.displayName = getAttachmentDisplayName(attachment)
+      if let path = audioObject.value(forKeyPath: "sourcePath") as? String {
+        let size = getAttachSize(path: path)
+        audioObject.setValue(size, forKeyPath: "fileLength")
+      }
       message.messageObject = audioObject
       return (message: message, session: session)
     }
@@ -474,11 +612,21 @@ class FLTMessageService: FLTBaseService, FLTService {
   private func createVideoMessage(_ sessionId: String?, _ sessionType: NIMSessionType,
                                   _ attachment: [String: Any]?)
     -> (message: NIMMessage, session: NIMSession)? {
-    if let sid = sessionId, let filePath = getAttachmentPath(attachment) {
+    if let sid = sessionId, let filePath = getAttachmentPath(attachment), filePath.count > 0 {
       let message = NIMMessage()
       let session = NIMSession(sid, type: sessionType)
       let videoObject = NIMVideoObject(sourcePath: filePath, scene: getScene(attachment))
       videoObject.duration = getDur(attachment)
+      videoObject.displayName = getAttachmentDisplayName(attachment)
+      if let path = videoObject.value(forKeyPath: "sourcePath") as? String {
+        let size = getAttachSize(path: path)
+        videoObject.setValue(size, forKeyPath: "fileLength")
+      }
+      if videoObject.coverSize.height == 0 || videoObject.coverSize.width == 0,
+         let w = attachment?["w"] as? Double,
+         let h = attachment?["h"] as? Double {
+        videoObject.setValue(CGSize(width: w, height: h), forKeyPath: #keyPath(NIMVideoObject.coverSize))
+      }
       message.messageObject = videoObject
       return (message: message, session: session)
     }
@@ -488,10 +636,15 @@ class FLTMessageService: FLTBaseService, FLTService {
   private func createFileMessage(_ sessionId: String?, _ sessionType: NIMSessionType,
                                  _ attachment: [String: Any]?)
     -> (message: NIMMessage, session: NIMSession)? {
-    if let sid = sessionId, let filePath = getAttachmentPath(attachment) {
+    if let sid = sessionId, let filePath = getAttachmentPath(attachment), filePath.count > 0 {
       let message = NIMMessage()
       let session = NIMSession(sid, type: sessionType)
       let fileObject = NIMFileObject(sourcePath: filePath, scene: getScene(attachment))
+      fileObject.displayName = getAttachmentDisplayName(attachment)
+      if let path = fileObject.value(forKeyPath: "sourceFilepath") as? String {
+        let size = getAttachSize(path: path)
+        fileObject.setValue(size, forKeyPath: "fileLength")
+      }
       message.messageObject = fileObject
       return (message: message, session: session)
     }
@@ -588,8 +741,15 @@ class FLTMessageService: FLTBaseService, FLTService {
       option.content = content
       option.replacement = replacement
       do {
-        try NIMSDK.shared().antispamManager.checkLocalAntispam(option)
-        resultCallback.result(NimResult.success().toDic())
+        let antiSpamCheckResult = try NIMSDK.shared().antispamManager.checkLocalAntispam(option)
+        var antiSpamCheckResultJson = antiSpamCheckResult.toDic()
+        if antiSpamCheckResultJson?["operator"] as? Int == 0 {
+          antiSpamCheckResultJson?["content"] = content
+        } else {
+          antiSpamCheckResultJson?["content"] = replacement
+        }
+
+        resultCallback.result(NimResult.success(antiSpamCheckResultJson).toDic())
       } catch let error as NSError {
         resultCallback.result(NimResult.error(error.code, error.description).toDic())
       }
@@ -613,11 +773,19 @@ extension FLTMessageService: NIMChatManagerDelegate {
   }
 
   func send(_ message: NIMMessage, progress: Float) {
-    notifyEvent(
-      serviceName(),
-      "onAttachmentProgress",
-      ["id": message.messageId, "progress": progress]
-    )
+    if message.session?.sessionType == .chatroom {
+      notifyEvent(
+        ServiceType.ChatroomService.rawValue,
+        "onMessageAttachmentProgressUpdate",
+        ["id": message.messageId, "progress": progress]
+      )
+    } else {
+      notifyEvent(
+        serviceName(),
+        "onAttachmentProgress",
+        ["id": message.messageId, "progress": progress]
+      )
+    }
   }
 
   func uploadAttachmentSuccess(_ urlString: String, for message: NIMMessage) {}
@@ -629,7 +797,6 @@ extension FLTMessageService: NIMChatManagerDelegate {
         print("send message failed :", error as Any)
         resultCallBack.result(NimResult.error(ns_error.code, ns_error.description).toDic())
       } else {
-        print("send message success : \(message.serverID)")
         let messageJson = NimResult.success(message.toDic()).toDic()
         resultCallBack.result(messageJson)
       }
@@ -662,7 +829,7 @@ extension FLTMessageService: NIMChatManagerDelegate {
       notifyEvent("onMessageReceipt", &arguments)
     }
     if teamMessageReceiptList.count > 0 {
-      arguments["teamMessageReceiptList"] = messageReceiptList
+      arguments["teamMessageReceiptList"] = teamMessageReceiptList
       notifyEvent("onTeamMessageReceipt", &arguments)
     }
 
@@ -709,7 +876,6 @@ extension FLTMessageService: NIMChatManagerDelegate {
       let ret = normal.map { message in
         message.toDic()
       }
-      print("xxxx to dic message :", ret)
       notifyEvent(ServiceType.MessageService.rawValue, "onMessage", ["messageList": ret])
     }
 
@@ -719,15 +885,32 @@ extension FLTMessageService: NIMChatManagerDelegate {
   }
 
   func fetchMessageAttachment(_ message: NIMMessage, progress: Float) {
-    notifyEvent(
-      serviceName(),
-      "onAttachmentProgress",
-      ["id": message.messageId, "progress": progress]
-    )
+    if message.session?.sessionType == .chatroom {
+      print("chatroom message download progress : ", progress)
+      notifyEvent(
+        ServiceType.ChatroomService.rawValue,
+        "onMessageAttachmentProgressUpdate",
+        ["id": message.messageId, "progress": progress]
+      )
+    } else {
+      notifyEvent(
+        serviceName(),
+        "onAttachmentProgress",
+        ["id": message.messageId, "progress": progress]
+      )
+    }
   }
 
   func fetchMessageAttachment(_ message: NIMMessage, didCompleteWithError error: Error?) {
     if message.session?.sessionType == .chatroom {
+      if error == nil {
+        notifyEvent(
+          ServiceType.ChatroomService.rawValue,
+          "onMessageAttachmentProgressUpdate",
+          ["id": message.messageId, "progress": 1.0]
+        )
+      }
+
       notifyEvent(
         ServiceType.ChatroomService.rawValue,
         "onMessageStatusChanged",
@@ -777,23 +960,71 @@ extension FLTMessageService {
     }
   }
 
+  func isNullMessage(_ message: [String: Any]?) -> Bool {
+    guard let message = message else {
+      return true
+    }
+    guard let undef = message["messageType"] as? String,
+          undef == "undef",
+          let callbackExtension = message["callbackExtension"] as? String,
+          callbackExtension == "empty" else {
+      return false
+    }
+
+    return true
+  }
+
   func queryMessageListEx(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let isNullMsg = isNullMessage(arguments["message"] as? [String: Any])
     if let messageArgs = arguments["message"] as? [String: Any],
        let message = NIMMessage.convertToMessage(messageArgs),
        let sessionId = message.sessionId,
        let sessionType = message.sessionType,
        let type = FLT_NIMSessionType(rawValue: sessionType)?.convertToNIMSessionType() {
       let session = NIMSession(sessionId, type: type)
-      if let ret = NIMSDK.shared().conversationManager
-        .messages(in: session, message: message, limit: arguments["limit"] as! Int) {
-        let messageList = ret.map { message in
-          message.toDic()
+      let reuqestMessage = isNullMsg ? nil : message
+      let limit = (arguments["limit"] as? Int) ?? 0
+
+      if limit <= 0 {
+        let result = NimResult(["messageList": [Any]()], 0, nil)
+        resultCallback.result(result.toDic())
+      } else if let direction = arguments["direction"] as? Int,
+                direction == 1 { // QUERY_NEW 查询比锚点时间更晚的消
+        let opt = NIMMessageSearchOption()
+        opt.startTime = message.timestamp
+        opt.limit = UInt(limit)
+        opt.order = .asc
+        opt.allMessageTypes = true
+        NIMSDK.shared().conversationManager.searchMessages(session, option: opt) { [weak self] error, result in
+          if let err = error {
+            self?.errorCallBack(resultCallback, err.localizedDescription)
+          } else {
+            if let ret = result {
+              let messageList = ret.map { message in
+                message.toDic()
+              }
+              self?.successCallBack(resultCallback, ["messageList": messageList])
+            } else {
+              let result = NimResult(nil, 0, nil)
+              resultCallback.result(result.toDic())
+            }
+          }
         }
-        let result = NimResult(["messageList": messageList], 0, nil)
-        resultCallback.result(result.toDic())
+      } else if let direction = arguments["direction"] as? Int,
+                direction == 0 { // QUERY_OLD 查询比锚点时间更早的消息
+        if let ret = NIMSDK.shared().conversationManager
+          .messages(in: session, message: reuqestMessage, limit: limit) {
+          let messageList = ret.map { message in
+            message.toDic()
+          }
+          let result = NimResult(["messageList": messageList], 0, nil)
+          resultCallback.result(result.toDic())
+        } else {
+          let result = NimResult(nil, 0, nil)
+          resultCallback.result(result.toDic())
+        }
       } else {
-        let result = NimResult(nil, 0, nil)
-        resultCallback.result(result.toDic())
+        resultCallback.result(NimResult.error("direction is undefined").toDic() as Any)
       }
     } else {
       resultCallback.result(NimResult.error("convert nim message failed").toDic() as Any)
@@ -850,7 +1081,7 @@ extension FLTMessageService {
       let result = NimResult(nil, 0, nil)
       resultCallback.result(result.toDic())
     } else {
-      resultCallback.result(NimResult.error("convert nim message failed").toDic() as Any)
+      resultCallback.result(NimResult.error("convert nim message FAILED").toDic() as Any)
     }
   }
 
@@ -862,7 +1093,7 @@ extension FLTMessageService {
       if let message = NIMMessage.convertToMessage(m) {
         NIMSDK.shared().conversationManager.delete(message, option: option)
       } else {
-        resultCallback.result(NimResult.error("convert nim message failed").toDic() as Any)
+        resultCallback.result(NimResult.error("convert nim message FAILED").toDic() as Any)
       }
     }
     let result = NimResult(nil, 0, nil)
@@ -871,10 +1102,11 @@ extension FLTMessageService {
 
   func clearChattingHistory(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let account = arguments["account"] as! String
-    _ = arguments["ignore"] as? Bool ?? false
+    let ignore = arguments["ignore"] as? Bool ?? false
     if let sessionType = try? NIMSessionType.getType(arguments["sessionType"] as? String) {
       let session = NIMSession(account, type: sessionType)
       let option = NIMDeleteMessagesOption()
+      option.removeTable = ignore
       NIMSDK.shared().conversationManager.deleteAllmessages(in: session, option: option)
     }
     let result = NimResult(nil, 0, nil)
@@ -903,10 +1135,10 @@ extension FLTMessageService {
       if message.timestamp != 0 {
         if option.order == NIMMessageSearchOrder.asc {
           option.startTime = message.timestamp
-          option.endTime = arguments["toTime"] as? Double ?? 0.0
+          option.endTime = (arguments["toTime"] as? Double ?? 0.0) / 1000
         } else {
           option.endTime = message.timestamp
-          option.startTime = arguments["toTime"] as? Double ?? 0.0
+          option.startTime = (arguments["toTime"] as? Double ?? 0.0) / 1000
         }
       }
       option.currentMessage = message
@@ -947,6 +1179,7 @@ extension FLTMessageService {
   }
 
   func pullMessageHistory(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let isNullMsg = isNullMessage(arguments["message"] as? [String: Any])
     if let messageArgs = arguments["message"] as? [String: Any],
        let message = NIMMessage.convertToMessage(messageArgs),
        let sessionId = message.sessionId,
@@ -956,13 +1189,20 @@ extension FLTMessageService {
       let option = NIMHistoryMessageSearchOption()
       option.limit = arguments["limit"] as? UInt ?? 0
       option.order = NIMMessageSearchOrder.desc
-      option.currentMessage = message
+      option.endTime = message.timestamp
+      if isNullMsg {
+        option.currentMessage = nil
+      } else {
+        option.currentMessage = message
+      }
       option.sync = arguments["persist"] as? Bool ?? false
+      option.createRecentSessionIfNotExists = true
       NIMSDK.shared().conversationManager
         .fetchMessageHistory(session, option: option) { error, messages in
           if error != nil {
             let nserror = error! as NSError
-            let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
+            let errorCode = nserror.code == 1 ? 414 : nserror.code
+            let result = NimResult(nil, NSNumber(value: errorCode), nserror.description)
             resultCallback.result(result.toDic())
           } else {
             if messages != nil, messages!.count > 0 {
@@ -989,6 +1229,8 @@ extension FLTMessageService {
     let sync = arguments["sync"] as? Bool ?? false
     let ext = arguments["ext"] as? String ?? ""
     let session = NIMSession(sessionId, type: sessionType2!)
+    // 对齐 Android sdk 清除云端历史前先清除本地记录
+    NIMSDK.shared().conversationManager.deleteMessages(in: session, option: nil)
 
     let option = NIMClearMessagesOption()
     option.removeRoam = sync
@@ -1029,7 +1271,7 @@ extension FLTMessageService {
               )
               resultCallback.result(result.toDic())
             } else {
-              let result = NimResult(nil, 0, nil)
+              let result = NimResult(1, 0, nil)
               resultCallback.result(result.toDic())
             }
           }
@@ -1071,7 +1313,7 @@ extension FLTMessageService {
         resultCallback.result(NimResult.error("convert nim message failed").toDic() as Any)
       }
     }
-    let result = NimResult(nil, 0, nil)
+    let result = NimResult(messageList.count, 0, nil)
     resultCallback.result(result.toDic())
   }
 
@@ -1095,7 +1337,7 @@ extension FLTMessageService {
             let result = NimResult(["messageList": messageList], 0, nil)
             resultCallback.result(result.toDic())
           } else {
-            let result = NimResult(nil, 0, nil)
+            let result = NimResult(["messageList": []], 0, nil)
             resultCallback.result(result.toDic())
           }
         }
@@ -1131,8 +1373,8 @@ extension FLTMessageService {
 
   func searchRoamingMsg(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let otherAccid = arguments["otherAccid"] as? String ?? ""
-    let fromTime = arguments["fromTime"] as? Double ?? 0.0
-    let endTime = arguments["endTime"] as? Double ?? 0.0
+    let fromTime = arguments["fromTime"] as? Int ?? 0
+    let endTime = arguments["endTime"] as? Int ?? 0
     let keyword = arguments["keyword"] as? String ?? ""
     let limit = arguments["limit"] as? UInt ?? 0
     let reverse = arguments["reverse"] as? Bool ?? false
@@ -1140,11 +1382,11 @@ extension FLTMessageService {
     let session = NIMSession(otherAccid, type: NIMSessionType.P2P)
 
     let option = NIMMessageServerRetrieveOption()
-    option.startTime = fromTime
-    option.endTime = endTime
+    option.startTime = TimeInterval(Double(fromTime) / 1000)
+    option.endTime = TimeInterval(Double(endTime) / 1000)
     option.keyword = keyword
     option.limit = limit
-    option.order = reverse ? NIMMessageSearchOrder.desc : NIMMessageSearchOrder.asc
+    option.order = reverse ? .asc : .desc
 
     NIMSDK.shared().conversationManager
       .retrieveServerMessages(session, option: option) { error, messages in
@@ -1168,17 +1410,8 @@ extension FLTMessageService {
   }
 
   func searchCloudMessageHistory(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    if let config = arguments["messageKeywordSearchConfig"] as? [AnyHashable: Any],
-       let option = NIMMessageFullKeywordSearchOption.yx_model(with: config) {
-      var msgTypeArray = [NIMMessageType]()
-      if let msgTypeList = config["msgTypeList"] as? [String] {
-        for s in msgTypeList {
-          if let messageType = try? NIMMessageType.getType(s) {
-            msgTypeArray.append(messageType)
-          }
-        }
-      }
-      option.msgTypeArray = msgTypeArray
+    if let config = arguments["messageKeywordSearchConfig"] as? [String: Any],
+       let option = NIMMessageFullKeywordSearchOption.fromDic(config) {
       NIMSDK.shared().conversationManager.retrieveServerMessages(option) { error, messages in
         if error != nil {
           let nserror = error! as NSError
@@ -1210,6 +1443,35 @@ extension FLTMessageService {
       let session = NIMSession(sessionId, type: type)
       message.gArgument = arguments
       message.setValue(session, forKeyPath: #keyPath(NIMMessage.session))
+      if let fromAccount = arguments["fromAccount"] as? String {
+        message.from = fromAccount
+      }
+
+      NIMSDK.shared().conversationManager.save(message, for: session) { error in
+        if error != nil {
+          let nserror = error! as NSError
+          let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
+          resultCallback.result(result.toDic())
+        } else {
+          let result = NimResult(message.toDic(), 0, nil)
+          resultCallback.result(result.toDic())
+        }
+      }
+    } else {
+      resultCallback.result(NimResult.error("create message error").toDic())
+    }
+  }
+
+  func saveMessageToLocalEx(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if let message = NIMMessage.convertToMessage(arguments),
+       let sessionId = message.sessionId,
+       let sessionType = message.sessionType,
+       let time = arguments["time"] as? Int,
+       let type = FLT_NIMSessionType(rawValue: sessionType)?.convertToNIMSessionType() {
+      let session = NIMSession(sessionId, type: type)
+      message.gArgument = arguments
+      message.setValue(session, forKeyPath: #keyPath(NIMMessage.session))
+      message.timestamp = TimeInterval(Double(time) / 1000)
 
       NIMSDK.shared().conversationManager.save(message, for: session) { error in
         if error != nil {
@@ -1378,7 +1640,8 @@ extension FLTMessageService {
             }
           }
       } else {
-        resultCallback.result(NimResult.error("update message message not in db").toDic())
+        let err = NimResult(nil, -1, "update message message not in db")
+        resultCallback.result(err.toDic())
       }
     } else {
       resultCallback.result(NimResult.error("create message error").toDic())
@@ -1512,8 +1775,12 @@ extension FLTMessageService {
         }
       }
 
-      NIMSDK.shared().chatManager.localMessageReceiptDetail(message, accountSet: set)
-      resultCallback.result(NimResult.success().toDic())
+      let receiptDetail = NIMSDK.shared().chatManager.localMessageReceiptDetail(message, accountSet: set)
+      if let res = receiptDetail {
+        resultCallback.result(NimResult.success(res.toDic()).toDic())
+      } else {
+        resultCallback.result(NimResult.success().toDic())
+      }
     } else {
       resultCallback.result(NimResult.error("create message error").toDic())
     }
@@ -1521,7 +1788,19 @@ extension FLTMessageService {
 
   func queryMySessionList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     // key: minTimestamp maxTimestamp needLastMessage limit
+    guard let limit = arguments["limit"] as? Int,
+          limit <= 100 else {
+      let result = NimResult(nil, NSNumber(value: 414), "limit 超出最大值（100）")
+      resultCallback.result(result.toDic())
+      return
+    }
     let option = NIMFetchServerSessionOption.yx_model(with: arguments)
+    if let minTimestamp = arguments["minTimestamp"] as? Int {
+      option?.minTimestamp = TimeInterval(minTimestamp)
+    }
+    if let maxTimestamp = arguments["maxTimestamp"] as? Int {
+      option?.maxTimestamp = TimeInterval(maxTimestamp)
+    }
     if option != nil {
       let needLastMsg = arguments["needLastMsg"] as? Int
       option!.needLastMessage = needLastMsg != 0 // 一个字段命名不一样
@@ -1622,6 +1901,11 @@ extension FLTMessageService {
 extension FLTMessageService {
   func addCollect(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     if let params = NIMAddCollectParams.yx_model(with: arguments) {
+      if let uniqueId = arguments["uniqueId"] as? String {
+        params.uniqueId = uniqueId
+      } else {
+        params.uniqueId = UUID().uuidString
+      }
       NIMSDK.shared().chatExtendManager.addCollect(params) { error, collectInfo in
         if error != nil {
           let nserror = error! as NSError
@@ -1663,7 +1947,7 @@ extension FLTMessageService {
   }
 
   func updateCollect(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    if let info = NIMCollectInfo.yx_model(with: arguments) {
+    if let info = NIMCollectInfo.fromDic(arguments) {
       NIMSDK.shared().chatExtendManager.updateCollect(info) { error, info in
         if error != nil {
           let nserror = error! as NSError
@@ -1692,7 +1976,7 @@ extension FLTMessageService {
       } else {
         if infos != nil {
           let collects = infos!.map { info in
-            info.yx_modelToJSONObject()
+            info.toDic()
           }
           resultCallback
             .result(NimResult.success(["totalCount": totalCount, "collects": collects])
@@ -1892,6 +2176,8 @@ extension FLTMessageService {
           let nserror = error! as NSError
           let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
           resultCallback.result(result.toDic())
+        } else if let res = sessionInfo?.toDic() {
+          resultCallback.result(NimResult.success(res).toDic())
         } else {
           resultCallback.result(NimResult.success().toDic())
         }
@@ -1950,10 +2236,10 @@ extension FLTMessageService {
             resultCallback.result(result.toDic())
           } else {
             if sessionInfo != nil {
-              let timeStamp = sessionInfo?.first?.timestamp ?? 0
+              let timeStamp = Int((sessionInfo?.first?.timestamp ?? 0) * 1000)
               resultCallback.result(NimResult.success(timeStamp).toDic())
             } else {
-              resultCallback.result(NimResult.success().toDic())
+              resultCallback.result(NimResult.success(0).toDic())
             }
           }
         }
@@ -1961,12 +2247,16 @@ extension FLTMessageService {
   }
 
   func updateRoamMsgHasMoreTag(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    if let message = NIMMessage.convertToMessage(arguments),
+    guard let arg = arguments["newTag"] as? [String: Any] else {
+      resultCallback.result(NimResult.error("arguments invalid: has no newTag").toDic())
+      return
+    }
+    if let message = NIMMessage.convertToMessage(arg),
        let sessionId = message.sessionId,
        let sessionType = message.sessionType,
        let type = FLT_NIMSessionType(rawValue: sessionType)?.convertToNIMSessionType() {
       let session = NIMSession(sessionId, type: type)
-      message.gArgument = arguments
+      message.gArgument = arg
       message.setValue(session, forKeyPath: #keyPath(NIMMessage.session))
 
       NIMSDK.shared().conversationManager
@@ -2033,7 +2323,7 @@ extension FLTMessageService: NIMChatExtendManagerDelegate {
       let key = [
         "sessionType": sessionType,
         "fromAccount": comment.message.from,
-        "toAccount": comment.message.sessionId,
+        "toAccount": comment.basicInfo.toAccount,
         "time": Int(comment.message.timestamp),
         "serverId": Int(comment.message.serverID),
         "uuid": comment.message.messageId,
@@ -2053,7 +2343,7 @@ extension FLTMessageService: NIMChatExtendManagerDelegate {
       let key = [
         "sessionType": sessionType,
         "fromAccount": comment.message.from,
-        "toAccount": comment.message.sessionId,
+        "toAccount": comment.basicInfo.toAccount,
         "time": Int(comment.message.timestamp),
         "serverId": Int(comment.message.serverID),
         "uuid": comment.message.messageId,

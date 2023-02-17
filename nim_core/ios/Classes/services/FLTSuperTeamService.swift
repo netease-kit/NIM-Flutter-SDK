@@ -37,6 +37,14 @@ enum SuperTeamType: String {
 }
 
 class FLTSuperTeamService: FLTBaseService, FLTService {
+  override func onInitialized() {
+    NIMSDK.shared().superTeamManager.add(self)
+  }
+
+  deinit {
+    NIMSDK.shared().superTeamManager.remove(self)
+  }
+
   func serviceName() -> String {
     ServiceType.SuperTeamService.rawValue
   }
@@ -125,7 +133,7 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
     if let teamId = arguments["teamId"] as? String {
       weak var weakSelf = self
       NIMSDK.shared().superTeamManager.fetchTeamInfo(teamId) { error, team in
-        weakSelf?.superTeamCallback(nil, team?.toDic(), resultCallback)
+        weakSelf?.superTeamCallback(error, team?.toDic(), resultCallback)
       }
     } else {
       errorCallBack(resultCallback, "invalid arguments")
@@ -374,7 +382,7 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
             option.fromServer = true
             NIMSDK.shared().superTeamManager
               .fetchTeamMembers(teamId, option: option) { error, members in
-                let membersMaps = members?.compactMap { member in
+                let membersMaps = members?.reversed().compactMap { member in
                   member.toDic()
                 }
                 weakSelf?.superTeamCallback(
@@ -403,7 +411,7 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
           option.fromServer = true
           NIMSDK.shared().superTeamManager
             .fetchTeamMembers(teamId, option: option) { error, members in
-              let membersMaps = members?.compactMap { member in
+              let membersMaps = members?.reversed().compactMap { member in
                 member.toDic()
               }
               weakSelf?.superTeamCallback(
@@ -433,7 +441,7 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
             option.fromServer = true
             NIMSDK.shared().superTeamManager
               .fetchTeamMembers(teamId, option: option) { error, members in
-                let membersMaps = members?.compactMap { member in
+                let membersMaps = members?.reversed().compactMap { member in
                   member.toDic()
                 }
                 weakSelf?.superTeamCallback(
@@ -531,6 +539,13 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
        let verifyType = request["verifyType"] as? Int {
       values[NSNumber(value: NIMSuperTeamUpdateTag.joinMode.rawValue)] = String(verifyType)
     }
+    // ios 中没有NIMSuperTeamUpdateTag updateInfoMode,
+//      使用NIMTeamUpdateTag无效果
+//      if requestList.contains("teamUpdateMode"),
+//         let teamUpdateMode = request["teamUpdateMode"] as? Int {
+//        values[NSNumber(value: NIMTeamUpdateTag.updateInfoMode.rawValue)] =
+//          String(teamUpdateMode)
+//      }
     NIMSDK.shared().superTeamManager.updateTeamInfos(values, teamId: teamId) { error in
       weakSelf?.superTeamCallback(error, nil, resultCallback)
     }
@@ -560,7 +575,7 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
   }
 
   // 群组检索
-  // WARING: 没有专属的superTeam接口
+  // WARING: 没有专属的superTeam接口,teamManager 查询不到superTeam的信息
   func searchTeamWithOption(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     if let name = arguments["name"] as? String {
       let option = NIMTeamSearchOption()
@@ -599,6 +614,65 @@ class FLTSuperTeamService: FLTBaseService, FLTService {
       errorCallBack(resultCallback, ns_error.description, ns_error.code)
     } else {
       successCallBack(resultCallback, data)
+    }
+  }
+}
+
+extension FLTSuperTeamService: NIMTeamManagerDelegate {
+  private func superTeamMembers(_ memberIDs: [String]?, _ teamId: String?) -> [[String: Any?]] {
+    var members = [[String: Any?]]()
+    memberIDs?.forEach { memberId in
+      if let m = NIMSDK.shared().superTeamManager.teamMember(memberId, inTeam: teamId ?? ""),
+         let dic = m.toDic() {
+        members.append(dic)
+      }
+    }
+    return members
+  }
+
+  func onTeamMemberChanged(_ team: NIMTeam) {
+    onTeamUpdated(team)
+  }
+
+  func onTeamMemberUpdated(_ team: NIMTeam, withMembers memberIDs: [String]?) {
+    if team.type == .super {
+      notifyEvent(
+        ServiceType.SuperTeamService.rawValue,
+        "onSuperTeamMemberUpdate",
+        ["teamMemberList": superTeamMembers(memberIDs, team.teamId)]
+      )
+    }
+  }
+
+  func onTeamMemberRemoved(_ team: NIMTeam, withMembers memberIDs: [String]?) {
+    if team.type == .super {
+      notifyEvent(
+        ServiceType.SuperTeamService.rawValue,
+        "onSuperTeamMemberRemove",
+        ["teamMemberList": superTeamMembers(memberIDs, team.teamId)]
+      )
+    }
+  }
+
+  func onTeamAdded(_ team: NIMTeam) {}
+
+  func onTeamRemoved(_ team: NIMTeam) {
+    if team.type == .super {
+      notifyEvent(
+        ServiceType.SuperTeamService.rawValue,
+        "onSuperTeamRemove",
+        ["team": team.toDic() as Any]
+      )
+    }
+  }
+
+  func onTeamUpdated(_ team: NIMTeam) {
+    if team.type == .super {
+      notifyEvent(
+        ServiceType.SuperTeamService.rawValue,
+        "onSuperTeamUpdate",
+        ["teamList": [team.toDic() as Any]]
+      )
     }
   }
 }

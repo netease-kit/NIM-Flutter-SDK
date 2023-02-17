@@ -12,24 +12,42 @@ import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
 import com.netease.nimflutter.NimResultContinuationCallback
 import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
+import com.netease.nimflutter.stringToQChatChannelBlackWhiteType
 import com.netease.nimflutter.toMap
+import com.netease.nimflutter.toQChatChannelIdInfo
 import com.netease.nimflutter.toQChatCreateChannelParamParam
 import com.netease.nimflutter.toQChatDeleteChannelParam
+import com.netease.nimflutter.toQChatGetChannelBlackWhiteRolesByPageParam
 import com.netease.nimflutter.toQChatGetChannelMembersByPageParam
 import com.netease.nimflutter.toQChatGetChannelUnreadInfosParam
 import com.netease.nimflutter.toQChatGetChannelsByPageParam
 import com.netease.nimflutter.toQChatGetChannelsParam
+import com.netease.nimflutter.toQChatGetExistingChannelBlackWhiteRolesParam
+import com.netease.nimflutter.toQChatPushMsgType
 import com.netease.nimflutter.toQChatSearchChannelByPageParam
 import com.netease.nimflutter.toQChatSearchChannelMembersParam
 import com.netease.nimflutter.toQChatSubscribeChannelParam
+import com.netease.nimflutter.toQChatUpdateChannelBlackWhiteMembersParam
+import com.netease.nimflutter.toQChatUpdateChannelBlackWhiteRolesParam
 import com.netease.nimflutter.toQChatUpdateChannelParam
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.qchat.QChatChannelService
+import com.netease.nimlib.sdk.qchat.param.QChatGetChannelBlackWhiteMembersByPageParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetChannelCategoriesByPageParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetExistingChannelBlackWhiteMembersParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetUserChannelPushConfigsParam
+import com.netease.nimlib.sdk.qchat.param.QChatUpdateUserChannelPushConfigParam
 import com.netease.nimlib.sdk.qchat.result.QChatCreateChannelResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetChannelBlackWhiteMembersByPageResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetChannelBlackWhiteRolesByPageResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetChannelCategoriesByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelMembersByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelUnreadInfosResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelsByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelsResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetExistingChannelBlackWhiteMembersResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetExistingChannelBlackWhiteRolesResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetUserPushConfigsResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchChannelByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchChannelMembersResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeChannelResult
@@ -59,7 +77,16 @@ class FLTQChatChannelService(
                 "getChannelUnreadInfos" to ::getChannelUnreadInfos,
                 "subscribeChannel" to ::subscribeChannel,
                 "searchChannelByPage" to ::searchChannelByPage,
-                "searchChannelMembers" to ::searchChannelMembers
+                "searchChannelMembers" to ::searchChannelMembers,
+                "updateChannelBlackWhiteRoles" to ::updateChannelBlackWhiteRoles,
+                "getChannelBlackWhiteRolesByPage" to ::getChannelBlackWhiteRolesByPage,
+                "getExistingChannelBlackWhiteRoles" to ::getExistingChannelBlackWhiteRoles,
+                "updateChannelBlackWhiteMembers" to ::updateChannelBlackWhiteMembers,
+                "getChannelBlackWhiteMembersByPage" to ::getChannelBlackWhiteMembersByPage,
+                "getExistingChannelBlackWhiteMembers" to ::getExistingChannelBlackWhiteMembers,
+                "updateUserChannelPushConfig" to ::updateUserChannelPushConfig,
+                "getUserChannelPushConfigs" to ::getUserChannelPushConfigs,
+                "getChannelCategoriesByPage" to ::getChannelCategoriesByPage
             )
         }
     }
@@ -216,5 +243,192 @@ class FLTQChatChannelService(
                 }
             )
         }
+    }
+
+    private suspend fun updateChannelBlackWhiteRoles(arguments: Map<String, *>): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.updateChannelBlackWhiteRoles(
+                arguments.toQChatUpdateChannelBlackWhiteRolesParam()
+            ).setCallback(
+                NimResultContinuationCallbackOfNothing(cont)
+            )
+        }
+    }
+
+    private suspend fun getChannelBlackWhiteRolesByPage(arguments: Map<String, *>): NimResult<QChatGetChannelBlackWhiteRolesByPageResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.getChannelBlackWhiteRolesByPage(
+                arguments.toQChatGetChannelBlackWhiteRolesByPageParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun getExistingChannelBlackWhiteRoles(arguments: Map<String, *>): NimResult<QChatGetExistingChannelBlackWhiteRolesResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.getExistingChannelBlackWhiteRoles(
+                arguments.toQChatGetExistingChannelBlackWhiteRolesParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun updateChannelBlackWhiteMembers(arguments: Map<String, *>): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.updateChannelBlackWhiteMembers(
+                arguments.toQChatUpdateChannelBlackWhiteMembersParam()
+            ).setCallback(
+                NimResultContinuationCallbackOfNothing(cont)
+            )
+        }
+    }
+
+    private suspend fun getChannelBlackWhiteMembersByPage(arguments: Map<String, *>): NimResult<QChatGetChannelBlackWhiteMembersByPageResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.getChannelBlackWhiteMembersByPage(
+                arguments.toQChatGetChannelBlackWhiteMembersByPageParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    private fun Map<String, *>.toQChatGetChannelBlackWhiteMembersByPageParam(): QChatGetChannelBlackWhiteMembersByPageParam {
+        val serverId = (this["serverId"] as Number).toLong()
+        val channelId = (this["channelId"] as Number).toLong()
+        val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
+        val timeTag = (this["timeTag"] as Number).toLong()
+        val param = QChatGetChannelBlackWhiteMembersByPageParam(serverId, channelId, type, timeTag)
+        (this["limit"] as Number?)?.toInt()?.let {
+            param.limit = it
+        }
+        return param
+    }
+
+    fun QChatGetChannelBlackWhiteMembersByPageResult.toMap() = mapOf<String, Any?>(
+        "memberList" to memberList?.map { it.toMap() }?.toList(),
+        "hasMore" to isHasMore,
+        "nextTimeTag" to nextTimeTag
+    )
+
+    private suspend fun getExistingChannelBlackWhiteMembers(arguments: Map<String, *>): NimResult<QChatGetExistingChannelBlackWhiteMembersResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.getExistingChannelBlackWhiteMembers(
+                arguments.toQChatGetExistingChannelBlackWhiteMembersParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Map<String, *>.toQChatGetExistingChannelBlackWhiteMembersParam(): QChatGetExistingChannelBlackWhiteMembersParam {
+        val serverId = (this["serverId"] as Number).toLong()
+        val channelId = (this["channelId"] as Number).toLong()
+        val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
+        val accids = (this["accids"] as List<String>)
+        return QChatGetExistingChannelBlackWhiteMembersParam(serverId, channelId, type, accids)
+    }
+
+    fun QChatGetExistingChannelBlackWhiteMembersResult.toMap() = mapOf<String, Any?>(
+        "memberList" to memberList?.map { it.toMap() }?.toList()
+    )
+
+    private suspend fun updateUserChannelPushConfig(arguments: Map<String, *>): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.updateUserChannelPushConfig(
+                arguments.toQChatUpdateUserChannelPushConfigParam()
+            ).setCallback(
+                NimResultContinuationCallbackOfNothing(cont)
+            )
+        }
+    }
+
+    private fun Map<String, *>.toQChatUpdateUserChannelPushConfigParam(): QChatUpdateUserChannelPushConfigParam {
+        val serverId = (this["serverId"] as Number).toLong()
+        val channelId = (this["channelId"] as Number).toLong()
+        val type = (this["pushMsgType"] as String).toQChatPushMsgType()!!
+        return QChatUpdateUserChannelPushConfigParam(serverId, channelId, type)
+    }
+
+    private suspend fun getUserChannelPushConfigs(arguments: Map<String, *>): NimResult<QChatGetUserPushConfigsResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.getUserChannelPushConfigs(
+                arguments.toQChatGetUserChannelPushConfigsParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Map<String, *>.toQChatGetUserChannelPushConfigsParam(): QChatGetUserChannelPushConfigsParam {
+        val channelIdInfos =
+            (this["channelIdInfos"] as List<Map<String, *>?>).map { it?.toQChatChannelIdInfo() }
+        return QChatGetUserChannelPushConfigsParam(channelIdInfos)
+    }
+
+    private suspend fun getChannelCategoriesByPage(arguments: Map<String, *>): NimResult<QChatGetChannelCategoriesByPageResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.getChannelCategoriesByPage(
+                arguments.toQChatGetChannelCategoriesByPageParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    fun QChatGetChannelCategoriesByPageResult.toMap() = mapOf<String, Any?>(
+        "categories" to categories?.map { it.toMap() }?.toList(),
+        "hasMore" to isHasMore,
+        "nextTimeTag" to nextTimeTag
+    )
+
+    private fun Map<String, *>.toQChatGetChannelCategoriesByPageParam(): QChatGetChannelCategoriesByPageParam {
+        val serverId = (this["serverId"] as Number).toLong()
+        val timeTag = (this["timeTag"] as Number).toLong()
+        val param = QChatGetChannelCategoriesByPageParam(serverId, timeTag)
+        (this["limit"] as Number?)?.toInt()?.let {
+            param.limit = it
+        }
+        return param
     }
 }

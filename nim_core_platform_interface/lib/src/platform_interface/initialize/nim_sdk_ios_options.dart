@@ -72,6 +72,9 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
 
   bool? linkQuickSwitch;
 
+  /// 是否开启圈组消息缓存支持，默认不开启
+  bool? enabledQChatMessageCache;
+
   NIMIOSSDKOptions({
     /// android configurations
     this.apnsCername,
@@ -88,6 +91,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
     this.enableFileQuickTransfer,
     this.enableAsyncLoadRecentSession,
     this.linkQuickSwitch,
+    this.enabledQChatMessageCache,
 
     /// common configurations
     required String appKey,

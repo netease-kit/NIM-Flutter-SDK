@@ -17,11 +17,11 @@ extension NIMQChatChannel {
     if let valid = json["valid"] as? Bool {
       model.validflag = valid
     }
-    if let createTime = json["createTime"] as? Double {
-      model.createTime = TimeInterval(createTime / 1000)
+    if let createTime = json["createTime"] as? Int {
+      model.createTime = TimeInterval(Double(createTime) / 1000)
     }
-    if let updateTime = json["updateTime"] as? Double {
-      model.updateTime = TimeInterval(updateTime / 1000)
+    if let updateTime = json["updateTime"] as? Int {
+      model.updateTime = TimeInterval(Double(updateTime) / 1000)
     }
     if let viewMode = json["viewMode"] as? String {
       model.viewMode = (viewMode == "public") ? .public : .private
@@ -125,11 +125,11 @@ extension NIMQChatChannelCategory {
       return NIMQChatChannelCategory()
     }
     model.appId = 0
-    if let createTime = json["createTime"] as? Double {
-      model.createTime = TimeInterval(createTime / 1000)
+    if let createTime = json["createTime"] as? Int {
+      model.createTime = TimeInterval(Double(createTime) / 1000)
     }
-    if let updateTime = json["updateTime"] as? Double {
-      model.updateTime = TimeInterval(updateTime / 1000)
+    if let updateTime = json["updateTime"] as? Int {
+      model.updateTime = TimeInterval(Double(updateTime) / 1000)
     }
     if let valid = json["valid"] as? Bool {
       model.validflag = valid
@@ -223,10 +223,10 @@ extension NIMQChatUpdateChannelCategoryBlackWhiteMemberInfo {
 }
 
 extension NIMQChatCreateChannelParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatCreateChannelParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatCreateChannelParam? {
     guard let model = NIMQChatCreateChannelParam.yx_model(with: json) else {
       print("❌NIMQChatCreateChannelParam.yx_model(with: json) FAILED")
-      return NIMQChatCreateChannelParam()
+      return nil
     }
     if let serverId = json["serverId"] as? UInt64 {
       model.serverId = serverId
@@ -267,10 +267,10 @@ extension NIMQChatCreateChannelParam {
 }
 
 extension NIMQChatDeleteChannelParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatDeleteChannelParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatDeleteChannelParam? {
     guard let model = NIMQChatDeleteChannelParam.yx_model(with: json) else {
       print("❌NIMQChatDeleteChannelParam.yx_model(with: json) FAILED")
-      return NIMQChatDeleteChannelParam()
+      return nil
     }
     if let channelId = json["channelId"] as? UInt64 {
       model.channelId = channelId
@@ -280,10 +280,10 @@ extension NIMQChatDeleteChannelParam {
 }
 
 extension NIMQChatUpdateChannelParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateChannelParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateChannelParam? {
     guard let model = NIMQChatUpdateChannelParam.yx_model(with: json) else {
       print("❌NIMQChatUpdateChannelParam.yx_model(with: json) FAILED")
-      return NIMQChatUpdateChannelParam()
+      return nil
     }
     if let channelId = json["channelId"] as? UInt64 {
       model.channelId = channelId
@@ -309,10 +309,10 @@ extension NIMQChatUpdateChannelParam {
 }
 
 extension NIMQChatGetChannelsParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelsParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelsParam? {
     guard let model = NIMQChatGetChannelsParam.yx_model(with: json) else {
       print("❌NIMQChatGetChannelsParam.yx_model(with: json) FAILED")
-      return NIMQChatGetChannelsParam()
+      return nil
     }
     if let channelIdArray = json["channelIds"] as? [Int] {
       model.channelIdArray = channelIdArray
@@ -322,16 +322,16 @@ extension NIMQChatGetChannelsParam {
 }
 
 extension NIMQChatGetChannelsByPageParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelsByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelsByPageParam? {
     guard let model = NIMQChatGetChannelsByPageParam.yx_model(with: json) else {
       print("❌NIMQChatGetChannelsByPageParam.yx_model(with: json) FAILED")
-      return NIMQChatGetChannelsByPageParam()
+      return nil
     }
     if let serverId = json["serverId"] as? UInt64 {
       model.serverId = serverId
     }
-    if let timeTag = json["timeTag"] as? Double {
-      model.timeTag = TimeInterval(timeTag / 1000)
+    if let timeTag = json["timeTag"] as? Int {
+      model.timeTag = TimeInterval(Double(timeTag) / 1000)
     }
     if let limit = json["limit"] as? Int {
       model.limit = limit
@@ -341,10 +341,10 @@ extension NIMQChatGetChannelsByPageParam {
 }
 
 extension NIMQChatGetChannelMembersByPageParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelMembersByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelMembersByPageParam? {
     guard let model = NIMQChatGetChannelMembersByPageParam.yx_model(with: json) else {
       print("❌NIMQChatGetChannelMembersByPageParam.yx_model(with: json) FAILED")
-      return NIMQChatGetChannelMembersByPageParam()
+      return nil
     }
     if let serverId = json["serverId"] as? UInt64 {
       model.serverId = serverId
@@ -352,8 +352,8 @@ extension NIMQChatGetChannelMembersByPageParam {
     if let channelId = json["channelId"] as? UInt64 {
       model.channelId = channelId
     }
-    if let timeTag = json["timeTag"] as? Double {
-      model.timeTag = TimeInterval(timeTag / 1000)
+    if let timeTag = json["timeTag"] as? Int {
+      model.timeTag = TimeInterval(Double(timeTag) / 1000)
     }
     if let limit = json["limit"] as? Int {
       model.limit = limit
@@ -386,10 +386,10 @@ extension NIMQChatChannelIdInfo {
 }
 
 extension NIMQChatGetChannelUnreadInfosParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelUnreadInfosParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelUnreadInfosParam? {
     guard let model = NIMQChatGetChannelUnreadInfosParam.yx_model(with: json) else {
       print("❌NIMQChatGetChannelUnreadInfosParam.yx_model(with: json) FAILED")
-      return NIMQChatGetChannelUnreadInfosParam()
+      return nil
     }
     if let channelIdInfos = json["channelIdInfos"] as? [[String: Any]] {
       let res = channelIdInfos.map { item in
@@ -402,10 +402,10 @@ extension NIMQChatGetChannelUnreadInfosParam {
 }
 
 extension NIMQChatSubscribeChannelParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatSubscribeChannelParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSubscribeChannelParam? {
     guard let model = NIMQChatSubscribeChannelParam.yx_model(with: json) else {
       print("❌NIMQChatSubscribeChannelParam.yx_model(with: json) FAILED")
-      return NIMQChatSubscribeChannelParam()
+      return nil
     }
     if let type = json["type"] as? String,
        let subscribeType = FLTQChatSubscribeType(rawValue: type)?.convertNIMQChatSubscribeType() {
@@ -427,23 +427,22 @@ extension NIMQChatSubscribeChannelParam {
 }
 
 extension NIMQChatSearchChannelByPageParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatSearchChannelByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSearchChannelByPageParam? {
     guard let model = NIMQChatSearchChannelByPageParam.yx_model(with: json) else {
       print("❌NIMQChatSearchChannelByPageParam.yx_model(with: json) FAILED")
-      return NIMQChatSearchChannelByPageParam()
+      return nil
     }
-//      let model = NIMQChatSearchChannelByPageParam()
     if let keyword = json["keyword"] as? String {
       model.keyword = keyword
     }
     if let asc = json["asc"] as? Bool {
       model.asc = asc
     }
-    if let startTime = json["startTime"] as? Double {
-      model.startTime = NSNumber(floatLiteral: startTime / 1000.0)
+    if let startTime = json["startTime"] as? Int {
+      model.startTime = NSNumber(floatLiteral: Double(startTime) / 1000.0)
     }
-    if let endTime = json["endTime"] as? Double {
-      model.endTime = NSNumber(floatLiteral: endTime / 1000.0)
+    if let endTime = json["endTime"] as? Int {
+      model.endTime = NSNumber(floatLiteral: Double(endTime) / 1000.0)
     }
     if let limit = json["limit"] as? NSNumber {
       model.limit = limit
@@ -464,10 +463,140 @@ extension NIMQChatSearchChannelByPageParam {
 }
 
 extension NIMQChatSearchServerChannelMemberParam {
-  static func fromDic(_ json: [String: Any]) -> NIMQChatSearchServerChannelMemberParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSearchServerChannelMemberParam? {
     guard let model = NIMQChatSearchServerChannelMemberParam.yx_model(with: json) else {
       print("❌NIMQChatSearchServerChannelMemberParam.yx_model(with: json) FAILED")
-      return NIMQChatSearchServerChannelMemberParam()
+      return nil
+    }
+    return model
+  }
+}
+
+extension NIMQChatUpdateChannelBlackWhiteRoleParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateChannelBlackWhiteRoleParam? {
+    guard let model = NIMQChatUpdateChannelBlackWhiteRoleParam.yx_model(with: json) else {
+      print("❌NIMQChatUpdateChannelBlackWhiteRoleParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let typeStr = json["type"] as? String,
+       let type = FLTQChatChannelMemberRoleType(rawValue: typeStr)?
+       .convertNIMQChatChannelMemberRoleType() {
+      model.type = type
+    }
+    if let operateTypeStr = json["operateType"] as? String,
+       let operateType = FLTQChatChannelMemberRoleOpeType(rawValue: operateTypeStr)?
+       .convertNIMQChatChannelMemberRoleOpeType() {
+      model.opeType = operateType
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetChannelBlackWhiteRolesByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelBlackWhiteRolesByPageParam? {
+    guard let model = NIMQChatGetChannelBlackWhiteRolesByPageParam.yx_model(with: json) else {
+      print("❌NIMQChatGetChannelBlackWhiteRolesByPageParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let typeStr = json["type"] as? String,
+       let type = FLTQChatChannelMemberRoleType(rawValue: typeStr)?
+       .convertNIMQChatChannelMemberRoleType() {
+      model.type = type
+    }
+    if let timeTag = json["timeTag"] as? Int {
+      model.timeTag = TimeInterval(Double(timeTag) / 1000)
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetExistingChannelBlackWhiteRolesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetExistingChannelBlackWhiteRolesParam? {
+    guard let model = NIMQChatGetExistingChannelBlackWhiteRolesParam.yx_model(with: json) else {
+      print("❌NIMQChatGetExistingChannelBlackWhiteRolesParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let typeStr = json["type"] as? String,
+       let type = FLTQChatChannelMemberRoleType(rawValue: typeStr)?
+       .convertNIMQChatChannelMemberRoleType() {
+      model.type = type
+    }
+    if let roleIds = json["roleIds"] as? [Int] {
+      model.roleIds = roleIds.map { item in
+        NSNumber(value: item)
+      }
+    }
+    return model
+  }
+}
+
+extension NIMQChatUpdateChannelBlackWhiteMembersParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatUpdateChannelBlackWhiteMembersParam? {
+    guard let model = NIMQChatUpdateChannelBlackWhiteMembersParam.yx_model(with: json) else {
+      print("❌NIMQChatUpdateChannelBlackWhiteMembersParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let typeStr = json["type"] as? String,
+       let type = FLTQChatChannelMemberRoleType(rawValue: typeStr)?
+       .convertNIMQChatChannelMemberRoleType() {
+      model.type = type
+    }
+    if let operateTypeStr = json["operateType"] as? String,
+       let operateType = FLTQChatChannelMemberRoleOpeType(rawValue: operateTypeStr)?
+       .convertNIMQChatChannelMemberRoleOpeType() {
+      model.opeType = operateType
+    }
+    if let toAccids = json["toAccids"] as? [String] {
+      model.accids = toAccids
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetChannelBlackWhiteMembersByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetChannelBlackWhiteMembersByPageParam? {
+    guard let model = NIMQChatGetChannelBlackWhiteMembersByPageParam.yx_model(with: json) else {
+      print("❌NIMQChatGetChannelBlackWhiteMembersByPageParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let typeStr = json["type"] as? String,
+       let type = FLTQChatChannelMemberRoleType(rawValue: typeStr)?
+       .convertNIMQChatChannelMemberRoleType() {
+      model.type = type
+    }
+    if let timeTag = json["timeTag"] as? Int {
+      model.timeTag = TimeInterval(Double(timeTag) / 1000)
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetExistingChannelBlackWhiteMembersParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetExistingChannelBlackWhiteMembersParam? {
+    guard let model = NIMQChatGetExistingChannelBlackWhiteMembersParam.yx_model(with: json) else {
+      print("❌NIMQChatGetExistingChannelBlackWhiteMembersParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let typeStr = json["type"] as? String,
+       let type = FLTQChatChannelMemberRoleType(rawValue: typeStr)?
+       .convertNIMQChatChannelMemberRoleType() {
+      model.type = type
+    }
+    if let accids = json["accids"] as? [String] {
+      model.accIds = accids
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetCategoriesInServerByPageParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetCategoriesInServerByPageParam? {
+    guard let model = NIMQChatGetCategoriesInServerByPageParam.yx_model(with: json) else {
+      print("❌NIMQChatGetCategoriesInServerByPageParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let timeTag = json["timeTag"] as? Int {
+      model.timeTag = TimeInterval(Double(timeTag) / 1000)
     }
     return model
   }
@@ -566,6 +695,69 @@ extension NIMQChatSearchServerChannelMemberResult {
         jsonObject["members"] = memberList.map { item in
           item.toDict()
         }
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetChannelBlackWhiteRolesByPageResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
+      jsonObject["roleList"] = roleArray.map { item in
+        item.toDict()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetExistingChannelBlackWhiteRolesResult {
+  func toDict() -> [String: Any] {
+    var jsonObject = [String: Any]()
+    if let roleList = serverRoleArray {
+      jsonObject["roleList"] = roleList.map { item in
+        item.toDict()
+      }
+    }
+    return jsonObject
+  }
+}
+
+extension NIMQChatGetChannelBlackWhiteMembersByPageResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
+      jsonObject["memberList"] = memberArray.map { item in
+        item.toDic()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetExistingChannelBlackWhiteMembersResult {
+  func toDict() -> [String: Any] {
+    var jsonObject = [String: Any]()
+    if let memberList = memberArray {
+      jsonObject["memberList"] = memberList.map { item in
+        item.toDic()
+      }
+    }
+    return jsonObject
+  }
+}
+
+extension NIMQChatGetCategoriesInServerByPageResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
+      jsonObject["categories"] = categoryArray.map { item in
+        item.toDict()
       }
       return jsonObject
     }

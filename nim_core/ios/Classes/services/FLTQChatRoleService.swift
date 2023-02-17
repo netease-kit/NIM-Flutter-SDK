@@ -22,9 +22,18 @@ enum QChatRoleMethod: String {
   case getExistingAccidsInServerRole
   case getExistingChannelRolesByServerRoleIds
   case getExistingAccidsOfMemberRoles
+  case addMemberRole
+  case removeMemberRole
+  case updateMemberRole
+  case getMemberRoles
+  case checkPermission
+  case checkPermissions
 }
 
 class FLTQChatRoleService: FLTBaseService, FLTService {
+  private let paramErrorTip = "参数错误"
+  private let paramErrorCode = 414
+
   override func onInitialized() {
     NIMSDK.shared().qchatRoleManager.add(self)
   }
@@ -79,6 +88,18 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
       qChatgetExistingChannelRolesByServerRol(arguments, resultCallback)
     case QChatRoleMethod.getExistingAccidsOfMemberRoles.rawValue:
       qChatgetExistingAccidsOfMemberRoles(arguments, resultCallback)
+    case QChatRoleMethod.addMemberRole.rawValue:
+      addMemberRole(arguments, resultCallback)
+    case QChatRoleMethod.removeMemberRole.rawValue:
+      removeMemberRole(arguments, resultCallback)
+    case QChatRoleMethod.updateMemberRole.rawValue:
+      updateMemberRole(arguments, resultCallback)
+    case QChatRoleMethod.getMemberRoles.rawValue:
+      getMemberRoles(arguments, resultCallback)
+    case QChatRoleMethod.checkPermission.rawValue:
+      checkPermission(arguments, resultCallback)
+    case QChatRoleMethod.checkPermissions.rawValue:
+      checkPermissions(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -86,30 +107,37 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatRoleCallback(_ error: Error?, _ data: Any?, _ resultCallback: ResultCallback) {
     if let ns_error = error as NSError? {
-      // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
-      let code = ns_error.code == 1 ? 414 : ns_error.code
-      errorCallBack(resultCallback, ns_error.description, code)
+      errorCallBack(resultCallback, ns_error.description, ns_error.code)
     } else {
       successCallBack(resultCallback, data)
     }
   }
 
   func qChatcreateServerRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatCreateServerRoleParam.fromDic(arguments)
+    guard let request = NIMQChatCreateServerRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.createServerRole(request) { error, result in
       self.qChatRoleCallback(error, ["role": result?.toDict()], resultCallback)
     }
   }
 
   func qChatdeleteServerRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatDeleteServerRoleParam.fromDic(arguments)
+    guard let request = NIMQChatDeleteServerRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.deleteServerRole(request) { error in
       self.qChatRoleCallback(error, nil, resultCallback)
     }
   }
 
   func qChatupdateServerRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatUpdateServerRoleParam.fromDic(arguments)
+    guard let request = NIMQChatUpdateServerRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.updateServerRole(request) { error, result in
       self.qChatRoleCallback(error, ["role": result?.toDict()], resultCallback)
     }
@@ -117,49 +145,70 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatupdateServerRolePriorities(_ arguments: [String: Any],
                                        _ resultCallback: ResultCallback) {
-    let request = NIMQChatupdateServerRolePrioritiesParam.fromDic(arguments)
+    guard let request = NIMQChatupdateServerRolePrioritiesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.updateServerRolePriorities(request) { error, result in
       self.qChatRoleCallback(error, result?.toDict(), resultCallback)
     }
   }
 
   func qChatgetServerRoles(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetServerRolesParam.fromDic(arguments)
+    guard let request = NIMQChatGetServerRolesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.getServerRoles(request) { error, result in
       self.qChatRoleCallback(error, result?.toDict(), resultCallback)
     }
   }
 
   func qChataddChannelRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatAddChannelRoleParam.fromDic(arguments)
+    guard let request = NIMQChatAddChannelRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.addChannelRole(request) { error, result in
       self.qChatRoleCallback(error, ["role": result?.toDict()], resultCallback)
     }
   }
 
   func qChatremoveChannelRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatRemoveChannelRoleParam.fromDic(arguments)
+    guard let request = NIMQChatRemoveChannelRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.removeChannelRole(request) { error in
       self.qChatRoleCallback(error, nil, resultCallback)
     }
   }
 
   func qChatupdateChannelRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatUpdateChannelRoleParam.fromDic(arguments)
+    guard let request = NIMQChatUpdateChannelRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.updateChannelRole(request) { error, result in
       self.qChatRoleCallback(error, ["role": result?.toDict()], resultCallback)
     }
   }
 
   func qChatgetChannelRoles(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetChannelRolesParam.fromDic(arguments)
+    guard let request = NIMQChatGetChannelRolesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.getChannelRoles(request) { error, result in
       self.qChatRoleCallback(error, result?.toDict(), resultCallback)
     }
   }
 
   func qChataddMembersToServerRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatAddServerRoleMembersParam.fromDic(arguments)
+    guard let request = NIMQChatAddServerRoleMembersParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.addServerRoleMembers(request) { error, result in
       self.qChatRoleCallback(error, result?.toDict(), resultCallback)
     }
@@ -167,7 +216,10 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatremoveMembersFromServerRole(_ arguments: [String: Any],
                                         _ resultCallback: ResultCallback) {
-    let request = NIMQChatRemoveServerRoleMemberParam.fromDic(arguments)
+    guard let request = NIMQChatRemoveServerRoleMemberParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.removeServerRoleMember(request) { error, result in
       self.qChatRoleCallback(error, result?.toDict(), resultCallback)
     }
@@ -175,14 +227,20 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatgetMembersFromServerRole(_ arguments: [String: Any],
                                      _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetServerRoleMembersParam.fromDic(arguments)
+    guard let request = NIMQChatGetServerRoleMembersParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager.getServerRoleMembers(request) { error, result in
       self.qChatRoleCallback(error, result?.toDict(), resultCallback)
     }
   }
 
   func qChatgetServerRolesByAccid(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetServerRolesByAccidParam.fromDic(arguments)
+    guard let request = NIMQChatGetServerRolesByAccidParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager
       .getServerRoles(byAccid: request, completion: { error, result in
         self.qChatRoleCallback(error, result?.toDict(), resultCallback)
@@ -191,7 +249,10 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatgetExistingServerRolesByAccids(_ arguments: [String: Any],
                                            _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetExistingAccidsInServerRoleParam.fromDic(arguments)
+    guard let request = NIMQChatGetExistingAccidsInServerRoleParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager
       .getExistingAccids(inServerRole: request, completion: { error, result in
         self.qChatRoleCallback(error, result?.toDict(), resultCallback)
@@ -200,7 +261,10 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatgetExistingAccidsInServerRole(_ arguments: [String: Any],
                                           _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetExistingServerRoleMembersByAccidsParam.fromDic(arguments)
+    guard let request = NIMQChatGetExistingServerRoleMembersByAccidsParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager
       .getExistingServerRoleMembers(byAccids: request, completion: { error, result in
         self.qChatRoleCallback(error, result?.toDict(), resultCallback)
@@ -209,7 +273,11 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatgetExistingChannelRolesByServerRol(_ arguments: [String: Any],
                                                _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetExistingChannelRolesByServerRoleIdsParam.fromDic(arguments)
+    guard let request = NIMQChatGetExistingChannelRolesByServerRoleIdsParam.fromDic(arguments)
+    else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager
       .getExistingChannelRoles(byServerRoleIds: request, completion: { error, result in
         self.qChatRoleCallback(error, result?.toDict(), resultCallback)
@@ -218,11 +286,92 @@ class FLTQChatRoleService: FLTBaseService, FLTService {
 
   func qChatgetExistingAccidsOfMemberRoles(_ arguments: [String: Any],
                                            _ resultCallback: ResultCallback) {
-    let request = NIMQChatGetExistingAccidsOfMemberRolesParam.fromDic(arguments)
+    guard let request = NIMQChatGetExistingAccidsOfMemberRolesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
     NIMSDK.shared().qchatRoleManager
       .getExistingAccids(ofMemberRoles: request, completion: { error, result in
         self.qChatRoleCallback(error, result?.toDict(), resultCallback)
       })
+  }
+
+  func addMemberRole(_ arguments: [String: Any],
+                     _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatAddMemberRoleParam.fromDic(arguments) else {
+      print("addMemberRole parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatRoleManager.addMemberRole(param) { error, info in
+      self.qChatRoleCallback(error, ["role": info?.toDic()], resultCallback)
+    }
+  }
+
+  func removeMemberRole(_ arguments: [String: Any],
+                        _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatRemoveMemberRoleParam.fromDic(arguments) else {
+      print("removeMemberRole parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatRoleManager.removeMemberRole(param) { error in
+      self.qChatRoleCallback(error, nil, resultCallback)
+    }
+  }
+
+  func updateMemberRole(_ arguments: [String: Any],
+                        _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatUpdateMemberRoleParam.fromDic(arguments) else {
+      print("updateMemberRole parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatRoleManager.updateMemberRole(param) { error, info in
+      self.qChatRoleCallback(error, ["role": info?.toDic()], resultCallback)
+    }
+  }
+
+  func getMemberRoles(_ arguments: [String: Any],
+                      _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatGetMemberRolesParam.fromDic(arguments) else {
+      print("getMemberRoles parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatRoleManager.getMemberRoles(param) { error, info in
+      self.qChatRoleCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func checkPermission(_ arguments: [String: Any],
+                       _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatCheckPermissionParam.fromDic(arguments) else {
+      print("checkPermission parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatRoleManager.checkPermission(param) { error, info in
+      self.qChatRoleCallback(error, ["hasPermission": info], resultCallback)
+    }
+  }
+
+  func checkPermissions(_ arguments: [String: Any],
+                        _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatCheckPermissionsParam.fromDic(arguments) else {
+      print("checkPermissions parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatRoleManager.checkPermissions(param) { error, info in
+      self.qChatRoleCallback(error, info?.toDic(), resultCallback)
+    }
   }
 }
 

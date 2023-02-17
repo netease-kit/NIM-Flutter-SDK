@@ -102,7 +102,8 @@ class FLTUserService: FLTBaseService, FLTService {
 
   func getUserInfo(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let userId = arguments["userId"] as? String
-    if userId != nil || !userId!.isEmpty {
+    if userId != nil,
+       !userId!.isEmpty {
       let user = NIMSDK.shared().userManager.userInfo(userId!)
       if user != nil {
         let result = NimResult(converNIMUserToDict(user!), 0, nil)
@@ -127,7 +128,7 @@ class FLTUserService: FLTBaseService, FLTService {
   func fetchUserInfoList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let userIds = arguments["userIdList"] as? [String]
     if userIds != nil, userIds!.count > 0 {
-      NIMSDK.shared().userManager.fetchUserInfos(userIds!) { retUsers, error in
+      NIMSDK.shared().userManager.fetchUserInfos(userIds!) { [weak self] retUsers, error in
         if error != nil {
           let nserror = error! as NSError
           let result = NimResult(nil, NSNumber(value: nserror.code), nserror.description)
@@ -136,7 +137,9 @@ class FLTUserService: FLTBaseService, FLTService {
           if let users = retUsers {
             var jsonArray = [[String: Any?]]()
             for user: NIMUser in users {
-              jsonArray.append(self.converNIMUserToDict(user))
+              if let userDict = self?.converNIMUserToDict(user) {
+                jsonArray.append(userDict)
+              }
             }
             let result = NimResult(["userInfoList": jsonArray], 0, nil)
             resultCallback.result(result.toDic())
@@ -192,7 +195,7 @@ class FLTUserService: FLTBaseService, FLTService {
       option.ignoreingCase = true
       option.searchContent = nick
       option.searchContentOption = NIMUserSearchContentOption.nickName
-      option.searchRange = NIMUserSearchRangeOption.friends
+      option.searchRange = NIMUserSearchRangeOption.all
       NIMSDK.shared().userManager.searchUser(with: option) { users, error in
         if error != nil {
           let nserror = error! as NSError
@@ -348,7 +351,7 @@ class FLTUserService: FLTBaseService, FLTService {
 
   func isMyFriend(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let userId = arguments["userId"] as? String
-    if userId == nil || userId!.isEmpty {
+    if userId == nil {
       let result = NimResult(nil, -1, "isMyFriend but userId is empty")
       resultCallback.result(result.toDic())
       return
@@ -411,7 +414,7 @@ class FLTUserService: FLTBaseService, FLTService {
 
   func isInBlackList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let userId = arguments["userId"] as? String
-    if userId == nil || userId!.isEmpty {
+    if userId == nil {
       let result = NimResult(nil, -1, "isInBlackList but userId is empty")
       resultCallback.result(result.toDic())
       return
@@ -456,7 +459,7 @@ class FLTUserService: FLTBaseService, FLTService {
 
   func isMute(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     let userId = arguments["userId"] as? String
-    if userId == nil || userId!.isEmpty {
+    if userId == nil {
       let result = NimResult(nil, -1, "isMute but userId is empty")
       resultCallback.result(result.toDic())
       return
@@ -470,7 +473,7 @@ class FLTUserService: FLTBaseService, FLTService {
 
   private func converNIMUserToDict(_ user: NIMUser) -> [String: Any] {
     var target = [String: Any]()
-    if var dic = user.userInfo?.yx_modelToJSONObject() as? [String: Any] {
+    if var dic = user.userInfo?.toDic() {
       if let gender = user.userInfo?.gender {
         switch gender {
         case .unknown:
@@ -488,14 +491,12 @@ class FLTUserService: FLTBaseService, FLTService {
     if let uid = user.userId {
       target["userId"] = uid
     }
-    if let alias = user.alias {
-      target["alias"] = alias
-    }
+    target["alias"] = user.alias ?? ""
     if let ex = user.userInfo?.ext {
       target["extension"] = ex
     }
 
-    target["serverExtension"] = user.serverExt
+    target["serverExtension"] = user.serverExt ?? ""
     return target
   }
 }

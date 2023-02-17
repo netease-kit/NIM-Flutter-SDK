@@ -6,6 +6,7 @@ part of nim_core;
 
 ///圈组回调
 ///目前仅支持iOS和Android平台
+@HawkEntryPoint()
 class QChatObserver {
   factory QChatObserver() {
     if (_singleton == null) {
@@ -80,4 +81,10 @@ class QChatObserver {
 
   Stream<QChatSystemNotificationUpdateEvent> get onSystemNotificationUpdate =>
       _platform.onSystemNotificationUpdate;
+
+  /// 未读通知接收
+  /// 订阅、标记消息已读、收到新消息或新消息通知会触发该通知
+  /// 如果服务器前后未读数没有发生变化将不会触发
+  Stream<QChatServerUnreadInfoChangedEvent> get serverUnreadInfoChanged =>
+      _platform.serverUnreadInfoChanged;
 }

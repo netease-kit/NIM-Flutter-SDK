@@ -249,3 +249,29 @@ class QChatUnreadInfo {
 
   Map<String, dynamic> toJson() => _$QChatUnreadInfoToJson(this);
 }
+
+abstract class QChatUpdateUserPushConfigParam {
+  /// 推送消息类型选项
+  final QChatPushMsgType pushMsgType;
+
+  QChatUpdateUserPushConfigParam(this.pushMsgType);
+}
+
+/// 推送消息类型选项
+/// 低等级消息：普通消息等（没有具体目标、没有@意愿） 中等级消息： @所有人等（没有具体目标、有@意愿） 高等级消息： @某些人等（有具体目标、有@意愿）
+enum QChatPushMsgType {
+  /// 推送全部类型消息
+  all,
+
+  /// 只推送高、中等级消息
+  highMidLevel,
+
+  /// 只推送高等级消息
+  highLevel,
+
+  /// 全部消息都不推送
+  none,
+
+  /// 继承上一级配置
+  inherit
+}

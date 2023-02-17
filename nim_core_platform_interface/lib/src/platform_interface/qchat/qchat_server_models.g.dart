@@ -663,3 +663,446 @@ Map<String, dynamic> _$PairIntWithStringToJson(PairIntWithString instance) =>
       'first': instance.first,
       'second': instance.second,
     };
+
+QChatUpdateServerMemberInfoParam _$QChatUpdateServerMemberInfoParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatUpdateServerMemberInfoParam(
+      json['serverId'] as int,
+      json['accid'] as String,
+      nick: json['nick'] as String?,
+      avatar: json['avatar'] as String?,
+    )..antiSpamConfig = antiSpamConfigFromJson(json['antiSpamConfig'] as Map?);
+
+Map<String, dynamic> _$QChatUpdateServerMemberInfoParamToJson(
+        QChatUpdateServerMemberInfoParam instance) =>
+    <String, dynamic>{
+      'antiSpamConfig': instance.antiSpamConfig?.toJson(),
+      'serverId': instance.serverId,
+      'accid': instance.accid,
+      'nick': instance.nick,
+      'avatar': instance.avatar,
+    };
+
+QChatUpdateServerMemberInfoResult _$QChatUpdateServerMemberInfoResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatUpdateServerMemberInfoResult(
+      memberFromJson(json['member'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatUpdateServerMemberInfoResultToJson(
+        QChatUpdateServerMemberInfoResult instance) =>
+    <String, dynamic>{
+      'member': instance.member?.toJson(),
+    };
+
+QChatBanServerMemberParam _$QChatBanServerMemberParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatBanServerMemberParam(
+      json['serverId'] as int?,
+      json['targetAccid'] as String?,
+      json['customExt'] as String?,
+    );
+
+Map<String, dynamic> _$QChatBanServerMemberParamToJson(
+        QChatBanServerMemberParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'targetAccid': instance.targetAccid,
+      'customExt': instance.customExt,
+    };
+
+QChatUnbanServerMemberParam _$QChatUnbanServerMemberParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatUnbanServerMemberParam(
+      json['serverId'] as int?,
+      json['targetAccid'] as String?,
+      json['customExt'] as String?,
+    );
+
+Map<String, dynamic> _$QChatUnbanServerMemberParamToJson(
+        QChatUnbanServerMemberParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'targetAccid': instance.targetAccid,
+      'customExt': instance.customExt,
+    };
+
+QChatGetBannedServerMembersByPageParam
+    _$QChatGetBannedServerMembersByPageParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetBannedServerMembersByPageParam(
+          json['serverId'] as int,
+          json['timeTag'] as int,
+          json['limit'] as int?,
+        );
+
+Map<String, dynamic> _$QChatGetBannedServerMembersByPageParamToJson(
+        QChatGetBannedServerMembersByPageParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'timeTag': instance.timeTag,
+      'limit': instance.limit,
+    };
+
+QChatGetBannedServerMembersByPageResult
+    _$QChatGetBannedServerMembersByPageResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetBannedServerMembersByPageResult(
+          json['hasMore'] as bool?,
+          json['nextTimeTag'] as int?,
+          _serverMemberBanInfoListNullable(
+              json['serverMemberBanInfoList'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetBannedServerMembersByPageResultToJson(
+        QChatGetBannedServerMembersByPageResult instance) =>
+    <String, dynamic>{
+      'hasMore': instance.hasMore,
+      'nextTimeTag': instance.nextTimeTag,
+      'serverMemberBanInfoList':
+          instance.serverMemberBanInfoList?.map((e) => e.toJson()).toList(),
+    };
+
+QChatBannedServerMember _$QChatBannedServerMemberFromJson(
+        Map<String, dynamic> json) =>
+    QChatBannedServerMember()
+      ..serverId = json['serverId'] as int?
+      ..accid = json['accid'] as String?
+      ..custom = json['custom'] as String?
+      ..banTime = json['banTime'] as int?
+      ..isValid = json['isValid'] as bool?
+      ..createTime = json['createTime'] as int?
+      ..updateTime = json['updateTime'] as int?;
+
+Map<String, dynamic> _$QChatBannedServerMemberToJson(
+        QChatBannedServerMember instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'accid': instance.accid,
+      'custom': instance.custom,
+      'banTime': instance.banTime,
+      'isValid': instance.isValid,
+      'createTime': instance.createTime,
+      'updateTime': instance.updateTime,
+    };
+
+QChatUpdateUserServerPushConfigParam
+    _$QChatUpdateUserServerPushConfigParamFromJson(Map<String, dynamic> json) =>
+        QChatUpdateUserServerPushConfigParam(
+          json['serverId'] as int,
+          $enumDecode(_$QChatPushMsgTypeEnumMap, json['pushMsgType']),
+        );
+
+Map<String, dynamic> _$QChatUpdateUserServerPushConfigParamToJson(
+        QChatUpdateUserServerPushConfigParam instance) =>
+    <String, dynamic>{
+      'pushMsgType': _$QChatPushMsgTypeEnumMap[instance.pushMsgType]!,
+      'serverId': instance.serverId,
+    };
+
+const _$QChatPushMsgTypeEnumMap = {
+  QChatPushMsgType.all: 'all',
+  QChatPushMsgType.highMidLevel: 'highMidLevel',
+  QChatPushMsgType.highLevel: 'highLevel',
+  QChatPushMsgType.none: 'none',
+  QChatPushMsgType.inherit: 'inherit',
+};
+
+QChatGetUserServerPushConfigsParam _$QChatGetUserServerPushConfigsParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetUserServerPushConfigsParam(
+      (json['serverIdList'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatGetUserServerPushConfigsParamToJson(
+        QChatGetUserServerPushConfigsParam instance) =>
+    <String, dynamic>{
+      'serverIdList': instance.serverIdList,
+    };
+
+QChatGetUserPushConfigsResult _$QChatGetUserPushConfigsResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetUserPushConfigsResult(
+      _userPushConfigsNullable(json['userPushConfigs'] as List?),
+    );
+
+Map<String, dynamic> _$QChatGetUserPushConfigsResultToJson(
+        QChatGetUserPushConfigsResult instance) =>
+    <String, dynamic>{
+      'userPushConfigs':
+          instance.userPushConfigs?.map((e) => e.toJson()).toList(),
+    };
+
+QChatUserPushConfig _$QChatUserPushConfigFromJson(Map<String, dynamic> json) =>
+    QChatUserPushConfig()
+      ..serverId = json['serverId'] as int?
+      ..channelId = json['channelId'] as int?
+      ..channelCategoryId = json['channelCategoryId'] as int?
+      ..dimension =
+          $enumDecodeNullable(_$QChatDimensionEnumMap, json['dimension'])
+      ..pushMsgType =
+          $enumDecodeNullable(_$QChatPushMsgTypeEnumMap, json['pushMsgType']);
+
+Map<String, dynamic> _$QChatUserPushConfigToJson(
+        QChatUserPushConfig instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'channelCategoryId': instance.channelCategoryId,
+      'dimension': _$QChatDimensionEnumMap[instance.dimension],
+      'pushMsgType': _$QChatPushMsgTypeEnumMap[instance.pushMsgType],
+    };
+
+const _$QChatDimensionEnumMap = {
+  QChatDimension.channel: 'channel',
+  QChatDimension.server: 'server',
+  QChatDimension.channelCategory: 'channelCategory',
+};
+
+QChatSearchServerMemberByPageParam _$QChatSearchServerMemberByPageParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatSearchServerMemberByPageParam(
+      json['keyword'] as String,
+      json['serverId'] as int,
+      json['limit'] as int?,
+    );
+
+Map<String, dynamic> _$QChatSearchServerMemberByPageParamToJson(
+        QChatSearchServerMemberByPageParam instance) =>
+    <String, dynamic>{
+      'keyword': instance.keyword,
+      'serverId': instance.serverId,
+      'limit': instance.limit,
+    };
+
+QChatSearchServerMemberByPageResult
+    _$QChatSearchServerMemberByPageResultFromJson(Map<String, dynamic> json) =>
+        QChatSearchServerMemberByPageResult(
+          _memberListFromJson(json['members'] as List?),
+        );
+
+Map<String, dynamic> _$QChatSearchServerMemberByPageResultToJson(
+        QChatSearchServerMemberByPageResult instance) =>
+    <String, dynamic>{
+      'members': instance.members?.map((e) => e.toJson()).toList(),
+    };
+
+QChatGetInviteApplyRecordOfServerParam
+    _$QChatGetInviteApplyRecordOfServerParamFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetInviteApplyRecordOfServerParam(
+          json['serverId'] as int,
+          fromTime: json['fromTime'] as int?,
+          toTime: json['toTime'] as int?,
+          reverse: json['reverse'] as bool?,
+          limit: json['limit'] as int?,
+          excludeRecordId: json['excludeRecordId'] as int?,
+        );
+
+Map<String, dynamic> _$QChatGetInviteApplyRecordOfServerParamToJson(
+        QChatGetInviteApplyRecordOfServerParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'fromTime': instance.fromTime,
+      'toTime': instance.toTime,
+      'reverse': instance.reverse,
+      'limit': instance.limit,
+      'excludeRecordId': instance.excludeRecordId,
+    };
+
+QChatGetInviteApplyRecordOfServerResult
+    _$QChatGetInviteApplyRecordOfServerResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetInviteApplyRecordOfServerResult(
+          _recordsNullable(json['records'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetInviteApplyRecordOfServerResultToJson(
+        QChatGetInviteApplyRecordOfServerResult instance) =>
+    <String, dynamic>{
+      'records': instance.records?.map((e) => e.toJson()).toList(),
+    };
+
+QChatInviteApplyRecord _$QChatInviteApplyRecordFromJson(
+        Map<String, dynamic> json) =>
+    QChatInviteApplyRecord()
+      ..accid = json['accid'] as String?
+      ..type =
+          $enumDecodeNullable(_$QChatInviteApplyRecordTypeEnumMap, json['type'])
+      ..serverId = json['serverId'] as int?
+      ..status = $enumDecodeNullable(
+          _$QChatInviteApplyRecordStatusEnumMap, json['status'])
+      ..requestId = json['requestId'] as int?
+      ..createTime = json['createTime'] as int?
+      ..updateTime = json['updateTime'] as int?
+      ..expireTime = json['expireTime'] as int?
+      ..data = _applyRecordDataNullable(json['data'] as Map?)
+      ..recordId = json['recordId'] as int?;
+
+Map<String, dynamic> _$QChatInviteApplyRecordToJson(
+        QChatInviteApplyRecord instance) =>
+    <String, dynamic>{
+      'accid': instance.accid,
+      'type': _$QChatInviteApplyRecordTypeEnumMap[instance.type],
+      'serverId': instance.serverId,
+      'status': _$QChatInviteApplyRecordStatusEnumMap[instance.status],
+      'requestId': instance.requestId,
+      'createTime': instance.createTime,
+      'updateTime': instance.updateTime,
+      'expireTime': instance.expireTime,
+      'data': instance.data?.toJson(),
+      'recordId': instance.recordId,
+    };
+
+const _$QChatInviteApplyRecordTypeEnumMap = {
+  QChatInviteApplyRecordType.apply: 'apply',
+  QChatInviteApplyRecordType.invite: 'invite',
+  QChatInviteApplyRecordType.beInvited: 'beInvited',
+  QChatInviteApplyRecordType.generateInviteCode: 'generateInviteCode',
+  QChatInviteApplyRecordType.joinByInviteCode: 'joinByInviteCode',
+};
+
+const _$QChatInviteApplyRecordStatusEnumMap = {
+  QChatInviteApplyRecordStatus.initial: 'initial',
+  QChatInviteApplyRecordStatus.accept: 'accept',
+  QChatInviteApplyRecordStatus.reject: 'reject',
+  QChatInviteApplyRecordStatus.acceptByOther: 'acceptByOther',
+  QChatInviteApplyRecordStatus.rejectByOther: 'rejectByOther',
+  QChatInviteApplyRecordStatus.autoJoin: 'autoJoin',
+  QChatInviteApplyRecordStatus.expired: 'expired',
+};
+
+QChatInviteApplyRecordData _$QChatInviteApplyRecordDataFromJson(
+        Map<String, dynamic> json) =>
+    QChatInviteApplyRecordData()
+      ..applyPostscript = json['applyPostscript'] as String?
+      ..updateAccid = json['updateAccid'] as String?
+      ..updatePostscript = json['updatePostscript'] as String?
+      ..invitePostscript = json['invitePostscript'] as String?
+      ..inviteCode = json['inviteCode'] as String?
+      ..invitedUserCount = json['invitedUserCount'] as int?
+      ..invitedUsers = _invitedUsersNullable(json['invitedUsers'] as List?);
+
+Map<String, dynamic> _$QChatInviteApplyRecordDataToJson(
+        QChatInviteApplyRecordData instance) =>
+    <String, dynamic>{
+      'applyPostscript': instance.applyPostscript,
+      'updateAccid': instance.updateAccid,
+      'updatePostscript': instance.updatePostscript,
+      'invitePostscript': instance.invitePostscript,
+      'inviteCode': instance.inviteCode,
+      'invitedUserCount': instance.invitedUserCount,
+      'invitedUsers': instance.invitedUsers?.map((e) => e.toJson()).toList(),
+    };
+
+QChatInvitedUserInfo _$QChatInvitedUserInfoFromJson(
+        Map<String, dynamic> json) =>
+    QChatInvitedUserInfo()
+      ..accid = json['accid'] as String?
+      ..status = $enumDecodeNullable(
+          _$QChatInviteApplyRecordStatusEnumMap, json['status'])
+      ..updatePostscript = json['updatePostscript'] as String?
+      ..updateTime = json['updateTime'] as int?;
+
+Map<String, dynamic> _$QChatInvitedUserInfoToJson(
+        QChatInvitedUserInfo instance) =>
+    <String, dynamic>{
+      'accid': instance.accid,
+      'status': _$QChatInviteApplyRecordStatusEnumMap[instance.status],
+      'updatePostscript': instance.updatePostscript,
+      'updateTime': instance.updateTime,
+    };
+
+QChatGetInviteApplyRecordOfSelfParam
+    _$QChatGetInviteApplyRecordOfSelfParamFromJson(Map<String, dynamic> json) =>
+        QChatGetInviteApplyRecordOfSelfParam(
+          fromTime: json['fromTime'] as int?,
+          toTime: json['toTime'] as int?,
+          reverse: json['reverse'] as bool?,
+          limit: json['limit'] as int?,
+          excludeRecordId: json['excludeRecordId'] as int?,
+        );
+
+Map<String, dynamic> _$QChatGetInviteApplyRecordOfSelfParamToJson(
+        QChatGetInviteApplyRecordOfSelfParam instance) =>
+    <String, dynamic>{
+      'fromTime': instance.fromTime,
+      'toTime': instance.toTime,
+      'reverse': instance.reverse,
+      'limit': instance.limit,
+      'excludeRecordId': instance.excludeRecordId,
+    };
+
+QChatGetInviteApplyRecordOfSelfResult
+    _$QChatGetInviteApplyRecordOfSelfResultFromJson(
+            Map<String, dynamic> json) =>
+        QChatGetInviteApplyRecordOfSelfResult(
+          _recordsNullable(json['records'] as List?),
+        );
+
+Map<String, dynamic> _$QChatGetInviteApplyRecordOfSelfResultToJson(
+        QChatGetInviteApplyRecordOfSelfResult instance) =>
+    <String, dynamic>{
+      'records': instance.records?.map((e) => e.toJson()).toList(),
+    };
+
+QChatServerMarkReadParam _$QChatServerMarkReadParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatServerMarkReadParam(
+      (json['serverIds'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatServerMarkReadParamToJson(
+        QChatServerMarkReadParam instance) =>
+    <String, dynamic>{
+      'serverIds': instance.serverIds,
+    };
+
+QChatServerMarkReadResult _$QChatServerMarkReadResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatServerMarkReadResult(
+      (json['successServerIds'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList(),
+      (json['failedServerIds'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList(),
+      json['timestamp'] as int?,
+    );
+
+Map<String, dynamic> _$QChatServerMarkReadResultToJson(
+        QChatServerMarkReadResult instance) =>
+    <String, dynamic>{
+      'successServerIds': instance.successServerIds,
+      'failedServerIds': instance.failedServerIds,
+      'timestamp': instance.timestamp,
+    };
+
+QChatSubscribeAllChannelParam _$QChatSubscribeAllChannelParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatSubscribeAllChannelParam(
+      $enumDecode(_$QChatSubscribeTypeEnumMap, json['type']),
+      (json['serverIds'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatSubscribeAllChannelParamToJson(
+        QChatSubscribeAllChannelParam instance) =>
+    <String, dynamic>{
+      'type': _$QChatSubscribeTypeEnumMap[instance.type]!,
+      'serverIds': instance.serverIds,
+    };
+
+QChatSubscribeAllChannelResult _$QChatSubscribeAllChannelResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatSubscribeAllChannelResult(
+      _unreadInfoListNullable(json['unreadInfoList'] as List?),
+      _filedListNullable(json['failedList'] as List?),
+    );
+
+Map<String, dynamic> _$QChatSubscribeAllChannelResultToJson(
+        QChatSubscribeAllChannelResult instance) =>
+    <String, dynamic>{
+      'unreadInfoList':
+          instance.unreadInfoList?.map((e) => e.toJson()).toList(),
+      'failedList': instance.failedList,
+    };

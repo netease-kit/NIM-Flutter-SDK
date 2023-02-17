@@ -45,8 +45,8 @@ NIMMessagePin _$NIMMessagePinFromJson(Map<String, dynamic> json) {
     messageServerId: json['messageServerId'] as int?,
     pinOperatorAccount: json['pinOperatorAccount'] as String?,
     pinExt: json['pinExt'] as String?,
-    pinCreateTime: json['pinCreateTime'] as int,
-    pinUpdateTime: json['pinUpdateTime'] as int,
+    pinCreateTime: json['pinCreateTime'] as int? ?? 0,
+    pinUpdateTime: json['pinUpdateTime'] as int? ?? 0,
   );
 }
 

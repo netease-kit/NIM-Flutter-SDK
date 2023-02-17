@@ -597,3 +597,386 @@ class QChatChannelMember {
 
   Map<String, dynamic> toJson() => _$QChatChannelMemberToJson(this);
 }
+
+/// "更新频道黑白名单身份组"接口入参
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateChannelBlackWhiteRolesParam {
+  /// 服务器Id
+
+  final int serverId;
+
+  /// 频道Id
+
+  final int channelId;
+
+  /// 黑白名单类型
+
+  final QChatChannelBlackWhiteType type;
+
+  /// 黑白名单操作类型
+
+  final QChatChannelBlackWhiteOperateType operateType;
+
+  /// 身份组Id：添加或者移除到黑白名单的身份组Id
+
+  final int roleId;
+
+  QChatUpdateChannelBlackWhiteRolesParam(
+      {required this.channelId,
+      required this.serverId,
+      required this.type,
+      required this.roleId,
+      required this.operateType});
+
+  factory QChatUpdateChannelBlackWhiteRolesParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatUpdateChannelBlackWhiteRolesParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatUpdateChannelBlackWhiteRolesParamToJson(this);
+}
+
+/// "分页查询频道黑白名单身份组列表"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatGetChannelBlackWhiteRolesByPageParam {
+  /// 服务器id
+
+  final int serverId;
+
+  /// 频道id
+
+  final int channelId;
+
+  /// 黑白名单类型
+
+  final QChatChannelBlackWhiteType type;
+
+  /// 查询时间戳，如果传0表示当前时间
+
+  final int timeTag;
+
+  /// 查询数量限制，默认100
+
+  int? limit;
+
+  QChatGetChannelBlackWhiteRolesByPageParam(
+      {required this.type,
+      required this.serverId,
+      required this.channelId,
+      required this.timeTag,
+      this.limit});
+
+  factory QChatGetChannelBlackWhiteRolesByPageParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetChannelBlackWhiteRolesByPageParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetChannelBlackWhiteRolesByPageParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetChannelBlackWhiteRolesByPageResult extends QChatGetByPageResult {
+  /// 查询到的身份组列表
+
+  @JsonKey(fromJson: serverRoleListFromJsonNullable)
+  List<QChatServerRole>? roleList;
+
+  QChatGetChannelBlackWhiteRolesByPageResult({this.roleList});
+
+  factory QChatGetChannelBlackWhiteRolesByPageResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetChannelBlackWhiteRolesByPageResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetChannelBlackWhiteRolesByPageResultToJson(this);
+}
+
+/// "批量查询黑白名单身份组"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatGetExistingChannelBlackWhiteRolesParam {
+  /// 服务器id
+
+  final int serverId;
+
+  /// 频道id
+
+  final int channelId;
+
+  /// 黑白名单类型
+
+  final QChatChannelBlackWhiteType type;
+
+  /// 身份组Id列表，一次最多100个
+
+  final List<int> roleIds;
+
+  QChatGetExistingChannelBlackWhiteRolesParam(
+      {required this.channelId,
+      required this.serverId,
+      required this.type,
+      required this.roleIds});
+
+  factory QChatGetExistingChannelBlackWhiteRolesParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetExistingChannelBlackWhiteRolesParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetExistingChannelBlackWhiteRolesParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetExistingChannelBlackWhiteRolesResult {
+  /// 查询到的身份组列表
+
+  @JsonKey(fromJson: serverRoleListFromJsonNullable)
+  List<QChatServerRole>? roleList;
+
+  QChatGetExistingChannelBlackWhiteRolesResult({this.roleList});
+
+  factory QChatGetExistingChannelBlackWhiteRolesResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetExistingChannelBlackWhiteRolesResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetExistingChannelBlackWhiteRolesResultToJson(this);
+}
+
+/// "更新频道黑白名单成员"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateChannelBlackWhiteMembersParam {
+  /// 服务器Id
+
+  final int serverId;
+
+  /// 频道Id
+
+  final int channelId;
+
+  /// 黑白名单类型
+
+  final QChatChannelBlackWhiteType type;
+
+  /// 黑白名单操作类型
+
+  final QChatChannelBlackWhiteOperateType operateType;
+
+  /// 账户accid列表：添加或者移除到黑白名单的accid列表，一次最多100个
+
+  final List<String> toAccids;
+
+  QChatUpdateChannelBlackWhiteMembersParam(
+      {required this.type,
+      required this.serverId,
+      required this.channelId,
+      required this.operateType,
+      required this.toAccids});
+
+  factory QChatUpdateChannelBlackWhiteMembersParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatUpdateChannelBlackWhiteMembersParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatUpdateChannelBlackWhiteMembersParamToJson(this);
+}
+
+/// "分页查询频道黑白名单成员列表"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatGetChannelBlackWhiteMembersByPageParam {
+  /// 服务器id
+
+  final int serverId;
+
+  /// 频道id
+
+  final int channelId;
+
+  /// 黑白名单类型
+
+  final QChatChannelBlackWhiteType type;
+
+  /// 查询时间戳，如果传0表示当前时间
+
+  final int timeTag;
+
+  /// 查询数量限制，默认100
+
+  int? limit;
+
+  QChatGetChannelBlackWhiteMembersByPageParam(
+      {required this.channelId,
+      required this.serverId,
+      required this.type,
+      required this.timeTag,
+      this.limit});
+
+  factory QChatGetChannelBlackWhiteMembersByPageParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetChannelBlackWhiteMembersByPageParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetChannelBlackWhiteMembersByPageParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetChannelBlackWhiteMembersByPageResult
+    extends QChatGetByPageResult {
+  /// 查询到的成员列表
+
+  @JsonKey(fromJson: _qChatServerMemberListFromJson)
+  List<QChatServerMember>? memberList;
+
+  QChatGetChannelBlackWhiteMembersByPageResult({this.memberList});
+
+  factory QChatGetChannelBlackWhiteMembersByPageResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetChannelBlackWhiteMembersByPageResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetChannelBlackWhiteMembersByPageResultToJson(this);
+}
+
+/// "批量查询黑白名单身份组成员"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatGetExistingChannelBlackWhiteMembersParam {
+  /// 服务器id
+
+  final int serverId;
+
+  /// 频道id
+
+  final int channelId;
+
+  /// 黑白名单类型
+
+  final QChatChannelBlackWhiteType type;
+
+  /// accid列表，一次最多100个
+
+  final List<String> accids;
+
+  QChatGetExistingChannelBlackWhiteMembersParam(
+      {required this.type,
+      required this.serverId,
+      required this.channelId,
+      required this.accids});
+
+  factory QChatGetExistingChannelBlackWhiteMembersParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetExistingChannelBlackWhiteMembersParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetExistingChannelBlackWhiteMembersParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetExistingChannelBlackWhiteMembersResult {
+  /// 查询到的成员列表
+
+  @JsonKey(fromJson: _qChatServerMemberListFromJson)
+  List<QChatServerMember>? memberList;
+
+  QChatGetExistingChannelBlackWhiteMembersResult({this.memberList});
+
+  factory QChatGetExistingChannelBlackWhiteMembersResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetExistingChannelBlackWhiteMembersResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetExistingChannelBlackWhiteMembersResultToJson(this);
+}
+
+/// "更新用户频道推送配置"接口入参
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdateUserChannelPushConfigParam
+    extends QChatUpdateUserPushConfigParam {
+  /// 服务器Id，必填
+
+  final int serverId;
+
+  /// 频道Id，必填
+
+  final int channelId;
+
+  QChatUpdateUserChannelPushConfigParam(
+      {required QChatPushMsgType pushMsgType,
+      required this.channelId,
+      required this.serverId})
+      : super(pushMsgType);
+
+  factory QChatUpdateUserChannelPushConfigParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatUpdateUserChannelPushConfigParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatUpdateUserChannelPushConfigParamToJson(this);
+}
+
+/// "查询用户频道推送配置"接口入参
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetUserChannelPushConfigsParam {
+  /// serverId和channelId列表
+
+  final List<QChatChannelIdInfo> channelIdInfos;
+
+  QChatGetUserChannelPushConfigsParam(this.channelIdInfos);
+
+  factory QChatGetUserChannelPushConfigsParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetUserChannelPushConfigsParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetUserChannelPushConfigsParamToJson(this);
+}
+
+/// "分页查询服务器下频道类别列表"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatGetChannelCategoriesByPageParam {
+  /// 服务器Id
+
+  final int serverId;
+
+  /// 查询锚点时间戳
+
+  final int timeTag;
+
+  /// 查询数量限制
+
+  int? limit;
+
+  QChatGetChannelCategoriesByPageParam(
+      {required this.serverId, required this.timeTag, this.limit});
+
+  factory QChatGetChannelCategoriesByPageParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetChannelCategoriesByPageParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetChannelCategoriesByPageParamToJson(this);
+}
+
+List<QChatChannelCategory>? _qChatChannelCategoryFromJson(
+    List<dynamic>? categoryList) {
+  return categoryList
+      ?.map((e) =>
+          QChatChannelCategory.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetChannelCategoriesByPageResult extends QChatGetByPageResult {
+  /// 查询到的频道分组列表
+  @JsonKey(fromJson: _qChatChannelCategoryFromJson)
+  final List<QChatChannelCategory>? categories;
+
+  QChatGetChannelCategoriesByPageResult({this.categories});
+
+  factory QChatGetChannelCategoriesByPageResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetChannelCategoriesByPageResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetChannelCategoriesByPageResultToJson(this);
+}
