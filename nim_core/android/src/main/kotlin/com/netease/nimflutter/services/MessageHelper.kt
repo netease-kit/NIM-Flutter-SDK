@@ -267,7 +267,9 @@ object MessageHelper {
             sessionId = it["sessionId"] as String?
             sessionType = stringToSessionTypeEnum(it["sessionType"] as String?)
             setMsgType(stringToMsgTypeEnum(it["messageType"] as String?).value)
-            subtype = stringToMsgTypeEnum(it["messageSubType"] as String?).value
+            (it["messageSubType"] as Number?)?.toInt()?.let { sub ->
+                if (sub > 0) subtype = sub
+            }
             status = stringToMsgStatusEnum(it["status"] as String?)
             direct = stringToMsgDirectionEnum(it["messageDirection"] as String?)
             fromAccount = it["fromAccount"] as String?

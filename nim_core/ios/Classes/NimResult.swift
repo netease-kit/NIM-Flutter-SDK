@@ -34,7 +34,7 @@ class NimResult {
   }
 
   class func error(_ msg: String) -> NimResult {
-    let nimResult = NimResult(nil, NSNumber(integerLiteral: -2), msg)
+    let nimResult = NimResult(nil, NSNumber(integerLiteral: -1), msg)
     return nimResult
   }
 

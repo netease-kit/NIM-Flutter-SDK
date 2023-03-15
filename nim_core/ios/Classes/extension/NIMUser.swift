@@ -17,4 +17,17 @@ extension NIMUserInfo {
      #keyPath(NIMUserInfo.mobile): "mobile",
      #keyPath(NIMUserInfo.ext): "extension"]
   }
+
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["birthday"] = birth ?? ""
+      jsonObject["extension"] = ext ?? ""
+      jsonObject["signature"] = sign ?? ""
+      jsonObject["mobile"] = mobile ?? ""
+      jsonObject["avatar"] = avatarUrl ?? ""
+      jsonObject["email"] = email ?? ""
+      return jsonObject
+    }
+    return nil
+  }
 }

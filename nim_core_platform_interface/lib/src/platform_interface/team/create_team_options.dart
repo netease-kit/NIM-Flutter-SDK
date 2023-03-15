@@ -47,23 +47,22 @@ class NIMCreateTeamOptions {
   final NIMTeamExtensionUpdateModeEnum? extensionUpdateMode;
 
   /// 指定创建群组的最大群成员数量 ，MaxMemberCount不能超过应用级配置的最大人数
-  // final int? maxMemberCount;
+  final int? maxMemberCount;
 
-  NIMCreateTeamOptions({
-    this.name,
-    this.teamType = NIMTeamTypeEnum.normal,
-    this.avatarUrl,
-    this.introduce,
-    this.announcement,
-    this.extension,
-    this.postscript,
-    this.verifyType,
-    this.inviteMode,
-    this.beInviteMode,
-    this.updateInfoMode,
-    this.extensionUpdateMode,
-    /*this.maxMemberCount*/
-  });
+  NIMCreateTeamOptions(
+      {this.name,
+      this.teamType = NIMTeamTypeEnum.normal,
+      this.avatarUrl,
+      this.introduce,
+      this.announcement,
+      this.extension,
+      this.postscript,
+      this.verifyType,
+      this.inviteMode,
+      this.beInviteMode,
+      this.updateInfoMode,
+      this.extensionUpdateMode,
+      this.maxMemberCount});
 
   factory NIMCreateTeamOptions.fromMap(Map<String, dynamic> map) =>
       _$NIMCreateTeamOptionsFromJson(map);

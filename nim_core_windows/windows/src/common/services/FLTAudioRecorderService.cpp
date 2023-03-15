@@ -74,11 +74,11 @@ void FLTAudioRecorderService::startRecord(
           strRecordType, Convert::getInstance()->getAudioOutputFormat(),
           audioType);
     } else if (iter->first == flutter::EncodableValue("fileSize")) {
-      //未使用
+      // 未使用
     } else if (iter->first == flutter::EncodableValue("duration")) {
-      //未使用
+      // 未使用
     } else if (iter->first == flutter::EncodableValue("maxDuration")) {
-      //未使用
+      // 未使用
     }
   }
 

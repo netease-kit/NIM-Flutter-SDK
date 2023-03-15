@@ -48,7 +48,7 @@ extension NIMLoginClient: NimDataConvertProtrol {
 
   func toDic() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
-      let logintime = Int(timestamp)
+      let logintime = Int(timestamp * 1000)
       jsonObject["loginTime"] = logintime
       if let clientType = FLT_NIMLoginClientType.convertClientType(type)?.rawValue {
         jsonObject["clientType"] = clientType
@@ -61,8 +61,8 @@ extension NIMLoginClient: NimDataConvertProtrol {
 
   static func fromDic(_ json: [String: Any]) -> Any? {
     if let model = NIMLoginClient.yx_model(with: json) {
-      if let loginTime = json["loginTime"] as? TimeInterval {
-        model.setValue(loginTime, forKey: "_timestamp")
+      if let loginTime = json["loginTime"] as? Int {
+        model.setValue(Double(loginTime) / 1000, forKey: "_timestamp")
       }
       if let custom = json["customTag"] as? String {
         model.setValue(custom, forKey: "_customTag")
@@ -70,9 +70,9 @@ extension NIMLoginClient: NimDataConvertProtrol {
       if let os = json["os"] as? String {
         model.setValue(os, forKey: "_os")
       }
-      if let type = json["type"] as? String,
+      if let type = json["clientType"] as? String,
          let nimType = FLT_NIMLoginClientType(rawValue: type)?.getNIMLoginClientType() {
-        model.setValue(nimType, forKey: "_type")
+        model.setValue(nimType.rawValue, forKey: "_type")
       }
       return model
     }

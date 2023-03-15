@@ -5,7 +5,7 @@
 library nim_core;
 
 import 'dart:async';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -14,10 +14,12 @@ import 'package:nim_core/src/log/log_service.dart';
 import 'package:nim_core/src/system_message/system_message_service.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
+import 'package:hawk_meta/hawk_meta.dart';
 
 export 'package:nim_core_platform_interface/src/platform_interface/audio/record_info.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/auth/auth_models.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/robot/robot_message_type.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
@@ -60,7 +62,20 @@ export 'package:nim_core_platform_interface/src/platform_interface/team/team.dar
 export 'package:nim_core_platform_interface/src/platform_interface/team/team_member.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/friend.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/user.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/user/mute_list_changed_notify.dart';
 export 'package:nim_core_platform_interface/src/utils/converter.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/avsignalling/avsignalling_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_base_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_channel_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_message_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_observer_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_server_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_role_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/platform_interface_qchat_push_service.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_push_models.dart';
+export 'package:nim_core/src/system_message/system_message_service.dart';
+export 'package:nim_core/src/event_subscribe/event_subscribe_service.dart';
 
 part 'src/audio/audio_service.dart';
 part 'src/auth/auth_service.dart';
@@ -76,6 +91,15 @@ part 'src/super_team/super_team_service.dart';
 part 'src/team/team_service.dart';
 part 'src/user/user_service.dart';
 
+part 'src/avsignalling/avsignalling_service.dart';
+part 'src/qchat/qchat_server_service.dart';
+part 'src/qchat/qchat_channel_service.dart';
+part 'src/qchat/qchat_service.dart';
+part 'src/qchat/qchat_message_service.dart';
+part 'src/qchat/qchat_observer.dart';
+part 'src/qchat/qchat_role_service.dart';
+part 'src/qchat/qchat_push_service.dart';
+
 class NimCore {
   NimCore._();
 
@@ -85,8 +109,9 @@ class NimCore {
   final MessageService messageService = MessageService();
 
   static const String tag = 'nim_core';
-  static const int _versionCode = 3;
-  static const String _versionName = '1.0.0-rc.41';
+  //todo 发版前记得处理此处的版本号，数据统计使用
+  static const int _versionCode = 145;
+  static const String _versionName = '1.4.5';
   static const String _hash = '02566d6321d1d27669d9d369d2f525bc2cdaee10';
 
   bool _initialized = false;
@@ -127,12 +152,36 @@ class NimCore {
   /// 聊天室服务，提供加入、退出、发送和接收聊天室消息等功能；
   final ChatroomService chatroomService = ChatroomService();
 
+  ///信令服务
+  final AvSignallingService avSignallingService = AvSignallingService();
+
   /// 设置服务
   final SettingsService settingsService = SettingsService();
 
   final NOSService nosService = NOSService();
 
   final PassThroughService passThroughService = PassThroughService();
+
+  /// 圈组消息服务
+  final QChatMessageService qChatMessageService = QChatMessageService();
+
+  /// 圈组频道服务
+  final QChatChannelService qChatChannelService = QChatChannelService();
+
+  /// 圈组身份组服务
+  final QChatRoleService qChatRoleService = QChatRoleService();
+
+  /// 圈组服务器服务
+  final QChatServerService qChatServerService = QChatServerService();
+
+  /// 圈组服务
+  final QChatService qChatService = QChatService();
+
+  ///圈组回调
+  final QChatObserver qChatObserver = QChatObserver();
+
+  ///圈组推送相关
+  final QChatPushService qChatPushService = QChatPushService();
 
   /// 初始化云信 IM SDK
   ///
@@ -181,6 +230,12 @@ class NimCore {
       }
       return initResult;
     });
+  }
+
+  /// 释放云信 IM SDK
+  /// 仅windows&macos平台有效
+  Future<NIMResult<void>> releaseDesktop() async {
+    return InitializeServicePlatform.instance.releaseDesktop();
   }
 }
 

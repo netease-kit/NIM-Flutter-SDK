@@ -55,10 +55,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
     implementation 'com.netease.yunxin.kit:alog:1.0.2'
 
-    def nimLibVer = '8.11.13'
-    implementation "com.netease.nimlib.flutter:basesdk:$nimLibVer"
-    implementation "com.netease.nimlib.flutter:chatroom:$nimLibVer"
-    implementation "com.netease.nimlib.flutter:push:$nimLibVer"
+    def nimLibVer = '9.6.3'
+    implementation "com.netease.nimlib:basesdk:$nimLibVer"
+    implementation "com.netease.nimlib:chatroom:$nimLibVer"
+    implementation "com.netease.nimlib:push:$nimLibVer"
     // 超大群SDK
-    implementation "com.netease.nimlib.flutter:superteam:$nimLibVer"
+    implementation "com.netease.nimlib:superteam:$nimLibVer"
+    // 信令
+    implementation "com.netease.nimlib:avsignalling:$nimLibVer"
+    //圈组
+    implementation "com.netease.nimlib:qchat:$nimLibVer"
 }

@@ -20,7 +20,9 @@ NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
     checkManifestConfig: json['checkManifestConfig'] as bool? ?? false,
     disableAwake: json['disableAwake'] as bool? ?? false,
     databaseEncryptKey: json['databaseEncryptKey'] as String?,
-    thumbnailSize: json['thumbnailSize'] as int,
+    thumbnailSize: json['thumbnailSize'] as int? ?? 350,
+    enabledQChatMessageCache:
+        json['enabledQChatMessageCache'] as bool? ?? false,
     fetchServerTimeInterval: json['fetchServerTimeInterval'] as int? ?? 2000,
     customPushContentType: json['customPushContentType'] as String?,
     mixPushConfig: _mixPushConfigFromMap(json['mixPushConfig'] as Map?),
@@ -93,6 +95,7 @@ Map<String, dynamic> _$NIMAndroidSDKOptionsToJson(
   val['mixPushConfig'] = _mixPushConfigToMap(instance.mixPushConfig);
   val['notificationConfig'] =
       _notificationConfigToMap(instance.notificationConfig);
+  val['enabledQChatMessageCache'] = instance.enabledQChatMessageCache;
   return val;
 }
 

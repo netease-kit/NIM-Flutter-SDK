@@ -198,12 +198,14 @@ class MethodChannelTeamService extends TeamServicePlatform {
     arguments
       ..['teamId'] = teamId
       ..['accids'] = accids;
-    return NIMResult<Map<String, String>>.fromMap(
-      await invokeMethod(
-        'getMemberInvitor',
-        arguments: arguments,
-      ),
+
+    var mapResult = await invokeMethod(
+      'getMemberInvitor',
+      arguments: arguments,
     );
+
+    mapResult['data'] = (mapResult['data'] as Map?)?.cast<String, String>();
+    return NIMResult<Map<String, String>>.fromMap(mapResult);
   }
 
   @override
@@ -457,5 +459,17 @@ class MethodChannelTeamService extends TeamServicePlatform {
         }).toList();
       },
     );
+  }
+
+  @override
+  Future<NIMResult<void>> updateMyTeamNick(String teamId, String nick) async {
+    final arguments = <String, dynamic>{};
+    arguments
+      ..['teamId'] = teamId
+      ..['nick'] = nick;
+    return NIMResult<List<NIMTeam>>.fromMap(await invokeMethod(
+      'updateMyTeamNick',
+      arguments: arguments,
+    ));
   }
 }

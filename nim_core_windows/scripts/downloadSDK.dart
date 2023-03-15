@@ -11,9 +11,9 @@ import 'package:process_run/shell.dart';
 
 main() async {
   var url = Platform.isWindows
-      ? "https://yx-web-nosdn.netease.im/package/nim-win32-x64-refs-tags-8.8.0.459-build.567.tar.gz?download=nim-win32-x64-refs-tags-8.8.0.459-build.567.tar.gz"
+      ? "https://yx-web-nosdn.netease.im/package/nim-win32-x64-refs-tags-9.6.0.1676-build.312.tar.gz?download=nim-win32-x64-refs-tags-9.6.0.1676-build.312.tar.gz"
       : Platform.isMacOS
-          ? "https://yx-web-nosdn.netease.im/package/nim-darwin-x64-refs-tags-8.8.0.459-build.567.tar.gz?download=nim-darwin-x64-refs-tags-8.8.0.459-build.567.tar.gz"
+          ? "https://yx-web-nosdn.netease.im/package/nim-darwin-x64-refs-tags-9.6.0.1676-build.312.tar.gz?download=nim-darwin-x64-refs-tags-9.6.0.1676-build.312.tar.gz"
           : "";
   if (url.isEmpty) {
     print("[downloadSDK]: Platform not supported.");

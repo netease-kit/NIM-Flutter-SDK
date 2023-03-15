@@ -507,7 +507,7 @@ void FLTSuperTeamService::queryTeamMember(
 
 void FLTSuperTeamService::queryMemberListByPage(
     const flutter::EncodableMap* arguments, FLTService::MethodResult result) {
-  //不支持
+  // 不支持
   result->NotImplemented();
 }
 
@@ -809,7 +809,7 @@ void FLTSuperTeamService::muteTeamMember(const flutter::EncodableMap* arguments,
                           -1, "muteTeamMember failed, accountList is empty"));
         return;
       }
-      member_id = std::get<std::string>(accountList[0]);  //不支持设置多个
+      member_id = std::get<std::string>(accountList[0]);  // 不支持设置多个
     } else if (iter->first == flutter::EncodableValue("mute")) {
       mute = std::get<bool>(iter->second);
     }

@@ -4,7 +4,8 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:universal_io/io.dart';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -47,14 +48,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    MethodChannel('com.netease.NIM.demo/settings')
-        .setMethodCallHandler((call) async {
-      if (call.method == 'updateAPNsToken') {
-        print('update APNs token');
-        _deviceToken = call.arguments as Uint8List;
-      }
-      return null;
-    });
+    if (!kIsWeb) {
+      MethodChannel('com.netease.NIM.demo/settings')
+          .setMethodCallHandler((call) async {
+        if (call.method == 'updateAPNsToken') {
+          print('update APNs token');
+          _deviceToken = call.arguments as Uint8List;
+        }
+        return null;
+      });
+    }
 
     subsriptions.add(NimCore.instance.authService.authStatus.listen((event) {
       print('AuthService##auth status event: ${event.status.name}');
@@ -118,6 +121,36 @@ class _MyAppState extends State<MyApp> {
       print('MessageService##onSessionUpdate: $session');
     }));
 
+    subsriptions.add(
+        NimCore.instance.avSignallingService.onlineNotification.listen((event) {
+      print(
+          'AVSignallingService##onlineNotification: ${event.signallingEvent.eventType}');
+      if (event.signallingEvent.eventType == SignallingEventType.invite) {
+        var param = InviteParam(
+            channelId: event.signallingEvent.channelBaseInfo.channelId,
+            accountId: event.signallingEvent.fromAccountId,
+            requestId: event.requestId!);
+        NimCore.instance.avSignallingService.acceptInvite(param).then((value) {
+          print('AVSignallingService##acceptInvite result : ${value.code}');
+          NimCore.instance.avSignallingService
+              .joinChannel(
+                  channelId: event.signallingEvent.channelBaseInfo.channelId,
+                  offlineEnabled: true)
+              .then((join) {
+            print(
+                'AVSignallingService## invite joinChannel result : ${join.code}');
+            NimCore.instance.avSignallingService
+                .sendControl(
+                    channelId: event.signallingEvent.channelBaseInfo.channelId,
+                    accountId: event.signallingEvent.fromAccountId)
+                .then((control) {
+              print('AVSignallingService## sendControl result : ${join.code}');
+            });
+          });
+        });
+      }
+    }));
+
     _doInitializeSDK();
   }
 
@@ -136,6 +169,14 @@ class _MyAppState extends State<MyApp> {
         appKey: appKey,
         shouldSyncStickTopSessionInfos: true,
         sdkRootDir: '${directory.path}/NIMFlutter',
+        apnsCername: 'ENTERPRISE',
+        pkCername: 'DEMO_PUSH_KIT',
+      );
+    } else if (kIsWeb) {
+      options = NIMIOSSDKOptions(
+        appKey: appKey,
+        shouldSyncStickTopSessionInfos: true,
+        sdkRootDir: null,
         apnsCername: 'ENTERPRISE',
         pkCername: 'DEMO_PUSH_KIT',
       );
@@ -161,6 +202,19 @@ class _MyAppState extends State<MyApp> {
       // _testTeam();
       print('login result: $loginResult');
       updateAPNsToken();
+
+      var textMessage1 = await MessageBuilder.createTextMessage(
+        sessionId: friendAccount,
+        sessionType: NIMSessionType.p2p,
+        text: '快捷评论消息',
+      );
+
+      await NimCore.instance.messageService.sendMessageReceipt(
+          message: textMessage1.data!, sessionId: '1212121');
+
+      // TEST
+      textMessage1 = await NimCore.instance.messageService
+          .sendMessage(message: textMessage1.data!);
 
       final imagePath = Platform.isAndroid
           ? (await getExternalStorageDirectory())!.path + "/test.jpg"
@@ -207,13 +261,17 @@ class _MyAppState extends State<MyApp> {
         });
       }
 
-      setupChatroom();
+      // web暂时不支持chatRoom
+      if (!kIsWeb) {
+        setupChatroom();
+      }
 
       var textMessage = await MessageBuilder.createTextMessage(
         sessionId: friendAccount,
         sessionType: NIMSessionType.p2p,
         text: '快捷评论消息',
       );
+
       textMessage = await NimCore.instance.messageService
           .sendMessage(message: textMessage.data!);
       var result = await NimCore.instance.messageService.addQuickComment(
@@ -281,6 +339,31 @@ class _MyAppState extends State<MyApp> {
       subsription.cancel();
     });
     super.dispose();
+  }
+
+  void sendSignalingInvite() {
+    NimCore.instance.avSignallingService
+        .createChannel(type: ChannelType.video)
+        .then((channel) {
+      print('AVSignallingService##createChannel result =  ${channel.code}');
+      if (channel.isSuccess) {
+        NimCore.instance.avSignallingService
+            .joinChannel(
+                channelId: channel.data!.channelId, offlineEnabled: true)
+            .then((join) {
+          print('AVSignallingService##joinChannel result =  ${join.code}');
+          if (join.isSuccess) {
+            var param = InviteParam(
+                channelId: channel.data!.channelId,
+                accountId: friendAccount,
+                requestId: '6');
+            NimCore.instance.avSignallingService.invite(param).then((invite) {
+              print('AVSignallingService##invite result =  ${invite.code}');
+            });
+          }
+        });
+      }
+    });
   }
 
   @override

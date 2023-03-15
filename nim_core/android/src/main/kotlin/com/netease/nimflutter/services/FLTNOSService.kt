@@ -36,6 +36,7 @@ class FLTNOSService(
     override fun onMethodCalled(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
         when (method) {
             "upload" -> upload(arguments, ResultCallback(safeResult))
+            "download" -> download(arguments, ResultCallback(safeResult))
             else -> safeResult.notImplemented()
         }
     }
@@ -47,7 +48,7 @@ class FLTNOSService(
                     "onNOSTransferProgress",
                     mutableMapOf(
                         "progress" to
-                            nosTransferProgress.transferred.toDouble() / nosTransferProgress.total
+                            if (nosTransferProgress.total > 0) nosTransferProgress.transferred.toDouble() / nosTransferProgress.total else 0
                     )
                 )
             }
@@ -69,6 +70,37 @@ class FLTNOSService(
                 .observeNosTransferProgress(nosTransferProgress, true)
             NIMClient.getService(NosServiceObserve::class.java)
                 .observeNosTransferStatus(nosTransferStatus, true)
+        }
+    }
+
+    /**
+     * 下载文件
+     */
+    private fun download(
+        arguments: Map<String, *>,
+        resultCallback: ResultCallback<String>
+    ) {
+        val url = arguments["url"] as? String
+        val path = arguments["path"] as? String
+        if (url?.isNotEmpty() != true) {
+            resultCallback.result(
+                NimResult(code = -1, errorDetails = "download but the url is empty!")
+            )
+        } else {
+            NIMClient.getService(NosService::class.java).downloadFileSecure(url, path).setCallback(object : RequestCallback<Void> {
+                override fun onSuccess(param: Void) {
+                    ALog.d(tag, "download onSuccess")
+                    resultCallback.result(NimResult(code = 0))
+                }
+
+                override fun onFailed(code: Int) {
+                    onFailed("download onFailed", code, resultCallback)
+                }
+
+                override fun onException(exception: Throwable?) {
+                    onException("download onException", exception, resultCallback)
+                }
+            })
         }
     }
 

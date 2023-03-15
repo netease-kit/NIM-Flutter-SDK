@@ -10,7 +10,7 @@ import shutil
 SCRIPT_PATH = os.path.split(os.path.realpath(__file__))[0]
 
 BUILD_OUT = 'output'
-BUILD_CMD = 'cmake -S . -B {BUILD_OUT_PATH} -G {BUILD_GENERATORS} -DINSTALL_CPP_WRAPPER=OFF -DBUILD_SHARED_LIBS=OFF && cmake --build {BUILD_OUT_PATH} --config {BUILD_TYPE}'
+BUILD_CMD = 'cmake -S . -B {BUILD_OUT_PATH} -G {BUILD_GENERATORS} -DINSTALL_CPP_WRAPPER=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_STANDARD=14 && cmake --build {BUILD_OUT_PATH} --config {BUILD_TYPE}'
 
 def build_macos(config='Release'):
     BUILD_CMD_TMP = BUILD_CMD.format(BUILD_OUT_PATH=BUILD_OUT, BUILD_GENERATORS="\"Xcode\"", BUILD_TYPE=config)
@@ -41,7 +41,7 @@ def copy_macos():
     if os.path.isdir(nim_sdk):
         shutil.rmtree(nim_sdk)
     shutil.copytree(SCRIPT_PATH + '/../nim_sdk/lib',  nim_sdk + '/lib')
-    shutil.copytree(SCRIPT_PATH + '/../nim_sdk/framework', nim_sdk + '/framework', symlinks=True)
+    shutil.copytree(SCRIPT_PATH + '/../nim_sdk/include', nim_sdk + '/include', symlinks=True)
     shutil.copytree(SCRIPT_PATH + '/../nim_sdk/wrapper', nim_sdk + '/wrapper', ignore=shutil.ignore_patterns('output'))
 
     return True

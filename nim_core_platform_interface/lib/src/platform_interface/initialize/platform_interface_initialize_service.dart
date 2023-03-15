@@ -24,4 +24,6 @@ abstract class InitializeServicePlatform extends Service {
 
   Future<NIMResult<void>> initialize(NIMSDKOptions options,
       [Map<String, dynamic>? extras]);
+
+  Future<NIMResult<void>> releaseDesktop();
 }

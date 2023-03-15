@@ -1572,7 +1572,8 @@ bool Convert::convertJson2List(
 }
 
 bool Convert::convertIMMessage2Map(flutter::EncodableMap& arguments,
-                                   const nim::IMMessage& imMessage) {
+                                   const nim::IMMessage& imMessage,
+                                   bool fromCloud) {
   if (BS_NOT_INIT != imMessage.msg_setting_.resend_flag_) {
     arguments[flutter::EncodableValue("resend")] =
         BS_TRUE == imMessage.msg_setting_.resend_flag_;
@@ -1620,23 +1621,38 @@ bool Convert::convertIMMessage2Map(flutter::EncodableMap& arguments,
     if (nim::kNIMMsgLogStatusReceipt == imMessage.status_) {
       arguments[flutter::EncodableValue("status")] = "read";
       arguments[flutter::EncodableValue("isRemoteRead")] = true;
+    } else if (fromCloud) {
+      arguments[flutter::EncodableValue("status")] = "success";
     } else {
       YXLOG(Warn) << "parse failed, status: " << imMessage.status_ << YXLOGEnd;
-      return false;
     }
   }
 
   if (imMessage.sender_accid_ == NimCore::getInstance()->getAccountId()) {
     arguments[flutter::EncodableValue("messageDirection")] =
         m_messageDirection["outgoing"];
-    arguments[flutter::EncodableValue("sessionId")] = imMessage.receiver_accid_;
   } else {
     arguments[flutter::EncodableValue("messageDirection")] =
         m_messageDirection["received"];
-    arguments[flutter::EncodableValue("sessionId")] = imMessage.sender_accid_;
+  }
+
+  if (imMessage.session_type_ == nim::kNIMSessionTypeP2P ||
+      imMessage.local_talk_id_.empty()) {
+    if (imMessage.sender_accid_ == NimCore::getInstance()->getAccountId()) {
+      arguments[flutter::EncodableValue("sessionId")] =
+          imMessage.receiver_accid_;
+    } else {
+      arguments[flutter::EncodableValue("sessionId")] = imMessage.sender_accid_;
+    }
+  } else {
+    arguments[flutter::EncodableValue("sessionId")] = imMessage.local_talk_id_;
   }
 
   arguments[flutter::EncodableValue("fromAccount")] = imMessage.sender_accid_;
+  arguments[flutter::EncodableValue("fromNickname")] =
+      imMessage.readonly_sender_nickname_.empty()
+          ? ""
+          : imMessage.readonly_sender_nickname_;
   arguments[flutter::EncodableValue("content")] = imMessage.content_;
   arguments[flutter::EncodableValue("timestamp")] = imMessage.timetag_;
 
@@ -1657,41 +1673,57 @@ bool Convert::convertIMMessage2Map(flutter::EncodableMap& arguments,
   if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
     config[flutter::EncodableValue("enableHistory")] =
         BS_TRUE == imMessage.msg_setting_.server_history_saved_;
+  } else {
+    config[flutter::EncodableValue("enableHistory")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.need_offline_) {
     config[flutter::EncodableValue("enablePersist")] =
         BS_TRUE == imMessage.msg_setting_.need_offline_;
+  } else {
+    config[flutter::EncodableValue("enablePersist")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.need_push_) {
     config[flutter::EncodableValue("enablePush")] =
         BS_TRUE == imMessage.msg_setting_.need_push_;
+  } else {
+    config[flutter::EncodableValue("enablePush")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.push_need_prefix_) {
     config[flutter::EncodableValue("enablePushNick")] =
         BS_TRUE == imMessage.msg_setting_.push_need_prefix_;
+  } else {
+    config[flutter::EncodableValue("enablePushNick")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.roaming_) {
     config[flutter::EncodableValue("enableRoaming")] =
         BS_TRUE == imMessage.msg_setting_.roaming_;
+  } else {
+    config[flutter::EncodableValue("enableRoaming")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.routable_) {
     config[flutter::EncodableValue("enableRoute")] =
         BS_TRUE == imMessage.msg_setting_.routable_;
+  } else {
+    config[flutter::EncodableValue("enableRoute")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.self_sync_) {
     config[flutter::EncodableValue("enableSelfSync")] =
         BS_TRUE == imMessage.msg_setting_.self_sync_;
+  } else {
+    config[flutter::EncodableValue("enableSelfSync")] = true;
   }
 
-  if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {
+  if (BS_NOT_INIT != imMessage.msg_setting_.push_need_badge_) {
     config[flutter::EncodableValue("enableUnreadCount")] =
         BS_TRUE == imMessage.msg_setting_.push_need_badge_;
+  } else {
+    config[flutter::EncodableValue("enableUnreadCount")] = true;
   }
 
   if (!config.empty()) {
@@ -1977,11 +2009,11 @@ bool Convert::convertQuickCommentInfo2Map(const nim::QuickCommentInfo& info,
 
 bool Convert::convertMsgClientId2MsgKeyMap(const std::string& clientMsgId,
                                            flutter::EncodableMap& msgKeyMap) {
-  msgKeyMap.insert(std::make_pair("sessionType", "p2p"));  //不支持
-  msgKeyMap.insert(std::make_pair("fromAccount", ""));     //不支持
-  msgKeyMap.insert(std::make_pair("toAccount", ""));       //不支持
-  msgKeyMap.insert(std::make_pair("time", 0));             //不支持
-  msgKeyMap.insert(std::make_pair("serverId", 0));         //不支持
+  msgKeyMap.insert(std::make_pair("sessionType", "p2p"));  // 不支持
+  msgKeyMap.insert(std::make_pair("fromAccount", ""));     // 不支持
+  msgKeyMap.insert(std::make_pair("toAccount", ""));       // 不支持
+  msgKeyMap.insert(std::make_pair("time", 0));             // 不支持
+  msgKeyMap.insert(std::make_pair("serverId", 0));         // 不支持
   msgKeyMap.insert(std::make_pair("uuid", clientMsgId));
   return true;
 }

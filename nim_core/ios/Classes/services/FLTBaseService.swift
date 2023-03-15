@@ -11,7 +11,13 @@ class FLTBaseService: NSObject {
   // MARK: - message
 
   func getMessageAttachment(_ argments: [String: Any]) -> [String: Any]? {
-    argments["messageAttachment"] as? [String: Any]
+    if let attach = argments["messageAttachment"] as? [String: Any] {
+      return attach
+    } else if let attach = argments["attachment"] as? [String: Any] {
+      return attach
+    } else {
+      return nil
+    }
   }
 
   func getCustomSetting(_ argments: [String: Any]) -> NIMMessageSetting? {
@@ -31,6 +37,13 @@ class FLTBaseService: NSObject {
 
   func getAttachmentPath(_ attachment: [String: Any]?) -> String? {
     attachment?["path"] as? String
+  }
+
+  func getAttachmentDisplayName(_ attachment: [String: Any]?) -> String? {
+    if let path = attachment?["name"] as? String {
+      return path
+    }
+    return attachment?["displayName"] as? String
   }
 
   func getAttachmentSize(_ attachment: [String: Any]?) -> Int? {
@@ -120,7 +133,9 @@ class FLTBaseService: NSObject {
   }
 
   func errorCallBack(_ resultCallback: ResultCallback, _ msg: String, _ code: Int) {
-    resultCallback.result(NimResult.error(code, msg).toDic())
+    // 状态为“参数错误”时，SDK本应返回414，但是实际返回1，未与AOS对齐，此处进行手动对齐
+    let cd = code == 1 ? 414 : code
+    resultCallback.result(NimResult.error(cd, msg).toDic())
   }
 
   func onInitialized() {

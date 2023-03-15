@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
@@ -57,6 +56,9 @@ class ALogService {
   String get rootPath => _rootPath ?? '';
 
   String get _flutterSDKPath {
+    if (kIsWeb) {
+      return '';
+    }
     if (Platform.isAndroid) {
       return '${rootPath}extra_log/NIMFlutter/';
     } else if (Platform.isIOS) {
@@ -69,9 +71,13 @@ class ALogService {
   // String get _platformSDKPath => Platform.isIOS ? rootPath : '${rootPath}NIMSDK/';
 
   Future<bool> init({ALoggerConfig? config}) async {
+    if (kIsWeb) {
+      return true;
+    }
     if (_rootPath != null) {
       return true;
     }
+
     config ??= ALoggerConfig();
     var logRootPath = config.path;
     if (logRootPath?.isEmpty ?? true) {
@@ -111,6 +117,10 @@ class ALogService {
   /// 确保拉取 sdk 日志的时候带上 Flutter 的日志
   static Future<String> get _defaultLogRootPath async {
     Directory directory;
+    if (kIsWeb) {
+      return '';
+    }
+
     if (Platform.isIOS) {
       /// im sdk iOS 默认日志路径：Documents/NIMSDK/Logs/
       directory = await getApplicationDocumentsDirectory();

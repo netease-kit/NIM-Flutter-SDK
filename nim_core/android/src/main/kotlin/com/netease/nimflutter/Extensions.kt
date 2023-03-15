@@ -6,10 +6,23 @@
 
 package com.netease.nimflutter
 
+import com.netease.nimflutter.Utils.jsonStringToMap
 import com.netease.nimflutter.services.AttachmentHelper
 import com.netease.nimflutter.services.CustomAttachment
 import com.netease.nimflutter.services.MessageHelper
 import com.netease.nimlib.chatroom.model.ChatRoomMessageImpl
+import com.netease.nimlib.sdk.avsignalling.constant.SignallingEventType
+import com.netease.nimlib.sdk.avsignalling.event.CanceledInviteEvent
+import com.netease.nimlib.sdk.avsignalling.event.ChannelCommonEvent
+import com.netease.nimlib.sdk.avsignalling.event.InviteAckEvent
+import com.netease.nimlib.sdk.avsignalling.event.InvitedEvent
+import com.netease.nimlib.sdk.avsignalling.event.MemberUpdateEvent
+import com.netease.nimlib.sdk.avsignalling.event.SyncChannelListEvent
+import com.netease.nimlib.sdk.avsignalling.event.UserJoinEvent
+import com.netease.nimlib.sdk.avsignalling.model.ChannelBaseInfo
+import com.netease.nimlib.sdk.avsignalling.model.ChannelFullInfo
+import com.netease.nimlib.sdk.avsignalling.model.MemberInfo
+import com.netease.nimlib.sdk.avsignalling.model.SignallingPushConfig
 import com.netease.nimlib.sdk.chatroom.constant.MemberType
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomInfo
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomMember
@@ -32,6 +45,7 @@ import com.netease.nimlib.sdk.msg.attachment.LocationAttachment
 import com.netease.nimlib.sdk.msg.attachment.NotificationAttachmentWithExtension
 import com.netease.nimlib.sdk.msg.attachment.VideoAttachment
 import com.netease.nimlib.sdk.msg.constant.ChatRoomQueueChangeType
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.AttachmentProgress
@@ -95,7 +109,11 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "sessionType" to stringFromSessionTypeEnum(sessionType),
         "messageType" to stringFromMsgTypeEnum(msgType),
         "messageSubType" to subtype,
-        "status" to stringFromMsgStatusEnum(status),
+        "status" to stringFromMsgStatusEnum(
+            status,
+            direct == MsgDirectionEnum.Out &&
+                sessionType == SessionTypeEnum.P2P && isRemoteRead
+        ),
         "messageDirection" to stringFromMsgDirectionEnum(direct),
         "fromAccount" to fromAccount,
         "content" to content,
@@ -105,7 +123,7 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "uuid" to uuid,
         "serverId" to serverId,
         // "attachString" to attachStr, // String
-        "config" to config?.toMap(), // Map<String, Any?>
+        "config" to if (config == null) CustomMessageConfig().toMap() else config.toMap(), // Map<String, Any?>
         // "configString" to configStr, // 通过 Config 转换 Json
         "remoteExtension" to remoteExtension, // Map<String, Any?>
         "localExtension" to localExtension, // Map<String, Any?>
@@ -137,7 +155,7 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
 
 fun ChatRoomMessageImpl.toMap(): Map<String, Any?> {
     return hashMapOf<String, Any?>(
-        "enableHistory" to (chatRoomConfig?.skipHistory?.not() ?: false),
+        "enableHistory" to (chatRoomConfig?.skipHistory?.not() ?: true),
         "isHighPriorityMessage" to isHighPriorityMessage,
         "extension" to mapOf(
             "nickname" to chatRoomMessageExtension?.senderNick,
@@ -311,7 +329,7 @@ fun MsgThreadOption.toMap(): Map<String, Any?> {
 fun AttachmentProgress.toMap(): Map<String, Any?> {
     return mapOf(
         "id" to uuid,
-        "progress" to transferred.toDouble() / total
+        "progress" to if (total > 0L) transferred.toDouble() / total else 1
     )
 }
 
@@ -622,11 +640,12 @@ fun TeamMember.toMap(): Map<String, Any?> {
 }
 
 fun SuperTeam.toMap(): Map<String, Any?> {
+    // superTeam 中type写死superTeam
     return mapOf(
         "id" to id,
         "name" to name,
         "icon" to icon,
-        "type" to stringFromTeamTypeEnumMap(type),
+        "type" to "superTeam",
         "announcement" to announcement,
         "introduce" to introduce,
         "creator" to creator,
@@ -665,10 +684,10 @@ fun SuperTeamMember.toMap(): Map<String, Any?> {
 
 fun ThreadTalkHistory.toMap(): Map<String, Any?> {
     return mapOf(
-        "thread" to thread,
+        "thread" to thread?.toMap(),
         "time" to time,
         "replyAmount" to replyAmount,
-        "replyList" to replyList
+        "replyList" to replyList?.map { it.toMap() }?.toList()
     )
 }
 
@@ -695,7 +714,7 @@ fun RecentContact.toMap() = mapOf(
     "sessionType" to stringFromSessionTypeEnum(sessionType),
     "lastMessageId" to recentMessageId,
     "lastMessageType" to stringFromMsgTypeEnum(msgType),
-    "lastMessageStatus" to stringFromMsgStatusEnum(msgStatus),
+    "lastMessageStatus" to stringFromMsgStatusEnum(msgStatus, false),
     "lastMessageContent" to content,
     "lastMessageTime" to time,
     "lastMessageAttachment" to AttachmentHelper.attachmentToMap(msgType, attachment),
@@ -887,8 +906,8 @@ fun StickTopSessionInfo.toMap(): Map<String, Any?> {
 
 fun HandleQuickCommentOption.toMap(): Map<String, Any?> {
     return mapOf(
-        "key" to key.toMap(),
-        "commentOption" to commentOption.toMap()
+        "key" to key?.toMap(),
+        "commentOption" to commentOption?.toMap()
     )
 }
 
@@ -896,5 +915,94 @@ fun MuteListChangedNotify.toMap(): Map<String, Any?> {
     return mapOf(
         "account" to account,
         "mute" to isMute
+    )
+}
+
+fun ChannelBaseInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelName" to channelName,
+        "channelId" to channelId,
+        "type" to stringFromChannelTypeEnum(type),
+        "channelExt" to channelExt,
+        "createTimestamp" to createTimestamp,
+        "expireTimestamp" to expireTimestamp,
+        "creatorAccountId" to creatorAccountId,
+        "channelStatus" to stringFromChannelStatusEnum(channelStatus)
+    )
+}
+
+fun ChannelFullInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelBaseInfo" to channelBaseInfo.toMap(),
+        "members" to members?.map { it.toMap() }?.toList()
+    )
+}
+
+fun MemberInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "accountId" to accountId,
+        "uid" to uid,
+        "joinTime" to joinTime,
+        "expireTime" to expireTime
+    )
+}
+
+fun SignallingPushConfig.toMap(): Map<String, Any?> {
+    return mapOf(
+        "needPush" to needPush(),
+        "pushTitle" to pushTitle,
+        "pushContent" to pushContent,
+        "pushPayload" to jsonStringToMap(pushPayload)
+    )
+}
+
+fun ChannelCommonEvent.toMap(): Map<String, Any?> {
+    val channelMap = channelBaseInfo.toMap()
+    val signallingEvent = mapOf(
+        "channelBaseInfo" to channelMap,
+        "eventType" to stringFromSignallingEventType(eventType),
+        "fromAccountId" to fromAccountId,
+        "time" to time,
+        "customInfo" to customInfo
+    )
+    val eventMap = mutableMapOf<String, Any?>(
+        "signallingEvent" to signallingEvent
+    )
+    when (eventType) {
+        SignallingEventType.JOIN ->
+            eventMap["joinMember"] = (this as UserJoinEvent).memberInfo.toMap()
+        SignallingEventType.INVITE ->
+            {
+                val invent = (this as InvitedEvent)
+                eventMap["toAccountId"] = invent.toAccountId
+                eventMap["requestId"] = invent.requestId
+                eventMap["pushConfig"] = invent.pushConfig.toMap()
+            }
+        SignallingEventType.CANCEL_INVITE -> {
+            val cancelInvite = (this as CanceledInviteEvent)
+            eventMap["toAccountId"] = cancelInvite.toAccount
+            eventMap["requestId"] = cancelInvite.requestId
+        }
+        SignallingEventType.ACCEPT,
+        SignallingEventType.REJECT -> {
+            val inviteAckEvent = (this as InviteAckEvent)
+            eventMap["toAccountId"] = inviteAckEvent.toAccountId
+            eventMap["requestId"] = inviteAckEvent.requestId
+            eventMap["ackStatus"] = inviteAckStatusMap[inviteAckEvent.ackStatus]
+        }
+        else -> {}
+    }
+    return eventMap
+}
+
+fun MemberUpdateEvent.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelFullInfo" to channelFullInfo.toMap()
+    )
+}
+
+fun SyncChannelListEvent.toMap(): Map<String, Any?> {
+    return mapOf(
+        "channelFullInfo" to channelFullInfo.toMap()
     )
 }

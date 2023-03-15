@@ -200,8 +200,8 @@ void FLTChatRoomService::enterChatroom(
       nim_chatroom::ChatRoomAnoymityEnterInfo anonymity_info;
       anonymity_info.app_key_ = independentEnterInfo.app_key_;
       anonymity_info.address_ = independentEnterInfo.address_;
-      anonymity_info.login_tags_ = independentEnterInfo.login_tags_;
-      anonymity_info.notify_tags_ = independentEnterInfo.notify_tags_;
+      // anonymity_info.login_tags_ = independentEnterInfo.login_tags_;
+      // anonymity_info.notify_tags_ = independentEnterInfo.notify_tags_;
       YXLOG(Info) << "start AnonymousEnter..." << YXLOGEnd;
       if (nim_chatroom::ChatRoom::AnonymousEnter(roomId, anonymity_info,
                                                  enterInfo)) {
@@ -1706,7 +1706,7 @@ bool FLTChatRoomService::convertDartMessageToNimMessage(
     if (iter->first == flutter::EncodableValue("messageId")) {
       message.client_msg_id_ = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("messageSubType")) {
-      message.sub_type_ = atoi(std::get<std::string>(iter->second).c_str());
+      message.sub_type_ = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("fromAccount")) {
       message.from_id_ = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("content")) {
@@ -1811,7 +1811,8 @@ void FLTChatRoomService::convertNimMessageToDartMessage(
   Convert::getInstance()->convertNIMEnumToDartString(
       static_cast<nim::NIMMessageType>(message.sub_type_),
       Convert::getInstance()->getMessageType(), strMessageSubType);
-  arguments.insert(std::make_pair("messageSubType", strMessageSubType));
+  // arguments.insert(std::make_pair("messageSubType", strMessageSubType));
+  arguments.insert(std::make_pair("messageSubType", message.sub_type_));
 
   arguments.insert(std::make_pair("fromAccount", message.from_id_));
 

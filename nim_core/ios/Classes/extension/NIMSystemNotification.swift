@@ -12,10 +12,8 @@ extension NIMSystemNotification {
      #keyPath(NIMSystemNotification.timestamp): "time",
      #keyPath(NIMSystemNotification.sourceID): "fromAccount",
      #keyPath(NIMSystemNotification.targetID): "targetId",
-     #keyPath(NIMSystemNotification.postscript): "content",
      #keyPath(NIMSystemNotification.read): "read", // Android是unread，都需要取反
      #keyPath(NIMSystemNotification.handleStatus): "status",
-     #keyPath(NIMSystemNotification.notifyExt): "customInfo",
      #keyPath(NIMSystemNotification.attachment): "attachObject",
      #keyPath(NIMSystemNotification.notificationId): "messageId"]
   }
@@ -28,6 +26,9 @@ extension NIMSystemNotification {
       if let attach = value(forKeyPath: "attachString") {
         jsonObject["attach"] = attach
       }
+      jsonObject["content"] = postscript ?? ""
+      jsonObject["customInfo"] = notifyExt ?? ""
+
       switch type {
       case NIMSystemNotificationType.teamApply:
         jsonObject["type"] = "applyJoinTeam"

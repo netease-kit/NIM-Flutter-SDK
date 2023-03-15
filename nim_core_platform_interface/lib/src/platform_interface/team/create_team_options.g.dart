@@ -29,6 +29,7 @@ NIMCreateTeamOptions _$NIMCreateTeamOptionsFromJson(Map<String, dynamic> json) {
         _$NIMTeamUpdateModeEnumEnumMap, json['updateInfoMode']),
     extensionUpdateMode: _$enumDecodeNullable(
         _$NIMTeamExtensionUpdateModeEnumEnumMap, json['extensionUpdateMode']),
+    maxMemberCount: json['maxMemberCount'] as int?,
   );
 }
 
@@ -48,6 +49,7 @@ Map<String, dynamic> _$NIMCreateTeamOptionsToJson(
       'updateInfoMode': _$NIMTeamUpdateModeEnumEnumMap[instance.updateInfoMode],
       'extensionUpdateMode':
           _$NIMTeamExtensionUpdateModeEnumEnumMap[instance.extensionUpdateMode],
+      'maxMemberCount': instance.maxMemberCount,
     };
 
 K _$enumDecode<K, V>(

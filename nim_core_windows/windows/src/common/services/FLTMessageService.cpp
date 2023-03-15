@@ -267,6 +267,9 @@ void FLTMessageService::onMethodCalled(
     case "queryStickTopSession"_hash:
       queryStickTopSession(arguments, result);
       return;
+    case "clearAllSessionUnreadCount"_hash:
+      clearAllSessionUnreadCount(arguments, result);
+      return;
     default:
       break;
   }
@@ -728,6 +731,24 @@ void FLTMessageService::forwardMessage(const flutter::EncodableMap* arguments,
     return;
   }
 
+  // 转发消息生成后发送给目标用户
+  nim::Talk::FileUpPrgCallback* pFileUpPrgCallback =
+      new nim::Talk::FileUpPrgCallback(
+          std::bind(&FLTMessageService::SendMessageAttachmentProgress, this,
+                    newImMessage.client_msg_id_, std::placeholders::_1,
+                    std::placeholders::_2));
+  if (pFileUpPrgCallback) {
+    std::lock_guard<std::recursive_mutex> lockGuard(m_mutexSendMsgResult);
+    m_mapSendMsgResult[newImMessage.client_msg_id_] = SendMsgResult();
+    m_mapSendMsgResult[newImMessage.client_msg_id_].pFileUpPrgCallback =
+        pFileUpPrgCallback;
+    m_mapSendMsgResult[newImMessage.client_msg_id_].imMessage = newImMessage;
+    if (result) {
+      m_mapSendMsgResult[newImMessage.client_msg_id_].methodResult = result;
+    }
+  }
+  nim::Talk::SendMsg(newImMessageJson, "", pFileUpPrgCallback);
+  newImMessage.status_ = nim::kNIMMsgLogStatusSending;
   flutter::EncodableMap ret;
   if (!Convert::getInstance()->convertIMMessage2Map(ret, newImMessage)) {
     if (result) {
@@ -736,10 +757,8 @@ void FLTMessageService::forwardMessage(const flutter::EncodableMap* arguments,
                         -1, "forwardMessage but new message error!"));
     }
     return;
-  }
-
-  if (result) {
-    result->Success(NimResult::getSuccessResult(ret));
+  } else {
+    notifyEvent("onMessageStatus", ret);
   }
 }
 
@@ -769,6 +788,15 @@ void FLTMessageService::voiceToText(const flutter::EncodableMap* arguments,
 
   nim::AudioInfo audioInfo;
   audioInfo.duration_ = audio.duration_;
+  auto sampleRate = arguments->find(flutter::EncodableValue("sampleRate"));
+  if (sampleRate != arguments->end() && !sampleRate->second.IsNull()) {
+    audioInfo.samplerate_ = std::get<std::string>(sampleRate->second);
+  }
+
+  auto mimeType = arguments->find(flutter::EncodableValue("mimeType"));
+  if (mimeType != arguments->end() && !mimeType->second.IsNull()) {
+    audioInfo.mime_type_ = std::get<std::string>(mimeType->second);
+  }
   audioInfo.url_ = audio.url_;
   if (!nim::Tool::GetAudioTextAsync(
           audioInfo, [result](int rescode, const std::string& text) {
@@ -1288,7 +1316,7 @@ void FLTMessageService::pullMessageHistoryExType(
   param.from_time_ = imMessage.timetag_;
   param.end_time_ = toTime;
   param.end_msg_id_ = imMessage.readonly_server_id_;
-  param.reverse_ = direction;
+  param.reverse_ = !direction;
   param.need_save_to_local_ = persist;
   param.msg_type_list_ = messageTypeList;
   param.is_exclusion_type_ = false;
@@ -1300,14 +1328,16 @@ void FLTMessageService::pullMessageHistoryExType(
               flutter::EncodableList retList;
               for (auto& it : res.msglogs_) {
                 flutter::EncodableMap imMessage;
-                if (Convert::getInstance()->convertIMMessage2Map(imMessage,
-                                                                 it)) {
+                if (Convert::getInstance()->convertIMMessage2Map(imMessage, it,
+                                                                 true)) {
                   retList.emplace_back(imMessage);
                 } else {
                   // wjzh
                 }
               }
-              result->Success(NimResult::getSuccessResult(retList));
+              flutter::EncodableMap ret;
+              ret[flutter::EncodableValue("messageList")] = retList;
+              result->Success(NimResult::getSuccessResult(ret));
             } else {
               result->Error("", "",
                             NimResult::getErrorResult(
@@ -1616,13 +1646,14 @@ void FLTMessageService::searchMessage(const flutter::EncodableMap* arguments,
       searchContent = std::get<std::string>(searchContentIt->second);
     }
 
-    auto fromIdsIt = searchOption.find(flutter::EncodableValue("fromIds"));
-    if (fromIdsIt != searchOption.end() && !fromIdsIt->second.IsNull()) {
-      auto fromIdsTmp = std::get<flutter::EncodableList>(fromIdsIt->second);
-      for (auto& it : fromIdsTmp) {
-        fromIds.emplace_back(std::get<std::string>(it));
-      }
-    }
+    // auto fromIdsIt = searchOption.find(flutter::EncodableValue("fromIds"));
+    // if (fromIdsIt != searchOption.end() && !fromIdsIt->second.IsNull()) {
+    //   auto fromIdsTmp = std::get<flutter::EncodableList>(fromIdsIt->second);
+    //   for (auto& it : fromIdsTmp) {
+    //     fromIds.emplace_back(std::get<std::string>(it));
+    //   }
+    // }
+    fromIds.emplace_back(sessionId);
 
     // wjzh
     auto enableContentTransferIt =
@@ -1649,8 +1680,8 @@ void FLTMessageService::searchMessage(const flutter::EncodableMap* arguments,
   }
   param.ids_ = fromIds;
   param.limit_count_ = limit;
-  param.from_time_ = startTime;
-  param.end_time_ = endTime;
+  param.from_time_ = startTime + 1;
+  param.end_time_ = endTime - 1;
   param.reverse_ = order;
   param.search_content_ = searchContent;
   if (allMessageTypes) {
@@ -1670,7 +1701,8 @@ void FLTMessageService::searchMessage(const flutter::EncodableMap* arguments,
       param.msg_sub_type_ = *(std::next(messageSubTypeList.begin(), index));
     }
     if (!nim::MsgLog::QueryMsgByOptionsAsyncEx(
-            param, [result](nim::NIMResCode res_code, const std::string& id,
+            param,
+            [result, order](nim::NIMResCode res_code, const std::string& id,
                             nim::NIMSessionType to_type,
                             const nim::QueryMsglogResult& res) {
               if (!result) {
@@ -1688,6 +1720,10 @@ void FLTMessageService::searchMessage(const flutter::EncodableMap* arguments,
                   }
                 }
                 flutter::EncodableMap ret;
+                // 查询结果始终保持正序
+                if (order) {
+                  std::reverse(retList.begin(), retList.end());
+                }
                 ret[flutter::EncodableValue("messageList")] = retList;
                 result->Success(NimResult::getSuccessResult(ret));
               } else {
@@ -1805,8 +1841,8 @@ void FLTMessageService::searchAllMessage(const flutter::EncodableMap* arguments,
   param.query_range_ = nim::kNIMMsgLogQueryRangeAll;
   param.ids_ = fromIds;
   param.limit_count_ = limit;
-  param.from_time_ = startTime;
-  param.end_time_ = endTime;
+  param.from_time_ = startTime + 1;
+  param.end_time_ = endTime - 1;
   param.reverse_ = order;
   param.search_content_ = searchContent;
   if (allMessageTypes) {
@@ -1826,7 +1862,8 @@ void FLTMessageService::searchAllMessage(const flutter::EncodableMap* arguments,
       param.msg_sub_type_ = *(std::next(messageSubTypeList.begin(), index));
     }
     if (!nim::MsgLog::QueryMsgByOptionsAsyncEx(
-            param, [result](nim::NIMResCode res_code, const std::string& id,
+            param,
+            [result, order](nim::NIMResCode res_code, const std::string& id,
                             nim::NIMSessionType to_type,
                             const nim::QueryMsglogResult& res) {
               if (!result) {
@@ -1844,6 +1881,10 @@ void FLTMessageService::searchAllMessage(const flutter::EncodableMap* arguments,
                   }
                 }
                 flutter::EncodableMap ret;
+                // 查询结果始终保持正序
+                if (order) {
+                  std::reverse(retList.begin(), retList.end());
+                }
                 ret[flutter::EncodableValue("messageList")] = retList;
                 result->Success(NimResult::getSuccessResult(ret));
               } else {
@@ -1939,6 +1980,10 @@ void FLTMessageService::searchRoamingMsg(const flutter::EncodableMap* arguments,
           "", "",
           NimResult::getErrorResult(-1, "searchRoamingMsg but param error!"));
     }
+  } else {
+    result->Error(
+        "", "",
+        NimResult::getErrorResult(-1, "searchRoamingMsg but param error!"));
   }
 }
 
@@ -1961,40 +2006,49 @@ void FLTMessageService::searchCloudMessageHistory(
   auto messageKeywordSearchConfig =
       std::get<flutter::EncodableMap>(messageKeywordSearchConfigIt->second);
   int64_t startTime = 0;
-  auto fromTimeIt = arguments->find(flutter::EncodableValue("fromTime"));
-  if (fromTimeIt != arguments->end() && !fromTimeIt->second.IsNull()) {
+  auto fromTimeIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("fromTime"));
+  if (fromTimeIt != messageKeywordSearchConfig.end() &&
+      !fromTimeIt->second.IsNull()) {
     startTime = fromTimeIt->second.LongValue();
   }
 
   int64_t endTime = 0;
-  auto endTimeIt = arguments->find(flutter::EncodableValue("toTime"));
-  if (endTimeIt != arguments->end() && !endTimeIt->second.IsNull()) {
+  auto endTimeIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("toTime"));
+  if (endTimeIt != messageKeywordSearchConfig.end() &&
+      !endTimeIt->second.IsNull()) {
     endTime = endTimeIt->second.LongValue();
   }
 
   std::string keyword;
-  auto keywordIt = arguments->find(flutter::EncodableValue("keyword"));
-  if (keywordIt != arguments->end() && !keywordIt->second.IsNull()) {
+  auto keywordIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("keyword"));
+  if (keywordIt != messageKeywordSearchConfig.end() &&
+      !keywordIt->second.IsNull()) {
     keyword = std::get<std::string>(keywordIt->second);
   }
 
   int32_t sessionLimit = 1;
   auto sessionLimitIt =
-      arguments->find(flutter::EncodableValue("sessionLimit"));
-  if (sessionLimitIt != arguments->end() && !sessionLimitIt->second.IsNull()) {
+      messageKeywordSearchConfig.find(flutter::EncodableValue("sessionLimit"));
+  if (sessionLimitIt != messageKeywordSearchConfig.end() &&
+      !sessionLimitIt->second.IsNull()) {
     sessionLimit = std::get<int32_t>(sessionLimitIt->second);
   }
 
   int32_t msgLimit = 1;
-  auto msgLimitIt = arguments->find(flutter::EncodableValue("msgLimit"));
-  if (msgLimitIt != arguments->end() && !msgLimitIt->second.IsNull()) {
+  auto msgLimitIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("msgLimit"));
+  if (msgLimitIt != messageKeywordSearchConfig.end() &&
+      !msgLimitIt->second.IsNull()) {
     msgLimit = std::get<int32_t>(msgLimitIt->second);
   }
 
   uint32_t search_rule = nim::kNIMFullTextSearchOrderByDesc;
-  auto ascIt = arguments->find(flutter::EncodableValue("asc"));
-  if (ascIt != arguments->end() && !ascIt->second.IsNull()) {
-    auto orderTmp = std::get<int>(ascIt->second);
+  auto ascIt = messageKeywordSearchConfig.find(flutter::EncodableValue("asc"));
+  if (ascIt != messageKeywordSearchConfig.end() && !ascIt->second.IsNull()) {
+    auto orderTmp = std::get<bool>(ascIt->second);
     auto searchOrder = Convert::getInstance()->getSearchOrder();
     if (auto it = searchOrder.find(orderTmp); searchOrder.end() != it) {
       search_rule = it->second;
@@ -2004,8 +2058,10 @@ void FLTMessageService::searchCloudMessageHistory(
   }
 
   std::list<std::string> p2pList;
-  auto p2pListIt = arguments->find(flutter::EncodableValue("p2pList"));
-  if (p2pListIt != arguments->end() && !p2pListIt->second.IsNull()) {
+  auto p2pListIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("p2pList"));
+  if (p2pListIt != messageKeywordSearchConfig.end() &&
+      !p2pListIt->second.IsNull()) {
     auto p2pListTmp = std::get<flutter::EncodableList>(p2pListIt->second);
     for (auto& it : p2pListTmp) {
       p2pList.emplace_back(std::get<std::string>(it));
@@ -2013,8 +2069,10 @@ void FLTMessageService::searchCloudMessageHistory(
   }
 
   std::list<std::string> teamList;
-  auto teamListIt = arguments->find(flutter::EncodableValue("teamList"));
-  if (teamListIt != arguments->end() && !teamListIt->second.IsNull()) {
+  auto teamListIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("teamList"));
+  if (teamListIt != messageKeywordSearchConfig.end() &&
+      !teamListIt->second.IsNull()) {
     auto teamListTmp = std::get<flutter::EncodableList>(teamListIt->second);
     for (auto& it : teamListTmp) {
       teamList.emplace_back(std::get<std::string>(it));
@@ -2022,8 +2080,10 @@ void FLTMessageService::searchCloudMessageHistory(
   }
 
   std::list<std::string> senderList;
-  auto senderListIt = arguments->find(flutter::EncodableValue("senderList"));
-  if (senderListIt != arguments->end() && !senderListIt->second.IsNull()) {
+  auto senderListIt =
+      messageKeywordSearchConfig.find(flutter::EncodableValue("senderList"));
+  if (senderListIt != messageKeywordSearchConfig.end() &&
+      !senderListIt->second.IsNull()) {
     auto senderListTmp = std::get<flutter::EncodableList>(senderListIt->second);
     for (auto& it : senderListTmp) {
       senderList.emplace_back(std::get<std::string>(it));
@@ -2032,8 +2092,8 @@ void FLTMessageService::searchCloudMessageHistory(
 
   std::list<nim::NIMMessageType> messageTypeList;
   auto messageTypeListIt =
-      arguments->find(flutter::EncodableValue("msgTypeList"));
-  if (messageTypeListIt != arguments->end() &&
+      messageKeywordSearchConfig.find(flutter::EncodableValue("msgTypeList"));
+  if (messageTypeListIt != messageKeywordSearchConfig.end() &&
       !messageTypeListIt->second.IsNull()) {
     flutter::EncodableList messageTypeListTmp =
         std::get<flutter::EncodableList>(messageTypeListIt->second);
@@ -2055,9 +2115,9 @@ void FLTMessageService::searchCloudMessageHistory(
   }
 
   std::list<uint32_t> messageSubTypeList;
-  auto messageSubTypeListIt =
-      arguments->find(flutter::EncodableValue("msgSubtypeList"));
-  if (messageSubTypeListIt != arguments->end() &&
+  auto messageSubTypeListIt = messageKeywordSearchConfig.find(
+      flutter::EncodableValue("msgSubtypeList"));
+  if (messageSubTypeListIt != messageKeywordSearchConfig.end() &&
       !messageSubTypeListIt->second.IsNull()) {
     flutter::EncodableList messageSubTypeListTmp =
         std::get<flutter::EncodableList>(messageSubTypeListIt->second);
@@ -2514,30 +2574,24 @@ void FLTMessageService::querySessionList(const flutter::EncodableMap* arguments,
   }
 
   nim::Session::QueryLastFewSessionAsync(
-      limit, [result](int res_code, const nim::SessionDataList& ret) {
+      limit, [result](int unread_count, const nim::SessionDataList& ret) {
         if (!result) {
           return;
         }
 
-        if (0 == res_code) {
-          flutter::EncodableList replyList;
-          for (auto& it : ret.sessions_) {
-            flutter::EncodableMap tmp;
-            if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
-              replyList.emplace_back(tmp);
-            } else {
-              YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
-            }
+        flutter::EncodableList replyList;
+        for (auto& it : ret.sessions_) {
+          flutter::EncodableMap tmp;
+          if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
+            replyList.emplace_back(tmp);
+          } else {
+            YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
           }
-
-          flutter::EncodableMap ret;
-          ret[flutter::EncodableValue("resultList")] = replyList;
-          result->Success(NimResult::getSuccessResult(ret));
-        } else {
-          result->Error(
-              "", "",
-              NimResult::getErrorResult(res_code, "querySessionList error!"));
         }
+
+        flutter::EncodableMap retList;
+        retList[flutter::EncodableValue("resultList")] = replyList;
+        result->Success(NimResult::getSuccessResult(retList));
       });
 }
 
@@ -2569,29 +2623,24 @@ void FLTMessageService::querySessionListFiltered(
   }
 
   nim::Session::QueryAllRecentSessionAsyncEx(
-      messageTypeList, [result](int res_code, const nim::SessionDataList& ret) {
+      messageTypeList,
+      [result](int unread_count, const nim::SessionDataList& ret) {
         if (!result) {
           return;
         }
 
-        if (0 == res_code) {
-          flutter::EncodableList replyList;
-          for (auto& it : ret.sessions_) {
-            flutter::EncodableMap tmp;
-            if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
-              replyList.emplace_back(tmp);
-            } else {
-              YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
-            }
-
-            flutter::EncodableMap retList;
-            retList[flutter::EncodableValue("resultList")] = replyList;
-            result->Success(NimResult::getSuccessResult(retList));
+        flutter::EncodableList replyList;
+        for (auto& it : ret.sessions_) {
+          flutter::EncodableMap tmp;
+          if (Convert::getInstance()->convertIMSessionData2Map(it, tmp)) {
+            replyList.emplace_back(tmp);
+          } else {
+            YXLOG(Warn) << "convertIMSessionData2Map failed." << YXLOGEnd;
           }
-        } else {
-          result->Error("", "",
-                        NimResult::getErrorResult(
-                            res_code, "querySessionListFiltered error!"));
+
+          flutter::EncodableMap retList;
+          retList[flutter::EncodableValue("resultList")] = replyList;
+          result->Success(NimResult::getSuccessResult(retList));
         }
       });
 }
@@ -2829,7 +2878,7 @@ void FLTMessageService::queryTotalUnreadCount(
   if (queryTypeIt != arguments->end() && !queryTypeIt->second.IsNull()) {
     queryType = std::get<int32_t>(queryTypeIt->second);
   }
-
+  // fixme: PC端暂不支持按照通知类型过滤未读数，已经同步SDK，SDK修复后修改
   nim::Session::QueryAllRecentSessionAsync(
       [result](int resCode, const nim::SessionDataList& ret) {
         if (!result) {
@@ -3175,8 +3224,8 @@ void FLTMessageService::queryQuickComment(
             commentOptionMap.insert(std::make_pair("key", keyMap));
             commentOptionMap.insert(
                 std::make_pair("quickCommentList", commentList));
-            commentOptionMap.insert(std::make_pair("modify", false));  //不支持
-            commentOptionMap.insert(std::make_pair("time", 0));  //不支持
+            commentOptionMap.insert(std::make_pair("modify", false));  // 不支持
+            commentOptionMap.insert(std::make_pair("time", 0));  // 不支持
             commentOptionList.emplace_back(commentOptionMap);
           }
 
@@ -3534,7 +3583,7 @@ void FLTMessageService::removeMessagePin(const flutter::EncodableMap* arguments,
   }
 
   nim::TalkEx::PinMsg::QueryAllPinMessage(
-      sessionId, msg.type_,
+      sessionId, msg.session_type_,
       [=](int code, const std::string& session, int to_type,
           const nim::QueryAllPinMessageResponse& response) {
         if (code == nim::kNIMResSuccess) {
@@ -3601,13 +3650,13 @@ void FLTMessageService::queryMessagePinForSession(
             pinMap.insert(
                 std::make_pair("messageFromAccount", pin.from_account));
             pinMap.insert(std::make_pair("messageToAccount", pin.to_account));
-            pinMap.insert(std::make_pair("messageUuid", pin.id));
+            pinMap.insert(std::make_pair("messageUuid", pin.client_id));
             pinMap.insert(std::make_pair("messageId", ""));
             pinMap.insert(std::make_pair("messageServerId",
                                          static_cast<int64_t>(pin.server_id)));
             pinMap.insert(
                 std::make_pair("pinOperatorAccount", pin.operator_account));
-            pinMap.insert(std::make_pair("pinExt", pin.operator_account));
+            pinMap.insert(std::make_pair("pinExt", pin.ext));
             pinMap.insert(std::make_pair(
                 "pinCreateTime", static_cast<int64_t>(pin.create_time)));
             pinMap.insert(std::make_pair(
@@ -4003,6 +4052,25 @@ void FLTMessageService::queryStickTopSession(
                             res_code, "queryStickTopSession failed!"));
         }
       });
+}
+
+void FLTMessageService::clearAllSessionUnreadCount(
+    const flutter::EncodableMap* arguments, FLTService::MethodResult result) {
+  nim::Session::SetAllUnreadCountZeroAsync(
+      [result](nim::NIMResCode res_code, const nim::SessionData&, int) {
+        if (!result) {
+          return;
+        }
+
+        if (nim::kNIMResSuccess == res_code) {
+          result->Success(NimResult::getSuccessResult());
+        } else {
+          result->Error("", "",
+                        NimResult::getErrorResult(
+                            res_code, "clearAllSessionUnreadCount failed!"));
+        }
+      },
+      "");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

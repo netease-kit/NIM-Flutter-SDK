@@ -38,6 +38,8 @@ class FLTAuthService: FLTBaseService, FLTService {
       login(arguments, resultCallback)
     case AuthType.AuthLogout.rawValue:
       logout(arguments, resultCallback)
+    case AuthType.KickOutOtherOnlineClient.rawValue:
+      kickOutOtherOnlineClient(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -95,12 +97,25 @@ class FLTAuthService: FLTBaseService, FLTService {
   private func kickOutOtherOnlineClient(_ arguments: [String: Any],
                                         _ resultCallback: ResultCallback) {
     if let client = NIMLoginClient.fromDic(arguments) as? NIMLoginClient {
-      NIMSDK.shared().loginManager.kickOtherClient(client) { error in
-        if let ns_error = error as NSError? {
-          resultCallback
-            .result(NimResult.error(ns_error.code, ns_error.description).toDic())
+      if let cls = NIMSDK.shared().loginManager.currentLoginClients() {
+        var kickClient: NIMLoginClient?
+        for cl in cls {
+          if cl.timestamp == client.timestamp,
+             cl.os == client.os, cl.type == client.type, cl.customTag == client.customTag {
+            kickClient = cl
+          }
+        }
+        if kickClient != nil {
+          NIMSDK.shared().loginManager.kickOtherClient(kickClient!) { error in
+            if let ns_error = error as NSError? {
+              resultCallback
+                .result(NimResult.error(ns_error.code, ns_error.description).toDic())
+            } else {
+              resultCallback.result(NimResult.success().toDic())
+            }
+          }
         } else {
-          resultCallback.result(NimResult.success().toDic())
+          resultCallback.result(NimResult.error("nim login client find error").toDic())
         }
       }
     } else {
@@ -109,7 +124,8 @@ class FLTAuthService: FLTBaseService, FLTService {
   }
 
   func loginStatus(_ code: Int) {
-    // 参考 https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Model/NIMFLoginUntil.m
+    // 参考
+    // https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Model/NIMFLoginUntil.m
     switch code {
     case 302:
       notifyEvent(serviceName(), "onAuthStatusChanged", ["status": "pwdError"])
@@ -126,7 +142,8 @@ class FLTAuthService: FLTBaseService, FLTService {
 }
 
 extension FLTAuthService: NIMLoginManagerDelegate {
-  // 参考 https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Service/NIMFLoginObserver.m
+  // 参考
+  // https://g.hz.netease.com/meeting/nim-sdk-flutter/-/blob/null_safety.1/ios/Classes/Section/Login/Service/NIMFLoginObserver.m
   func onLogin(_ step: NIMLoginStep) {
     var status = "unknown"
     switch step {

@@ -17,11 +17,37 @@ extension NIMAddCollectParams {
 extension NIMCollectInfo {
   func toDic() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
-      jsonObject["createTime"] = createTime
-      jsonObject["updateTime"] = updateTime
+      jsonObject["createTime"] = Int(createTime * 1000)
+      jsonObject["updateTime"] = Int(updateTime * 1000)
       return jsonObject
     }
     return nil
+  }
+
+  static func fromDic(_ json: [String: Any]) -> NIMCollectInfo? {
+    let info = NIMCollectInfo.yx_model(with: json)
+    if let createTime = json["createTime"] as? Int {
+      info?.createTime = TimeInterval(Double(createTime) / 1000)
+    }
+    if let updateTime = json["updateTime"] as? Int {
+      info?.updateTime = TimeInterval(Double(updateTime) / 1000)
+    }
+    if let data = json["data"] as? String {
+      info?.data = data
+    }
+    if let type = json["type"] as? Int {
+      info?.type = type
+    }
+    if let uniqueId = json["uniqueId"] as? String {
+      info?.uniqueId = uniqueId
+    }
+    if let ext = json["ext"] as? String {
+      info?.ext = ext
+    }
+    if let id = json["id"] as? UInt {
+      info?.id = id
+    }
+    return info
   }
 }
 
@@ -29,21 +55,25 @@ extension NIMCollectQueryOptions {
   static func fromDic(_ json: [String: Any]) -> NIMCollectQueryOptions {
     let options = NIMCollectQueryOptions()
     let anchor = json["anchor"] as? [String: Any]
-    let toTime = json["toTime"] as? Int ?? 0
+    let toTime = json["toTime"] as? Double ?? 0
     let type = json["type"] as? Int ?? 0
     let limit = json["limit"] as? Int ?? 0
-    options.toTime = Double(toTime)
+    options.toTime = TimeInterval(toTime / 1000)
     options.fromTime = 0
     options.excludeId = 0
     options.limit = limit
     if let direction = json["direction"] as? Int {
       if direction <= 0 {
-        options.reverse = true
-      } else {
         options.reverse = false
+      } else {
+        options.reverse = true
       }
+    } else {
+      options.reverse = false
     }
-    options.type = type
+    if let type = json["type"] as? Int {
+      options.type = type
+    }
     if anchor == nil {
       options.excludeId = 0
     } else {
@@ -70,11 +100,12 @@ extension NIMMessagePinItem {
       jsonObject["sessionId"] = session.sessionId
       jsonObject["sessionType"] = FLT_NIMSessionType
         .convertFLTSessionType(session.sessionType)?.rawValue
-      jsonObject["pinCreateTime"] = Int(createTime)
-      jsonObject["pinUpdateTime"] = Int(updateTime)
+      jsonObject["pinCreateTime"] = Int(createTime * 1000)
+      jsonObject["pinUpdateTime"] = Int(updateTime * 1000)
       jsonObject["pinExt"] = ext
       jsonObject["pinOperatorAccount"] = accountID
       jsonObject["messageServerId"] = Int(messageServerID)
+      jsonObject["messageUuid"] = messageId
       jsonObject["messageId"] = messageId
       return jsonObject
     }
@@ -129,8 +160,8 @@ extension NIMStickTopSessionInfo {
     jsonObject["sessionId"] = session.sessionId
     jsonObject["sessionType"] = FLT_NIMSessionType.convertFLTSessionType(session.sessionType)?
       .rawValue
-    jsonObject["updateTime"] = Int(updateTime)
-    jsonObject["createTime"] = Int(createTime)
+    jsonObject["updateTime"] = Int(updateTime * 1000)
+    jsonObject["createTime"] = Int(createTime * 1000)
     jsonObject["ext"] = ext
     return jsonObject
   }
@@ -149,5 +180,46 @@ extension NIMStickTopSessionInfo {
     let updateTime = json["updateTime"] as? Int ?? 0
     info.updateTime = Double(updateTime)
     return info
+  }
+}
+
+extension NIMThreadTalkFetchOption {
+  static func fromDic(_ json: [String: Any]) -> NIMThreadTalkFetchOption {
+    guard let model = NIMThreadTalkFetchOption.yx_model(with: json) else {
+      print("❌NIMThreadTalkFetchOption.yx_model(with: json) FAILED")
+      return NIMThreadTalkFetchOption()
+    }
+    if let fromTime = json["fromTime"] as? Double {
+      model.start = TimeInterval(fromTime / 1000)
+    }
+    if let toTime = json["toTime"] as? Double {
+      model.end = TimeInterval(toTime / 1000)
+    }
+    if let persist = json["persist"] as? Bool {
+      model.sync = persist
+    }
+    if let direction = json["direction"] as? Int {
+      model.reverse = direction <= 0
+    }
+    return model
+  }
+}
+
+extension NIMThreadTalkFetchResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["thread"] = message.toDic()
+      jsonObject["time"] = Int(timestamp * 1000)
+      var replyList: [[String: Any]] = []
+      for subMsg in subMessages {
+        if let msg = subMsg as? NIMMessage,
+           let msgDic = msg.toDic() {
+          replyList.append(msgDic)
+        }
+      }
+      jsonObject["replyList"] = replyList
+      return jsonObject
+    }
+    return nil
   }
 }

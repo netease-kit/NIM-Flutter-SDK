@@ -199,7 +199,7 @@ class NIMChatroomInfo {
   @JsonKey(defaultValue: 0)
   final int validFlag;
 
-  /// 当前在线用户数量
+  /// 当前在线用户数量,ios 暂不支持
   @JsonKey(defaultValue: 0)
   final int onlineUserCount;
 
@@ -380,6 +380,8 @@ abstract class NIMChatroomEvent {
   final String roomId;
 
   NIMChatroomEvent(this.roomId);
+
+  Map<String, dynamic> toMap() => {};
 }
 
 class NIMChatroomErrors {

@@ -366,7 +366,8 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
           'entryList': entryList.map((e) => e.toMap()).toList(),
         },
       ),
-      convert: (map) => map['missingKeys'] as List<String>,
+      convert: (map) =>
+          (map['missingKeys'] as List).map((e) => e.toString()).toList(),
     );
   }
 

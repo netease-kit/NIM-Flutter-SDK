@@ -85,10 +85,10 @@ class UserService {
     return _platform.addFriend(userId, message, verifyType);
   }
 
-  /// 确认添加好友
+  /// 确认添加好友, idServer仅为web端系统消息的id
   Future<NIMResult<void>> ackAddFriend(
-      {required String userId, bool isAgree = true}) async {
-    return _platform.ackAddFriend(userId, isAgree);
+      {required String userId, bool isAgree = true, String? idServer}) async {
+    return _platform.ackAddFriend(userId, isAgree, idServer);
   }
 
   /// 获取好友列表

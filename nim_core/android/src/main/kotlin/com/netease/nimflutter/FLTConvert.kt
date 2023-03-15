@@ -10,7 +10,12 @@ import android.app.Activity
 import com.netease.nimlib.NimNosSceneKeyConstant
 import com.netease.nimlib.sdk.NotificationFoldStyle
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
+import com.netease.nimlib.sdk.StatusCode
 import com.netease.nimlib.sdk.auth.ClientType
+import com.netease.nimlib.sdk.avsignalling.constant.ChannelStatus
+import com.netease.nimlib.sdk.avsignalling.constant.ChannelType
+import com.netease.nimlib.sdk.avsignalling.constant.InviteAckStatus
+import com.netease.nimlib.sdk.avsignalling.constant.SignallingEventType
 import com.netease.nimlib.sdk.event.model.Event
 import com.netease.nimlib.sdk.misc.DirCacheFileType
 import com.netease.nimlib.sdk.msg.constant.AttachStatusEnum
@@ -62,7 +67,8 @@ val msgTypeEnumMap = mapOf(
     MsgTypeEnum.nrtc_netcall to "netcall",
     MsgTypeEnum.custom to "custom",
     MsgTypeEnum.appCustom to "appCustom",
-    MsgTypeEnum.qiyuCustom to "qiyuCustom"
+    MsgTypeEnum.qiyuCustom to "qiyuCustom",
+    MsgTypeEnum.qchatCustom to "qchatCustom"
 )
 
 val msgDirectionEnumMap = mapOf(
@@ -309,8 +315,13 @@ fun stringFromSessionTypeEnum(type: SessionTypeEnum?) =
 fun stringToMsgStatusEnum(status: String?) =
     msgStatusEnumMap.filterValues { it == status }.keys.firstOrNull() ?: MsgStatusEnum.sending
 
-fun stringFromMsgStatusEnum(status: MsgStatusEnum?) =
-    msgStatusEnumMap[status] ?: msgStatusEnumMap[MsgStatusEnum.sending]
+fun stringFromMsgStatusEnum(status: MsgStatusEnum?, successToRead: Boolean?): String? {
+    return if (successToRead == true && status == MsgStatusEnum.success) {
+        msgStatusEnumMap[MsgStatusEnum.read] ?: msgStatusEnumMap[MsgStatusEnum.sending]
+    } else {
+        msgStatusEnumMap[status] ?: msgStatusEnumMap[MsgStatusEnum.sending]
+    }
+}
 
 fun stringToAttachStatusEnum(status: String?) =
     attachStatusEnumMap.filterValues { it == status }.keys.firstOrNull() ?: AttachStatusEnum.def
@@ -416,7 +427,7 @@ fun convertToSearchOption(param: Map<String, Any?>?): MsgSearchOption? {
             messageSubTypes =
                 (it["messageSubTypes"] as List<*>?)?.map { (it as Number).toInt() }?.toList()
             isAllMessageTypes = it.getOrElse("allMessageTypes") { false } as Boolean
-            searchContent = it["searchContent"] as String
+            searchContent = it["searchContent"] as String?
             fromIds = (it["fromIds"] as List<*>?)?.map { it as String }?.toList()
             isEnableContentTransfer = it.getOrElse("enableContentTransfer") { true } as Boolean
         }
@@ -635,4 +646,58 @@ class MapProperty<T : Any>(
         }
         return value!!
     }
+}
+
+val channelTypeEnumTypeMap = mapOf(
+    ChannelType.VIDEO to "video",
+    ChannelType.AUDIO to "audio",
+    ChannelType.CUSTOM to "custom"
+)
+
+fun stringFromChannelTypeEnum(type: ChannelType?) =
+    channelTypeEnumTypeMap[type] ?: channelTypeEnumTypeMap[ChannelType.CUSTOM]
+
+fun stringToChannelTypeEnum(type: String) =
+    channelTypeEnumTypeMap.filterValues { it == type }.keys.firstOrNull() ?: ChannelType.CUSTOM
+
+val channelStatusEnumTypeMap = mapOf(
+    ChannelStatus.NORMAL to "normal",
+    ChannelStatus.INVALID to "invalid"
+)
+
+fun stringFromChannelStatusEnum(status: ChannelStatus?) =
+    channelStatusEnumTypeMap[status] ?: channelStatusEnumTypeMap[ChannelStatus.NORMAL]
+
+val signallingEventTypeMap = mapOf(
+    SignallingEventType.UN_KNOW to "unKnow",
+    SignallingEventType.CLOSE to "close",
+    SignallingEventType.JOIN to "join",
+    SignallingEventType.INVITE to "invite",
+    SignallingEventType.CANCEL_INVITE to "cancelInvite",
+    SignallingEventType.REJECT to "reject",
+    SignallingEventType.ACCEPT to "accept",
+    SignallingEventType.LEAVE to "leave",
+    SignallingEventType.CONTROL to "control"
+)
+
+fun stringFromSignallingEventType(type: SignallingEventType?) =
+    signallingEventTypeMap[type] ?: signallingEventTypeMap[SignallingEventType.UN_KNOW]
+
+val inviteAckStatusMap = mapOf(
+    InviteAckStatus.REJECT to "reject",
+    InviteAckStatus.ACCEPT to "accept"
+)
+
+fun dartNameOfStatusCode(status: StatusCode) = when (status) {
+    StatusCode.UNLOGIN -> "unLogin"
+    StatusCode.NET_BROKEN -> "netBroken"
+    StatusCode.CONNECTING -> "connecting"
+    StatusCode.LOGINING -> "logging"
+    StatusCode.LOGINED -> "loggedIn"
+    StatusCode.KICKOUT -> "kickOut"
+    StatusCode.KICK_BY_OTHER_CLIENT -> "kickOutByOtherClient"
+    StatusCode.FORBIDDEN -> "forbidden"
+    StatusCode.VER_ERROR -> "versionError"
+    StatusCode.PWD_ERROR -> "pwdError"
+    else -> "unknown"
 }

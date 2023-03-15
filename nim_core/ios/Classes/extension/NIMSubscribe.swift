@@ -47,18 +47,17 @@ extension NIMSubscribeEvent {
 
   static func createSubscribeEvent(_ args: [String: Any]) -> NIMSubscribeEvent? {
     let event = NIMSubscribeEvent.yx_model(with: args)
-    // 处理readonly字段
-    if let eventId = args["eventId"] {
-      event?.setValue(eventId, forKeyPath: #keyPath(NIMSubscribeEvent.eventId))
+    if let eventValue = args["eventValue"] as? Int {
+      event?.value = eventValue
     }
-    if let from = args["publisherAccount"] {
-      event?.setValue(from, forKeyPath: #keyPath(NIMSubscribeEvent.from))
+    if let eventType = args["eventType"] as? Int {
+      event?.type = eventType
     }
-    if let timestamp = args["publishTime"] as? Int {
-      event?.setValue(timestamp, forKeyPath: #keyPath(NIMSubscribeEvent.timestamp))
+    if let sendToOnlineUsersOnly = args["broadcastOnlineOnly"] as? Bool {
+      event?.sendToOnlineUsersOnly = sendToOnlineUsersOnly
     }
-    if let subscribeInfo = args["subscribeInfo"] {
-      event?.setValue(subscribeInfo, forKeyPath: #keyPath(NIMSubscribeEvent.subscribeInfo))
+    if let syncEnabled = args["syncSelfEnable"] as? Bool {
+      event?.syncEnabled = syncEnabled
     }
     return event
   }
@@ -66,7 +65,7 @@ extension NIMSubscribeEvent {
   func toDic() -> [String: Any]? {
     if var dic = yx_modelToJSONObject() as? [String: Any] {
       dic["expiry"] = Int(expiry)
-      dic["time"] = Int(timestamp)
+      dic["publishTime"] = Int(timestamp * 1000)
       return dic
     }
     return nil

@@ -92,6 +92,10 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
       toJson: _notificationConfigToMap, fromJson: _notificationConfigFromMap)
   final NIMStatusBarNotificationConfig? notificationConfig;
 
+  /// 是否开启圈组消息缓存支持，默认不开启
+  @JsonKey(defaultValue: false)
+  final bool enabledQChatMessageCache;
+
   NIMAndroidSDKOptions({
     /// android configurations
     this.improveSDKProcessPriority = true,
@@ -99,6 +103,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.reducedIM = false,
     this.checkManifestConfig = false,
     this.disableAwake = false,
+    this.enabledQChatMessageCache = false,
     this.databaseEncryptKey,
     this.thumbnailSize = 350,
     this.fetchServerTimeInterval = 2000,

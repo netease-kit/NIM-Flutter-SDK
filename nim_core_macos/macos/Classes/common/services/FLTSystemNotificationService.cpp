@@ -444,7 +444,7 @@ void FLTSystemNotificationService::sendCustomNotification(
 
     if (iter2->first == flutter::EncodableValue("sessionId")) {
       client_msg_id =
-          std::get<std::string>(iter2->second);  //不确定字段含义是否一致
+          std::get<std::string>(iter2->second);  // 不确定字段含义是否一致
     } else if (iter2->first == flutter::EncodableValue("sessionType")) {
       // 不支持
     } else if (iter2->first == flutter::EncodableValue("fromAccount")) {

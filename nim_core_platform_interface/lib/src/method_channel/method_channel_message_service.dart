@@ -43,6 +43,16 @@ class MethodChannelMessageService extends MessageServicePlatform {
   }
 
   @override
+  Future<NIMResult<NIMMessage>> saveMessageToLocalEx(
+      {required NIMMessage message, required int time}) async {
+    Map<String, dynamic> arguments = message.toMap()..['time'] = time;
+    Map<String, dynamic> replyMap =
+        await invokeMethod('saveMessageToLocalEx', arguments: arguments);
+    return NIMResult.fromMap(replyMap,
+        convert: (map) => NIMMessage.fromMap(map));
+  }
+
+  @override
   Future<NIMResult<NIMMessage>> createMessage(
       {required NIMMessage message}) async {
     Map<String, dynamic> replyMap =
@@ -140,10 +150,17 @@ class MethodChannelMessageService extends MessageServicePlatform {
 
   @override
   Future<NIMResult<String>> voiceToText(
-      {required NIMMessage message, String? scene}) async {
+      {required NIMMessage message,
+      String? scene,
+      String? mimeType,
+      String? sampleRate}) async {
     Map<String, dynamic> arguments = message.toMap();
-    Map<String, dynamic> replyMap = await invokeMethod('voiceToText',
-        arguments: arguments..['scene'] = scene);
+    arguments
+      ..['scene'] = scene
+      ..['sampleRate'] = sampleRate
+      ..['mimeType'] = mimeType;
+    Map<String, dynamic> replyMap =
+        await invokeMethod('voiceToText', arguments: arguments);
     return NIMResult.fromMap(replyMap);
   }
 
@@ -363,11 +380,12 @@ class MethodChannelMessageService extends MessageServicePlatform {
   //删除指定会话内消息
   @override
   Future<void> clearChattingHistory(
-      String account, NIMSessionType sessionType) async {
+      String account, NIMSessionType sessionType, bool? ignore) async {
     Map<String, dynamic> arguments = Map();
     arguments["account"] = account;
     arguments["sessionType"] =
         NIMSessionTypeConverter(sessionType: sessionType).toValue();
+    arguments["ignore"] = ignore;
     await invokeMethod('clearChattingHistory', arguments: arguments);
   }
 
@@ -910,7 +928,7 @@ class MethodChannelMessageService extends MessageServicePlatform {
       required bool persist}) async {
     return NIMResult<NIMThreadTalkHistory>.fromMap(
       await invokeMethod(
-        'queryReplyCountInThreadTalkBlock',
+        'queryThreadTalkHistory',
         arguments: {
           'message': anchor.toMap(),
           'fromTime': fromTime,

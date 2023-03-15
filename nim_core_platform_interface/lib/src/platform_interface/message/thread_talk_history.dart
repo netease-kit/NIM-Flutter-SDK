@@ -48,8 +48,9 @@ NIMMessage? messageFromMap(Map? map) =>
 List<Map?>? replyListToMap(List<NIMMessage>? replyList) =>
     replyList?.map((e) => messageToMap(e)).toList();
 
-List<NIMMessage>? replyListFromMap(Map? replyListMap) => replyListMap == null
-    ? null
-    : (replyListMap['replyList'] as List<dynamic>?)
-        ?.map((e) => NIMMessage.fromMap(Map<String, dynamic>.from(e)))
-        .toList();
+List<NIMMessage>? replyListFromMap(List<dynamic>? replyListMap) =>
+    replyListMap == null
+        ? null
+        : replyListMap
+            .map((e) => NIMMessage.fromMap(Map<String, dynamic>.from(e)))
+            .toList();

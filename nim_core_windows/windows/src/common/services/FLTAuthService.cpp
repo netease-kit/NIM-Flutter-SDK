@@ -185,7 +185,7 @@ void FLTAuthService::kickOutOtherOnlineClient(
       std::list<std::string> client_ids;
       client_ids.emplace_back(client.device_id_);
       Client::KickOtherClient(client_ids);
-      result->Success(NimResult::getSuccessResult());  //不等待直接返回成功
+      result->Success(NimResult::getSuccessResult());  // 不等待直接返回成功
       return;
     }
   }

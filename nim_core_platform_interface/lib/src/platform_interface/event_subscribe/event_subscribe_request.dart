@@ -3,16 +3,16 @@
 // found in the LICENSE file.
 
 class EventSubscribeRequest {
-  //事件类型，1-99999 为云信保留类型，自定义的订阅事件请选择此范围意外的值
+  ///事件类型，1-99999 为云信保留类型，自定义的订阅事件请选择此范围意外的值
   final int eventType;
 
-  //订阅的有效期，范围为 60s 到 30days，数值单位为秒
+  ///订阅的有效期，范围为 60s 到 30days，数值单位为秒
   final int expiry;
 
-  //订阅后是否立刻同步事件状态值，默认为 false，如果填 true，则会收到事件状态回调
+  ///订阅后是否立刻同步事件状态值，默认为 false，如果填 true，则会收到事件状态回调
   final bool? syncCurrentValue;
 
-  //事件发布者的账号集合
+  ///事件发布者的账号集合
   final List<String> publishers;
 
   EventSubscribeRequest(

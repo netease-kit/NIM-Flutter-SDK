@@ -69,6 +69,7 @@ class MethodChannelSuperTeamService extends SuperTeamServicePlatform {
     return NIMResult<List<NIMSuperTeam>>.fromMap(
       await invokeMethod(
         'queryTeamListById',
+        arguments: arguments,
       ),
       convert: (map) {
         var teamList = map['teamList'] as List<dynamic>?;

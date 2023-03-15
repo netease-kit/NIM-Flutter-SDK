@@ -21,6 +21,14 @@ enum ServiceType: String {
   case PassThroughService
   case SettingService = "SettingsService"
   case SuperTeamService
+  case AvSignallingService
+  case QChatObserver
+  case QChatService
+  case QChatServerService
+  case QChatChannelService
+  case QChatMessageService
+  case QChatRoleService
+  case QChatPushService
 }
 
 protocol FLTService {

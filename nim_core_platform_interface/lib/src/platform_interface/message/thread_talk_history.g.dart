@@ -10,13 +10,13 @@ part of 'thread_talk_history.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NIMThreadTalkHistory _$NIMThreadTalkHistoryFromJson(Map<String, dynamic> json) {
-  return NIMThreadTalkHistory(
-    thread: messageFromMap(json['thread'] as Map?),
-    time: json['time'] as int?,
-    replyList: replyListFromMap(json['replyList'] as Map?),
-  );
-}
+NIMThreadTalkHistory _$NIMThreadTalkHistoryFromJson(
+        Map<String, dynamic> json) =>
+    NIMThreadTalkHistory(
+      thread: messageFromMap(json['thread'] as Map?),
+      time: json['time'] as int?,
+      replyList: replyListFromMap(json['replyList'] as List?),
+    );
 
 Map<String, dynamic> _$NIMThreadTalkHistoryToJson(
     NIMThreadTalkHistory instance) {

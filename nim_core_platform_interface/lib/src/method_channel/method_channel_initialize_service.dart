@@ -19,6 +19,15 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
   }
 
   @override
+  Future<NIMResult<void>> releaseDesktop() async {
+    return NIMResult.fromMap(
+      await invokeMethod(
+        'releaseDesktop',
+      ),
+    );
+  }
+
+  @override
   Future onEvent(String method, arguments) {
     throw UnimplementedError();
   }

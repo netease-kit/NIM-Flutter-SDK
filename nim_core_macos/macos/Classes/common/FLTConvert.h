@@ -68,7 +68,8 @@ class Convert {
   bool convert2IMMessage(const flutter::EncodableMap* arguments,
                          nim::IMMessage& imMessage, std::string& imMessageJson);
   bool convertIMMessage2Map(flutter::EncodableMap& arguments,
-                            const nim::IMMessage& imMessage);
+                            const nim::IMMessage& imMessage,
+                            bool fromCloud = false);
 
   bool convert2IMAttach(const nim::IMMessage& imMessage,
                         const flutter::EncodableMap* arguments,

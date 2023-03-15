@@ -2,18 +2,23 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:nim_core_platform_interface/src/utils/log.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+final Map<String, Service> services = {};
+
 abstract class Service extends PlatformInterface {
+  final _methodCallHandler = kIsWeb
+      ? PlatformMethodCallHandler.instance
+      : _MethodChannelHandler.instance;
+
   Service({required Object token}) : super(token: token) {
-    ServiceDispatcher.instance.register(this);
+    _methodCallHandler._register(this);
   }
 
   String get serviceName;
-
-  static MethodChannel _channel = ServiceDispatcher.instance.channel;
 
   Future<dynamic> onEvent(String method, dynamic arguments);
 
@@ -22,8 +27,8 @@ abstract class Service extends PlatformInterface {
     Log.i(serviceName, 'invoke method: ==$method==');
     if (arguments == null) arguments = {};
     arguments['serviceName'] = serviceName;
-    final Map<String, dynamic>? replyMap =
-        await _channel.invokeMapMethod<String, dynamic>(method, arguments);
+    final Map<String, dynamic>? replyMap = await _methodCallHandler
+        .invokePlatformMethod(serviceName, method, arguments: arguments);
     if (replyMap == null) {
       Log.i(serviceName, 'invoke method ==$method== return null');
       throw PlatformException(
@@ -42,30 +47,60 @@ abstract class Service extends PlatformInterface {
   }
 }
 
-class ServiceDispatcher {
-  final Map<String, Service> services = {};
-  MethodChannel channel = MethodChannel(
-    'flutter.yunxin.163.com/nim_core',
-  );
+abstract class PlatformMethodCallHandler {
+  static PlatformMethodCallHandler? _instance;
 
-  static final ServiceDispatcher instance = ServiceDispatcher._();
-
-  ServiceDispatcher._() {
-    channel.setMethodCallHandler(dispatch);
+  static PlatformMethodCallHandler get instance {
+    return _instance!;
   }
 
-  void register(Service service) {
+  static set instance(PlatformMethodCallHandler instance) {
+    _instance = instance;
+  }
+
+  static final Map<String, Service> services = {};
+
+  void _register(Service service) {
     services[service.serviceName] = service;
   }
 
-  void unregister(String serviceName) => services.remove(serviceName);
+  // void _unregister(String serviceName) => services.remove(serviceName);
 
-  Future<dynamic> dispatch(MethodCall call) {
+  /// 调用平台的接口
+  Future<Map<String, dynamic>?> invokePlatformMethod(
+    String serviceName,
+    String method, {
+    Map<String, dynamic>? arguments,
+  });
+
+  /// 处理平台的调用
+  Future<dynamic> handlePlatformMethod(MethodCall call) {
     String method = call.method;
     dynamic arguments = call.arguments;
     if (arguments == null) return Future.value(null);
     String serviceName = arguments['serviceName'] ?? "";
     return services[serviceName]?.handleMethodCall(method, arguments) ??
         Future.value(null);
+  }
+}
+
+class _MethodChannelHandler extends PlatformMethodCallHandler {
+  static final _MethodChannelHandler instance = _MethodChannelHandler._();
+
+  static const MethodChannel channel = MethodChannel(
+    'flutter.yunxin.163.com/nim_core',
+  );
+
+  _MethodChannelHandler._() {
+    channel.setMethodCallHandler(handlePlatformMethod);
+  }
+
+  @override
+  Future<Map<String, dynamic>?> invokePlatformMethod(
+    String serviceName,
+    String method, {
+    Map<String, dynamic>? arguments,
+  }) {
+    return channel.invokeMapMethod<String, dynamic>(method, arguments);
   }
 }

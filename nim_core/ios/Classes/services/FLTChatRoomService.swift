@@ -73,7 +73,22 @@ class FLTChatRoomService: FLTBaseService, FLTService {
     case ChatRoomType.CreateMessage.rawValue:
       if let messageService = nimCore?
         .getService(ServiceType.MessageService.rawValue) as? FLTMessageService {
-        messageService.onMethodCalled(method, arguments, resultCallback)
+        var args = arguments
+        var attach = (arguments["messageAttachment"] as? [String: Any]) ?? [String: Any]()
+        if let filePath = arguments["filePath"] as? String,
+           let nosScene = arguments["nosScene"] as? String {
+          attach["path"] = filePath
+          attach["sen"] = nosScene
+        }
+        if let longitude = arguments["longitude"] as? Double,
+           let latitude = arguments["latitude"] as? Double,
+           let address = arguments["address"] as? String {
+          attach["lng"] = longitude
+          attach["lat"] = latitude
+          attach["title"] = address
+        }
+        args["messageAttachment"] = attach.keys.count > 0 ? attach : nil
+        messageService.onMethodCalled(method, args, resultCallback)
       } else {
         resultCallback.notImplemented()
       }
@@ -151,13 +166,19 @@ class FLTChatRoomService: FLTBaseService, FLTService {
       errorCallBack(resultCallback, "parameter is error")
       return
     }
-
     weak var weakSelf = self
-    NIMSDK.shared().chatroomManager.enterChatroom(request) { error, chatromm, member in
+    NIMSDK.shared().chatroomManager.enterChatroom(request) { error, chatroom, member in
+      var result = [String: Any]()
+      if let roomid = chatroom?.roomId as? String,
+         var roomInfo = chatroom?.toDic(),
+         let member = member?.toDic(roomId: roomid) {
+        result["roomId"] = roomid
+        result["roomInfo"] = roomInfo
+        result["member"] = member
+      }
       weakSelf?.chatroomCallback(
         error,
-        ["roomId": chatromm?.roomId, "roomInfo": chatromm?.toDic(),
-         "member": member?.toDic(roomId: chatromm?.roomId)],
+        result,
         resultCallback
       )
     }
@@ -177,9 +198,8 @@ class FLTChatRoomService: FLTBaseService, FLTService {
 
   private func fetchMessageHistory(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let roomId = getRoomId(arguments),
-          let optionJson = arguments["option"] as? [String: Any],
           let option = NIMHistoryMessageSearchOption
-          .fromDic(optionJson) as? NIMHistoryMessageSearchOption else {
+          .fromDic(arguments) as? NIMHistoryMessageSearchOption else {
       errorCallBack(resultCallback, "parameter is error")
       return
     }
@@ -202,7 +222,7 @@ class FLTChatRoomService: FLTBaseService, FLTService {
 
     weak var weakSelf = self
     NIMSDK.shared().chatroomManager.fetchChatroomInfo(roomId) { error, room in
-      weakSelf?.chatroomCallback(error, room, resultCallback)
+      weakSelf?.chatroomCallback(error, room?.toDic(), resultCallback)
     }
   }
 
@@ -359,6 +379,10 @@ class FLTChatRoomService: FLTBaseService, FLTService {
         updateInfo[NSNumber(integerLiteral: NIMChatroomMemberInfoUpdateTag.avatar
             .rawValue)] = avatar
       }
+      if let ext = infoRequest["extension"] as? [String: Any] {
+        updateInfo[NSNumber(integerLiteral: NIMChatroomMemberInfoUpdateTag.ext
+            .rawValue)] = getJsonStringFromDictionary(ext)
+      }
       request.updateInfo = updateInfo
     }
 
@@ -391,7 +415,20 @@ class FLTChatRoomService: FLTBaseService, FLTService {
 
     weak var weakSelf = self
     NIMSDK.shared().chatroomManager.updateMemberBlack(request) { error in
-      weakSelf?.chatroomCallback(error, nil, resultCallback)
+      if let ns_error = error as NSError? {
+        weakSelf?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
+      } else {
+        let ids = NIMChatroomMembersByIdsRequest()
+        ids.roomId = request.roomId
+        ids.userIds = [request.userId]
+        NIMSDK.shared().chatroomManager.fetchChatroomMembers(byIds: ids) { err, members in
+          if members?.isEmpty == false {
+            weakSelf?.chatroomCallback(err, members![0].toDic(roomId: request.roomId), resultCallback)
+          } else {
+            weakSelf?.chatroomCallback(err, nil, resultCallback)
+          }
+        }
+      }
     }
   }
 
@@ -418,7 +455,20 @@ class FLTChatRoomService: FLTBaseService, FLTService {
 
     weak var weakSelf = self
     NIMSDK.shared().chatroomManager.markMemberManager(request) { error in
-      weakSelf?.chatroomCallback(error, nil, resultCallback)
+      if let ns_error = error as NSError? {
+        weakSelf?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
+      } else {
+        let ids = NIMChatroomMembersByIdsRequest()
+        ids.roomId = request.roomId
+        ids.userIds = [request.userId]
+        NIMSDK.shared().chatroomManager.fetchChatroomMembers(byIds: ids) { err, members in
+          if members?.isEmpty == false {
+            weakSelf?.chatroomCallback(err, members![0].toDic(roomId: request.roomId), resultCallback)
+          } else {
+            weakSelf?.chatroomCallback(err, nil, resultCallback)
+          }
+        }
+      }
     }
   }
 
@@ -445,7 +495,20 @@ class FLTChatRoomService: FLTBaseService, FLTService {
 
     weak var weakSelf = self
     NIMSDK.shared().chatroomManager.markNormalMember(request) { error in
-      weakSelf?.chatroomCallback(error, nil, resultCallback)
+      if let ns_error = error as NSError? {
+        weakSelf?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
+      } else {
+        let ids = NIMChatroomMembersByIdsRequest()
+        ids.roomId = request.roomId
+        ids.userIds = [request.userId]
+        NIMSDK.shared().chatroomManager.fetchChatroomMembers(byIds: ids) { err, members in
+          if members?.isEmpty == false {
+            weakSelf?.chatroomCallback(err, members![0].toDic(roomId: request.roomId), resultCallback)
+          } else {
+            weakSelf?.chatroomCallback(err, nil, resultCallback)
+          }
+        }
+      }
     }
   }
 
@@ -505,7 +568,7 @@ class FLTChatRoomService: FLTBaseService, FLTService {
     }
 
     let needNotify = arguments["needNotify"] as? Bool ?? false
-    let duration = arguments["dration"] as? UInt64 ?? 0
+    let duration = (arguments["duration"] as? UInt64 ?? 0) / 1000
 
     let request = NIMChatroomMemberUpdateRequest()
     request.enable = needNotify
@@ -529,7 +592,7 @@ class FLTChatRoomService: FLTBaseService, FLTService {
   // 聊天室队列
   private func fetchChatroomQueue(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     print("ios native fetchChatroomQueue")
-    guard let roomId = getRoomId(arguments) else {
+    guard let roomId = getRoomId(arguments), roomId.count > 0 else {
       errorCallBack(resultCallback, "parameter is error")
       return
     }
@@ -582,8 +645,15 @@ class FLTChatRoomService: FLTBaseService, FLTService {
 
     let request = NIMChatroomQueueBatchUpdateRequest()
     request.roomId = roomId
-    if let entryList = arguments["entryList"] as? [String: Any] {
-      request.elements = entryList
+    if let entryList = arguments["entryList"] as? [[String: Any]] {
+      var elements = [String: String]()
+      for item in entryList {
+        if let key = item["key"] as? String,
+           let value = item["value"] as? String {
+          elements[key] = value
+        }
+      }
+      request.elements = elements
     }
     if let needNotify = arguments["needNotify"] as? Bool {
       request.needNotify = needNotify
@@ -606,6 +676,11 @@ class FLTChatRoomService: FLTBaseService, FLTService {
       .fromDic(arguments) as? NIMChatroomQueueRemoveRequest else {
       errorCallBack(resultCallback, "parameter is error")
       return
+    }
+    if let keyForQueue = arguments["key"] as? String {
+      request.key = keyForQueue
+    } else {
+      request.key = ""
     }
 
     weak var weakSelf = self
@@ -640,7 +715,7 @@ extension FLTChatRoomService: NIMChatroomManagerDelegate {
       [
         "roomId": result.roomId,
         "reason": FLT_NIMChatroomKickReason.convert(result.reason).rawValue,
-        "extension": result.ext,
+        "extension": NSObject().getDictionaryFromJSONString(result.ext),
       ]
     )
   }

@@ -96,4 +96,20 @@ enum NIMNosScene: String {
       return NIMNOSSceneTypeSecurity
     }
   }
+
+  static func toDic(scene: String?) -> String {
+    switch scene {
+    case NIMNOSSceneTypeAvatar:
+      return NIMNosScene.defaultProfile.rawValue
+
+    case NIMNOSSceneTypeMessage:
+      return NIMNosScene.defaultIm.rawValue
+    case "nim_system":
+      return NIMNosScene.systemNosScene.rawValue
+    case NIMNOSSceneTypeSecurity:
+      return NIMNosScene.securityPrefix.rawValue
+    default:
+      return NIMNosScene.defaultIm.rawValue
+    }
+  }
 }

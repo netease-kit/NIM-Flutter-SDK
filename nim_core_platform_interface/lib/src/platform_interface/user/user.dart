@@ -16,6 +16,8 @@ class NIMUser {
   String? avatar;
   NIMUserGenderEnum? gender;
   String? email;
+
+  ///yyyy-MM-dd格式
   @JsonKey(name: "birthday")
   String? birth;
   String? mobile;

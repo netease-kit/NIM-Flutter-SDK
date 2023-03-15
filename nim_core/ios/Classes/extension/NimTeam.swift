@@ -46,6 +46,12 @@ extension NIMCreateTeamOption: NimDataConvertProtrol {
          let type = FLT_NIMTeamUpdateClientCustomMode(rawValue: extensionUpdateMode) {
         model.updateClientCustomMode = type.convertNIMCustomMode()
       }
+      if let maxMemberCountLimitation = json["maxMemberCount"] as? UInt {
+        model.maxMemberCountLimitation = maxMemberCountLimitation
+      }
+      if let clientCustomInfo = json["extension"] as? String {
+        model.clientCustomInfo = clientCustomInfo
+      }
       return model
     }
     return nil
@@ -112,7 +118,29 @@ extension NIMTeam: NimDataConvertProtrol {
         .convert(updateClientCustomMode)?.rawValue
       jsonObject["type"] = FLT_NIMTeamType.convert(type)?.rawValue
       jsonObject["isAllMute"] = inAllMuteMode()
-      jsonObject["muteMode"] = inAllMuteMode() ? "muteAll" : "cancel"
+      jsonObject["muteMode"] = inAllMuteMode() ? (type == NIMTeamType.super ? "muteNormal" : "muteAll") : "cancel"
+      jsonObject["createTime"] = Int(createTime * 1000)
+
+      if let tid = teamId {
+        if type == NIMTeamType.super {
+          jsonObject["isMyTeam"] = NIMSDK.shared().superTeamManager.isMyTeam(tid)
+        } else {
+          jsonObject["isMyTeam"] = NIMSDK.shared().teamManager.isMyTeam(tid)
+        }
+      }
+
+      if serverCustomInfo == nil {
+        jsonObject["extServer"] = ""
+      }
+
+      if clientCustomInfo == nil {
+        jsonObject["extension"] = ""
+      }
+
+      if teamName == nil {
+        jsonObject["name"] = ""
+      }
+
       return jsonObject
     }
     return nil
@@ -178,9 +206,8 @@ extension NIMTeamMember: NimDataConvertProtrol {
     keyPaths[#keyPath(NIMTeamMember.teamId)] = "id"
     keyPaths[#keyPath(NIMTeamMember.userId)] = "account"
     keyPaths[#keyPath(NIMTeamMember.isMuted)] = "isMute"
-    keyPaths[#keyPath(NIMTeamMember.createTime)] = "joinTime"
     keyPaths[#keyPath(NIMTeamMember.inviterAccid)] = "invitorAccid"
-    keyPaths[#keyPath(NIMTeamMember.nickname)] = "teamNick"
+
     return keyPaths
   }
 
@@ -191,15 +218,13 @@ extension NIMTeamMember: NimDataConvertProtrol {
       }
       // iOS无此属性
       jsonObject["isInTeam"] = true
-      jsonObject["joinTime"] = Int(createTime)
-      if customInfo != nil,
-         let data = customInfo!.data(using: String.Encoding.utf8),
-         let dict = try? JSONSerialization.jsonObject(
-           with: data,
-           options: .mutableContainers
-         ) as? [String: Any] {
-        jsonObject["extension"] = dict
+      jsonObject["joinTime"] = Int(createTime * 1000)
+      jsonObject["teamNick"] = nickname ?? ""
+
+      if let ext = customInfo {
+        jsonObject["extension"] = getDictionaryFromJSONString(ext)
       }
+
       return jsonObject
     }
     return nil

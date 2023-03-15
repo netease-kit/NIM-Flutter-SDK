@@ -96,13 +96,12 @@ class MessageService {
   Future<NIMResult<NIMMessage>> _createMessageAndSend(
     NIMMessage message,
     MessageAction? action,
-    bool resend,
   ) {
     return _createMessage(message: message).then((messageResult) async {
       if (messageResult.isSuccess) {
         final message = messageResult.data as NIMMessage;
         await action?.call(message);
-        return sendMessage(message: message, resend: resend);
+        return sendMessage(message: message, resend: false);
       } else {
         return messageResult;
       }
@@ -123,23 +122,23 @@ class MessageService {
     required String sessionId,
     required NIMSessionType sessionType,
     required String text,
-    bool resend = false,
     MessageAction? action,
   }) async {
     final message = NIMMessage.textEmptyMessage(
         sessionId: sessionId, sessionType: sessionType, text: text);
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送图片消息
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   Future<NIMResult<NIMMessage>> sendImageMessage({
     required String sessionId,
     required NIMSessionType sessionType,
     required String filePath,
     required int fileSize,
     String? displayName,
+    String? base64,
     NIMNosScene nosScene = NIMNosScenes.defaultIm,
-    bool resend = false,
     MessageAction? action,
   }) async {
     final message = NIMMessage.imageEmptyMessage(
@@ -147,13 +146,16 @@ class MessageService {
       sessionType: sessionType,
       filePath: filePath,
       fileSize: fileSize,
+      base64: base64,
       displayName: displayName,
       nosScene: nosScene,
     );
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送音频消息
+  /// [displayName] 字段无效，不建议使用
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   Future<NIMResult<NIMMessage>> sendAudioMessage({
     required String sessionId,
     required NIMSessionType sessionType,
@@ -161,8 +163,8 @@ class MessageService {
     required int fileSize,
     required int duration,
     String? displayName,
+    String? base64,
     NIMNosScene nosScene = NIMNosScenes.defaultIm,
-    bool resend = false,
     MessageAction? action,
   }) async {
     final message = NIMMessage.audioEmptyMessage(
@@ -170,10 +172,11 @@ class MessageService {
         sessionType: sessionType,
         filePath: filePath,
         fileSize: fileSize,
+        base64: base64,
         duration: duration,
         displayName: displayName,
         nosScene: nosScene);
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送地理位置消息
@@ -183,7 +186,6 @@ class MessageService {
     required double latitude,
     required double longitude,
     required String address,
-    bool resend = false,
     MessageAction? action,
   }) async {
     var message = NIMMessage.locationEmptyMessage(
@@ -192,10 +194,11 @@ class MessageService {
         latitude: latitude,
         longitude: longitude,
         address: address);
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送视频消息
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   Future<NIMResult<NIMMessage>> sendVideoMessage({
     required String sessionId,
     required NIMSessionType sessionType,
@@ -205,8 +208,8 @@ class MessageService {
     required int width,
     required int height,
     required String displayName,
+    String? base64,
     NIMNosScene nosScene = NIMNosScenes.defaultIm,
-    bool resend = false,
     MessageAction? action,
   }) async {
     var message = NIMMessage.videoEmptyMessage(
@@ -215,44 +218,48 @@ class MessageService {
         filePath: filePath,
         fileSize: fileSize,
         duration: duration,
+        base64: base64,
         width: width,
         height: height,
         displayName: displayName,
         nosScene: nosScene);
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送文件消息
+  /// [base64] 字段为web端专用，web端[filePath] 可传空字符串
   Future<NIMResult<NIMMessage>> sendFileMessage({
     required String sessionId,
     required NIMSessionType sessionType,
     required String filePath,
+    String? base64,
     int? fileSize,
     required String displayName,
     NIMNosScene nosScene = NIMNosScenes.defaultIm,
-    bool resend = false,
     MessageAction? action,
   }) async {
     var message = NIMMessage.fileEmptyMessage(
         sessionId: sessionId,
         sessionType: sessionType,
         filePath: filePath,
+        base64: base64,
         fileSize: fileSize,
         displayName: displayName,
         nosScene: nosScene);
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送Tip消息
-  Future<NIMResult<NIMMessage>> sendTipMessage({
-    required String sessionId,
-    required NIMSessionType sessionType,
-    bool resend = false,
-    MessageAction? action,
-  }) async {
+  /// [content] web端tip内容传这个字段
+  Future<NIMResult<NIMMessage>> sendTipMessage(
+      {required String sessionId,
+      required NIMSessionType sessionType,
+      MessageAction? action,
+      String? content}) async {
     var message = NIMMessage.tipEmptyMessage(
         sessionId: sessionId, sessionType: sessionType);
-    return _createMessageAndSend(message, action, resend);
+    message.content = content;
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送自定义消息
@@ -262,7 +269,6 @@ class MessageService {
     String? content,
     NIMMessageAttachment? attachment,
     NIMCustomMessageConfig? config,
-    bool resend = false,
     MessageAction? action,
   }) async {
     var message = NIMMessage.customEmptyMessage(
@@ -271,7 +277,7 @@ class MessageService {
         content: content,
         attachment: attachment,
         config: config);
-    return _createMessageAndSend(message, action, resend);
+    return _createMessageAndSend(message, action);
   }
 
   /// 发送单聊已读回执
@@ -293,10 +299,25 @@ class MessageService {
     return _platform.saveMessage(message: message, fromAccount: fromAccount);
   }
 
+  /// 保存消息到本地
+  Future<NIMResult<NIMMessage>> saveMessageToLocalEx(
+      {required NIMMessage message, required int time}) async {
+    return _platform.saveMessageToLocalEx(message: message, time: time);
+  }
+
   /// 语音转文字
+  /// [mimeType] PC 端使用，指定语音类型 aac, wav, mp3, amr，默认 aac
+  /// [sampleRate] PC 端使用，指定语音采样率 8000kHz, 16000kHz，默认 16000
   Future<NIMResult<String>> voiceToText(
-      {required NIMMessage message, String? scene}) async {
-    return _platform.voiceToText(message: message);
+      {required NIMMessage message,
+      @Deprecated("useless") String? scene,
+      String? mimeType = 'aac',
+      String? sampleRate = '16000'}) async {
+    return _platform.voiceToText(
+        message: message,
+        scene: scene,
+        mimeType: mimeType,
+        sampleRate: sampleRate);
   }
 
   /// 查询消息
@@ -335,13 +356,19 @@ class MessageService {
     return _platform.deleteChattingHistoryList(msgList, ignore);
   }
 
-  ///按消息server id查询
+  ///清除与指定用户的所有本地消息记录
+  ///[account]用户账号
+  ///[sessionType]会话类型
+  ///[ignore] true: 本地不记录清除操作; false: 本地记录清除操作，默认false, web端无效
+  ///如果为true则[pullMessageHistory]接口参数persist为true时会重新保存到数据库
+  ///不推荐设置成true
   Future<void> clearChattingHistory(
-      String account, NIMSessionType sessionType) async {
-    return _platform.clearChattingHistory(account, sessionType);
+      String account, NIMSessionType sessionType, bool? ignore) async {
+    return _platform.clearChattingHistory(account, sessionType, ignore);
   }
 
-  ///按消息server id查询
+  /// 清空消息数据库的所有消息记录。 可选择是否要同时清空最近联系人列表数据库。
+  /// 若最近联系人列表也被清空，会触发[onSessionDelete]通知
   Future<void> clearMsgDatabase(bool clearRecent) async {
     return _platform.clearMsgDatabase(clearRecent);
   }
@@ -353,6 +380,12 @@ class MessageService {
   }
 
   ///从服务器拉取消息历史记录，可以指定查询的消息类型，结果不存本地消息数据库。
+  /// [anchor] 起始时间点的消息
+  /// [toTime] – 结束时间点单位毫秒
+  /// [limit] – 本次查询的消息条数上限(最多100条)
+  /// [direction] – 查询方向，QUERY_OLD按结束时间点逆序查询，逆序排列；QUERY_NEW按起始时间点正序起查，正序排列
+  /// [messageTypeList] – 消息类型，数组。
+  /// [persist] – 通过该接口获取的漫游消息记录，要不要保存到本地消息数据库。
   Future<NIMResult<List<NIMMessage>>> pullMessageHistoryExType(
       NIMMessage anchor,
       int toTime,
@@ -424,6 +457,12 @@ class MessageService {
   }
 
   /// 撤回消息
+  /// [message] - 要撤回的消息
+  /// [customApnsText] – 第三方透传消息推送文本，不填则不推送
+  /// [pushPayload] – 第三方自定义的推送属性，限制json类型，长度2048
+  /// [shouldNotifyBeCount] – 撤回通知是否更新未读数
+  /// [postscript] – 附言
+  /// [attach] – 扩展字段
   Future<NIMResult<void>> revokeMessage(
       {required NIMMessage message,
       String? customApnsText,
@@ -476,10 +515,9 @@ class MessageService {
   }
 
   ///回复消息。<br>
-  ///  [msg]    带发送的消息体，由{@link MessageBuilder}构造
+  ///  [msg]    待发送的消息体，由{@link MessageBuilder}构造
   ///  [replyMsg] 被回复的消息
   ///  [resend] 如果是发送失败后重发，标记为true，否则填false
-  ///  [Future] 可以设置回调函数。消息发送完成后才会调用，如果出错，会有具体的错误代码。
   ///
   Future<NIMResult<void>> replyMessage(
       {required NIMMessage msg,
@@ -713,7 +751,7 @@ class MessageService {
   /// 该接口会自动调用clearUnreadCount(String, SessionTypeEnum)将正在聊天对象的未读数清零。
   /// 如果有新消息到达，且消息来源是正在聊天的对象，其未读数也不会递增。
   ///
-  /// <br>[account] - 聊天对象帐号，或者以下两个值：'all' 与 'none'。
+  /// <br>[sessionId] - 聊天对象帐号，或者以下两个值：'all' 与 'none'。
   /// <br>[sessionType] - 会话类型。如果account不是具体的对象，该参数将被忽略
   Future<NIMResult<void>> setChattingAccount({
     required String sessionId,

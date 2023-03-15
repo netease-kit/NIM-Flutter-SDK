@@ -105,8 +105,9 @@ class FLTTeamService : public FLTService {
 
  private:
   bool getTeamId(const flutter::EncodableMap* arguments, std::string& teamId);
-  void convertNIMTeamInfoToDartTeamInfo(flutter::EncodableMap& argments,
-                                        const nim::TeamInfo& info);
+  void convertNIMTeamInfoToDartTeamInfo(
+      flutter::EncodableMap& argments, const nim::TeamInfo& info,
+      const std::list<nim::TeamMemberProperty>& all_my_member_info_list = {});
   void convertNIMTeamMemberToDartTeamMember(
       flutter::EncodableMap& argments, const nim::TeamMemberProperty& member);
 

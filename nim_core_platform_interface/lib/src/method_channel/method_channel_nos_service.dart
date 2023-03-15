@@ -24,7 +24,8 @@ class MethodChannelNOSService extends NOSServicePlatform {
     return NIMResult.fromMap(replyMap);
   }
 
-  Future<NIMResult<void>> download({required String url, String? path}) async {
+  Future<NIMResult<void>> download(
+      {required String url, required String path}) async {
     Map<String, dynamic> argument = {'url': url, 'path': path};
     Map<String, dynamic> replyMap =
         await invokeMethod('download', arguments: argument);

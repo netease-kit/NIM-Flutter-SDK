@@ -245,13 +245,13 @@ class SuperTeamService {
     return _platform.muteTeam(teamId, notifyType);
   }
 
-  ///用户可以查询到具有指定群名称的群ID的列表
+  ///用户可以查询到具有指定群名称的群ID的列表 (iOS 暂不支持)
   ///[name] 群名称
   Future<NIMResult<List<String>>> searchTeamIdByName(String name) async {
     return _platform.searchTeamIdByName(name);
   }
 
-  /// 用户在客户端本地可以搜索与关键字匹配的所有群：
+  /// 用户在客户端本地可以搜索与关键字匹配的所有群：（iOS暂不支持）
   /// [keyword] 要搜索的关键字
   Future<NIMResult<List<NIMSuperTeam>>> searchTeamsByKeyword(
       String keyword) async {

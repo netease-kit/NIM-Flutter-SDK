@@ -60,11 +60,10 @@ enum FLT_NIMMessageType: String {
     case NIMMessageType.robot:
       return FLT_NIMMessageType.robot
     case NIMMessageType.rtcCallRecord:
-      return FLT_NIMMessageType.netcall
+      return FLT_NIMMessageType.avchat
     default:
-      break
+      return FLT_NIMMessageType.undef
     }
-    return nil
   }
 
   func convertToNIMMessageType() -> NIMMessageType? {
@@ -84,9 +83,9 @@ enum FLT_NIMMessageType: String {
     case .file:
       return NIMMessageType.file
     case .avchat:
-      return nil
+      return .rtcCallRecord
     case .notification:
-      return NIMMessageType.location
+      return NIMMessageType.notification
     case .tip:
       return NIMMessageType.tip
     case .robot:
@@ -190,11 +189,20 @@ enum FLT_NIMMessageStatus: String {
         return .draft
       }
     } else {
-      if message.status == .read {
-        return .read
-      } else {
-        return .unread
-      }
+      return .success
+    }
+  }
+
+  static func convertFLTStatus(qchatMessage: NIMQChatMessage) -> FLT_NIMMessageStatus {
+    switch qchatMessage.deliveryState {
+    case .failed:
+      return .fail
+    case .delivering:
+      return .sending
+    case .deliveried:
+      return .success
+    default:
+      return .draft
     }
   }
 

@@ -77,22 +77,7 @@ class FLTChatExtendService: FLTBaseService, FLTService {
   private func fetchSubMessages(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     if let messageDic = arguments["message"] as? [String: Any],
        let message = NIMMessage.convertToMessage(messageDic) {
-      let fromTime = arguments["fromTime"] as? TimeInterval ?? 0
-      let toTime = arguments["toTime"] as? TimeInterval ?? 0
-      let limit = arguments["limit"] as? UInt ?? 0
-      let persist = arguments["persist"] as? Bool ?? false
-      let option = NIMThreadTalkFetchOption()
-      option.start = fromTime
-      option.end = toTime
-      option.limit = limit
-      if let direction = arguments["direction"] as? Int {
-        if direction <= 0 {
-          option.reverse = true
-        } else {
-          option.reverse = false
-        }
-      }
-      option.sync = persist
+      let option = NIMThreadTalkFetchOption.fromDic(arguments)
 
       weak var weakSelf = self
       NIMSDK.shared().chatExtendManager
@@ -101,7 +86,7 @@ class FLTChatExtendService: FLTBaseService, FLTService {
             resultCallback
               .result(NimResult.error(ns_error.code, ns_error.description).toDic())
           } else {
-            weakSelf?.successCallBack(resultCallback, result)
+            weakSelf?.successCallBack(resultCallback, result?.toDict())
           }
         }
     }

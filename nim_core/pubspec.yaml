@@ -1,31 +1,43 @@
 name: nim_core
 description: A Flutter plugin for NetEase IM SDK on Android, iOS and Windows.
-version: 1.0.11
+version: 1.4.6
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
+#remove before publish
+publish_to: none
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
   flutter: ">=1.20.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  nim_core_platform_interface: ^1.0.1
-  # path: ../nim_core_platform_interface
+  nim_core_platform_interface:
+#    ^1.4.3
+     path: ../nim_core_platform_interface
   nim_core_windows:
-    ^1.0.2
-  # path: ../nim_core_windows
+#    ^1.0.7
+    path: ../nim_core_windows
   nim_core_macos:
-    ^1.0.2
-  # path: ../nim_core_macos
+#    ^1.0.7
+    path: ../nim_core_macos
+  nim_core_web:
+#   ^1.0.2
+     path: ../nim_core_web
   path_provider: ^2.0.2
-  yunxin_base: ^0.1.0-rc.0
-  yunxin_alog: ^1.0.7
+  # yunxin_base: ^0.1.0-rc.0
+  universal_io: ^2.0.4
+  yunxin_alog: ^1.0.11
+  hawk_meta: ^0.0.1
+#    path: ../../auto_test/hawk_meta
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   permission_handler: ^6.1.1
+  hawk_source_gen: ^0.0.1
+#    path: ../../auto_test/hawk_source_gen
+  build_runner:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -46,6 +58,8 @@ flutter:
         default_package: nim_core_windows
       macos:
         default_package: nim_core_macos
+      web:
+        default_package: nim_core_web
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

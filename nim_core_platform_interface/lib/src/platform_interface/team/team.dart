@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:convert';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
@@ -155,7 +155,8 @@ enum NIMTeamAllMuteModeEnum {
   ///全员禁言，不包括管理员
   muteNormal,
 
-  /// 全员禁言，包括群组和管理员
+  /// 全员禁言，包括群组和管理员，超大群不支持
+  /// 该字段已废弃，效果同[muteNormal]
   muteAll,
 }
 
@@ -281,6 +282,7 @@ class NIMTeamUpdateFieldRequest {
     _updatedFields['teamExtensionUpdateMode'] = teamExtensionUpdateMode.index;
   }
 
+  /// superTeam 中iOS暂不支持
   setTeamUpdateMode(NIMTeamUpdateModeEnum teamUpdateMode) {
     _updatedFields['teamUpdateMode'] = teamUpdateMode.index;
   }

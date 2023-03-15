@@ -21,10 +21,12 @@ class EventSubscribeService {
   EventSubscribeServicePlatform get _platform =>
       EventSubscribeServicePlatform.instance;
 
+  ///事件状态变更
   Stream<List<Event>> get eventSubscribeStream =>
       EventSubscribeServicePlatform.instance.eventSubscribeStream.stream;
 
   ///订阅指定账号的在线状态事件
+  ///返回订阅失败的账号集合，如果数组长度为0则全部成功。如果出错，会有具体的错误代码。
   Future<NIMResult<List<String>>> registerEventSubscribe(
       EventSubscribeRequest request) async {
     return _platform.registerEventSubscribe(request);

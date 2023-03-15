@@ -3,43 +3,43 @@
 // found in the LICENSE file.
 
 class Event {
-  //事件ID
+  ///事件ID，非用户设置字段
   final String? eventId;
 
-  //事件类型，1-99999 为云信保留类型
+  ///事件类型，1-99999 为云信保留类型
   final int? eventType;
 
-  //事件的状态值
+  ///事件的状态值
   final int? eventValue;
 
-  // 事件的扩展字段，最大长度为 256 字节，由事件发布客户端配置
+  /// 事件的扩展字段，最大长度为 256 字节，由事件发布客户端配置
   final String? config;
 
-  //事件的有效期，范围为 60s 到 7days，数值单位为秒
+  ///事件的有效期，范围为 60s 到 7days，数值单位为秒
   final int? expiry;
 
-  //是否只广播给在线用户，若为 false，事件支持在线广播和登录后同步
+  ///是否只广播给在线用户，若为 false，事件支持在线广播和登录后同步
   final bool? broadcastOnlineOnly;
 
-  //是否支持多端同步
+  ///是否支持多端同步
   final bool? syncSelfEnable;
 
-  //事件发布者的云信账号
+  ///事件发布者的云信账号，非用户设置字段
   final String? publisherAccount;
 
-  //事件发布的时间
+  ///事件发布的时间，非用户设置字段
   final int? publishTime;
 
-  //事件发布者客户端类型 @see ClientType
+  ///事件发布者客户端类型 @see ClientType，非用户设置字段
   final int? publisherClientType;
 
-  //多端 config 配置
+  ///多端 config 配置
   final String? multiClientConfig;
 
-  //解析 multiClientConfig 的多端 config 配置 map
+  ///解析 multiClientConfig 的多端 config 配置 map
   final Map<int, String>? multiClientConfigMap;
 
-  //预定义事件中服务端配置项,仅仅对预留事件有效
+  ///预定义事件中服务端配置项,仅仅对预留事件有效，非用户设置字段
   final String? nimConfig;
 
   Event(

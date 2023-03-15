@@ -25,6 +25,7 @@ class NOSService {
   NOSServicePlatform get _platform => NOSServicePlatform.instance;
 
   /// nos上传
+  /// web 端[filePath] 传base64
   Future<NIMResult<String>> upload(
       {required String filePath, String? mimeType, String? sceneKey}) async {
     return _platform.upload(
@@ -32,7 +33,8 @@ class NOSService {
   }
 
   /// nos下载
-  Future<NIMResult<void>> download({required String url, String? path}) async {
+  Future<NIMResult<void>> download(
+      {required String url, required String path}) async {
     return _platform.download(url: url, path: path);
   }
 }

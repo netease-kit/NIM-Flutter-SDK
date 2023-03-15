@@ -14,6 +14,7 @@ import com.netease.nimflutter.NimResult
 import com.netease.nimflutter.NimResultCallback
 import com.netease.nimflutter.ResultCallback
 import com.netease.nimflutter.SafeResult
+import com.netease.nimflutter.dartNameOfStatusCode
 import com.netease.nimflutter.stringFromClientTypeEnum
 import com.netease.nimflutter.stringToClientTypeEnum
 import com.netease.nimlib.sdk.NIMClient
@@ -169,20 +170,6 @@ class FLTAuthService(
         LoginSyncStatus.BEGIN_SYNC -> "dataSyncStart"
         LoginSyncStatus.SYNC_COMPLETED -> "dataSyncFinish"
         else -> throw IllegalStateException()
-    }
-
-    private fun dartNameOfStatusCode(status: StatusCode) = when (status) {
-        StatusCode.UNLOGIN -> "unLogin"
-        StatusCode.NET_BROKEN -> "netBroken"
-        StatusCode.CONNECTING -> "connecting"
-        StatusCode.LOGINING -> "logging"
-        StatusCode.LOGINED -> "loggedIn"
-        StatusCode.KICKOUT -> "kickOut"
-        StatusCode.KICK_BY_OTHER_CLIENT -> "kickOutByOtherClient"
-        StatusCode.FORBIDDEN -> "forbidden"
-        StatusCode.VER_ERROR -> "versionError"
-        StatusCode.PWD_ERROR -> "pwdError"
-        else -> "unknown"
     }
 
     @ExperimentalCoroutinesApi

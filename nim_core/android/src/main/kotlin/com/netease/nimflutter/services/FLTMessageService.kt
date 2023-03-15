@@ -35,6 +35,7 @@ import com.netease.nimlib.sdk.msg.MsgServiceObserve
 import com.netease.nimlib.sdk.msg.attachment.AudioAttachment
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment
 import com.netease.nimlib.sdk.msg.constant.DeleteTypeEnum
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum
 import com.netease.nimlib.sdk.msg.constant.MsgTypeEnum
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.AttachmentProgress
@@ -67,7 +68,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import kotlin.collections.ArrayList
 
 class FLTMessageService(
     applicationContext: Context,
@@ -366,6 +366,7 @@ class FLTMessageService(
                 ResultCallback(safeResult)
             )
             "saveMessage" -> saveMessage(arguments, ResultCallback(safeResult))
+            "saveMessageToLocalEx" -> saveMessageToLocalEx(arguments, ResultCallback(safeResult))
             "updateMessage" -> updateMessage(arguments, ResultCallback(safeResult))
             "forwardMessage" -> forwardMessage(arguments, ResultCallback(safeResult))
             "voiceToText" -> voiceToText(arguments, ResultCallback(safeResult))
@@ -466,7 +467,7 @@ class FLTMessageService(
             NIMClient.getService(MsgService::class.java).queryMessageListByUuid(messageUuidList)
                 .setCallback(object : RequestCallback<List<IMMessage>> {
                     override fun onSuccess(param: List<IMMessage>?) {
-                        val queryMessage = param?.get(0)
+                        val queryMessage = param?.firstOrNull()
                         if (queryMessage == null) {
                             resultCallback.result(
                                 NimResult(
@@ -753,7 +754,7 @@ class FLTMessageService(
         resultCallback: ResultCallback<IMMessage>
     ) {
         val messageList: List<IMMessage?> =
-            (arguments["messageList"] as List<*>)?.map { MessageHelper.convertIMMessage(it as Map<String, *>) }
+            (arguments["messageList"] as List<*>).map { MessageHelper.convertIMMessage(it as Map<String, *>) }
                 .toList()
         NIMClient.getService(TeamService::class.java).refreshTeamMessageReceipt(messageList)
         resultCallback.result(NimResult(code = 0))
@@ -831,8 +832,9 @@ class FLTMessageService(
                 NimResult(code = -1, errorDetails = "saveMessage but fromAccount is empty error!")
             )
         } else {
+            message?.fromAccount = fromAccount
             val future = NIMClient.getService(MsgService::class.java)
-                .insertLocalMessage(message, fromAccount)
+                .saveMessageToLocal(message, true)
             if (future == null) {
                 resultCallback.result(
                     NimResult(code = -2, errorDetails = "save message error!")
@@ -854,6 +856,54 @@ class FLTMessageService(
                     override fun onException(exception: Throwable?) {
                         resultCallback.result(
                             NimResult(code = -2, errorDetails = "save message exception：$exception")
+                        )
+                    }
+                })
+            }
+        }
+    }
+
+    // 本地消息插入
+    private fun saveMessageToLocalEx(
+        arguments: Map<String, *>,
+        resultCallback: ResultCallback<IMMessage>
+    ) {
+        val message: IMMessage? = MessageHelper.convertIMMessage(arguments)
+        val time = (arguments["time"] as Number?)?.toLong()
+        if (time == null) {
+            resultCallback.result(
+                NimResult(code = -1, errorDetails = "saveMessageToLocalEx but time is empty error!")
+            )
+        } else {
+            // 保存之前的消息状态变成success，确保查询结果状态是success
+            message?.status = MsgStatusEnum.success
+            //  由于 iOS 端 notify 字段不支持设置为 false，对齐 iOS
+            val future = NIMClient.getService(MsgService::class.java)
+                .saveMessageToLocalEx(message, true, time)
+            if (future == null) {
+                resultCallback.result(
+                    NimResult(code = -2, errorDetails = "saveMessageToLocalEx error!")
+                )
+            } else {
+                future.setCallback(object : RequestCallback<Void> {
+                    override fun onSuccess(param: Void?) {
+                        resultCallback.result(
+                            NimResult(code = 0, message) { it.toMap() }
+                        )
+                    }
+
+                    override fun onFailed(code: Int) {
+                        resultCallback.result(
+                            NimResult(code = code, errorDetails = "saveMessageToLocalEx failed!")
+                        )
+                    }
+
+                    override fun onException(exception: Throwable?) {
+                        resultCallback.result(
+                            NimResult(
+                                code = -2,
+                                errorDetails = "saveMessageToLocalEx exception：$exception"
+                            )
                         )
                     }
                 })
@@ -1000,7 +1050,7 @@ class FLTMessageService(
         resultCallback: ResultCallback<String>
     ) {
         val messageList: List<IMMessage?> =
-            (arguments["messageList"] as List<*>)?.map { MessageHelper.convertIMMessage(it as Map<String, *>) }
+            (arguments["messageList"] as List<*>).map { MessageHelper.convertIMMessage(it as Map<String, *>) }
                 .toList()
         val ignore = arguments["ignore"] as Boolean
         NIMClient.getService(MsgService::class.java).deleteChattingHistory(messageList, ignore)
@@ -1013,8 +1063,9 @@ class FLTMessageService(
     ) {
         val account = arguments["account"] as String
         val sessionType = stringToSessionTypeEnum(arguments["sessionType"] as String)
+        val ignore = arguments["ignore"] as Boolean? ?: false
         NIMClient.getService(MsgService::class.java)
-            .clearChattingHistory(account, sessionType, false)
+            .clearChattingHistory(account, sessionType, ignore)
         resultCallback.result(NimResult(code = 0))
     }
 
@@ -1023,8 +1074,21 @@ class FLTMessageService(
         resultCallback: ResultCallback<String>
     ) {
         val clearRecent = arguments["clearRecent"] as Boolean
-        NIMClient.getService(MsgService::class.java).clearMsgDatabase(clearRecent)
-        resultCallback.result(NimResult(code = 0))
+        NIMClient.getService(MsgService::class.java).clearMsgDatabase(clearRecent).setCallback(
+            object : RequestCallback<Void> {
+                override fun onSuccess(result: Void?) {
+                    resultCallback.result(NimResult(code = 0))
+                }
+
+                override fun onFailed(code: Int) {
+                    resultCallback.result(NimResult(code = code))
+                }
+
+                override fun onException(exception: Throwable?) {
+                    resultCallback.result(NimResult(code = -1, errorDetails = exception?.message))
+                }
+            }
+        )
     }
 
     private fun pullMessageHistoryExType(
@@ -1236,11 +1300,13 @@ class FLTMessageService(
         val session: Map<String, *> by arguments
         val sessionId: String by session
         val sessionType = stringToSessionTypeEnum(session["sessionType"] as String)
-        val tag: Number by session
-        val extension: Map<String, Any> by session
+        val tag: Number? by session
+        val extension: Map<String, Any>? by session
         return withContext(Dispatchers.IO) {
             msgService.queryRecentContact(sessionId, sessionType)?.let {
-                it.tag = tag.toLong()
+                tag?.let { e ->
+                    it.tag = e.toLong()
+                }
                 it.extension = extension
                 if (needNotify) {
                     msgService.updateRecentAndNotify(it)
