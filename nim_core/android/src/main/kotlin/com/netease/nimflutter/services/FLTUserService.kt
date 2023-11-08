@@ -92,6 +92,7 @@ class FLTUserService(
     /**
      * 获取指定用户资料（本地）
      */
+    @OptIn(ExperimentalStdlibApi::class)
     private fun getUserInfo(
         arguments: Map<String, *>,
         resultCallback: ResultCallback<NimUserInfo>
@@ -110,6 +111,7 @@ class FLTUserService(
     /**
      * 从本地数据库中批量获取用户资料
      */
+    @OptIn(ExperimentalStdlibApi::class)
     private fun getUserInfoList(
         arguments: Map<String, *>,
         resultCallback: ResultCallback<List<NimUserInfo?>>
@@ -138,6 +140,7 @@ class FLTUserService(
     /**
      * 获取本地数据库中所有用户资料
      */
+    @OptIn(ExperimentalStdlibApi::class)
     private fun getAllUserInfo(resultCallback: ResultCallback<List<NimUserInfo?>>) {
         var userInfo = NIMClient.getService(UserService::class.java).getAllUserInfo()
         resultCallback.result(
@@ -157,6 +160,7 @@ class FLTUserService(
      * 批量获取用户资料（云端）
      */
     @Suppress("UNCHECKED_CAST")
+    @OptIn(ExperimentalStdlibApi::class)
     private fun fetchUserInfoList(
         arguments: Map<String, *>,
         resultCallback: ResultCallback<List<NimUserInfo?>>
@@ -204,7 +208,7 @@ class FLTUserService(
     ) {
         val fields: HashMap<UserInfoFieldEnum, Any?> = HashMap()
         val nick = arguments["nick"] as? String
-        if (!TextUtils.isEmpty(nick)) {
+        if (nick != null) {
             fields[UserInfoFieldEnum.Name] = nick
         }
         val avatar = arguments["avatar"] as? String
@@ -244,20 +248,20 @@ class FLTUserService(
         }
 
         NIMClient.getService(UserService::class.java).updateUserInfo(fields).setCallback(object :
-                RequestCallback<Void> {
-                override fun onSuccess(param: Void?) {
-                    ALog.d(tag, "updateMyUserInfo onSuccess")
-                    resultCallback.result(NimResult(code = 0))
-                }
+            RequestCallback<Void> {
+            override fun onSuccess(param: Void?) {
+                ALog.d(tag, "updateMyUserInfo onSuccess")
+                resultCallback.result(NimResult(code = 0))
+            }
 
-                override fun onFailed(code: Int) {
-                    onFailed("updateMyUserInfo", code, resultCallback)
-                }
+            override fun onFailed(code: Int) {
+                onFailed("updateMyUserInfo", code, resultCallback)
+            }
 
-                override fun onException(exception: Throwable?) {
-                    onException("updateMyUserInfo", exception, resultCallback)
-                }
-            })
+            override fun onException(exception: Throwable?) {
+                onException("updateMyUserInfo", exception, resultCallback)
+            }
+        })
     }
 
     /**
@@ -301,6 +305,7 @@ class FLTUserService(
     /**
      * 根据关键字查找用户信息
      */
+    @OptIn(ExperimentalStdlibApi::class)
     private fun searchUserInfoListByKeyword(
         arguments: Map<String, *>,
         resultCallback: ResultCallback<List<NimUserInfo?>>
@@ -710,6 +715,7 @@ class FLTUserService(
             })
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     private val userInfoChangedObserver =
         Observer<List<NimUserInfo>> { userInfoListChangeNotify ->
             notifyEvent(

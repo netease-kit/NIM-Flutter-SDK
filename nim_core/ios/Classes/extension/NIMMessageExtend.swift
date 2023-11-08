@@ -174,11 +174,18 @@ extension NIMStickTopSessionInfo {
       let session = NIMSession(sessionId, type: sessionType)
       info.session = session
     }
-    info.ext = json["ext"] as? String ?? ""
-    let createTime = json["createTime"] as? Int ?? 0
-    info.createTime = Double(createTime)
-    let updateTime = json["updateTime"] as? Int ?? 0
-    info.updateTime = Double(updateTime)
+    if let ext = json["ext"] as? String {
+      info.ext = ext
+    }
+
+    if let createTime = json["createTime"] as? Int {
+      info.createTime = TimeInterval(createTime / 1000)
+    }
+
+    if let updateTime = json["updateTime"] as? Int {
+      info.updateTime = TimeInterval(updateTime / 1000)
+    }
+
     return info
   }
 }

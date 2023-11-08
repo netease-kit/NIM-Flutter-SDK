@@ -13,6 +13,7 @@ class Event {
   final int? eventValue;
 
   /// 事件的扩展字段，最大长度为 256 字节，由事件发布客户端配置
+  /// 发布的时候使用
   final String? config;
 
   ///事件的有效期，范围为 60s 到 7days，数值单位为秒
@@ -34,12 +35,15 @@ class Event {
   final int? publisherClientType;
 
   ///多端 config 配置
+  ///接收时有效
   final String? multiClientConfig;
 
   ///解析 multiClientConfig 的多端 config 配置 map
+  @Deprecated("use multiClientConfig instead")
   final Map<int, String>? multiClientConfigMap;
 
   ///预定义事件中服务端配置项,仅仅对预留事件有效，非用户设置字段
+  @Deprecated("not support since version  1.7.0")
   final String? nimConfig;
 
   Event(
@@ -89,8 +93,5 @@ class Event {
         if (publisherClientType != null)
           'publisherClientType': publisherClientType,
         if (multiClientConfig != null) 'multiClientConfig': multiClientConfig,
-        if (multiClientConfigMap != null)
-          'multiClientConfigMap': multiClientConfigMap,
-        if (nimConfig != null) 'nimConfig': nimConfig,
       };
 }

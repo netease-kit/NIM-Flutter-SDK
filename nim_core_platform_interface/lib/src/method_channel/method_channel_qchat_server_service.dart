@@ -250,4 +250,25 @@ class MethodChannelQChatServerService extends QChatServerServicePlatform {
         await invokeMethod('subscribeAllChannel', arguments: param.toJson()),
         convert: (json) => QChatSubscribeAllChannelResult.fromJson(json));
   }
+
+  Future<NIMResult<QChatSubscribeServerAsVisitorResult>> subscribeAsVisitor(
+      QChatSubscribeServerAsVisitorParam param) async {
+    return NIMResult<QChatSubscribeServerAsVisitorResult>.fromMap(
+        await invokeMethod('subscribeAsVisitor', arguments: param.toJson()),
+        convert: (json) => QChatSubscribeServerAsVisitorResult.fromJson(json));
+  }
+
+  Future<NIMResult<QChatEnterServerAsVisitorResult>> enterAsVisitor(
+      QChatEnterServerAsVisitorParam param) async {
+    return NIMResult<QChatEnterServerAsVisitorResult>.fromMap(
+        await invokeMethod('enterAsVisitor', arguments: param.toJson()),
+        convert: (json) => QChatEnterServerAsVisitorResult.fromJson(json));
+  }
+
+  Future<NIMResult<QChatLeaveServerAsVisitorResult>> leaveAsVisitor(
+      QChatLeaveServerAsVisitorParam param) async {
+    return NIMResult<QChatLeaveServerAsVisitorResult>.fromMap(
+        await invokeMethod('leaveAsVisitor', arguments: param.toJson()),
+        convert: (json) => QChatLeaveServerAsVisitorResult.fromJson(json));
+  }
 }

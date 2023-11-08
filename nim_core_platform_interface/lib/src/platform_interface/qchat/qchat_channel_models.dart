@@ -27,12 +27,16 @@ class QChatCreateChannelParam extends QChatAntiSpamConfigParam {
   /// 查看模式
   QChatChannelMode? viewMode;
 
+  ///游客可见模式
+  QChatVisitorMode? visitorMode;
+
   QChatCreateChannelParam(
       {required this.serverId,
       required this.name,
       required this.type,
       this.custom,
       this.topic,
+      this.visitorMode,
       this.viewMode});
 
   factory QChatCreateChannelParam.fromJson(Map<String, dynamic> json) =>
@@ -47,6 +51,18 @@ enum QChatChannelMode {
 
   ///私密的
   private
+}
+
+///游客可见模式
+enum QChatVisitorMode {
+  /// 可见
+  visible,
+
+  /// 不可见
+  invisible,
+
+  /// 跟随模式(默认)，频道公开游客可见，频道私密游客不可见
+  follow,
 }
 
 enum QChatChannelSyncMode {
@@ -111,6 +127,9 @@ class QChatChannel {
   /// 同步模式
   QChatChannelSyncMode? syncMode;
 
+  ///游客可见模式
+  QChatVisitorMode? visitorMode;
+
   /// 自定义排序权重值
   int? reorderWeight;
 
@@ -128,6 +147,7 @@ class QChatChannel {
       this.reorderWeight,
       this.owner,
       this.updateTime,
+      this.visitorMode,
       this.valid});
 
   factory QChatChannel.fromJson(Map<String, dynamic> json) =>
@@ -196,11 +216,15 @@ class QChatUpdateChannelParam extends QChatAntiSpamConfigParam {
   ///频道查看模式
   QChatChannelMode? viewMode;
 
+  ///游客可见模式
+  QChatVisitorMode? visitorMode;
+
   QChatUpdateChannelParam(
       {required this.channelId,
       this.custom,
       this.topic,
       this.viewMode,
+      this.visitorMode,
       this.name});
 
   factory QChatUpdateChannelParam.fromJson(Map<String, dynamic> json) =>
@@ -979,4 +1003,41 @@ class QChatGetChannelCategoriesByPageResult extends QChatGetByPageResult {
 
   Map<String, dynamic> toJson() =>
       _$QChatGetChannelCategoriesByPageResultToJson(this);
+}
+
+/// "以游客身份订阅频道"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatSubscribeChannelAsVisitorParam {
+  /// 请求参数，操作类型，见QChatSubOperateType
+  QChatSubscribeOperateType operateType;
+
+  /// 请求参数，操作的对象：channelInfo列表
+  @JsonKey(fromJson: _qChatChannelIdInfoListFromJson)
+  List<QChatChannelIdInfo> channelIdInfos;
+
+  QChatSubscribeChannelAsVisitorParam(
+      {required this.operateType, required this.channelIdInfos});
+
+  factory QChatSubscribeChannelAsVisitorParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatSubscribeChannelAsVisitorParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatSubscribeChannelAsVisitorParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSubscribeChannelAsVisitorResult {
+  ///订阅失败的频道id信息列表
+  @JsonKey(fromJson: _qChatChannelIdInfoListFromJson)
+  List<QChatChannelIdInfo>? failedList;
+
+  QChatSubscribeChannelAsVisitorResult({this.failedList});
+
+  factory QChatSubscribeChannelAsVisitorResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatSubscribeChannelAsVisitorResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatSubscribeChannelAsVisitorResultToJson(this);
 }

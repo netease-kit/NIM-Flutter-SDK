@@ -174,6 +174,18 @@ class NIMMessage {
   /// 只有当当前消息为 [NIMSessionType.p2p] 消息且 [NIMMessageDirection.outgoing] 为 `true`
   bool? isRemoteRead;
 
+  /// 易盾反垃圾扩展字段，为 json
+  String? yidunAntiSpamExt;
+
+  /// 易盾反垃圾返回的结果
+  String? yidunAntiSpamRes;
+
+  /// 消息是否需要被抄送
+  @JsonKey(
+      fromJson: NIMMessageRobotInfo._fromMap,
+      toJson: NIMMessageRobotInfo._toMap)
+  NIMMessageRobotInfo? robotInfo;
+
   @visibleForTesting
   NIMMessage(
       {this.messageId,
@@ -213,7 +225,10 @@ class NIMMessage {
       this.yidunAntiCheating,
       this.env,
       this.fromNickname,
-      this.isRemoteRead});
+      this.isRemoteRead,
+      this.yidunAntiSpamExt,
+      this.yidunAntiSpamRes,
+      this.robotInfo});
 
   factory NIMMessage.fromMap(Map<String, dynamic> map) =>
       _$NIMMessageFromJson(map);
@@ -432,7 +447,7 @@ class NIMCustomMessageConfig {
   /// 多端同时登录时，发送一条自定义消息后，是否要同步到其他同时登录的客户端
   final bool enableSelfSync;
 
-  /// 该消息是否要消息提醒，如果为true，那么对方收到消息后，系统通知栏会有提醒
+  /// 该消息是否需要离线推送和消息提醒，如果为true，那么对方收到消息后，系统通知栏会有提醒
   final bool enablePush;
 
   /// 该消息是否需要推送昵称（针对iOS客户端有效），如果为true，那么对方收到消息后，iOS端将显示推送昵称
@@ -1090,6 +1105,8 @@ class NIMChatroomMessage extends NIMMessage {
     String? env,
     String? fromNickname,
     bool? isRemoteRead,
+    String? yidunAntiSpamExt,
+    String? yidunAntiSpamRes,
   }) : super(
           messageId: messageId,
           sessionId: sessionId,
@@ -1320,7 +1337,7 @@ class NIMLocalAntiSpamResult {
   /// 命中的垃圾词操作类型，0：未命中；1：客户端替换；2：客户端拦截；3：服务器拦截；
   final int operator;
 
-  /// 将垃圾词替换后的文本
+  /// 将垃圾词替换后的文本，只有当类型为客户端替换时才有效
   final String? content;
 
   NIMLocalAntiSpamResult(this.operator, this.content);
@@ -1366,4 +1383,102 @@ class NIMMessageKey {
   String toString() {
     return 'NIMMessageKey{sessionType: $sessionType, fromAccount: $fromAccount, toAccount: $toAccount, time: $time, serverId: $serverId, uuid: $uuid}';
   }
+}
+
+@JsonSerializable()
+class NIMMessageRobotInfo {
+  final String? function;
+  final String? topic;
+  final String? customContent;
+  final String? account;
+
+  NIMMessageRobotInfo(
+      {this.function, this.topic, this.customContent, this.account});
+
+  factory NIMMessageRobotInfo.fromMap(Map<String, dynamic> map) =>
+      _$NIMMessageRobotInfoFromJson(map);
+
+  Map<String, dynamic> toMap() => _$NIMMessageRobotInfoToJson(this);
+
+  static Map<String, dynamic>? _toMap(NIMMessageRobotInfo? info) =>
+      info?.toMap();
+
+  static NIMMessageRobotInfo? _fromMap(Map<Object?, Object?>? map) =>
+      map == null
+          ? null
+          : NIMMessageRobotInfo.fromMap(Map<String, dynamic>.from(map));
+}
+
+/// 动态查询消息返回结果
+@JsonSerializable()
+class GetMessagesDynamicallyResult {
+  ///消息列表
+  @JsonKey(fromJson: messageListFromMap)
+  final List<NIMMessage>? messages;
+
+  ///是否可信
+  final bool? isReliable;
+
+  GetMessagesDynamicallyResult({this.messages, this.isReliable});
+
+  static List<NIMMessage>? messageListFromMap(List<dynamic>? messageListMap) =>
+      messageListMap == null
+          ? null
+          : messageListMap
+              .map((e) => NIMMessage.fromMap(Map<String, dynamic>.from(e)))
+              .toList();
+
+  factory GetMessagesDynamicallyResult.fromMap(Map<String, dynamic> map) =>
+      _$GetMessagesDynamicallyResultFromJson(map);
+
+  Map<String, dynamic> toMap() => _$GetMessagesDynamicallyResultToJson(this);
+}
+
+/// 动态查询消息参数
+@JsonSerializable()
+class GetMessagesDynamicallyParam {
+  /// 会话ID
+  String sessionId;
+
+  /// 会话类型
+  NIMSessionType sessionType;
+
+  /// 开始时间（时间戳小）
+  int? fromTime;
+
+  /// 结束时间（时间戳大）
+  int? toTime;
+
+  /// 要排除的最后一条消息的服务器ID，用于翻页。
+  /// 要从A页翻到B页时，传A页中最接近B页的消息
+  ///
+  /// 设置此参数，需要同时传[anchorClientId]
+  /// 同时需要根据[direction]传入[fromTime] 或者 [toTime]
+  /// 当[direction] 为[NIMGetMessageDirection.forward]时，需要传入[toTime]
+  /// 当[direction] 为[NIMGetMessageDirection.backward]时，需要传入[fromTime]
+  int? anchorServerId;
+
+  /// 要排除的最后一条消息的客户端ID，用于翻页。
+  /// 要从A页翻到B页时，传A页中最接近B页的消息
+  String? anchorClientId;
+
+  /// 条数限制
+  /// 限制0~100，否则414。其中0会被转化为100
+  int? limit;
+
+  /// 查询方向
+  NIMGetMessageDirection? direction;
+
+  GetMessagesDynamicallyParam(this.sessionId, this.sessionType,
+      {this.fromTime,
+      this.toTime,
+      this.anchorServerId,
+      this.anchorClientId,
+      this.limit,
+      this.direction});
+
+  factory GetMessagesDynamicallyParam.fromMap(Map<String, dynamic> map) =>
+      _$GetMessagesDynamicallyParamFromJson(map);
+
+  Map<String, dynamic> toMap() => _$GetMessagesDynamicallyParamToJson(this);
 }

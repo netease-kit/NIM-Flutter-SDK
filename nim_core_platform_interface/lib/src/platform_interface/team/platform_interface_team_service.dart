@@ -154,6 +154,14 @@ abstract class TeamServicePlatform extends Service {
   final StreamController<List<NIMTeam>> onTeamListRemove =
       StreamController<List<NIMTeam>>.broadcast();
 
+  //ignore: close_sinks
+  final StreamController<List<NIMTeamMember>> onTeamMemberUpdate =
+      StreamController<List<NIMTeamMember>>.broadcast();
+
+  //ignore: close_sinks
+  final StreamController<List<NIMTeamMember>> onTeamMemberRemove =
+      StreamController<List<NIMTeamMember>>.broadcast();
+
   ///群组通知消息
   /// 群组通知的消息类型是 MsgTypeEnum.notification ，用户入群成功之后，任何关于群的变动(含自己入群的动作)，云信服务器都会下发一条群通知消息。
   ///

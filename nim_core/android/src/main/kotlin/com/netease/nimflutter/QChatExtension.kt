@@ -61,6 +61,7 @@ import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatInviteApplyReco
 import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatInviteRecordData
 import com.netease.nimlib.sdk.qchat.model.inviteapplyrecord.QChatJoinByInviteCodeRecordData
 import com.netease.nimlib.sdk.qchat.model.systemnotification.QChatSystemNotificationAttachment
+import com.netease.nimlib.sdk.qchat.model.systemnotification.QChatUpdatedMyMemberInfo
 import com.netease.nimlib.sdk.qchat.param.QChatAcceptServerApplyParam
 import com.netease.nimlib.sdk.qchat.param.QChatAcceptServerInviteParam
 import com.netease.nimlib.sdk.qchat.param.QChatAddChannelRoleParam
@@ -78,6 +79,7 @@ import com.netease.nimlib.sdk.qchat.param.QChatDeleteMessageParam
 import com.netease.nimlib.sdk.qchat.param.QChatDeleteServerParam
 import com.netease.nimlib.sdk.qchat.param.QChatDeleteServerRoleParam
 import com.netease.nimlib.sdk.qchat.param.QChatDownloadAttachmentParam
+import com.netease.nimlib.sdk.qchat.param.QChatEnterServerAsVisitorParam
 import com.netease.nimlib.sdk.qchat.param.QChatGenerateInviteCodeParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetBannedServerMembersByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelBlackWhiteRolesByPageParam
@@ -108,6 +110,7 @@ import com.netease.nimlib.sdk.qchat.param.QChatInviteServerMembersParam
 import com.netease.nimlib.sdk.qchat.param.QChatJoinByInviteCodeParam
 import com.netease.nimlib.sdk.qchat.param.QChatKickOtherClientsParam
 import com.netease.nimlib.sdk.qchat.param.QChatKickServerMembersParam
+import com.netease.nimlib.sdk.qchat.param.QChatLeaveServerAsVisitorParam
 import com.netease.nimlib.sdk.qchat.param.QChatLeaveServerParam
 import com.netease.nimlib.sdk.qchat.param.QChatLoginParam
 import com.netease.nimlib.sdk.qchat.param.QChatMarkMessageReadParam
@@ -129,6 +132,7 @@ import com.netease.nimlib.sdk.qchat.param.QChatSendSystemNotificationParam
 import com.netease.nimlib.sdk.qchat.param.QChatServerMarkReadParam
 import com.netease.nimlib.sdk.qchat.param.QChatSubscribeAllChannelParam
 import com.netease.nimlib.sdk.qchat.param.QChatSubscribeChannelParam
+import com.netease.nimlib.sdk.qchat.param.QChatSubscribeServerAsVisitorParam
 import com.netease.nimlib.sdk.qchat.param.QChatSubscribeServerParam
 import com.netease.nimlib.sdk.qchat.param.QChatUnbanServerMemberParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateChannelBlackWhiteMembersParam
@@ -155,6 +159,7 @@ import com.netease.nimlib.sdk.qchat.result.QChatCreateChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateServerResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatDeleteMessageResult
+import com.netease.nimlib.sdk.qchat.result.QChatEnterServerAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatGenerateInviteCodeResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetBannedServerMembersByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelBlackWhiteRolesByPageResult
@@ -182,6 +187,7 @@ import com.netease.nimlib.sdk.qchat.result.QChatGetServersResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetUserPushConfigsResult
 import com.netease.nimlib.sdk.qchat.result.QChatInviteServerMembersResult
 import com.netease.nimlib.sdk.qchat.result.QChatKickOtherClientsResult
+import com.netease.nimlib.sdk.qchat.result.QChatLeaveServerAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatLoginResult
 import com.netease.nimlib.sdk.qchat.result.QChatRemoveMembersFromServerRoleResult
 import com.netease.nimlib.sdk.qchat.result.QChatRevokeMessageResult
@@ -194,6 +200,7 @@ import com.netease.nimlib.sdk.qchat.result.QChatSendSystemNotificationResult
 import com.netease.nimlib.sdk.qchat.result.QChatServerMarkReadResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeAllChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeChannelResult
+import com.netease.nimlib.sdk.qchat.result.QChatSubscribeServerAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeServerResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateChannelRoleResult
@@ -646,6 +653,7 @@ fun Map<String, *>.toQChatCreateChannelParamParam(): QChatCreateChannelParam {
     antiSpamConfig?.let {
         param.antiSpamConfig = it
     }
+    param.visitorMode = stringToQChatVisitorMode(this["visitorMode"] as String?)
     return param
 }
 
@@ -667,7 +675,8 @@ fun QChatChannel.toMap() = mapOf<String, Any?>(
     "reorderWeight" to reorderWeight,
     "owner" to owner,
     "updateTime" to updateTime,
-    "valid" to isValid
+    "valid" to isValid,
+    "visitorMode" to stringFromQChatVisitorMode(visitorMode)
 )
 
 fun Map<String, *>.toQChatDeleteChannelParam(): QChatDeleteChannelParam {
@@ -683,6 +692,7 @@ fun Map<String, *>.toQChatUpdateChannelParam(): QChatUpdateChannelParam {
     param.viewMode = stringToQChatChannelMode(this["viewMode"] as String?)
     val antiSpamConfig = (this["antiSpamConfig"] as? Map<String, *>)?.toQChatAntiSpamConfig()
     param.antiSpamConfig = antiSpamConfig
+    param.visitorMode = stringToQChatVisitorMode(this["visitorMode"] as String?)
     return param
 }
 
@@ -751,7 +761,10 @@ fun QChatUnreadInfo.toMap() = mapOf<String, Any?>(
     "channelId" to channelId,
     "unreadCount" to unreadCount,
     "mentionedCount" to mentionedCount,
-    "maxCount" to maxCount
+    "maxCount" to maxCount,
+    "ackTimeTag" to ackTimeTag,
+    "lastMsgTime" to lastMsgTime,
+    "time" to time
 )
 
 @Suppress("UNCHECKED_CAST")
@@ -861,7 +874,13 @@ fun Map<String, *>.toQChatUpdateChannelBlackWhiteMembersParam(): QChatUpdateChan
     val type = stringToQChatChannelBlackWhiteType(this["type"] as String)!!
     val operateType = stringToQChatChannelBlackWhiteOperateType(this["operateType"] as String)!!
     val toAccids = (this["toAccids"] as List<String>)
-    return QChatUpdateChannelBlackWhiteMembersParam(serverId, channelId, type, operateType, toAccids)
+    return QChatUpdateChannelBlackWhiteMembersParam(
+        serverId,
+        channelId,
+        type,
+        operateType,
+        toAccids
+    )
 }
 
 fun QChatSearchChannelMembersResult.toMap() = mapOf<String, Any?>(
@@ -1320,7 +1339,16 @@ fun QChatSystemNotificationAttachmentImpl.toMap() = mapOf<String, Any?>(
     "accid" to accid,
     "inOutType" to stringFromQChatInOutType(inOutType),
     "requestId" to requestId,
-    "inviteCode" to inviteCode
+    "inviteCode" to inviteCode,
+    "updatedInfos" to updatedInfos?.map { it.toMap() }?.toList()
+)
+
+fun QChatUpdatedMyMemberInfo.toMap() = mapOf<String, Any?>(
+    "serverId" to serverId,
+    "nick" to nick,
+    "isNickChanged" to isNickChanged,
+    "avatar" to avatar,
+    "isAvatarChanged" to isAvatarChanged
 )
 
 fun QChatChannelCategory.toMap() = mapOf<String, Any?>(
@@ -1410,7 +1438,7 @@ fun Map<String, *>.toQChatMessage(): QChatMessage {
     message.fromNick = this["fromNick"] as String?
     message.time = (this["time"] as Number?)?.toLong() ?: 0
     message.updateTime = (this["updateTime"] as Number?)?.toLong() ?: 0
-    message.setType(stringToMsgTypeEnum(this["messageType"] as String?).value)
+    message.setType(stringToMsgTypeEnum(this["msgType"] as String?).value)
     message.content = this["content"] as String?
     message.remoteExtension = this["remoteExtension"] as Map<String, Any?>?
     message.uuid = this["uuid"] as String?
@@ -2189,4 +2217,38 @@ fun QChatCheckPermissionsResult.toMap() = mapOf<String, Any?>(
     }?.mapValues {
         stringFromQChatRoleOption(it.value)
     }
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatSubscribeServerAsVisitorParam(): QChatSubscribeServerAsVisitorParam {
+    return QChatSubscribeServerAsVisitorParam(
+        (this["operateType"] as? String)?.toQChatSubscribeOperateType()!!,
+        (this["serverIds"] as List<Any>).map { it.toString().toLong() }
+    )
+}
+
+fun QChatSubscribeServerAsVisitorResult.toMap() = mapOf<String, Any?>(
+    "failedList" to failedList
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatEnterServerAsVisitorParam(): QChatEnterServerAsVisitorParam {
+    return QChatEnterServerAsVisitorParam(
+        (this["serverIds"] as List<Any>).map { it.toString().toLong() }
+    )
+}
+
+fun QChatEnterServerAsVisitorResult.toMap() = mapOf<String, Any?>(
+    "failedList" to failedList
+)
+
+@Suppress("UNCHECKED_CAST")
+fun Map<String, *>.toQChatLeaveServerAsVisitorParam(): QChatLeaveServerAsVisitorParam {
+    return QChatLeaveServerAsVisitorParam(
+        (this["serverIds"] as List<Any>).map { it.toString().toLong() }
+    )
+}
+
+fun QChatLeaveServerAsVisitorResult.toMap() = mapOf<String, Any?>(
+    "failedList" to failedList
 )

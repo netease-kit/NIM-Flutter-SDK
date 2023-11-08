@@ -21,7 +21,7 @@ extension NIMSystemNotification {
   func toDic() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       jsonObject["unread"] = !read
-      jsonObject["time"] = Int(timestamp)
+      jsonObject["time"] = Int(timestamp * 1000)
       jsonObject["messageId"] = value(forKeyPath: "serial")
       if let attach = value(forKeyPath: "attachString") {
         jsonObject["attach"] = attach
@@ -113,7 +113,7 @@ extension NIMCustomSystemNotification {
     }
     if let time = args["time"] as? Int {
       notification?.setValue(
-        time,
+        time / 1000,
         forKeyPath: #keyPath(NIMCustomSystemNotification.timestamp)
       )
     }
@@ -123,6 +123,7 @@ extension NIMCustomSystemNotification {
         forKeyPath: #keyPath(NIMCustomSystemNotification.sender)
       )
     }
+    // Flutter 无此字段，session 字段在发送的时候单独解析
     if let receiver = args["receiver"] {
       notification?.setValue(
         receiver,
@@ -149,8 +150,12 @@ extension NIMCustomSystemNotification {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       jsonObject["sessionType"] = FLT_NIMSessionType.convertFLTSessionType(receiverType)?
         .rawValue
-      jsonObject["sessionId"] = sender
-      jsonObject["time"] = Int(timestamp)
+      if receiverType == NIMSessionType.P2P {
+        jsonObject["sessionId"] = sender
+      } else {
+        jsonObject["sessionId"] = receiver
+      }
+      jsonObject["time"] = Int(timestamp * 1000)
       return jsonObject
     }
     return nil

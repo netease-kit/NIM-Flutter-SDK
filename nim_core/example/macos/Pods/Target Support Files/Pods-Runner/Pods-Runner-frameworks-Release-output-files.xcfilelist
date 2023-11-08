@@ -1,0 +1,6 @@
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/device_info_plus.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libh_available.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim_chatroom.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim_qchat.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/path_provider_foundation.framework

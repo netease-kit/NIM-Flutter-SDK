@@ -30,6 +30,12 @@ extension NIMQChatChannel {
        let ope = FLTQChatChannelSyncMode(rawValue: syncMode)?.convertNIMQChatChannelSyncMode() {
       model.syncMode = ope
     }
+
+    if let visitorMode = json["visitorMode"] as? String,
+       let mode = FLTQChatVisitorMode(rawValue: visitorMode)?.convertNIMQChatVisitorMode() {
+      model.visitorMode = mode
+    }
+
     model.appId = 0
     return model
   }
@@ -39,9 +45,11 @@ extension NIMQChatChannel {
       jsonObject["valid"] = validflag
       jsonObject["createTime"] = Int(createTime * 1000)
       jsonObject["updateTime"] = Int(createTime * 1000)
+      jsonObject["owner"] = owner
       jsonObject["viewMode"] = (viewMode == .public) ? "public" : "private"
       jsonObject["type"] = FLTQChatChannelType.convert(type: type)?.rawValue
       jsonObject["syncMode"] = FLTQChatChannelSyncMode.convert(type: syncMode)?.rawValue
+      jsonObject["visitorMode"] = FLTQChatVisitorMode.convert(type: visitorMode)?.rawValue
       return jsonObject
     }
     return nil
@@ -262,6 +270,11 @@ extension NIMQChatCreateChannelParam {
     } else {
       model.syncMode = .none
     }
+
+    if let visitorMode = json["visitorMode"] as? String,
+       let mode = FLTQChatVisitorMode(rawValue: visitorMode)?.convertNIMQChatVisitorMode() {
+      model.visitorMode = mode
+    }
     return model
   }
 }
@@ -303,6 +316,10 @@ extension NIMQChatUpdateChannelParam {
     if let antiSpamConfig = json["antiSpamConfig"] as? [String: Any],
        let antiSpamBusinessId = antiSpamConfig["antiSpamBusinessId"] as? String {
       model.antispamBusinessId = antiSpamBusinessId
+    }
+    if let visitorMode = json["visitorMode"] as? String,
+       let mode = FLTQChatVisitorMode(rawValue: visitorMode)?.convertNIMQChatVisitorMode() {
+      model.visitorMode = mode
     }
     return model
   }
@@ -619,6 +636,7 @@ extension NIMQChatGetChannelsResult {
 extension NIMQChatGetChannelsByPageResult {
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
       jsonObject["channels"] = channels.map { item in
         item.toDict()
       }
@@ -631,6 +649,7 @@ extension NIMQChatGetChannelsByPageResult {
 extension NIMQChatGetChannelMembersByPageResult {
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
       jsonObject["members"] = memberArray.map { item in
         item.toDic()
       }
@@ -666,6 +685,7 @@ extension NIMQChatSubscribeChannelResult {
 extension NIMQChatSearchChannelByPageResult {
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
       if let channelsList = channels {
         jsonObject["channels"] = channelsList.map { item in
           item.toDict()
@@ -682,6 +702,9 @@ extension NIMQChatChannelMember {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       jsonObject["createTime"] = Int(createTime * 1000)
       jsonObject["updateTime"] = Int(updateTime * 1000)
+      if !jsonObject.keys.contains("nick") {
+        jsonObject["nick"] = ""
+      }
       return jsonObject
     }
     return nil
@@ -758,6 +781,41 @@ extension NIMQChatGetCategoriesInServerByPageResult {
       jsonObject["nextTimeTag"] = Int(nextTimetag * 1000)
       jsonObject["categories"] = categoryArray.map { item in
         item.toDict()
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatSubscribeChannelAsVisitorParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatSubscribeChannelAsVisitorParam? {
+    guard let model = NIMQChatSubscribeChannelAsVisitorParam.yx_model(with: json) else {
+      print("❌NIMQChatSubscribeChannelAsVisitorParam.yx_model(with: json) FAILED")
+      return nil
+    }
+
+    if let operateType = json["operateType"] as? String,
+       let operationType = FLTQChatSubscribeOperationType(rawValue: operateType)?
+       .convertNIMQChatSubscribeOperationType() {
+      model.operateType = operationType
+    }
+    if let targets = json["channelIdInfos"] as? [[String: Any]] {
+      let res = targets.map { item in
+        NIMQChatChannelIdInfo.fromDic(item)
+      }
+      model.channelIdInfos = res
+    }
+
+    return model
+  }
+}
+
+extension NIMQChatSubscribeChannelAsVisitorResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["failedList"] = failedChannelInfos?.map { items in
+        items.toDict()
       }
       return jsonObject
     }

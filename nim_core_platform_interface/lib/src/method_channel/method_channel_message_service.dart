@@ -1145,4 +1145,13 @@ class MethodChannelMessageService extends MessageServicePlatform {
       'newTag': newTag.toMap(),
     }));
   }
+
+  @override
+  Future<NIMResult<GetMessagesDynamicallyResult>> getMessagesDynamically(
+      GetMessagesDynamicallyParam param) async {
+    return NIMResult.fromMap(
+        await invokeMethod("getMessagesDynamically", arguments: param.toMap()),
+        convert: (map) => GetMessagesDynamicallyResult.fromMap(
+            Map<String, dynamic>.from(map["result"] as Map)));
+  }
 }

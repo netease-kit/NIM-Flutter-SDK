@@ -9,16 +9,18 @@ package com.netease.nimflutter
 import android.app.Activity
 import android.content.Context
 import com.netease.yunxin.kit.alog.ALog
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterAssets
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
 class MethodCallHandlerImpl(
-    applicationContext: Context
+    applicationContext: Context,
+    flutterAssets: FlutterAssets
 ) : MethodChannel.MethodCallHandler {
     private val tag = "FLTMethodCallHandlerImpl"
     private var safeMethodChannel: SafeMethodChannel? = null
-    private val nimCore = NimCore.getInstance(applicationContext)
+    private val nimCore = NimCore.getInstance(applicationContext, flutterAssets)
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         nimCore.onMethodCall(call.method, call.arguments(), SafeResult(result))

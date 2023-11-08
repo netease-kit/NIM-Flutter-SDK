@@ -159,9 +159,9 @@ class QChatRoleService {
     return _platform.checkPermission(param);
   }
 
-  // /// 查询自己是否拥有某些权限
-  // Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
-  //     QChatCheckPermissionsParam param) async {
-  //   return _platform.checkPermissions(param);
-  // }
+  /// 查询自己是否拥有某些权限
+  Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
+      QChatCheckPermissionsParam param) async {
+    return _platform.checkPermissions(param);
+  }
 }

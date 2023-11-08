@@ -129,22 +129,22 @@ enum FLTKickReason: String {
   func convertNIMKickReason() -> NIMKickReason {
     switch self {
     case .kick_by_other_platform:
-      return .byClient
+      return .byClientManually
     case .kick_by_server:
       return .byServer
     case .kick_by_same_platform:
-      return .byClientManually
+      return .byClient
     }
   }
 
   static func convert(type: NIMKickReason) -> FLTKickReason? {
     switch type {
     case .byClient:
-      return .kick_by_other_platform
+      return .kick_by_same_platform
     case .byServer:
       return .kick_by_server
     case .byClientManually:
-      return .kick_by_same_platform
+      return .kick_by_other_platform
     default:
       break
     }
@@ -157,6 +157,7 @@ enum FLTQChatSystemNotificationToType: String {
   case channel
   case server_accids
   case channel_accids
+  case accids
 
   func convertNIMQChatSystemNotificationToType() -> NIMQChatSystemNotificationToType {
     switch self {
@@ -168,6 +169,8 @@ enum FLTQChatSystemNotificationToType: String {
       return .serverAccids
     case .channel_accids:
       return .channelAccids
+    case .accids:
+      return .accids
     }
   }
 
@@ -181,6 +184,8 @@ enum FLTQChatSystemNotificationToType: String {
       return .server_accids
     case .channelAccids:
       return .channel_accids
+    case .accids:
+      return .accids
     default:
       break
     }

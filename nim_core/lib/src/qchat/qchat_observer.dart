@@ -87,4 +87,8 @@ class QChatObserver {
   /// 如果服务器前后未读数没有发生变化将不会触发
   Stream<QChatServerUnreadInfoChangedEvent> get serverUnreadInfoChanged =>
       _platform.serverUnreadInfoChanged;
+
+  /// 接收到的消息正在输入事件
+  Stream<QChatTypingEvent> get onReceiveTypingEvent =>
+      _platform.onReceiveTypingEvent;
 }

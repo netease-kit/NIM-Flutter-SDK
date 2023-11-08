@@ -26,6 +26,7 @@ import com.netease.nimlib.sdk.qchat.enums.QChatSubscribeOperateType
 import com.netease.nimlib.sdk.qchat.enums.QChatSubscribeType
 import com.netease.nimlib.sdk.qchat.enums.QChatSystemMessageToType
 import com.netease.nimlib.sdk.qchat.enums.QChatSystemNotificationType
+import com.netease.nimlib.sdk.qchat.enums.QChatVisitorMode
 
 val qChatChannelTypeMap = mapOf(
     QChatChannelType.CustomChannel to "customChannel",
@@ -39,6 +40,18 @@ fun stringToQChatChannelType(type: String): QChatChannelType =
 
 fun stringFromQChatChannelType(type: QChatChannelType?) =
     qChatChannelTypeMap[type] ?: qChatChannelTypeMap[QChatChannelType.MessageChannel]
+
+val qChatVisitorModeMap = mapOf(
+    QChatVisitorMode.VISIBLE to "visible",
+    QChatVisitorMode.INVISIBLE to "invisible",
+    QChatVisitorMode.FOLLOW to "follow"
+)
+
+fun stringToQChatVisitorMode(type: String?): QChatVisitorMode? =
+    qChatVisitorModeMap.filterValues { it == type }.keys.firstOrNull()
+
+fun stringFromQChatVisitorMode(type: QChatVisitorMode?) =
+    qChatVisitorModeMap[type]
 
 val qChatChannelModeMap = mapOf(
     QChatChannelMode.PRIVATE to "private",
@@ -136,7 +149,8 @@ val qChatSystemNotificationTypeMap = mapOf(
     QChatSystemNotificationType.CHANNEL_VISIBILITY_UPDATE to "channel_visibility_update",
     QChatSystemNotificationType.SERVER_ENTER_LEAVE to "server_enter_leave",
     QChatSystemNotificationType.SERVER_MEMBER_JOIN_BY_INVITE_CODE to "server_member_join_by_invite_code",
-    QChatSystemNotificationType.CUSTOM to "custom"
+    QChatSystemNotificationType.CUSTOM to "custom",
+    QChatSystemNotificationType.MY_MEMBER_INFO_UPDATED to "my_member_info_update"
 )
 
 fun stringToQChatSystemNotificationType(type: String?): QChatSystemNotificationType? =
@@ -149,7 +163,8 @@ val qChatSystemMessageToTypeEnumMap = mapOf(
     QChatSystemMessageToType.SERVER to "server",
     QChatSystemMessageToType.CHANNEL to "channel",
     QChatSystemMessageToType.SERVER_ACCIDS to "server_accids",
-    QChatSystemMessageToType.CHANNEL_ACCIDS to "channel_accids"
+    QChatSystemMessageToType.CHANNEL_ACCIDS to "channel_accids",
+    QChatSystemMessageToType.ACCIDS to "accids"
 )
 
 fun stringToQChatSystemMessageToType(type: String?): QChatSystemMessageToType? =

@@ -26,6 +26,9 @@ abstract class ChatroomServicePlatform extends Service {
   NIMChatroomIndependentModeLinkAddressProvider?
       independentModeLinkAddressProvider;
 
+  /// 鉴权模式为动态Token或者第三方鉴权的时候需要使用的token提供者
+  NIMChatroomDynamicTokenProvider? dynamicChatroomTokenProvider;
+
   /// 加入聊天室
   /// [request] 加入请求
   Future<NIMResult<NIMChatroomEnterResult>> enterChatroom(
@@ -243,3 +246,6 @@ abstract class ChatroomServicePlatform extends Service {
 
 typedef NIMChatroomIndependentModeLinkAddressProvider = Future<List<String>>
     Function(String roomId, String? account);
+
+typedef NIMChatroomDynamicTokenProvider = Future<String> Function(
+    String account, String roomId);

@@ -49,6 +49,7 @@ NIMAndroidSDKOptions _$NIMAndroidSDKOptionsFromJson(Map<String, dynamic> json) {
     useAssetServerAddressConfig: json['useAssetServerAddressConfig'] as bool?,
     autoLoginInfo: loginInfoFromMap(json['autoLoginInfo'] as Map?),
     nosSceneConfig: nosSceneConfigFromMap(json['nosSceneConfig'] as Map?),
+    serverConfig: serverConfigFromMap(json['serverConfig'] as Map?),
   );
 }
 
@@ -82,6 +83,7 @@ Map<String, dynamic> _$NIMAndroidSDKOptionsToJson(
 
   writeNotNull('autoLoginInfo', loginInfoToMap(instance.autoLoginInfo));
   val['nosSceneConfig'] = instance.nosSceneConfig;
+  val["serverConfig"] = serverConfigToJson(instance.serverConfig);
   val['improveSDKProcessPriority'] = instance.improveSDKProcessPriority;
   val['preLoadServers'] = instance.preLoadServers;
   val['reducedIM'] = instance.reducedIM;
@@ -116,6 +118,7 @@ NIMMixPushConfig _$NIMMixPushConfigFromJson(Map<String, dynamic> json) {
     oppoAppSecret: json['KEY_OPPO_APP_SERCET'] as String?,
     oppoCertificateName: json['KEY_OPPO_CERTIFICATE_NAME'] as String?,
     autoSelectPushType: json['KEY_AUTO_SELECT_PUSH_TYPE'] as bool,
+    honorCertificateName: json['KEY_HONOR_CERTIFICATE_NAME'] as String?,
   );
 }
 
@@ -136,6 +139,7 @@ Map<String, dynamic> _$NIMMixPushConfigToJson(NIMMixPushConfig instance) =>
       'KEY_OPPO_APP_SERCET': instance.oppoAppSecret,
       'KEY_OPPO_CERTIFICATE_NAME': instance.oppoCertificateName,
       'KEY_AUTO_SELECT_PUSH_TYPE': instance.autoSelectPushType,
+      'KEY_HONOR_CERTIFICATE_NAME': instance.honorCertificateName,
     };
 
 NIMStatusBarNotificationConfig _$NIMStatusBarNotificationConfigFromJson(

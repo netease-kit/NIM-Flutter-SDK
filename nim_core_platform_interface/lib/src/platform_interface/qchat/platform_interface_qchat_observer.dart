@@ -76,4 +76,7 @@ abstract class QChatObserverPlatform extends Service {
   /// 订阅、标记消息已读、收到新消息或新消息通知会触发该通知
   /// 如果服务器前后未读数没有发生变化将不会触发
   Stream<QChatServerUnreadInfoChangedEvent> get serverUnreadInfoChanged;
+
+  /// 接收到的消息正在输入事件
+  Stream<QChatTypingEvent> get onReceiveTypingEvent;
 }

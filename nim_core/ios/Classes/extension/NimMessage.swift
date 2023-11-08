@@ -598,6 +598,26 @@ extension NIMMessage {
         message.setValue(threadMessageTime / 1000, forKey: "_threadMessageTime")
       }
 
+      if let yidunAntiCheating = target["yidunAntiCheating"] as? [String: Any] {
+        message.yidunAntiCheating = yidunAntiCheating
+      }
+      if let yidunAntiSpamRes = target["yidunAntiSpamRes"] as? String {
+        message.yidunAntiSpamRes = yidunAntiSpamRes
+      }
+
+      if let yidunAntiSpamExt = target["yidunAntiSpamExt"] as? String {
+        message.yidunAntiSpamExt = yidunAntiSpamExt
+      }
+
+      if let robotInfoMap = target["robotInfo"] as? [String: Any] {
+        let robotInfo = NIMMessageRobotInfo()
+        robotInfo.function = robotInfoMap["function"] as? String
+        robotInfo.account = robotInfoMap["account"] as? String
+        robotInfo.customContent = robotInfoMap["customContent"] as? String
+        robotInfo.topic = robotInfoMap["topic"] as? String
+        message.robotInfo = robotInfo
+      }
+
       return message
     }
     return nil
@@ -616,13 +636,13 @@ extension NIMMessage {
     case .image:
       text = "[图片]"
     case .audio:
-      text = "[语音消息]"
+      text = "[语音]"
     case .video:
       text = "[视频]"
     case .location:
       text = "[位置]"
     case .notification:
-      text = "[通知]"
+      text = "[通知消息]"
     case .file:
       text = "[文件]"
     case .robot:
@@ -729,6 +749,11 @@ extension NIMMessage {
           arguments["messageAttachment"] = messageAttachment
         }
       }
+      arguments["yidunAntiSpamRes"] = yidunAntiSpamRes
+      arguments["yidunAntiSpamExt"] = yidunAntiSpamExt
+      if let yidunAntiCheatingForMap = yidunAntiCheating as? [String: Any] {
+        arguments["yidunAntiCheating"] = yidunAntiCheatingForMap
+      }
 
       arguments["sessionUpdate"] = setting?.isSessionUpdate ?? true
       arguments["messageAck"] = setting?.teamReceiptEnabled ?? false
@@ -821,9 +846,21 @@ extension NIMMessage {
           arguments["enableHistory"] = historyEnabled
         }
       }
+      if let info = robotInfo {
+        arguments["robotInfo"] = convertRobotInfo(robotInfo: info)
+      }
       return arguments
     }
     return nil
+  }
+
+  func convertRobotInfo(robotInfo: NIMMessageRobotInfo) -> [String: Any] {
+    var robotInfoMap = [String: Any]()
+    robotInfoMap["topic"] = robotInfo.topic
+    robotInfoMap["account"] = robotInfo.account
+    robotInfoMap["function"] = robotInfo.function
+    robotInfoMap["customContent"] = robotInfo.customContent
+    return robotInfoMap
   }
 
   func convertThreadOption(message: NIMMessage) -> [String: Any] {
@@ -1129,10 +1166,47 @@ extension NIMMessageApnsMemberOption {
   }
 }
 
+extension NIMGetMessagesDynamicallyParam {
+  class func convertToParam(_ arguments: [String: Any]) -> NIMGetMessagesDynamicallyParam? {
+    if let sessionId = arguments["sessionId"] as? String,
+       let sessionTypeValue = arguments["sessionType"] as? String,
+       let sessionType = try? NIMSessionType.getType(sessionTypeValue) {
+      let session = NIMSession(sessionId, type: sessionType)
+      let param = NIMGetMessagesDynamicallyParam()
+      param.session = session
+      if let fromTime = arguments["fromTime"] as? Int {
+        param.startTime = TimeInterval(Double(fromTime) / 1000)
+      }
+      if let toTime = arguments["toTime"] as? Int {
+        param.endTime = TimeInterval(Double(toTime) / 1000)
+      }
+      if let anchorServerId = arguments["anchorServerId"] as? Int {
+        param.anchorServerId = String(anchorServerId)
+      }
+      if let anchorClientId = arguments["anchorClientId"] as? String {
+        param.anchorClientId = anchorClientId
+      }
+      if let limit = arguments["limit"] as? UInt {
+        param.limit = limit
+      }
+      if let directionStr = arguments["direction"] as? String {
+        if directionStr == "forward" {
+          param.order = NIMMessageSearchOrder.desc
+        } else {
+          param.order = NIMMessageSearchOrder.asc
+        }
+      }
+      return param
+    }
+    return nil
+  }
+}
+
 extension NIMAntiSpamOption {
   @objc static func modelCustomPropertyMapper() -> [String: Any]? {
     var keyPaths = getKeyPaths(self)
     keyPaths[#keyPath(NIMAntiSpamOption.yidunEnabled)] = "enable"
+    keyPaths[#keyPath(NIMAntiSpamOption.businessId)] = "antiSpamConfigId"
     return keyPaths
   }
 }
@@ -1246,6 +1320,10 @@ extension NIMFileObject: NimDataConvertProtrol {
   func toDic() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       extensionIvaToJson(&jsonObject, NIMFileObject.self)
+      if !jsonObject.keys.contains("path") {
+        jsonObject["path"] = path
+      }
+
       return jsonObject
     }
     return nil

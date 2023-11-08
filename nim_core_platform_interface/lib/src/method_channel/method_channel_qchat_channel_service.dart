@@ -194,4 +194,15 @@ class MethodChannelQChatChannelService extends QChatChannelServicePlatform {
         'updateUserChannelPushConfig',
         arguments: param.toJson()));
   }
+
+  @override
+  Future<NIMResult<QChatSubscribeChannelAsVisitorResult>> subscribeAsVisitor(
+      QChatSubscribeChannelAsVisitorParam param) async {
+    return NIMResult<QChatSubscribeChannelAsVisitorResult>.fromMap(
+        await invokeMethod(
+          'subscribeAsVisitor',
+          arguments: param.toJson(),
+        ),
+        convert: (json) => QChatSubscribeChannelAsVisitorResult.fromJson(json));
+  }
 }

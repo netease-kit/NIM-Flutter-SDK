@@ -1,8 +1,8 @@
+import Foundation
 // Copyright (c) 2022 NetEase, Inc. All rights reserved.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 import NIMSDK
-import Foundation
 
 enum QChatServerMethod: String {
   case acceptServerApply
@@ -36,6 +36,9 @@ enum QChatServerMethod: String {
   case getInviteApplyRecordOfSelf
   case markRead
   case subscribeAllChannel
+  case subscribeAsVisitor
+  case enterAsVisitor
+  case leaveAsVisitor
 }
 
 class FLTQChatServerService: FLTBaseService, FLTService {
@@ -119,6 +122,12 @@ class FLTQChatServerService: FLTBaseService, FLTService {
       markRead(arguments, resultCallback)
     case QChatServerMethod.subscribeAllChannel.rawValue:
       subscribeAllChannel(arguments, resultCallback)
+    case QChatServerMethod.subscribeAsVisitor.rawValue:
+      subscribeAsVisitor(arguments, resultCallback)
+    case QChatServerMethod.enterAsVisitor.rawValue:
+      enterAsVisitor(arguments, resultCallback)
+    case QChatServerMethod.leaveAsVisitor.rawValue:
+      leaveAsVisitor(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -513,6 +522,42 @@ class FLTQChatServerService: FLTBaseService, FLTService {
     }
 
     NIMSDK.shared().qchatServerManager.subscribeAllChannel(param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func subscribeAsVisitor(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatSubscribeServerAsVisitorParam.fromDic(arguments) else {
+      print("subscribeAsVisitor parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.subscribe(asVisitor: param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func enterAsVisitor(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatEnterServerAsVisitorParam.fromDic(arguments) else {
+      print("enterAsVisitor parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.enter(asVisitor: param) { error, info in
+      self.qChatServerCallback(error, info?.toDic(), resultCallback)
+    }
+  }
+
+  func leaveAsVisitor(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMQChatLeaveServerAsVisitorParam.fromDic(arguments) else {
+      print("leaveAsVisitor parameter error is nil")
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+
+    NIMSDK.shared().qchatServerManager.leave(asVisitor: param) { error, info in
       self.qChatServerCallback(error, info?.toDic(), resultCallback)
     }
   }

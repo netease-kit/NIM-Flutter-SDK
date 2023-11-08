@@ -82,25 +82,29 @@ abstract class NIMSDKOptions {
   @JsonKey(fromJson: nosSceneConfigFromMap)
   final Map<NIMNosScene, int>? nosSceneConfig;
 
-  NIMSDKOptions({
-    required this.appKey,
-    this.sdkRootDir,
-    this.cdnTrackInterval,
-    this.shouldSyncStickTopSessionInfos,
-    this.enableReportLogAutomatically,
-    this.enableDatabaseBackup,
-    this.loginCustomTag,
-    this.customClientType,
-    this.shouldSyncUnreadCount,
-    this.shouldConsiderRevokedMessageUnreadCount,
-    this.enableTeamMessageReadReceipt,
-    this.shouldTeamNotificationMessageMarkUnread,
-    this.enableAnimatedImageThumbnail,
-    this.enablePreloadMessageAttachment,
-    this.useAssetServerAddressConfig,
-    this.autoLoginInfo,
-    this.nosSceneConfig,
-  });
+  /// 配置专属服务器的地址
+  @JsonKey(fromJson: serverConfigFromMap, toJson: serverConfigToJson)
+  final NIMServerConfig? serverConfig;
+
+  NIMSDKOptions(
+      {required this.appKey,
+      this.sdkRootDir,
+      this.cdnTrackInterval,
+      this.shouldSyncStickTopSessionInfos,
+      this.enableReportLogAutomatically,
+      this.enableDatabaseBackup,
+      this.loginCustomTag,
+      this.customClientType,
+      this.shouldSyncUnreadCount,
+      this.shouldConsiderRevokedMessageUnreadCount,
+      this.enableTeamMessageReadReceipt,
+      this.shouldTeamNotificationMessageMarkUnread,
+      this.enableAnimatedImageThumbnail,
+      this.enablePreloadMessageAttachment,
+      this.useAssetServerAddressConfig,
+      this.autoLoginInfo,
+      this.nosSceneConfig,
+      this.serverConfig});
 
   Map<String, dynamic> toMap();
 }
@@ -113,3 +117,9 @@ NIMLoginInfo? loginInfoFromMap(Map? map) =>
 Map<String, int>? nosSceneConfigFromMap(Map? map) {
   return map?.cast<String, int>();
 }
+
+NIMServerConfig? serverConfigFromMap(Map? map) =>
+    map == null ? null : NIMServerConfig.fromJson(map.cast<String, dynamic>());
+
+Map? serverConfigToJson(NIMServerConfig? serverConfig) =>
+    serverConfig?.toJson();

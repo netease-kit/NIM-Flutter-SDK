@@ -2,8 +2,8 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import NIMSDK
 import Foundation
+import NIMSDK
 
 extension NIMPushNotificationSetting {
   static func fromDic(_ json: [String: Any]) -> NIMPushNotificationSetting? {

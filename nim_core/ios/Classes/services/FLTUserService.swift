@@ -105,7 +105,8 @@ class FLTUserService: FLTBaseService, FLTService {
     if userId != nil,
        !userId!.isEmpty {
       let user = NIMSDK.shared().userManager.userInfo(userId!)
-      if user != nil {
+      if user != nil,
+         user?.userInfo != nil {
         let result = NimResult(converNIMUserToDict(user!), 0, nil)
         resultCallback.result(result.toDic())
       } else {

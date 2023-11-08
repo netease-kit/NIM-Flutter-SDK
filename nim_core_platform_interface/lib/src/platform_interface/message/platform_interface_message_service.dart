@@ -647,4 +647,9 @@ abstract class MessageServicePlatform extends Service {
   Future<NIMResult<void>> updateRoamMsgHasMoreTag(NIMMessage newTag) {
     throw UnimplementedError('updateRoamMsgHasMoreTag() is not implemented');
   }
+
+  Future<NIMResult<GetMessagesDynamicallyResult>> getMessagesDynamically(
+      GetMessagesDynamicallyParam param) {
+    throw UnimplementedError('getMessagesDynamically() is not implemented');
+  }
 }

@@ -59,6 +59,13 @@ extension NIMSubscribeEvent {
     if let syncEnabled = args["syncSelfEnable"] as? Bool {
       event?.syncEnabled = syncEnabled
     }
+
+    if let config = args["config"] as? String {
+      event?.setExt(config)
+    }
+    if let expiry = args["expiry"] as? Int64 {
+      event?.expiry = TimeInterval(expiry)
+    }
     return event
   }
 
@@ -66,6 +73,30 @@ extension NIMSubscribeEvent {
     if var dic = yx_modelToJSONObject() as? [String: Any] {
       dic["expiry"] = Int(expiry)
       dic["publishTime"] = Int(timestamp * 1000)
+      var muiltConfig = [String: String]()
+      if let iosConfig = ext(NIMLoginClientType.typeiOS),
+         iosConfig.isEmpty == false {
+        muiltConfig[String(NIMLoginClientType.typeiOS.rawValue)] = iosConfig
+      }
+      if let aosConfig = ext(NIMLoginClientType.typeAOS),
+         aosConfig.isEmpty == false {
+        muiltConfig[String(NIMLoginClientType.typeAOS.rawValue)] = aosConfig
+      }
+      if let webCofig = ext(NIMLoginClientType.typeWeb),
+         webCofig.isEmpty == false {
+        muiltConfig[String(NIMLoginClientType.typeWeb.rawValue)] = webCofig
+      }
+      if let pcCofig = ext(NIMLoginClientType.typePC),
+         pcCofig.isEmpty == false {
+        muiltConfig[String(NIMLoginClientType.typePC.rawValue)] = pcCofig
+      }
+
+      if let publisherClientType = muiltConfig.first?.key as? String,
+         let typeValue = Int(publisherClientType) {
+        dic["publisherClientType"] = typeValue
+      }
+
+      dic["multiClientConfig"] = getJsonStringFromDictionary(muiltConfig)
       return dic
     }
     return nil

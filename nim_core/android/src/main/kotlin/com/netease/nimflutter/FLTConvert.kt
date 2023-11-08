@@ -8,7 +8,12 @@ package com.netease.nimflutter
 
 import android.app.Activity
 import com.netease.nimlib.NimNosSceneKeyConstant
+import com.netease.nimlib.push.net.lbs.IPVersion
+import com.netease.nimlib.push.packet.asymmetric.AsymmetricType
+import com.netease.nimlib.push.packet.symmetry.SymmetryType
+import com.netease.nimlib.sdk.NimHandshakeType
 import com.netease.nimlib.sdk.NotificationFoldStyle
+import com.netease.nimlib.sdk.ServerAddresses
 import com.netease.nimlib.sdk.StatusBarNotificationConfig
 import com.netease.nimlib.sdk.StatusCode
 import com.netease.nimlib.sdk.auth.ClientType
@@ -31,7 +36,9 @@ import com.netease.nimlib.sdk.msg.constant.SystemMessageType
 import com.netease.nimlib.sdk.msg.model.CustomMessageConfig
 import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig
+import com.netease.nimlib.sdk.msg.model.GetMessageDirectionEnum
 import com.netease.nimlib.sdk.msg.model.MemberPushOption
+import com.netease.nimlib.sdk.msg.model.MessageRobotInfo
 import com.netease.nimlib.sdk.msg.model.MsgFullKeywordSearchConfig
 import com.netease.nimlib.sdk.msg.model.MsgSearchOption
 import com.netease.nimlib.sdk.msg.model.MsgThreadOption
@@ -218,6 +225,30 @@ val teamFieldEnumTypeMap = mapOf(
     TeamFieldEnum.TeamExtensionUpdateMode to "teamExtensionUpdateMode",
     TeamFieldEnum.AllMute to "allMuteMode",
     TeamFieldEnum.MaxMemberCount to "maxMemberCount"
+)
+
+val asymmetricTypeMap = mapOf(
+    AsymmetricType.RSA to "rsa",
+    AsymmetricType.SM2 to "sm2",
+    AsymmetricType.RSA_OAEP_1 to "rsaOaep1",
+    AsymmetricType.RSA_OAEP_256 to "rsaOaep256"
+)
+
+val symmetryTypeMap = mapOf(
+    SymmetryType.RC4 to "rc4",
+    SymmetryType.AES to "aes",
+    SymmetryType.SM4 to "sm4"
+)
+
+val versionOfIPMap = mapOf(
+    IPVersion.IPV4 to "ipv4",
+    IPVersion.IPV6 to "ipv6",
+    IPVersion.ANY to "any"
+)
+
+val nimHandshakeTypeMap = mapOf(
+    NimHandshakeType.V0 to "v0",
+    NimHandshakeType.V1 to "v1"
 )
 
 fun stringToTeamFieldEnumTypeMap(type: String?): TeamFieldEnum =
@@ -410,6 +441,17 @@ fun convertNIMAntiSpamOption(map: Map<String, Any?>?): NIMAntiSpamOption? {
     }
 }
 
+fun convertNIMMessageRobotInfo(map: Map<String, Any?>?): MessageRobotInfo? {
+    return map?.let {
+        MessageRobotInfo(
+            it["function"] as String?,
+            it["topic"] as String?,
+            it["customContent"] as String?,
+            it["account"] as String?
+        )
+    }
+}
+
 fun convertToQueryDirectionEnum(param: Int): QueryDirectionEnum {
     return if (param == 0) QueryDirectionEnum.QUERY_OLD else QueryDirectionEnum.QUERY_NEW
 }
@@ -494,6 +536,60 @@ fun convertToNIMAntiSpamOption(param: Map<String, Any?>?): NIMAntiSpamOption? {
         }
     }
 }
+
+fun convertToNIMServerAddresses(param: Map<String, Any?>?): ServerAddresses? {
+    return param?.let {
+        ServerAddresses().apply {
+            module = it["module"] as String?
+            publicKeyVersion = it.getOrElse("publicKeyVersion") { 0 } as Int
+            lbs = it["lbs"] as String?
+            lbsBackup = (it["lbsBackup"] as List<*>?)?.mapNotNull {
+                it as String?
+            }
+            defaultLink = it["defaultLink"] as String?
+            defaultLinkBackup = (it["defaultLinkBackup"] as List<*>?)?.mapNotNull {
+                it as String?
+            }
+            nosUploadLbs = it["nosUploadLbs"] as String?
+            nosUploadDefaultLink = it["nosUploadDefaultLink"] as String?
+            nosUpload = it["nosUpload"] as String?
+            nosSupportHttps = it.getOrElse("nosSupportHttps") { true } as Boolean
+            nosDownloadUrlFormat = it["nosDownloadUrlFormat"] as String?
+            nosDownload = it["nosDownload"] as String?
+            nosAccess = it["nosAccess"] as String?
+            ntServerAddress = it["ntServerAddress"] as String?
+            bdServerAddress = it["bdServerAddress"] as String?
+            test = it.getOrElse("test") { false } as Boolean
+            dedicatedClusteFlag = it.getOrElse("dedicatedClusteFlag") { 0 } as Int
+            negoKeyNeca = stringToAsymmetricType(it["negoKeyNeca"] as String?)
+            negoKeyEncaKeyVersion = it.getOrElse("negoKeyEncaKeyVersion") { 0 } as Int
+            negoKeyEncaKeyParta = it["negoKeyEncaKeyParta"] as String?
+            negoKeyEncaKeyPartb = it["negoKeyEncaKeyPartb"] as String?
+            commEnca = stringToSymmetryType(it["commEnca"] as String?)
+            linkIpv6 = it["linkIpv6"] as String?
+            ipProtocolVersion = stringToIPVersion(it["ipProtocolVersion"] as String?)
+            probeIpv4Url = it["probeIpv4Url"] as String?
+            probeIpv6Url = it["probeIpv6Url"] as String?
+            handshakeType = stringToNimHandshakeType(it["handshakeType"] as String?)
+            nosCdnEnable = it.getOrElse("nosCdnEnable") { true } as Boolean
+            nosDownloadSet = (it["nosDownloadSet"] as List<*>?)?.mapNotNull {
+                it as String?
+            }?.toSet()
+        }
+    }
+}
+
+fun stringToAsymmetricType(type: String?) =
+    asymmetricTypeMap.filterValues { it == type }.keys.firstOrNull() ?: AsymmetricType.RSA
+
+fun stringToSymmetryType(type: String?) =
+    symmetryTypeMap.filterValues { it == type }.keys.firstOrNull() ?: SymmetryType.RC4
+
+fun stringToIPVersion(version: String?) =
+    versionOfIPMap.filterValues { it == version }.keys.firstOrNull() ?: IPVersion.IPV4
+
+fun stringToNimHandshakeType(type: String?) =
+    nimHandshakeTypeMap.filterValues { it == type }.keys.firstOrNull() ?: NimHandshakeType.V1
 
 fun stringToSystemMessageType(type: String?) =
     systemMessageTypeEnumMap.filterValues { it == type }.keys.firstOrNull()
@@ -701,3 +797,15 @@ fun dartNameOfStatusCode(status: StatusCode) = when (status) {
     StatusCode.PWD_ERROR -> "pwdError"
     else -> "unknown"
 }
+
+val getMessageDirectionEnumMap = mapOf(
+    GetMessageDirectionEnum.FORWARD to "forward",
+    GetMessageDirectionEnum.BACKWARD to "backward"
+)
+
+fun stringFromGetMessageDirectionEnum(direction: GetMessageDirectionEnum?) =
+    getMessageDirectionEnumMap[direction] ?: getMessageDirectionEnumMap[GetMessageDirectionEnum.FORWARD]
+
+fun stringToGetMessageDirectionEnum(direction: String) =
+    getMessageDirectionEnumMap.filterValues { it == direction }.keys.firstOrNull()
+        ?: GetMessageDirectionEnum.FORWARD

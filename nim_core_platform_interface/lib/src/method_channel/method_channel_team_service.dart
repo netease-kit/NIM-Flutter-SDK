@@ -28,6 +28,24 @@ class MethodChannelTeamService extends TeamServicePlatform {
           );
         }
         break;
+
+      case 'onTeamMemberUpdate':
+        var teamMemberList = arguments['teamMemberList'] as List<dynamic>?;
+        List<NIMTeamMember>? list = teamMemberList
+            ?.map((e) => NIMTeamMember.fromMap(Map<String, dynamic>.from(e)))
+            .toList();
+        if (list != null)
+          TeamServicePlatform.instance.onTeamMemberUpdate.add(list);
+        break;
+
+      case 'onTeamMemberRemove':
+        var teamMemberList = arguments['teamMemberList'] as List<dynamic>?;
+        List<NIMTeamMember>? list = teamMemberList
+            ?.map((e) => NIMTeamMember.fromMap(Map<String, dynamic>.from(e)))
+            .toList();
+        if (list != null)
+          TeamServicePlatform.instance.onTeamMemberRemove.add(list);
+        break;
     }
     return Future.value(null);
   }

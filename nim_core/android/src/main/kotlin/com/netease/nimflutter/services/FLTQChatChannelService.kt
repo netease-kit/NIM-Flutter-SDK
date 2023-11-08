@@ -13,6 +13,7 @@ import com.netease.nimflutter.NimResult
 import com.netease.nimflutter.NimResultContinuationCallback
 import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
 import com.netease.nimflutter.stringToQChatChannelBlackWhiteType
+import com.netease.nimflutter.stringToQChatSubscribeOperateType
 import com.netease.nimflutter.toMap
 import com.netease.nimflutter.toQChatChannelIdInfo
 import com.netease.nimflutter.toQChatCreateChannelParamParam
@@ -32,10 +33,12 @@ import com.netease.nimflutter.toQChatUpdateChannelBlackWhiteRolesParam
 import com.netease.nimflutter.toQChatUpdateChannelParam
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.qchat.QChatChannelService
+import com.netease.nimlib.sdk.qchat.enums.QChatSubscribeOperateType
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelBlackWhiteMembersByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetChannelCategoriesByPageParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetExistingChannelBlackWhiteMembersParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetUserChannelPushConfigsParam
+import com.netease.nimlib.sdk.qchat.param.QChatSubscribeChannelAsVisitorParam
 import com.netease.nimlib.sdk.qchat.param.QChatUpdateUserChannelPushConfigParam
 import com.netease.nimlib.sdk.qchat.result.QChatCreateChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetChannelBlackWhiteMembersByPageResult
@@ -50,6 +53,7 @@ import com.netease.nimlib.sdk.qchat.result.QChatGetExistingChannelBlackWhiteRole
 import com.netease.nimlib.sdk.qchat.result.QChatGetUserPushConfigsResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchChannelByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchChannelMembersResult
+import com.netease.nimlib.sdk.qchat.result.QChatSubscribeChannelAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeChannelResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateChannelResult
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -86,7 +90,8 @@ class FLTQChatChannelService(
                 "getExistingChannelBlackWhiteMembers" to ::getExistingChannelBlackWhiteMembers,
                 "updateUserChannelPushConfig" to ::updateUserChannelPushConfig,
                 "getUserChannelPushConfigs" to ::getUserChannelPushConfigs,
-                "getChannelCategoriesByPage" to ::getChannelCategoriesByPage
+                "getChannelCategoriesByPage" to ::getChannelCategoriesByPage,
+                "subscribeAsVisitor" to ::subscribeAsVisitor
             )
         }
     }
@@ -431,4 +436,33 @@ class FLTQChatChannelService(
         }
         return param
     }
+
+    private suspend fun subscribeAsVisitor(arguments: Map<String, *>): NimResult<QChatSubscribeChannelAsVisitorResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatChannelService.subscribeAsVisitor(
+                arguments.toQChatSubscribeChannelAsVisitorParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Map<String, *>.toQChatSubscribeChannelAsVisitorParam(): QChatSubscribeChannelAsVisitorParam {
+        val operateType = stringToQChatSubscribeOperateType(this["operateType"] as String?)
+        val channelIdInfos = (this["channelIdInfos"] as List<Map<String, *>?>).map {
+            it?.toQChatChannelIdInfo()
+        }
+        return QChatSubscribeChannelAsVisitorParam(operateType ?: QChatSubscribeOperateType.SUB, channelIdInfos)
+    }
+
+    private fun QChatSubscribeChannelAsVisitorResult.toMap() = mapOf<String, Any?>(
+        "failedList" to failedList?.map { it.toMap() }?.toList()
+    )
 }

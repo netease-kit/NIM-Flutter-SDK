@@ -1857,7 +1857,7 @@ class QChatSubscribeAllChannelResult {
   final List<QChatUnreadInfo>? unreadInfoList;
 
   /// 订阅失败的服务器id列表
-  @JsonKey(fromJson: _filedListNullable)
+  @JsonKey(fromJson: _failedListNullable)
   final List<int>? failedList;
 
   QChatSubscribeAllChannelResult(this.unreadInfoList, this.failedList);
@@ -1879,6 +1879,96 @@ List<QChatUnreadInfo>? _unreadInfoListNullable(List<dynamic>? dataList) {
       .toList();
 }
 
-List<int>? _filedListNullable(List<dynamic>? dataList) {
+List<int>? _failedListNullable(List<dynamic>? dataList) {
   return dataList?.map((e) => e is int ? e : int.parse(e)).toList();
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSubscribeServerAsVisitorParam {
+  /// 请求参数，操作类型，见[QChatSubscribeOperateType]
+  final QChatSubscribeOperateType operateType;
+
+  /// 请求参数，操作的对象：serverId列表
+  final List<int> serverIds;
+
+  QChatSubscribeServerAsVisitorParam(this.operateType, this.serverIds);
+
+  factory QChatSubscribeServerAsVisitorParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatSubscribeServerAsVisitorParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatSubscribeServerAsVisitorParamToJson(this);
+}
+
+@JsonSerializable()
+class QChatSubscribeServerAsVisitorResult {
+  /// 订阅失败的服务器id列表
+  @JsonKey(fromJson: _failedListNullable)
+  final List<int>? failedList;
+
+  QChatSubscribeServerAsVisitorResult(this.failedList);
+
+  factory QChatSubscribeServerAsVisitorResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatSubscribeServerAsVisitorResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatSubscribeServerAsVisitorResultToJson(this);
+}
+
+@JsonSerializable()
+class QChatEnterServerAsVisitorParam {
+  /// serverId列表，最多10个
+  final List<int> serverIds;
+
+  QChatEnterServerAsVisitorParam(this.serverIds);
+
+  factory QChatEnterServerAsVisitorParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatEnterServerAsVisitorParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatEnterServerAsVisitorParamToJson(this);
+}
+
+@JsonSerializable()
+class QChatEnterServerAsVisitorResult {
+  /// 失败的服务器Id列表
+  @JsonKey(fromJson: _failedListNullable)
+  final List<int>? failedList;
+
+  QChatEnterServerAsVisitorResult(this.failedList);
+
+  factory QChatEnterServerAsVisitorResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatEnterServerAsVisitorResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatEnterServerAsVisitorResultToJson(this);
+}
+
+@JsonSerializable()
+class QChatLeaveServerAsVisitorParam {
+  /// serverId列表，最多10个
+  final List<int> serverIds;
+
+  QChatLeaveServerAsVisitorParam(this.serverIds);
+
+  factory QChatLeaveServerAsVisitorParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatLeaveServerAsVisitorParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatLeaveServerAsVisitorParamToJson(this);
+}
+
+@JsonSerializable()
+class QChatLeaveServerAsVisitorResult {
+  /// 失败的服务器Id列表
+  @JsonKey(fromJson: _failedListNullable)
+  final List<int>? failedList;
+
+  QChatLeaveServerAsVisitorResult(this.failedList);
+
+  factory QChatLeaveServerAsVisitorResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatLeaveServerAsVisitorResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatLeaveServerAsVisitorResultToJson(this);
 }

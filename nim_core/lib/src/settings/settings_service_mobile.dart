@@ -208,4 +208,40 @@ class _SettingsServiceMobile extends SettingsServicePlatform {
       ),
     );
   }
+
+  @override
+  Future<NIMResult<int>> removeResourceFiles(
+      NIMResourceQueryOption option) async {
+    return NIMResult<int>.fromMap(
+      await invokeMethod(
+        'removeResourceFiles',
+        arguments: option.toMap(),
+      ),
+    );
+  }
+
+  @override
+  Future<NIMResult<List<NIMCacheQueryResult>>> searchResourceFiles(
+      NIMResourceQueryOption option) async {
+    return NIMResult<List<NIMCacheQueryResult>>.fromMap(
+      await invokeMethod(
+        'searchResourceFiles',
+        arguments: option.toMap(),
+      ),
+      convert: (map) {
+        return (map['result'] as List?)
+            ?.map((e) =>
+                NIMCacheQueryResult.fromMap(Map<String, dynamic>.from(e)))
+            .toList();
+      },
+    );
+  }
+
+  @override
+  Future<NIMResult<void>> registerBadgeCount(int count) async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod('registerBadgeCountHandler',
+          arguments: {'count': count}),
+    );
+  }
 }

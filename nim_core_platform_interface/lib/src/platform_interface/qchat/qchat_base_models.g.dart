@@ -61,13 +61,19 @@ QChatUnreadInfo _$QChatUnreadInfoFromJson(Map<String, dynamic> json) =>
       maxCount: json['maxCount'] as int?,
       mentionedCount: json['mentionedCount'] as int?,
       unreadCount: json['unreadCount'] as int?,
+      ackTimeTag: json['ackTimeTag'] as int?,
+      lastMsgTime: json['lastMsgTime'] as int?,
+      time: json['time'] as int?,
     );
 
 Map<String, dynamic> _$QChatUnreadInfoToJson(QChatUnreadInfo instance) =>
     <String, dynamic>{
       'serverId': instance.serverId,
       'channelId': instance.channelId,
+      'ackTimeTag': instance.ackTimeTag,
       'unreadCount': instance.unreadCount,
       'mentionedCount': instance.mentionedCount,
       'maxCount': instance.maxCount,
+      'lastMsgTime': instance.lastMsgTime,
+      'time': instance.time,
     };

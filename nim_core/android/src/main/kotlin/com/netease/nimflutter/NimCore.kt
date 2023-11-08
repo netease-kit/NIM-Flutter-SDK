@@ -30,6 +30,7 @@ import com.netease.nimflutter.services.FLTSystemMessageService
 import com.netease.nimflutter.services.FLTTeamService
 import com.netease.nimflutter.services.FLTUserService
 import com.netease.yunxin.kit.alog.ALog
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterAssets
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,10 +39,11 @@ import kotlinx.coroutines.SupervisorJob
 typealias ServiceFactory = (context: Context, nimCore: NimCore) -> FLTService
 
 class NimCore private constructor(
-    private val context: Context
+    private val context: Context,
+    val flutterAssets: FlutterAssets
 ) {
 
-    companion object : SingletonHolder<NimCore, Context>(::NimCore)
+    companion object : SingletonHolder<NimCore, Context, FlutterAssets>(::NimCore)
 
     val lifeCycleScope = CoroutineScope(
         context = SupervisorJob() + Dispatchers.Main.immediate +
@@ -128,11 +130,11 @@ class NimCore private constructor(
         initializer.onInitialized(callback)
 }
 
-open class SingletonHolder<out T, in A>(private val creator: (A) -> T) {
+open class SingletonHolder<out T, in A, B>(private val creator: (A, B) -> T) {
     @Volatile
     private var instance: T? = null
 
-    fun getInstance(arg: A): T {
+    fun getInstance(argA: A, argB: B): T {
         val i = instance
         if (i != null) {
             return i
@@ -143,7 +145,7 @@ open class SingletonHolder<out T, in A>(private val creator: (A) -> T) {
             if (i2 != null) {
                 i2
             } else {
-                val created = creator(arg)
+                val created = creator(argA, argB)
                 instance = created
                 created
             }

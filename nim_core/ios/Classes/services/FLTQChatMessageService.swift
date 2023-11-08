@@ -29,6 +29,9 @@ enum QChatMessageMethod: String {
   case clearMessageCache
   case getLastMessageOfChannels
   case searchMsgByPage
+  case areMentionedMeMessages
+  case getMentionedMeMessages
+  case sendTypingEvent
 }
 
 class FLTQChatMessageService: FLTBaseService, FLTService {
@@ -110,6 +113,12 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
       qChatGetLastMessageOfChannels(arguments, resultCallback)
     case QChatMessageMethod.searchMsgByPage.rawValue:
       qChatSearchMsgByPage(arguments, resultCallback)
+    case QChatMessageMethod.sendTypingEvent.rawValue:
+      sendTypingEvent(arguments, resultCallback)
+    case QChatMessageMethod.areMentionedMeMessages.rawValue:
+      areMentionedMeMessages(arguments, resultCallback)
+    case QChatMessageMethod.getMentionedMeMessages.rawValue:
+      getMentionedMeMessages(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -149,42 +158,23 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
       return
     }
 
-    let sea = NIMQChatGetMessageHistoryByIdsParam()
-    if let channelId = arg["qChatChannelId"] as? UInt64 {
-      sea.channelId = channelId
-    }
-    if let serverId = arg["qChatServerId"] as? UInt64 {
-      sea.serverId = serverId
-    }
-    let id = NIMQChatMessageServerIdInfo.fromDic(arg)
-    sea.ids = [id]
-    NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { [weak self] error, result in
-      if let err = error {
-        print(
-          "@@#❌qChatResendMessage -> getMessageHistoryByIds FAILED, error: ",
-          err
-        )
-        self?.qChatMessageCallback(error, nil, resultCallback)
-      } else {
-        if let res = result,
-           let msgs = res.messages {
-          if msgs.count > 0,
-             let msg = msgs.first {
-            do {
-              try NIMSDK.shared().qchatMessageManager.resend(msg)
-              self?.successCallBack(resultCallback, ["sentMessage": msg.toDict()])
-            } catch {
-              self?.errorCallBack(resultCallback, error.localizedDescription)
-            }
-          } else {
-            self?.errorCallBack(
-              resultCallback,
-              self?.paramErrorTip ?? "参数错误",
-              self?.paramErrorCode ?? 414
-            )
-          }
-        }
+    if let qMsg = NIMQChatMessage.convertToMessage(arg) {
+      do {
+        let qchatChannelId = Int64(arg["qChatChannelId"] as? Int ?? 0)
+        let qchatServerId = Int64(arg["qChatServerId"] as? Int ?? 0)
+        let session = NIMSession(forQChat: qchatChannelId, qchatServerId: qchatServerId)
+        qMsg.setValue(session, forKeyPath: #keyPath(NIMQChatMessage.session))
+        sendedMsgCallback = resultCallback
+        try NIMSDK.shared().qchatMessageManager.resend(qMsg)
+      } catch {
+        errorCallBack(resultCallback, error.localizedDescription)
       }
+    } else {
+      errorCallBack(
+        resultCallback,
+        "param error",
+        414
+      )
     }
   }
 
@@ -311,7 +301,7 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
     NIMSDK.shared().qchatMessageManager.getMessageHistory(byIds: sea) { [weak self] error, result in
       if let err = error {
         print(
-          "@@#❌qChatResendMessage -> getMessageHistoryByIds FAILED, error: ",
+          "@@#❌qChatDownloadAttachment -> getMessageHistoryByIds FAILED, error: ",
           err
         )
         self?.qChatMessageCallback(error, nil, resultCallback)
@@ -835,6 +825,41 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
         self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
       }
   }
+
+  func sendTypingEvent(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatMessageTypingEvent.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .send(request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, ["typingEvent": result?.toDict()], resultCallback)
+      }
+  }
+
+  func getMentionedMeMessages(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatGetMentionedMeMessagesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .getMentionedMeMessages(request) { [weak self] error, result in
+        self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+      }
+  }
+
+  func areMentionedMeMessages(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatAreMentionedMeMessagesParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatMessageManager
+      .areMentionedMeMessages(request) { [weak self] error, result in
+        DispatchQueue.main.async {
+          self?.qChatMessageCallback(error, result?.toDict(), resultCallback)
+        }
+      }
+  }
 }
 
 extension FLTQChatMessageService: NIMQChatManagerDelegate, NIMQChatMessageManagerDelegate {
@@ -858,9 +883,10 @@ extension FLTQChatMessageService: NIMQChatManagerDelegate, NIMQChatMessageManage
    * @param type 多端登录变化类型
    */
   func qchatMultiSpot(_ type: NIMMultiLoginType) {
-    var jsonObject: [String: Any]? = yx_modelToJSONObject() as? [String: Any]
-    if jsonObject != nil {
-      jsonObject!["notifyType"] = FLTMultiLoginType.convert(type: type)?.rawValue
+    var jsonObject = [String: Any]()
+    jsonObject["notifyType"] = FLTMultiLoginType.convert(type: type)?.rawValue
+    if let clientArray = NIMSDK.shared().qchatManager.currentLoginClients(), !clientArray.isEmpty, clientArray.last != nil {
+      jsonObject["otherClient"] = clientArray.last?.toDic()
     }
     notifyEvent(serviceDelegateName(), "onMultiSpotLogin", jsonObject)
   }
@@ -939,12 +965,9 @@ extension FLTQChatMessageService: NIMQChatManagerDelegate, NIMQChatMessageManage
    *  @param progress 进度
    */
   func send(_ message: NIMQChatMessage, progress: Float) {
-    var jsonObject: [String: Any]? = yx_modelToJSONObject() as? [String: Any]
-    if jsonObject != nil {
-      jsonObject!["uuid"] = message.messageId
-      jsonObject!["transferred"] = message.messageId
-      jsonObject!["total"] = message.messageId
-    }
+    var jsonObject = [String: Any]()
+    jsonObject["id"] = message.messageId
+    jsonObject["progress"] = progress
     notifyEvent(serviceDelegateName(), "onAttachmentProgress", jsonObject)
   }
 
@@ -955,12 +978,9 @@ extension FLTQChatMessageService: NIMQChatManagerDelegate, NIMQChatMessageManage
    *  @discussion 附件包括:图片,视频的缩略图,语音文件
    */
   func fetchMessageAttachment(_ message: NIMQChatMessage, progress: Float) {
-    var jsonObject: [String: Any]? = yx_modelToJSONObject() as? [String: Any]
-    if jsonObject != nil {
-      jsonObject!["uuid"] = message.messageId
-      jsonObject!["transferred"] = message.messageId
-      jsonObject!["total"] = message.messageId
-    }
+    var jsonObject = [String: Any]()
+    jsonObject["id"] = message.messageId
+    jsonObject["progress"] = progress
     notifyEvent(serviceDelegateName(), "onAttachmentProgress", jsonObject)
   }
 
@@ -1001,5 +1021,10 @@ extension FLTQChatMessageService: NIMQChatManagerDelegate, NIMQChatMessageManage
       "serverUnreadInfoChanged",
       ["serverUnreadInfos": arguments]
     )
+  }
+
+  func onRecvTypingEvent(_ event: NIMQChatMessageTypingEvent) {
+    let arguments = event.toDict()
+    notifyEvent(serviceDelegateName(), "onReceiveTypingEvent", arguments)
   }
 }

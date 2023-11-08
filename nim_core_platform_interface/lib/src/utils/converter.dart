@@ -213,6 +213,10 @@ Map<String, int>? castMapToTypeOfStringInt(Map? map) {
   return map?.cast<String, int>();
 }
 
+Map<String, bool>? castMapToTypeOfBoolString(Map? map) {
+  return map?.cast<String, bool>();
+}
+
 K? enumDecode<K, V>(
   Map<K, V> enumValues,
   Object? source, {

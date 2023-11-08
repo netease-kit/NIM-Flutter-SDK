@@ -32,7 +32,9 @@ class FLTInitializeService: FLTService {
     if let config = NIMSDKConfig.yx_model(with: arguments) {
       let keyPaths = NIMSDKConfig.getKeyPaths(NIMSDKConfig.self)
       keyPaths.forEach { key, value in
-        NIMSDKConfig.shared().setValue(config.value(forKey: key), forKeyPath: key)
+        if key != "hash", key != "debugDescription", key != "description", key != "superclass" {
+          NIMSDKConfig.shared().setValue(config.value(forKey: key), forKeyPath: key)
+        }
       }
     }
 
@@ -53,6 +55,12 @@ class FLTInitializeService: FLTService {
 
     if let enableQChatMessageCache = arguments["enabledQChatMessageCache"] as? Bool {
       NIMQChatConfig.shared().enabledMessageCache = enableQChatMessageCache
+    }
+
+    if let serverConfig = arguments["serverConfig"] as? [String: Any] {
+      if let serverSetting = NIMServerSetting.fromDic(serverConfig) {
+        NIMSDK.shared().serverSetting = serverSetting
+      }
     }
 
     if let option = NIMSDKOption.yx_model(with: arguments) {

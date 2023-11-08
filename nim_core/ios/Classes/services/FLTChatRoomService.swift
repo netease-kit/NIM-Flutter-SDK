@@ -167,6 +167,25 @@ class FLTChatRoomService: FLTBaseService, FLTService {
       return
     }
     weak var weakSelf = self
+    // todo SDK回调在主线程，应用卡死，等SDK修复后添加
+//    request.dynamicTokenHandler = {
+//      (roomId: String?, account: String?) -> String? in
+//      // 处理获取聊天室动态令牌的逻辑，并返回令牌
+//      let group = DispatchGroup()
+//      group.enter()
+//      var token = ""
+//      weakSelf?.notifyEvent(
+//        weakSelf?.serviceName() ?? "",
+//        "getChatRoomDynamicToken",
+//        ["account": account as Any, "roomId": roomId as Any],
+//        result: { r in
+//          token = r as? String ?? ""
+//          group.leave()
+//        }
+//      )
+//      group.wait()
+//      return token
+//    }
     NIMSDK.shared().chatroomManager.enterChatroom(request) { error, chatroom, member in
       var result = [String: Any]()
       if let roomid = chatroom?.roomId as? String,

@@ -15,6 +15,10 @@ please [see the documentation](https://doc.yunxin.163.com/docs/TM5MzM5Njk/TU3NDk
 To use this plugin, please visit
 the [Usage documentation](https://doc.yunxin.163.com/docs/TM5MzM5Njk/TU3NDk1OTI?platformId=120326)
 
+## Notice
+The Web and PC versions of this component are still in beta, and direct integration is not recommended.
+If you have any requirements, please contact our business department.
+
 
 
 

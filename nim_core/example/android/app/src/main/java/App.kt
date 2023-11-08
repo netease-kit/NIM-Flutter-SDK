@@ -7,10 +7,10 @@
 package com.netease.nimflutter.nimcore.example
 
 import android.app.Application
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class App : Application() {
 

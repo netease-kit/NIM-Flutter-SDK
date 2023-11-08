@@ -148,6 +148,13 @@ class QChatChannelService {
     return _platform.getUserChannelPushConfigs(param);
   }
 
+  /// 以游客身份订阅频道
+
+  Future<NIMResult<QChatSubscribeChannelAsVisitorResult>> subscribeAsVisitor(
+      QChatSubscribeChannelAsVisitorParam param) {
+    return _platform.subscribeAsVisitor(param);
+  }
+
   //// 分页查询服务器下频道类别列表
 
   // Future<NIMResult<QChatGetChannelCategoriesByPageResult>>

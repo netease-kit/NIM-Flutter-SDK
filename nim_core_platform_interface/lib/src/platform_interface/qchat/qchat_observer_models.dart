@@ -27,6 +27,7 @@ class QChatMultiSpotLoginEvent {
   QChatMultiSpotNotifyType? notifyType;
 
   ///其他端信息
+  @JsonKey(fromJson: qChatClientFromJson)
   QChatClient? otherClient;
 
   QChatMultiSpotLoginEvent({this.notifyType, this.otherClient});
@@ -35,6 +36,13 @@ class QChatMultiSpotLoginEvent {
       _$QChatMultiSpotLoginEventFromJson(json);
 
   Map<String, dynamic> toJson() => _$QChatMultiSpotLoginEventToJson(this);
+}
+
+QChatClient? qChatClientFromJson(Map? map) {
+  if (map != null) {
+    return QChatClient.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
 }
 
 enum QChatMultiSpotNotifyType {
@@ -168,17 +176,13 @@ class QChatUnreadInfoChangedEvent {
 ///附件发送/接收进度通知
 @JsonSerializable(explicitToJson: true)
 class AttachmentProgress {
-  ///消息的UUID
-  final String uuid;
+  ///消息的id
+  final String id;
 
-  ///消息附件文件当前已传输的字节数
-  final int transferred;
+  ///消息附件文件当前已下载进度
+  final double progress;
 
-  ///消息附件文件总大小
-  final int total;
-
-  AttachmentProgress(
-      {required this.uuid, required this.total, required this.transferred});
+  AttachmentProgress({required this.id, required this.progress});
 
   factory AttachmentProgress.fromJson(Map<String, dynamic> json) =>
       _$AttachmentProgressFromJson(json);

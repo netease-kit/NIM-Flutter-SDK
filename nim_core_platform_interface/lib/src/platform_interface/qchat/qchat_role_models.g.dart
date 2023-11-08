@@ -58,7 +58,7 @@ QChatServerRole _$QChatServerRoleFromJson(Map<String, dynamic> json) =>
       ..icon = json['icon'] as String?
       ..extension = json['extension'] as String?
       ..resourceAuths =
-          _resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
+          resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
       ..type = $enumDecodeNullable(_$QChatRoleTypeEnumMap, json['type'])
       ..memberCount = json['memberCount'] as int?
       ..priority = json['priority'] as int?
@@ -286,7 +286,7 @@ QChatChannelRole _$QChatChannelRoleFromJson(Map<String, dynamic> json) =>
       ..icon = json['icon'] as String?
       ..ext = json['ext'] as String?
       ..resourceAuths =
-          _resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
+          resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
       ..type = $enumDecodeNullable(_$QChatRoleTypeEnumMap, json['type'])
       ..createTime = json['createTime'] as int?
       ..updateTime = json['updateTime'] as int?;
@@ -716,7 +716,7 @@ QChatMemberRole _$QChatMemberRoleFromJson(Map<String, dynamic> json) =>
       ..accid = json['accid'] as String?
       ..channelId = json['channelId'] as int?
       ..resourceAuths =
-          _resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
+          resourceAuthsFromJsonNullable(json['resourceAuths'] as Map?)
       ..createTime = json['createTime'] as int?
       ..updateTime = json['updateTime'] as int?
       ..nick = json['nick'] as String?
@@ -875,7 +875,7 @@ Map<String, dynamic> _$QChatCheckPermissionsParamToJson(
 QChatCheckPermissionsResult _$QChatCheckPermissionsResultFromJson(
         Map<String, dynamic> json) =>
     QChatCheckPermissionsResult(
-      _resourceAuthsFromJsonNullable(json['permissions'] as Map?),
+      resourceAuthsFromJsonNullable(json['permissions'] as Map?),
     );
 
 Map<String, dynamic> _$QChatCheckPermissionsResultToJson(

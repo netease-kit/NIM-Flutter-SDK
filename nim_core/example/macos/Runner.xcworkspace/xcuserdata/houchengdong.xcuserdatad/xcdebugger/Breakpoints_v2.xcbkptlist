@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "84998AF2-696B-47C5-96C5-29BBD08BD42B"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "000F5FCA-A0F1-4F99-BD62-956595ED0240"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3159"
+            endingLineNumber = "3159"
+            landmarkName = "FLTMessageService::addQuickComment(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F0698486-83A7-4B2C-8FB8-DCB6D2FC9637"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3162"
+            endingLineNumber = "3162"
+            landmarkName = "FLTMessageService::addQuickComment(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "35A1C66F-C5D7-40E2-814D-10035D535653"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3166"
+            endingLineNumber = "3166"
+            landmarkName = "FLTMessageService::addQuickComment(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A46B2943-9F80-4360-AED7-9B5705C1C9CE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4446"
+            endingLineNumber = "4446"
+            landmarkName = "FLTMessageService::AddQuickCommentNotifyCB(session, type, msg_client_id, info)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C7B18A4C-8342-442A-B36F-E4B8E6AE2BE7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4443"
+            endingLineNumber = "4443"
+            landmarkName = "FLTMessageService::AddQuickCommentNotifyCB(session, type, msg_client_id, info)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D9C576C7-0653-442A-9D65-BC305B3E2F5C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4441"
+            endingLineNumber = "4441"
+            landmarkName = "FLTMessageService::AddQuickCommentNotifyCB(session, type, msg_client_id, info)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A5B253B-3EE8-48D6-BA54-A8B2177A5564"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/FLTConvert.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1796"
+            endingLineNumber = "1796"
+            landmarkName = "Convert::convertIMMessage2Map(arguments, imMessage, fromCloud)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "67A1C1B7-47C0-431C-9C99-1BF14B0A675E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/FLTConvert.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1795"
+            endingLineNumber = "1795"
+            landmarkName = "Convert::convertIMMessage2Map(arguments, imMessage, fromCloud)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "67A1C1B7-47C0-431C-9C99-1BF14B0A675E - fa91724b71f1e23e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Convert::convertIMMessage2Map(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt; &gt; &gt;&amp;, nim::IMMessage const&amp;, bool)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core/nim_core_macos/macos/Classes/common/FLTConvert.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1796"
+                  endingLineNumber = "1796"
+                  offsetFromSymbolStart = "9768">
+               </Location>
+               <Location
+                  uuid = "67A1C1B7-47C0-431C-9C99-1BF14B0A675E - fa91724b71f1e23e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Convert::convertIMMessage2Map(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt; &gt; &gt;&amp;, nim::IMMessage const&amp;, bool)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core/nim_core_macos/macos/Classes/common/FLTConvert.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1796"
+                  endingLineNumber = "1796"
+                  offsetFromSymbolStart = "9873">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C9386415-3D9B-4E94-82E9-EF3EB73CE67C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/FLTConvert.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1797"
+            endingLineNumber = "1797"
+            landmarkName = "Convert::convertIMMessage2Map(arguments, imMessage, fromCloud)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "50DA4B10-45B6-4FE0-9012-EDECB36CDCB5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/FLTConvert.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1801"
+            endingLineNumber = "1801"
+            landmarkName = "Convert::convertIMMessage2Map(arguments, imMessage, fromCloud)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9394291C-5385-4EF2-ABC4-19872BC3D90D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
+            landmarkName = "FLTMessageService::sendMessage(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1B3D0D12-3B32-45D4-81F3-E030884565E8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "FLTMessageService::sendMessage(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "987B695A-0543-4CF8-BB70-1A123506D15A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4151"
+            endingLineNumber = "4151"
+            landmarkName = "FLTMessageService::SendMessageCB(arc)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

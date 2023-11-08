@@ -50,6 +50,7 @@ NIMIOSSDKOptions _$NIMIOSSDKOptionsFromJson(Map<String, dynamic> json) {
     useAssetServerAddressConfig: json['useAssetServerAddressConfig'] as bool?,
     autoLoginInfo: loginInfoFromMap(json['autoLoginInfo'] as Map?),
     nosSceneConfig: nosSceneConfigFromMap(json['nosSceneConfig'] as Map?),
+    serverConfig: serverConfigFromMap(json['serverConfig'] as Map?),
   )..disableTraceroute = json['disableTraceroute'] as bool?;
 }
 
@@ -81,6 +82,7 @@ Map<String, dynamic> _$NIMIOSSDKOptionsToJson(NIMIOSSDKOptions instance) {
 
   writeNotNull('autoLoginInfo', loginInfoToMap(instance.autoLoginInfo));
   val['nosSceneConfig'] = instance.nosSceneConfig;
+  val['serverConfig'] = serverConfigToJson(instance.serverConfig);
   val['apnsCername'] = instance.apnsCername;
   val['pkCername'] = instance.pkCername;
   val['disableTraceroute'] = instance.disableTraceroute;

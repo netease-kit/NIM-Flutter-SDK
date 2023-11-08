@@ -649,6 +649,9 @@ extension FLTTeamService: NIMTeamManagerDelegate {
       if let m = NIMSDK.shared().teamManager.teamMember(memberId, inTeam: teamId ?? ""),
          let dic = m.toDic() {
         members.append(dic)
+      } else {
+        let dicMember = ["id": teamId, "account": memberId, "type": "normal", "isInTeam": false, "isMute": false, "joinTime": 0]
+        members.append(dicMember)
       }
     }
     return members
@@ -665,6 +668,8 @@ extension FLTTeamService: NIMTeamManagerDelegate {
     return members
   }
 
+  // 群成员变更，Android 端在成员数量变化时会回调，在成员属性变化时不会回调，
+  // 此处ios会比Android 多一种情况的回调
   func onTeamMemberChanged(_ team: NIMTeam) {
     onTeamUpdated(team)
   }
@@ -701,7 +706,17 @@ extension FLTTeamService: NIMTeamManagerDelegate {
     }
   }
 
-  func onTeamAdded(_ team: NIMTeam) {}
+  func onTeamAdded(_ team: NIMTeam) {
+    if team.type == .super {
+      notifyEvent(
+        ServiceType.SuperTeamService.rawValue,
+        "onSuperTeamUpdate",
+        ["teamList": [team.toDic() as Any]]
+      )
+    } else {
+      notifyEvent(serviceName(), "onTeamListUpdate", ["teamList": [team.toDic() as Any]])
+    }
+  }
 
   func onTeamRemoved(_ team: NIMTeam) {
     if team.type == .super {

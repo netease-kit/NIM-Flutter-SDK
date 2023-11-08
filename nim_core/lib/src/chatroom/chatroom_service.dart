@@ -33,6 +33,13 @@ class ChatroomService {
     _platform.independentModeLinkAddressProvider = provider;
   }
 
+  // /// 获取动态登录token提供者
+  // get dynamicChatroomTokenProvider => _platform.dynamicChatroomTokenProvider;
+  //
+  // /// 设置动态登录token提供者, loginAuthType=1时必须要设置
+  // set dynamicChatroomTokenProvider(dynamicChatroomTokenProvider) =>
+  //     _platform.dynamicChatroomTokenProvider = dynamicChatroomTokenProvider;
+
   /// 加入聊天室
   Future<NIMResult<NIMChatroomEnterResult>> enterChatroom(
       NIMChatroomEnterRequest request) {

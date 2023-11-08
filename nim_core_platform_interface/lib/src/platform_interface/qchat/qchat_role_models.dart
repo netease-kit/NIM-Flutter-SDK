@@ -96,7 +96,7 @@ class QChatServerRole {
   String? extension;
 
   /// 表示哪些资源的权限
-  @JsonKey(fromJson: _resourceAuthsFromJsonNullable)
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   Map<QChatRoleResource, QChatRoleOption>? resourceAuths;
 
   /// 身份组类型，详细见[QChatRoleType]
@@ -594,7 +594,7 @@ class QChatChannelRole {
   String? ext;
 
   /// 表示哪些资源的权限
-  @JsonKey(fromJson: _resourceAuthsFromJsonNullable)
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   Map<QChatRoleResource, QChatRoleOption>? resourceAuths;
 
   /// 身份组类型，详细见[QChatRoleType]
@@ -619,7 +619,7 @@ class QChatChannelRole {
   }
 }
 
-Map<QChatRoleResource, QChatRoleOption>? _resourceAuthsFromJsonNullable(
+Map<QChatRoleResource, QChatRoleOption>? resourceAuthsFromJsonNullable(
     Map? map) {
   return map?.cast<dynamic, dynamic>().map((key, value) => MapEntry(
       enumDecode(_$QChatRoleResourceEnumMap, key.toString())!,
@@ -1228,7 +1228,7 @@ class QChatMemberRole {
   int? channelId;
 
   /// 资源的权限列表
-  @JsonKey(fromJson: _resourceAuthsFromJsonNullable)
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   Map<QChatRoleResource, QChatRoleOption>? resourceAuths;
 
   /// 创建时间
@@ -1462,7 +1462,7 @@ class QChatCheckPermissionsParam {
 @JsonSerializable(explicitToJson: true)
 class QChatCheckPermissionsResult {
   /// 权限结果
-  @JsonKey(fromJson: _resourceAuthsFromJsonNullable)
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   final Map<QChatRoleResource, QChatRoleOption>? permissions;
 
   QChatCheckPermissionsResult(this.permissions);

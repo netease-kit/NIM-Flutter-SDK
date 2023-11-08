@@ -18,6 +18,8 @@ QChatCreateChannelParam _$QChatCreateChannelParamFromJson(
       type: $enumDecode(_$QChatChannelTypeEnumMap, json['type']),
       custom: json['custom'] as String?,
       topic: json['topic'] as String?,
+      visitorMode:
+          $enumDecodeNullable(_$QChatVisitorModeEnumMap, json['visitorMode']),
       viewMode:
           $enumDecodeNullable(_$QChatChannelModeEnumMap, json['viewMode']),
     )..antiSpamConfig = antiSpamConfigFromJson(json['antiSpamConfig'] as Map?);
@@ -32,12 +34,19 @@ Map<String, dynamic> _$QChatCreateChannelParamToJson(
       'topic': instance.topic,
       'custom': instance.custom,
       'viewMode': _$QChatChannelModeEnumMap[instance.viewMode],
+      'visitorMode': _$QChatVisitorModeEnumMap[instance.visitorMode],
     };
 
 const _$QChatChannelTypeEnumMap = {
   QChatChannelType.messageChannel: 'messageChannel',
   QChatChannelType.RTCChannel: 'RTCChannel',
   QChatChannelType.customChannel: 'customChannel',
+};
+
+const _$QChatVisitorModeEnumMap = {
+  QChatVisitorMode.visible: 'visible',
+  QChatVisitorMode.invisible: 'invisible',
+  QChatVisitorMode.follow: 'follow',
 };
 
 const _$QChatChannelModeEnumMap = {
@@ -73,6 +82,8 @@ QChatChannel _$QChatChannelFromJson(Map<String, dynamic> json) => QChatChannel(
       reorderWeight: json['reorderWeight'] as int?,
       owner: json['owner'] as String?,
       updateTime: json['updateTime'] as int?,
+      visitorMode:
+          $enumDecodeNullable(_$QChatVisitorModeEnumMap, json['visitorMode']),
       valid: json['valid'] as bool?,
     );
 
@@ -91,6 +102,7 @@ Map<String, dynamic> _$QChatChannelToJson(QChatChannel instance) =>
       'viewMode': _$QChatChannelModeEnumMap[instance.viewMode],
       'categoryId': instance.categoryId,
       'syncMode': _$QChatChannelSyncModeEnumMap[instance.syncMode],
+      'visitorMode': _$QChatVisitorModeEnumMap[instance.visitorMode],
       'reorderWeight': instance.reorderWeight,
     };
 
@@ -131,6 +143,8 @@ QChatUpdateChannelParam _$QChatUpdateChannelParamFromJson(
       topic: json['topic'] as String?,
       viewMode:
           $enumDecodeNullable(_$QChatChannelModeEnumMap, json['viewMode']),
+      visitorMode:
+          $enumDecodeNullable(_$QChatVisitorModeEnumMap, json['visitorMode']),
       name: json['name'] as String?,
     )..antiSpamConfig = antiSpamConfigFromJson(json['antiSpamConfig'] as Map?);
 
@@ -143,6 +157,7 @@ Map<String, dynamic> _$QChatUpdateChannelParamToJson(
       'topic': instance.topic,
       'custom': instance.custom,
       'viewMode': _$QChatChannelModeEnumMap[instance.viewMode],
+      'visitorMode': _$QChatVisitorModeEnumMap[instance.visitorMode],
     };
 
 QChatGetChannelsParam _$QChatGetChannelsParamFromJson(
@@ -685,4 +700,33 @@ Map<String, dynamic> _$QChatGetChannelCategoriesByPageResultToJson(
         QChatGetChannelCategoriesByPageResult instance) =>
     <String, dynamic>{
       'categories': instance.categories?.map((e) => e.toJson()).toList(),
+    };
+
+QChatSubscribeChannelAsVisitorParam
+    _$QChatSubscribeChannelAsVisitorParamFromJson(Map<String, dynamic> json) =>
+        QChatSubscribeChannelAsVisitorParam(
+          operateType: $enumDecode(
+              _$QChatSubscribeOperateTypeEnumMap, json['operateType']),
+          channelIdInfos:
+              _qChatChannelIdInfoListFromJson(json['channelIdInfos'] as List),
+        );
+
+Map<String, dynamic> _$QChatSubscribeChannelAsVisitorParamToJson(
+        QChatSubscribeChannelAsVisitorParam instance) =>
+    <String, dynamic>{
+      'operateType': _$QChatSubscribeOperateTypeEnumMap[instance.operateType]!,
+      'channelIdInfos': instance.channelIdInfos.map((e) => e.toJson()).toList(),
+    };
+
+QChatSubscribeChannelAsVisitorResult
+    _$QChatSubscribeChannelAsVisitorResultFromJson(Map<String, dynamic> json) =>
+        QChatSubscribeChannelAsVisitorResult(
+          failedList:
+              _qChatChannelIdInfoListFromJson(json['failedList'] as List),
+        );
+
+Map<String, dynamic> _$QChatSubscribeChannelAsVisitorResultToJson(
+        QChatSubscribeChannelAsVisitorResult instance) =>
+    <String, dynamic>{
+      'failedList': instance.failedList?.map((e) => e.toJson()).toList(),
     };

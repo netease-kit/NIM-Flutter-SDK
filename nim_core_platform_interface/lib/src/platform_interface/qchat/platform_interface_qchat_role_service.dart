@@ -140,8 +140,8 @@ abstract class QChatRoleServicePlatform extends Service {
     throw UnimplementedError('checkPermission is not implemented');
   }
 
-  // Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
-  //     QChatCheckPermissionsParam param) async {
-  //   throw UnimplementedError('checkPermissions is not implemented');
-  // }
+  Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
+      QChatCheckPermissionsParam param) async {
+    throw UnimplementedError('checkPermissions is not implemented');
+  }
 }

@@ -63,7 +63,7 @@ abstract class FLTService(
         arguments: Map<String, Any?>,
         callback: MethodChannel.Result? = null
     ) {
-        ALog.i("${serviceName}_K", "notifyEvent method = $method arguments = $arguments")
+        ALog.d("${serviceName}_K", "notifyEvent method = $method arguments = $arguments")
         val params = arguments.toMutableMap().also { args -> args["serviceName"] = serviceName }
         nimCore.methodChannel.forEach { channel ->
             channel.invokeMethod(
@@ -78,13 +78,13 @@ abstract class FLTService(
         funcName: String,
         code: Int,
         resultCallback:
-            ResultCallback<T>
+        ResultCallback<T>
     ) {
         println("$serviceName $funcName onFailed code = $code")
         ALog.d(serviceName, "$funcName onFailed code = $code")
         resultCallback.result(
             NimResult(
-                code = -1,
+                code = code,
                 errorDetails = "$funcName " +
                     "but onFailed code = $code!"
             )
@@ -95,7 +95,7 @@ abstract class FLTService(
         funcName: String,
         exception: Throwable?,
         resultCallback:
-            ResultCallback<T>
+        ResultCallback<T>
     ) {
         println("$serviceName $funcName onFailed exception = ${exception?.message}")
         ALog.d(

@@ -1,3 +1,38 @@
+## 1.7.0(Jul 21, 2023)
+
+### New Features
+* add `onTeamMemberUpdate` in TeamService
+* add `onTeamMemberRemove` in TeamService
+* add `registerBadgeCountHandler` in SettingService for iOS
+* support honor push for Android
+* add `robotInfo` in Message
+* add `getMessagesDynamically` in MessageService
+* add `searchResourceFiles` in SettingService
+* add `removeResourceFiles` in SettingService
+
+# 1.6.0(Apr 24, 2023)
+
+### New Features
+* add `ackTimeTag`, `lastMsgTime` and `time` in QChatUnreadInfo
+* add `subscribeAsVisitor` in QChatChannelService
+* add `sendTypingEvent` in QChatMessageService
+* add `getMentionedMeMessages` in QChatMessageService
+* add `areMentionedMeMessages` in QChatMessageService
+* add `subscribeAsVisitor` in QChatServerService
+* add `enterAsVisitor` in QChatServerService
+* add `leaveAsVisitor` in QChatServerService
+* add `observeReceiveTypingEvent` in QChatServiceObserver
+* add `checkpermissions` in QChatRoleService
+* add `visitorMode` in QChatChannel
+* add `accIds` in QChatSystemMessageToType
+
+# 1.5.0(Mar 31, 2023)
+
+### New Features
+* Support Address Config when initialize in Android and iOS
+* Support Notification title custom in Android
+* Add yidunAntiSpamRes for NIMMessage in Android and iOS
+
 # 1.4.3(Feb 8, 2023)
 
 ### API Changes

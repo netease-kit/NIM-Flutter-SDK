@@ -16,7 +16,6 @@ enum SessionType: String {
   case SessionMarkRead = "clearSessionUnreadCount" // 标记已读
   case SessionSyncUnreadCount = "syncUnreadCount" // 未读数多端同步
   case SessionDeleteRecent = "deleteSession"
-  case SetChattingAccount = "setChattingAccount"
   case ClearAllSessionUnreadCount = "clearAllSessionUnreadCount"
 
   static let allValues = [
@@ -30,7 +29,6 @@ enum SessionType: String {
     SessionMarkRead,
     SessionSyncUnreadCount,
     SessionDeleteRecent,
-    SetChattingAccount,
     ClearAllSessionUnreadCount,
   ]
 }

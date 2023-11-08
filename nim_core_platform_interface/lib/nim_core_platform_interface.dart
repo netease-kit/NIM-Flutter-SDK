@@ -33,6 +33,7 @@ export 'src/platform_interface/initialize/nim_sdk_macos_options.dart';
 export 'src/platform_interface/initialize/nim_sdk_options.dart';
 export 'src/platform_interface/initialize/nim_sdk_windows_options.dart';
 export 'src/platform_interface/initialize/platform_interface_initialize_service.dart';
+export 'src/platform_interface/initialize/nim_sdk_server_config.dart';
 export 'src/platform_interface/message/message.dart';
 export 'src/platform_interface/message/message_keyword_search_config.dart';
 export 'src/platform_interface/message/message_search_option.dart';
@@ -57,7 +58,6 @@ export 'src/platform_interface/passthrough/pass_through_proxydata.dart';
 
 ///passthrough
 export 'src/platform_interface/passthrough/platform_interface_passthorough_service.dart';
-export 'src/platform_interface/robot/robot_message_type.dart';
 export 'src/platform_interface/service.dart';
 
 ///settings
