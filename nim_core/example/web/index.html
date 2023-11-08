@@ -25,7 +25,8 @@ found in the LICENSE file. -->
   <body>
     <script>
       var jsConfig = [
-        "https://yx-web-nosdn.netease.im/package/1663602694426/index.0.0.4.umd.js",
+        "./index.umd.js"
+        // "https://yx-web-nosdn.netease.im/package/1663602694426/index.0.0.4.umd.js",
         // "assets/packages/nim_core_web/dist/index.umd.js",
       ];
 
@@ -64,7 +65,24 @@ found in the LICENSE file. -->
           }
           if (!service[method]) {
             throw new Error(`This method: ${method} is not implemented on this service: ${serviceName}`);
+          } 
+          // 参数中删除null       
+          function removeNullValue(obj) {
+            if (obj === null || obj === undefined) {
+              return obj;
+            }
+            if (typeof obj === 'object') {
+              Object.keys(obj).forEach(key => {
+                if (obj[key] === null || obj[key] === undefined) {
+                  delete obj[key];
+                } else {
+                  removeNullValue(obj[key]);
+                }
+              });
+            }
+            return obj;
           }
+          removeNullValue(params);
           // 参数中删除serviceName
           if (params.hasOwnProperty('serviceName')) {
             delete params.serviceName;

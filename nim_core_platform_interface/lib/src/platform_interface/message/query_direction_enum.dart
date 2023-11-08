@@ -45,3 +45,11 @@ String sessionDeleteTypeToString(NIMSessionDeleteType type) {
   if (type == NIMSessionDeleteType.remote) return 'remote';
   return 'localAndRemote';
 }
+
+enum NIMGetMessageDirection {
+  ///从时间戳大到时间戳小
+  forward,
+
+  ///从时间戳小到时间戳大
+  backward
+}

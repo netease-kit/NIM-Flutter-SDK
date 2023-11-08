@@ -5,7 +5,7 @@
 Pod::Spec.new do |s|
   s.name             = 'nim_core_macos'
   s.module_name      = 'nim_core_macos'
-  s.version          = '1.0.6'
+  s.version          = '1.0.8'
   s.summary          = 'A Flutter plugin for NetEase IM SDK on Android, iOS, Windows and MacOS.'
   s.description      = <<-DESC
     A Flutter plugin for NetEase IM SDK on Android, iOS, Windows and MacOS.

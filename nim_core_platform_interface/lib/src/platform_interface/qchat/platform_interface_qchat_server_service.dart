@@ -176,4 +176,19 @@ abstract class QChatServerServicePlatform extends Service {
       QChatSubscribeAllChannelParam param) async {
     throw UnimplementedError('subscribeAllChannel is not implemented');
   }
+
+  Future<NIMResult<QChatSubscribeServerAsVisitorResult>> subscribeAsVisitor(
+      QChatSubscribeServerAsVisitorParam param) async {
+    throw UnimplementedError('subscribeAsVisitor is not implemented');
+  }
+
+  Future<NIMResult<QChatEnterServerAsVisitorResult>> enterAsVisitor(
+      QChatEnterServerAsVisitorParam param) async {
+    throw UnimplementedError('enterAsVisitor is not implemented');
+  }
+
+  Future<NIMResult<QChatLeaveServerAsVisitorResult>> leaveAsVisitor(
+      QChatLeaveServerAsVisitorParam param) async {
+    throw UnimplementedError('leaveAsVisitor is not implemented');
+  }
 }

@@ -1,0 +1,11 @@
+
+analyzer:
+  exclude:
+    - build/**
+    - example/**
+    - lib/generated_plugin_registrant.dart
+    - lib/nim_core.dart
+#   language:
+#     strict-raw-types: true
+#   strong-mode:
+#     implicit-casts: false

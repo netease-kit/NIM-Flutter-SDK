@@ -2,8 +2,8 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import NIMSDK
 import Foundation
+import NIMSDK
 
 extension NIMQChatMessageAntispamSetting {
   static func fromDic(_ json: [String: Any]) -> NIMQChatMessageAntispamSetting? {
@@ -80,7 +80,7 @@ extension NIMQChatMessage {
       jsonObject["threadRefer"] = threadRefer?.toDict()
       jsonObject["rootThread"] = (threadRefer == nil)
       jsonObject["antiSpamOption"] = yidunAntiSpamSetting?.toDict()
-      jsonObject["antiSpamResult"] = jsonObject["yidunAntiSpamResult"]
+      jsonObject["antiSpamResult"] = yidunAntiSpamResult?.toDict()
       jsonObject["updateContent"] = updateContent?.toDict()
       jsonObject["updateOperatorInfo"] = updateOperatorInfo?.toDict(setting?.routeEnabled, env)
       jsonObject["mentionedRoleIdList"] = mentionedRoleidList
@@ -237,26 +237,29 @@ extension NIMQChatMessage {
         }
       }
 
-      if let uuid = arguments["uuid"] as? Int {
-        qChatMessage.setValue("\(uuid)", forKeyPath: #keyPath(NIMQChatMessage.messageId))
+      if let uuid = arguments["uuid"] as? String {
+        qChatMessage.setValue(uuid, forKeyPath: #keyPath(NIMQChatMessage.messageId))
       }
       if let msgIdServer = arguments["msgIdServer"] as? Int {
         qChatMessage.setValue("\(msgIdServer)", forKeyPath: #keyPath(NIMQChatMessage.serverID))
       }
+      var qChatServiceId = 0
+      var qChatChannelId = 0
       if let sId = arguments["serverId"] as? Int {
-        qChatMessage.setValue(
-          UInt64(sId),
-          forKeyPath: #keyPath(NIMQChatMessage.session.qchatServerId)
-        )
+        qChatServiceId = sId
       }
       if let sId = arguments["qChatServerId"] as? Int {
-        qChatMessage.setValue(sId, forKeyPath: #keyPath(NIMQChatMessage.session.qchatServerId))
+        qChatServiceId = sId
       }
       if let cId = arguments["channelId"] as? Int {
-        qChatMessage.setValue(cId, forKeyPath: #keyPath(NIMQChatMessage.session.qchatChannelId))
+        qChatChannelId = cId
       }
       if let cId = arguments["qChatChannelId"] as? Int {
-        qChatMessage.setValue(cId, forKeyPath: #keyPath(NIMQChatMessage.session.qchatChannelId))
+        qChatChannelId = cId
+      }
+      if qChatServiceId > 0, qChatChannelId > 0 {
+        let session = NIMSession(forQChat: Int64(qChatChannelId), qchatServerId: Int64(qChatServiceId))
+        qChatMessage.setValue(session, forKeyPath: #keyPath(NIMQChatMessage.session))
       }
       if let body = arguments["body"] as? String {
         qChatMessage.text = body
@@ -269,7 +272,7 @@ extension NIMQChatMessage {
       }
       if let fromClientType = arguments["fromClientType"] as? Int {
         qChatMessage.setValue(
-          NIMLoginClientType(rawValue: fromClientType) ?? .typeUnknown,
+          fromClientType,
           forKeyPath: "_clientType"
         )
       }
@@ -282,10 +285,23 @@ extension NIMQChatMessage {
       if let updateTime = arguments["updateTime"] as? Double {
         qChatMessage.updateTimestamp = TimeInterval(updateTime / 1000)
       }
-      qChatMessage.remoteExt = arguments["extension"] as? [String: Any]
-      qChatMessage.remoteExt = arguments["remoteExtension"] as? [String: Any]
-      qChatMessage.localExt = arguments["extension"] as? [String: Any]
-      qChatMessage.localExt = arguments["localExtension"] as? [String: Any]
+
+      // 发送消息的时候通过extension 设置
+      if let ext = arguments["extension"] as? [String: Any] {
+        qChatMessage.remoteExt = ext
+      }
+
+      if let remoteExt = arguments["remoteExtension"] as? [String: Any] {
+        qChatMessage.remoteExt = remoteExt
+      }
+
+      if let localExt = arguments["localExtension"] as? [String: Any] {
+        qChatMessage.localExt = localExt
+      }
+//      qChatMessage.remoteExt = arguments["extension"] as? [String: Any]
+//      qChatMessage.remoteExt = arguments["remoteExtension"] as? [String: Any]
+//      qChatMessage.localExt = arguments["extension"] as? [String: Any]
+//      qChatMessage.localExt = arguments["localExtension"] as? [String: Any]
 
       qChatMessage.apnsPayload = arguments["pushPayload"] as? [String: Any]
       if let pushContent = arguments["pushContent"] as? String {
@@ -366,6 +382,17 @@ extension NIMQChatMessage {
         qChatMessage.subType = subType
       }
       return qChatMessage
+    }
+    return nil
+  }
+}
+
+extension NIMQChatMessageAntispamResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["isAntiSpam"] = isAntispam
+      jsonObject["yidunAntiSpamRes"] = yidunAntiSpamRes
+      return jsonObject
     }
     return nil
   }
@@ -556,16 +583,25 @@ extension NIMQChatSendSystemNotificationParam {
        let att = NSObject().getDictionaryFromJSONString(attach) {
       model.attach = att
     }
-    if let ext = json["extension"] as? String {
-      model.ext = ext
+    if let ext = json["extension"] as? [String: Any],
+       let data = try? JSONSerialization.data(withJSONObject: ext, options: []),
+       let str = String(data: data, encoding: String.Encoding.utf8) {
+      model.ext = str
     }
     if let body = json["body"] as? String {
       model.body = body
     }
 
-    if let pushPayload = json["pushPayload"] as? String {
-      model.pushPayload = pushPayload
+    if let payload = json["pushPayload"] as? [String: Any],
+       let jsondata = try? JSONSerialization.data(withJSONObject: payload, options: []),
+       let jsonStr = String(data: jsondata, encoding: String.Encoding.utf8) {
+      model.pushPayload = jsonStr
     }
+
+    if let pushContent = json["pushContent"] as? String {
+      model.pushContent = pushContent
+    }
+
     model.setting = NIMQChatSystemNotificationSetting.fromDic(json)
     return model
   }
@@ -852,9 +888,9 @@ extension NIMQChatUpdateQuickCommentInfo {
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
       jsonObject["msgSenderAccid"] = fromAccId
-      jsonObject["msgIdServer"] = msgServerId
+      jsonObject["msgIdServer"] = Int(msgServerId)
       jsonObject["msgTime"] = Int(timestamp * 1000)
-      jsonObject["msgtypeTime"] = replyType
+      jsonObject["type"] = replyType
       if let operateType = FLTQChatUpdateQuickCommentType.convert(type: opeType)?
         .rawValue {
         jsonObject["operateType"] = operateType
@@ -1102,6 +1138,73 @@ extension NIMQChatSearchMsgByPageResult {
 extension NIMQChatServerUnreadInfo {
   func toDict() -> [String: Any]? {
     if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatGetMentionedMeMessagesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatGetMentionedMeMessagesParam? {
+    guard let model = NIMQChatGetMentionedMeMessagesParam.yx_model(with: json) else {
+      print("❌NIMQChatGetMentionedMeMessagesParam.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let timetag = json["timetag"] as? Double {
+      model.timetag = TimeInterval(timetag / 1000)
+    }
+
+    if let limit = json["limit"] as? Int {
+      model.limit = limit
+    }
+    return model
+  }
+}
+
+extension NIMQChatAreMentionedMeMessagesParam {
+  static func fromDic(_ json: [String: Any]) -> NIMQChatAreMentionedMeMessagesParam? {
+    guard let model = NIMQChatAreMentionedMeMessagesParam.yx_model(with: json) else {
+      print("❌NIMQChatAreMentionedMeMessagesParam.yx_model(with: json) FAILED")
+      return nil
+    }
+
+    if let messages = json["messages"] as? [[String: Any]] {
+      var msgs = [NIMQChatMessage]()
+      messages.forEach {
+        item in
+        if let msg = NIMQChatMessage.convertToMessage(item) {
+          msgs.append(msg)
+        }
+      }
+      model.messages = msgs
+    }
+    return model
+  }
+}
+
+extension NIMQChatGetMentionedMeMessagesResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["nextTimetag"] = Int(nextTimetag * 1000)
+      if let msgs = messages {
+        jsonObject["messages"] = msgs.map { msg in
+          msg.toDict()
+        }
+      }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatAreMentionedMeMessagesResult {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      if let res = result {
+        jsonObject["result"] = res.mapValues { it in
+          it.boolValue
+        }
+      }
       return jsonObject
     }
     return nil

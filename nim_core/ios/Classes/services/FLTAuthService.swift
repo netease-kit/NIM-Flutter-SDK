@@ -233,6 +233,6 @@ extension FLTAuthService: NIMLoginManagerDelegate {
       semaphore.wait()
       return token
     }
-    return (dynamicLoginTokens[account] ?? "")
+    return dynamicLoginTokens[account] ?? ""
   }
 }

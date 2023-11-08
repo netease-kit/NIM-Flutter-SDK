@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     subsriptions.add(NimCore.instance.authService.authStatus.listen((event) {
-      print('AuthService##auth status event: ${event.status.name}');
+      print('AuthService##auth status event : ${event.status.name}');
     }));
 
     subsriptions
@@ -351,7 +351,7 @@ class _MyAppState extends State<MyApp> {
             .joinChannel(
                 channelId: channel.data!.channelId, offlineEnabled: true)
             .then((join) {
-          print('AVSignallingService##joinChannel result =  ${join.code}');
+          print('AVSignallingService##joinChannel  result =  ${join.code}');
           if (join.isSuccess) {
             var param = InviteParam(
                 channelId: channel.data!.channelId,
@@ -364,6 +364,30 @@ class _MyAppState extends State<MyApp> {
         });
       }
     });
+  }
+
+  void loginQChat() async {
+    var result = await NimCore.instance.qChatService.login(QChatLoginParam());
+    print("login qchat result => $result.");
+  }
+
+  void testForQChatServer() async {
+    var antiSpamConfig = QChatAntiSpamConfig()..antiSpamBusinessId = '100';
+    var param = QChatCreateServerParam("fluterQChatServer1")
+      ..applyJoinMode = QChatApplyJoinMode.agreeNeed
+      ..inviteMode = QChatInviteMode.agreeNeedNot
+      ..custom = 'custom'
+      ..searchEnable = true
+      ..searchType = 1
+      ..antiSpamConfig = antiSpamConfig
+      ..icon = '';
+    var result = await NimCore.instance.qChatServerService.createServer(param);
+    print("createServer qchat result => $result.");
+  }
+
+  void logoutQChat() async {
+    var result = await NimCore.instance.qChatService.logout();
+    print("logout qchat result => $result.");
   }
 
   @override
@@ -443,7 +467,7 @@ class _MyAppState extends State<MyApp> {
             var index = 0;
             messages.data?.forEach((message) {
               print(
-                  'ChatroomService##message history: ${index++} ${message.fromAccount} ${message.fromNickname} '
+                  'ChatroomService##message  history: ${index++} ${message.fromAccount} ${message.fromNickname} '
                   '\'${message.content}\'');
             });
           });

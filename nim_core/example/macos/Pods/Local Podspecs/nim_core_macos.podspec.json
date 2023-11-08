@@ -1,0 +1,52 @@
+{
+  "name": "nim_core_macos",
+  "module_name": "nim_core_macos",
+  "version": "1.0.8",
+  "summary": "A Flutter plugin for NetEase IM SDK on Android, iOS, Windows and MacOS.",
+  "description": "A Flutter plugin for NetEase IM SDK on Android, iOS, Windows and MacOS.",
+  "homepage": "https://meeting.163.com",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "NetEase, Inc.": "wangjianzhong@corp.netease.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": [
+    "Classes/**/*",
+    "log/**/*.h",
+    "nim_sdk/**/*.h"
+  ],
+  "public_header_files": "Classes/nim_core_macos_plugin.h",
+  "dependencies": {
+    "FlutterMacOS": [
+
+    ]
+  },
+  "platforms": {
+    "osx": "10.14"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "HEADER_SEARCH_PATHS": "${PODS_TARGET_SRCROOT}/Classes/ ${PODS_TARGET_SRCROOT}/nim_sdk/wrapper"
+  },
+  "swift_versions": "5.0",
+  "vendored_libraries": [
+    "nim_sdk/**/*.a",
+    "nim_sdk/**/*.dylib"
+  ],
+  "vendored_frameworks": [
+    "log/**/*.framework",
+    "nim_sdk/**/*.framework"
+  ],
+  "static_framework": true,
+  "libraries": "c++",
+  "xcconfig": {
+    "CLANG_CXX_LANGUAGE_STANDARD": "c++17",
+    "CLANG_CXX_LIBRARY": "libc++"
+  },
+  "prepare_command": "cd ../\ndart pub get\npython3 ./scripts/build.py",
+  "swift_version": "5.0"
+}

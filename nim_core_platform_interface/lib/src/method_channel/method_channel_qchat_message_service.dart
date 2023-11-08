@@ -211,4 +211,28 @@ class MethodChannelQChatMessageService extends QChatMessageServicePlatform {
         await invokeMethod('searchMsgByPage', arguments: param.toJson()),
         convert: (json) => QChatSearchMsgByPageResult.fromJson(json));
   }
+
+  @override
+  Future<NIMResult<QChatAreMentionedMeMessagesResult>> areMentionedMeMessages(
+      QChatAreMentionedMeMessagesParam param) async {
+    return NIMResult<QChatAreMentionedMeMessagesResult>.fromMap(
+        await invokeMethod('areMentionedMeMessages', arguments: param.toJson()),
+        convert: (json) => QChatAreMentionedMeMessagesResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatGetMentionedMeMessagesResult>> getMentionedMeMessages(
+      QChatGetMentionedMeMessagesParam param) async {
+    return NIMResult<QChatGetMentionedMeMessagesResult>.fromMap(
+        await invokeMethod('getMentionedMeMessages', arguments: param.toJson()),
+        convert: (json) => QChatGetMentionedMeMessagesResult.fromJson(json));
+  }
+
+  @override
+  Future<NIMResult<QChatSendTypingEventResult>> sendTypingEvent(
+      QChatSendTypingEventParam param) async {
+    return NIMResult<QChatSendTypingEventResult>.fromMap(
+        await invokeMethod('sendTypingEvent', arguments: param.toJson()),
+        convert: (json) => QChatSendTypingEventResult.fromJson(json));
+  }
 }

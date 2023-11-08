@@ -35,6 +35,39 @@ enum FLTQChatChannelType: String {
   }
 }
 
+enum FLTQChatVisitorMode: String {
+  case visible
+  case invisible
+  case follow
+
+  func convertNIMQChatVisitorMode() -> NIMQChatVisitorMode {
+    switch self {
+    case .visible:
+      return .visible
+    case .invisible:
+      return .invisible
+    case .follow:
+      return .follow
+    default:
+      return .none
+    }
+  }
+
+  static func convert(type: NIMQChatVisitorMode) -> FLTQChatVisitorMode? {
+    switch type {
+    case .follow:
+      return .follow
+    case .invisible:
+      return .invisible
+    case .visible:
+      return .visible
+    default:
+      break
+    }
+    return nil
+  }
+}
+
 enum FLTQChatChannelSyncMode: String {
   case none
   case sync

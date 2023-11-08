@@ -92,3 +92,52 @@ NIMDirCacheFileType enumifyDirCacheFileTypeName(String type) {
 
   return NIMDirCacheFileType.other;
 }
+
+class NIMResourceQueryOption {
+  ///查询的缓存文件类型，类型为文件后缀的集合。 默认为 nil ，不分类型查询所有文件缓存。
+  List<String>? extensions;
+
+  ///当前时间往前多少时间之前所有的消息,默认为 7 天之前。
+  int? timeInterval;
+
+  NIMResourceQueryOption({this.extensions, this.timeInterval});
+
+  factory NIMResourceQueryOption.fromMap(Map<String, dynamic> map) =>
+      NIMResourceQueryOption(
+        extensions: (map['extensions'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList(),
+        timeInterval: map['timeInterval'] as int?,
+      );
+
+  Map<String, dynamic> toMap() => {
+        'extensions': extensions,
+        'timeInterval': timeInterval,
+      };
+}
+
+class NIMCacheQueryResult {
+  ///文件路径
+  String? path;
+
+  ///文件的大小，单位为 bytes
+  int fileLength;
+
+  ///文件的创建日期
+  int? creationDate;
+
+  NIMCacheQueryResult({this.path, required this.fileLength, this.creationDate});
+
+  factory NIMCacheQueryResult.fromMap(Map<String, dynamic> map) =>
+      NIMCacheQueryResult(
+        path: map['path'] as String?,
+        fileLength: map['fileLength'] as int,
+        creationDate: map['creationDate'] as int?,
+      );
+
+  Map<String, dynamic> toMap() => {
+        'path': path,
+        'fileLength': fileLength,
+        'creationDate': creationDate,
+      };
+}

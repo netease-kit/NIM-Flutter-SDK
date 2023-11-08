@@ -135,4 +135,7 @@ abstract class QChatChannelServicePlatform extends Service {
 
   Future<NIMResult<QChatGetChannelCategoriesByPageResult>>
       getChannelCategoriesByPage(QChatGetChannelCategoriesByPageParam param);
+
+  Future<NIMResult<QChatSubscribeChannelAsVisitorResult>> subscribeAsVisitor(
+      QChatSubscribeChannelAsVisitorParam param);
 }

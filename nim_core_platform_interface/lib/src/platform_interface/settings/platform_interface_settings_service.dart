@@ -102,4 +102,14 @@ abstract class SettingsServicePlatform extends Service {
   ///
   Future<NIMResult<void>> clearDirCache(
       List<NIMDirCacheFileType> fileTypes, int startTime, int endTime);
+
+  ///搜索缓存的资源文件 *iOS可用*
+  Future<NIMResult<List<NIMCacheQueryResult>>> searchResourceFiles(
+      NIMResourceQueryOption option);
+
+  ///  删除缓存的资源文件 *iOS可用*
+  Future<NIMResult<int>> removeResourceFiles(NIMResourceQueryOption option);
+
+  /// 注册自定义云信角标未读数 *iOS可用*
+  Future<NIMResult<void>> registerBadgeCount(int count);
 }

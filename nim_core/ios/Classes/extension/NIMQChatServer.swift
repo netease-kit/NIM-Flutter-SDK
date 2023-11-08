@@ -879,7 +879,7 @@ extension NIMQChatSubscribeAllChannelParam {
           let type = arguments["type"] as? String,
           let subcribeType = FLTQChatSubscribeType(rawValue: type)?
           .convertNIMQChatSubscribeType() else {
-      print("markRead parameter is error, serverIds or type is nil")
+      print("subscribeAllChannel parameter is error, serverIds or type is nil")
       return nil
     }
     let param = NIMQChatSubscribeAllChannelParam()
@@ -898,6 +898,82 @@ extension NIMQChatSubscribeAllChannelResult {
       jsonObject["unreadInfoList"] = unreadInfos.map { item in
         item.toDict()
       }
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatSubscribeServerAsVisitorParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatSubscribeServerAsVisitorParam? {
+    guard let serverIds = arguments["serverIds"] as? [UInt64],
+          let type = arguments["operateType"] as? String,
+          let operateType = FLTQChatSubscribeOperationType(rawValue: type)?
+          .convertNIMQChatSubscribeOperationType() else {
+      print("subscribeAsVisitor parameter is error, serverIds or operateType is nil")
+      return nil
+    }
+    let param = NIMQChatSubscribeServerAsVisitorParam()
+    param.serverIds = serverIds.map { item in
+      NSNumber(value: item)
+    }
+    param.operateType = operateType
+    return param
+  }
+}
+
+extension NIMQChatSubscribeServerAsVisitorResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["failedList"] = failedServerIds
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatEnterServerAsVisitorParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatEnterServerAsVisitorParam? {
+    guard let serverIds = arguments["serverIds"] as? [UInt64] else {
+      print("enterAsVisitor parameter is error, serverIds is nil")
+      return nil
+    }
+    let param = NIMQChatEnterServerAsVisitorParam()
+    param.serverIds = serverIds.map { item in
+      NSNumber(value: item)
+    }
+    return param
+  }
+}
+
+extension NIMQChatEnterServerAsVisitorResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["failedList"] = failedServerIds
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatLeaveServerAsVisitorParam {
+  static func fromDic(_ arguments: [String: Any]) -> NIMQChatLeaveServerAsVisitorParam? {
+    guard let serverIds = arguments["serverIds"] as? [UInt64] else {
+      print("leaveAsVisitor parameter is error, serverIds is nil")
+      return nil
+    }
+    let param = NIMQChatLeaveServerAsVisitorParam()
+    param.serverIds = serverIds.map { item in
+      NSNumber(value: item)
+    }
+    return param
+  }
+}
+
+extension NIMQChatLeaveServerAsVisitorResult {
+  func toDic() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["failedList"] = failedServerIds
       return jsonObject
     }
     return nil

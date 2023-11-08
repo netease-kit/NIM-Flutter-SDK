@@ -746,7 +746,7 @@ class MessageService {
     return _platform.queryTotalUnreadCount(queryType: queryType);
   }
 
-  /// 设置当前会话，Android 平台可用
+  /// 设置当前会话，Android iOS 平台可用
   /// 调用以下接口重置当前会话，SDK会自动管理消息的未读数。
   /// 该接口会自动调用clearUnreadCount(String, SessionTypeEnum)将正在聊天对象的未读数清零。
   /// 如果有新消息到达，且消息来源是正在聊天的对象，其未读数也不会递增。
@@ -905,5 +905,11 @@ class MessageService {
   ///更新是否有更多漫游消息的标记
   Future<NIMResult<void>> updateRoamMsgHasMoreTag(NIMMessage newTag) {
     return _platform.updateRoamMsgHasMoreTag(newTag);
+  }
+
+  ///动态途径获取消息，默认从本地获取，动态能力需要开通功能，并在同步完成后生效
+  Future<NIMResult<GetMessagesDynamicallyResult>> getMessagesDynamically(
+      GetMessagesDynamicallyParam param) {
+    return _platform.getMessagesDynamically(param);
   }
 }

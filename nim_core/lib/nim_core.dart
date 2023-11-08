@@ -21,13 +21,11 @@ export 'package:nim_core_platform_interface/src/platform_interface/auth/auth_mod
 export 'package:nim_core_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/robot/robot_message_type.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/platform_interface_event_subscribe_service.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_android_options.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_server_config.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_ios_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_macos_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_options.dart';
@@ -43,7 +41,6 @@ export 'package:nim_core_platform_interface/src/platform_interface/message/talk_
 export 'package:nim_core_platform_interface/src/platform_interface/message/thread_talk_history.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_notifydata.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_proxydata.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/settings/settings_models.dart';
@@ -52,9 +49,7 @@ export 'package:nim_core_platform_interface/src/platform_interface/super_team/su
 export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team_member.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/add_friend_notification.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/system_message/custom_notification.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/platform_interface_system_message_service.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/system_message/system_message.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/team/create_team_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/team/create_team_result.dart';
@@ -110,8 +105,8 @@ class NimCore {
 
   static const String tag = 'nim_core';
   //todo 发版前记得处理此处的版本号，数据统计使用
-  static const int _versionCode = 145;
-  static const String _versionName = '1.4.5';
+  static const int _versionCode = 173;
+  static const String versionName = '1.7.3';
   static const String _hash = '02566d6321d1d27669d9d369d2f525bc2cdaee10';
 
   bool _initialized = false;
@@ -210,10 +205,10 @@ class NimCore {
           moduleName: tag,
           content: 'print sdk info ==== '
               'operatingSystem: ${Platform.operatingSystem}, operatingSystemVersion: ${Platform.operatingSystemVersion};'
-              'verCode: $_versionCode, verName: $_versionName, hash: $_hash; ');
+              'verCode: $_versionCode, verName: $versionName, hash: $_hash; ');
       final extras = {
         'versionCode': _versionCode,
-        'versionName': _versionName,
+        'versionName': versionName,
       };
       return InitializeServicePlatform.instance.initialize(options, extras);
     }).then((initResult) {

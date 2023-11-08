@@ -59,6 +59,7 @@ import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.MemberPushOption
 import com.netease.nimlib.sdk.msg.model.MessageKey
 import com.netease.nimlib.sdk.msg.model.MessageReceipt
+import com.netease.nimlib.sdk.msg.model.MessageRobotInfo
 import com.netease.nimlib.sdk.msg.model.MsgPinDbOption
 import com.netease.nimlib.sdk.msg.model.MsgPinSyncResponseOption
 import com.netease.nimlib.sdk.msg.model.MsgThreadOption
@@ -90,9 +91,9 @@ import com.netease.nimlib.sdk.team.model.TeamMember
 import com.netease.nimlib.sdk.team.model.UpdateTeamAttachment
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo
 import com.netease.nimlib.session.IMMessageImpl
-import org.json.JSONArray
 import java.io.File
 import java.util.Objects.requireNonNull
+import org.json.JSONArray
 
 fun IMMessage.toMap(): Map<String, Any?> {
     return (this as IMMessageImpl).toMap()
@@ -147,9 +148,12 @@ fun IMMessageImpl.toMap(): Map<String, Any?> {
         "quickCommentUpdateTime" to quickCommentUpdateTime,
         "isDeleted" to isDeleted,
         "yidunAntiCheating" to Utils.jsonStringToMap(yidunAntiCheating), // Map<String, Any?>
+        "yidunAntiSpamExt" to yidunAntiSpamExt,
+        "yidunAntiSpamRes" to yidunAntiSpamRes,
         "env" to env,
         "fromNickname" to fromNick, // Only Dart
-        "isRemoteRead" to isRemoteRead // Only Dart
+        "isRemoteRead" to isRemoteRead, // Only Dart
+        "robotInfo" to robotInfo?.toMap()
     )
 }
 
@@ -303,6 +307,15 @@ fun NIMAntiSpamOption.toMap(): Map<String, Any?> {
     )
 }
 
+fun MessageRobotInfo.toMap(): Map<String, Any?> {
+    return mapOf(
+        "topic" to topic,
+        "function" to function,
+        "customContent" to customContent,
+        "account" to account
+    )
+}
+
 fun MemberPushOption.toMap(): Map<String, Any?> {
     return mapOf(
         "forcePushContent" to forcePushContent,
@@ -341,6 +354,7 @@ fun NosTransferProgress.toMap(): Map<String, Any?> {
     )
 }
 
+@kotlin.ExperimentalStdlibApi
 fun NosTransferInfo.toMap(): Map<String, Any?> {
     return mapOf(
         "transferType" to transferType.name.lowercase(),
@@ -375,6 +389,7 @@ fun BroadcastMessage.toMap(): Map<String, Any?> {
     )
 }
 
+@kotlin.ExperimentalStdlibApi
 fun NimUserInfo.toMap(): Map<String, Any?> {
     return mapOf(
         "userId" to account,

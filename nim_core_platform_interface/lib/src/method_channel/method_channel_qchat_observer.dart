@@ -55,6 +55,9 @@ class MethodChannelQChatObserver extends QChatObserverPlatform {
   final _serverUnreadInfoChanged =
       StreamController<QChatServerUnreadInfoChangedEvent>.broadcast();
 
+  // ignore: close_sinks
+  final _onReceiveTypingEvent = StreamController<QChatTypingEvent>.broadcast();
+
   @override
   Future onEvent(String method, arguments) {
     switch (method) {
@@ -129,6 +132,11 @@ class MethodChannelQChatObserver extends QChatObserverPlatform {
         _serverUnreadInfoChanged.add(QChatServerUnreadInfoChangedEvent.fromJson(
             Map<String, dynamic>.from(arguments as Map)));
         break;
+      case 'onReceiveTypingEvent':
+        assert(arguments is Map);
+        _onReceiveTypingEvent.add(QChatTypingEvent.fromJson(
+            Map<String, dynamic>.from(arguments as Map)));
+        break;
       default:
         throw UnimplementedError();
     }
@@ -186,4 +194,8 @@ class MethodChannelQChatObserver extends QChatObserverPlatform {
   @override
   Stream<QChatServerUnreadInfoChangedEvent> get serverUnreadInfoChanged =>
       _serverUnreadInfoChanged.stream;
+
+  @override
+  Stream<QChatTypingEvent> get onReceiveTypingEvent =>
+      _onReceiveTypingEvent.stream;
 }

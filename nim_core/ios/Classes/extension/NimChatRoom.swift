@@ -60,6 +60,9 @@ extension NIMChatroomEnterRequest: NimDataConvertProtrol {
       if let retryCount = json["retryCount"] as? Int {
         model.retryCount = retryCount
       }
+      if let loginAuthType = json["loginAuthType"] as? Int {
+        model.loginAuthType = NIMChatroomLoginAuthType(rawValue: loginAuthType) ?? .default
+      }
       return model
     }
     return nil

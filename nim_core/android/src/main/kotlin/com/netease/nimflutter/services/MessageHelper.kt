@@ -11,6 +11,7 @@ import com.netease.nimflutter.convertCustomMessageConfig
 import com.netease.nimflutter.convertMemberPushOption
 import com.netease.nimflutter.convertMsgThreadOption
 import com.netease.nimflutter.convertNIMAntiSpamOption
+import com.netease.nimflutter.convertNIMMessageRobotInfo
 import com.netease.nimflutter.stringToAttachStatusEnum
 import com.netease.nimflutter.stringToClientTypeEnum
 import com.netease.nimflutter.stringToMsgDirectionEnum
@@ -29,8 +30,8 @@ import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.MessageKey
 import com.netease.nimlib.session.IMMessageImpl
 import com.netease.yunxin.kit.alog.ALog
-import org.json.JSONObject
 import java.io.File
+import org.json.JSONObject
 
 object MessageHelper {
 
@@ -73,7 +74,8 @@ object MessageHelper {
             )
             MsgTypeEnum.tip -> createTipMessage(
                 sessionId,
-                sessionType
+                sessionType,
+                arguments["content"] as? String
             )
             MsgTypeEnum.custom -> createCustomMessage(
                 sessionId,
@@ -96,9 +98,12 @@ object MessageHelper {
 
     private fun createTipMessage(
         sessionId: String?,
-        sessionType: SessionTypeEnum
+        sessionType: SessionTypeEnum,
+        content: String?
     ): IMMessage? {
-        return MessageBuilder.createTipMessage(sessionId, sessionType)
+        val message = MessageBuilder.createTipMessage(sessionId, sessionType)
+        message.content = content
+        return message
     }
 
     private fun createImageMessage(
@@ -312,7 +317,10 @@ object MessageHelper {
                     JSONObject(it2).toString()
                 }
             }
+            yidunAntiSpamExt = it["yidunAntiSpamExt"] as String?
+            yidunAntiSpamRes = it["yidunAntiSpamRes"] as String?
             env = it["env"] as String?
+            robotInfo = convertNIMMessageRobotInfo(it["robotInfo"] as Map<String, Any?>?)
         }
         return this
     }

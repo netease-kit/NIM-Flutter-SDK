@@ -1096,7 +1096,7 @@ QChatSubscribeAllChannelResult _$QChatSubscribeAllChannelResultFromJson(
         Map<String, dynamic> json) =>
     QChatSubscribeAllChannelResult(
       _unreadInfoListNullable(json['unreadInfoList'] as List?),
-      _filedListNullable(json['failedList'] as List?),
+      _failedListNullable(json['failedList'] as List?),
     );
 
 Map<String, dynamic> _$QChatSubscribeAllChannelResultToJson(
@@ -1104,5 +1104,79 @@ Map<String, dynamic> _$QChatSubscribeAllChannelResultToJson(
     <String, dynamic>{
       'unreadInfoList':
           instance.unreadInfoList?.map((e) => e.toJson()).toList(),
+      'failedList': instance.failedList,
+    };
+
+QChatSubscribeServerAsVisitorParam _$QChatSubscribeServerAsVisitorParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatSubscribeServerAsVisitorParam(
+      $enumDecode(_$QChatSubscribeOperateTypeEnumMap, json['operateType']),
+      (json['serverIds'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatSubscribeServerAsVisitorParamToJson(
+        QChatSubscribeServerAsVisitorParam instance) =>
+    <String, dynamic>{
+      'operateType': _$QChatSubscribeOperateTypeEnumMap[instance.operateType]!,
+      'serverIds': instance.serverIds,
+    };
+
+QChatSubscribeServerAsVisitorResult
+    _$QChatSubscribeServerAsVisitorResultFromJson(Map<String, dynamic> json) =>
+        QChatSubscribeServerAsVisitorResult(
+          _failedListNullable(json['failedList'] as List?),
+        );
+
+Map<String, dynamic> _$QChatSubscribeServerAsVisitorResultToJson(
+        QChatSubscribeServerAsVisitorResult instance) =>
+    <String, dynamic>{
+      'failedList': instance.failedList,
+    };
+
+QChatEnterServerAsVisitorParam _$QChatEnterServerAsVisitorParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatEnterServerAsVisitorParam(
+      (json['serverIds'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatEnterServerAsVisitorParamToJson(
+        QChatEnterServerAsVisitorParam instance) =>
+    <String, dynamic>{
+      'serverIds': instance.serverIds,
+    };
+
+QChatEnterServerAsVisitorResult _$QChatEnterServerAsVisitorResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatEnterServerAsVisitorResult(
+      _failedListNullable(json['failedList'] as List?),
+    );
+
+Map<String, dynamic> _$QChatEnterServerAsVisitorResultToJson(
+        QChatEnterServerAsVisitorResult instance) =>
+    <String, dynamic>{
+      'failedList': instance.failedList,
+    };
+
+QChatLeaveServerAsVisitorParam _$QChatLeaveServerAsVisitorParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatLeaveServerAsVisitorParam(
+      (json['serverIds'] as List<dynamic>).map((e) => e as int).toList(),
+    );
+
+Map<String, dynamic> _$QChatLeaveServerAsVisitorParamToJson(
+        QChatLeaveServerAsVisitorParam instance) =>
+    <String, dynamic>{
+      'serverIds': instance.serverIds,
+    };
+
+QChatLeaveServerAsVisitorResult _$QChatLeaveServerAsVisitorResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatLeaveServerAsVisitorResult(
+      _failedListNullable(json['failedList'] as List?),
+    );
+
+Map<String, dynamic> _$QChatLeaveServerAsVisitorResultToJson(
+        QChatLeaveServerAsVisitorResult instance) =>
+    <String, dynamic>{
       'failedList': instance.failedList,
     };

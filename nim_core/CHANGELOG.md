@@ -1,3 +1,124 @@
+## 1.7.3(Nov 8, 2023)
+### Dependency Updates
+* yunxin_alog from 1.0.11 to 2.0.0
+* NIMSDK from 9.13.0 to 9.13.1 in Android
+* NIMSDK from 9.11.0 to 9.13.1 in iOS
+
+### Bug Fixes
+* fix getUserInfo error when db have no info in iOS
+* fix Team Add issue in iOS
+
+### New Features
+* add `setChattingAccount` in iOS
+
+## 1.7.2(Sep 6, 2023)
+### Dependency Updates
+* NIMSDK from 9.11.0 to 9.13.0 in Android
+
+### Bug Fixes
+* fix checkLocalAntiSpam error in iOS
+
+## 1.7.1+1(Aug 15, 2023)
+
+### Bug Fixes
+* fix ALog error in Android
+
+## 1.7.1(Aug 10, 2023)
+
+### Bug Fixes
+* fix `onCustomNotification` sessionId error on iOS when type is Team
+
+## 1.7.0(Jul 21, 2023)
+### Dependency Updates
+* nim_core_platform_interface to 1.7.0
+
+### Bug Fixes
+* fix eventSubscribeStream error on iOS
+
+### New Features
+* add `onTeamMemberUpdate` in TeamService
+* add `onTeamMemberRemove` in TeamService
+* add `registerBadgeCountHandler` in SettingService for iOS
+* support honor push for Android
+* add `robotInfo` in Message
+* add `getMessagesDynamically` in MessageService
+* add `searchResourceFiles` in SettingService
+* add `removeResourceFiles` in SettingService
+
+## 1.6.2(Jun 15, 2023)
+### Dependency Updates
+* NIMSDK from 9.10.0 to 9.11.0
+* environment sdk < 4.0.0
+
+## 1.6.1(Jun 1, 2023)
+### Bug Fixes
+* fix UserInfoProvider error on Meizu devices
+* fix downloadAttachment error on Android
+* fix delete nick error on Android
+* fix SystemMessage time error on iOS
+* make lastMsgContent consistent on both Android and iOS
+
+# 1.6.0(Apr 24, 2023)
+### Bug Fixes
+* fix onReceiveSystemNotification error when update permission
+* fix qChat message antiSpamResult error in iOS
+* fix qChat multi login error in iOS
+* fix StickTopSessionInfo error in iOS
+* fix qChat download Attachment error
+* fix send qChat Message remoteExtension error in iOS
+* fix sendSystemNotification Extension error in iOS
+* add `nextTimeTag` for `getChannelsByPage`,`getChannelMembersByPag`,`searchChannelByPage`
+* fix MessageBuilder.createTipMessage have no content issue
+
+### New Features
+* add `ackTimeTag`, `lastMsgTime` and `time` in QChatUnreadInfo
+* add `subscribeAsVisitor` in QChatChannelService
+* add `sendTypingEvent` in QChatMessageService
+* add `getMentionedMeMessages` in QChatMessageService
+* add `areMentionedMeMessages` in QChatMessageService
+* add `subscribeAsVisitor` in QChatServerService
+* add `enterAsVisitor` in QChatServerService
+* add `leaveAsVisitor` in QChatServerService
+* add `observeReceiveTypingEvent` in QChatServiceObserver
+* add `checkpermissions` in QChatRoleService
+* add `visitorMode` in QChatChannel
+* add `accIds` in QChatSystemMessageToType
+
+### Dependency Updates
+* NIMSDK from 9.8.0 to 9.10.0
+* nim_core_platform_interface to 1.6.0
+
+# 1.5.0(Mar 31, 2023)
+
+### Bug Fixes
+* fix return different uuid when resend qChat message
+
+### New Features
+* Support Address Config when initialize in Android and iOS
+* Support Notification title custom in Android
+* Add yidunAntiSpamRes for NIMMessage in Android and iOS
+
+### Dependency Updates
+* NIMSDK from 9.6.0 to 9.8.0
+* nim_core_platform_interface to 1.5.0
+
+# 1.4.8(Mar 20, 2023)
+
+### Bug Fixes
+* fix add quick comment error in iOS
+
+# 1.4.7(Feb 23, 2023)
+
+### Bug Fixes
+* fix resend qChat message error in iOS
+* fix onMessageStatusChange msgType error in Android 
+* add inOutType for qChat System Notification in iOS
+* add senderClientType for Message in Mac and Windows
+
+### Dependency Updates
+* nim_core_windows from 1.0.7 to 1.0.8
+* nim_core_macos from 1.0.7 to 1.0.8
+
 # 1.4.6(Feb 10, 2023)
 
 ### Bug Fixes

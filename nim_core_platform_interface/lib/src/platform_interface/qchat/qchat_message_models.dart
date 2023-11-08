@@ -650,6 +650,13 @@ List<QChatMessage>? _qChatMessageListFromJson(List<dynamic>? messageList) {
       .toList();
 }
 
+List<QChatMessage> _qChatMessageListNotEmptyFromJson(
+    List<dynamic> messageList) {
+  return messageList
+      .map((e) => QChatMessage.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
 Map<int, QChatMessage>? _qChatMessageMapIntFromJson(Map? map) {
   return map?.cast<dynamic, dynamic>().map(
         (k, e) => MapEntry(int.parse(k.toString()),
@@ -1191,6 +1198,9 @@ enum QChatSystemMessageToType {
 
   /// 频道成员，serverId/channelId/toAccids必填
   channel_accids,
+
+  /// 复用IM成员信息，toAccids必填
+  accids,
 }
 
 QChatSystemNotificationType _systemNotificationTypeFromJson(String? param) {
@@ -1301,6 +1311,10 @@ enum QChatSystemNotificationType {
 
   /// 用户通过邀请码加入服务器
   server_member_join_by_invite_code,
+
+  ///修改IM用户信息所触发的对服务器成员信息的联动修改
+  ///attach：JSON格式，字段：type，serverIds（服务器成员信息复用IM用户信息的服务器ID列表），userInfo（name、icon）
+  my_member_info_update,
 
   /// 自定义
   custom,
@@ -1456,7 +1470,8 @@ abstract class QChatSystemNotificationAttachment {
   }
 
   static QChatSystemNotificationAttachment? _fromJson(
-      Map<Object?, Object?>? json, String? type) {
+      Map<Object?, Object?>? json,
+      {String? type}) {
     if (json == null || type?.isNotEmpty != true) return null;
     var map = Map<String, dynamic>.from(json);
     var messageType = QChatSystemNotificationTypeConverter()
@@ -1507,7 +1522,7 @@ abstract class QChatSystemNotificationAttachment {
       case QChatSystemNotificationType.channel_category_update:
         return QChatUpdateChannelCategoryAttachment.fromJson(map);
       case QChatSystemNotificationType
-          .channel_category_update_white_black_member:
+            .channel_category_update_white_black_member:
         return QChatUpdateChannelCategoryBlackWhiteMemberAttachment.fromJson(
             map);
       case QChatSystemNotificationType.server_role_member_add:
@@ -1530,6 +1545,8 @@ abstract class QChatSystemNotificationAttachment {
         return QChatUpdateChannelRoleAuthsAttachment.fromJson(map);
       case QChatSystemNotificationType.member_role_auth_update:
         return QChatUpdateMemberRoleAuthsAttachment.fromJson(map);
+      case QChatSystemNotificationType.my_member_info_update:
+        return QChatMyMemberInfoUpdatedAttachment.fromJson(map);
       default:
         return QChatSystemNotificationAttachmentCommon.fromJson(map);
     }
@@ -2323,6 +2340,7 @@ class QChatUpdateChannelRoleAuthsAttachment
 
   /// 更新的权限
 
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   Map<QChatRoleResource, QChatRoleOption>? updateAuths;
 
   QChatUpdateChannelRoleAuthsAttachment(
@@ -2374,7 +2392,7 @@ class QChatUpdateMemberRoleAuthsAttachment
   int? channelId;
 
   /// 更新的权限
-
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   Map<QChatRoleResource, QChatRoleOption>? updateAuths;
 
   QChatUpdateMemberRoleAuthsAttachment(
@@ -2387,6 +2405,61 @@ class QChatUpdateMemberRoleAuthsAttachment
   @override
   Map<String, dynamic> toJson() =>
       _$QChatUpdateMemberRoleAuthsAttachmentToJson(this);
+}
+
+List<QChatUpdatedMyMemberInfo>? _qChatUpdatedMyMemberInfoFromJson(
+    List<dynamic>? messageList) {
+  return messageList
+      ?.map((e) =>
+          QChatUpdatedMyMemberInfo.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatUpdatedMyMemberInfo {
+  /// 产生变更的服务器的ID
+  int? serverId;
+
+  /// 变更后的昵称
+  String? nick;
+
+  /// 昵称是否有变更
+  bool? isNickChanged;
+
+  /// 变更后的头像。
+  String? avatar;
+
+  /// 头像是否有变更
+  bool? isAvatarChanged;
+
+  QChatUpdatedMyMemberInfo(
+      {this.serverId,
+      this.avatar,
+      this.nick,
+      this.isAvatarChanged,
+      this.isNickChanged});
+
+  factory QChatUpdatedMyMemberInfo.fromJson(Map<String, dynamic> json) =>
+      _$QChatUpdatedMyMemberInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatUpdatedMyMemberInfoToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatMyMemberInfoUpdatedAttachment
+    extends QChatSystemNotificationAttachment {
+  @JsonKey(fromJson: _qChatUpdatedMyMemberInfoFromJson)
+  List<QChatUpdatedMyMemberInfo>? updatedInfos;
+
+  QChatMyMemberInfoUpdatedAttachment({this.updatedInfos});
+
+  factory QChatMyMemberInfoUpdatedAttachment.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatMyMemberInfoUpdatedAttachmentFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$QChatMyMemberInfoUpdatedAttachmentToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -2435,6 +2508,7 @@ class QChatUpdateServerRoleAuthsAttachment
 
   /// 更新的权限
 
+  @JsonKey(fromJson: resourceAuthsFromJsonNullable)
   Map<QChatRoleResource, QChatRoleOption>? updateAuths;
 
   QChatUpdateServerRoleAuthsAttachment(
@@ -3007,4 +3081,164 @@ class QChatSearchMsgByPageResult extends QChatGetByPageWithCursorResult {
       _$QChatSearchMsgByPageResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$QChatSearchMsgByPageResultToJson(this);
+}
+
+///"发送消息正在输入事件"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatSendTypingEventParam {
+  /// 正在输入事件所属的serverId
+  final int serverId;
+
+  /// 正在输入事件所属的channelId
+  final int channelId;
+
+  /// 扩展字段，SDK会转成JSON字符串使用
+  @JsonKey(fromJson: castPlatformMapToDartMap)
+  Map<String, dynamic>? extension;
+
+  QChatSendTypingEventParam(
+      {required this.serverId, required this.channelId, this.extension});
+
+  factory QChatSendTypingEventParam.fromJson(Map<String, dynamic> json) =>
+      _$QChatSendTypingEventParamFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatSendTypingEventParamToJson(this);
+}
+
+///消息正在输入事件
+@JsonSerializable(explicitToJson: true)
+class QChatTypingEvent {
+  /// 事件所属的 serverId
+  final int? serverId;
+
+  /// 事件所属的 channelId
+  final int? channelId;
+
+  /// 事件发送者的 accid
+  final String? fromAccount;
+
+  /// 事件发送方昵称
+  final String? fromNick;
+
+  /// 事件发送时间
+  final int? time;
+
+  /// 事件扩展字段
+  @JsonKey(fromJson: castPlatformMapToDartMap)
+  Map<String, dynamic>? extension;
+
+  QChatTypingEvent(
+      {this.serverId,
+      this.channelId,
+      this.extension,
+      this.time,
+      this.fromAccount,
+      this.fromNick});
+
+  factory QChatTypingEvent.fromJson(Map<String, dynamic> json) =>
+      _$QChatTypingEventFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatTypingEventToJson(this);
+}
+
+QChatTypingEvent? qQChatTypingEventFromJson(Map? map) {
+  if (map != null) {
+    return QChatTypingEvent.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatSendTypingEventResult {
+  ///正在输入事件
+  @JsonKey(fromJson: qQChatTypingEventFromJson)
+  QChatTypingEvent? typingEvent;
+
+  QChatSendTypingEventResult({this.typingEvent});
+
+  factory QChatSendTypingEventResult.fromJson(Map<String, dynamic> json) =>
+      _$QChatSendTypingEventResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QChatSendTypingEventResultToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatGetMentionedMeMessagesParam {
+  /// 服务器id
+  final int serverId;
+
+  /// 频道id
+  final int channelId;
+
+  /// 查询时间戳
+  final int? timetag;
+
+  /// 查询数量限制，默认200
+  final int? limit;
+
+  QChatGetMentionedMeMessagesParam(
+      {required this.channelId,
+      required this.serverId,
+      this.limit,
+      this.timetag});
+
+  factory QChatGetMentionedMeMessagesParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetMentionedMeMessagesParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetMentionedMeMessagesParamToJson(this);
+}
+
+///分页查询指定频道@我的消息接口 结果
+@JsonSerializable(explicitToJson: true)
+class QChatGetMentionedMeMessagesResult extends QChatGetByPageWithCursorResult {
+  ///查询到的消息列表
+  @JsonKey(fromJson: _qChatMessageListFromJson)
+  List<QChatMessage>? messages;
+
+  QChatGetMentionedMeMessagesResult(
+      bool? hasMore, int? nextTimeTag, String? cursor,
+      {this.messages})
+      : super(hasMore, nextTimeTag, cursor);
+
+  factory QChatGetMentionedMeMessagesResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatGetMentionedMeMessagesResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatGetMentionedMeMessagesResultToJson(this);
+}
+
+///"批量查询消息是否@当前用户"接口入参
+@JsonSerializable(explicitToJson: true)
+class QChatAreMentionedMeMessagesParam {
+  /// 消息列表，一次最多查询100条
+  @JsonKey(fromJson: _qChatMessageListNotEmptyFromJson)
+  List<QChatMessage> messages;
+
+  QChatAreMentionedMeMessagesParam({required this.messages});
+
+  factory QChatAreMentionedMeMessagesParam.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatAreMentionedMeMessagesParamFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatAreMentionedMeMessagesParamToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class QChatAreMentionedMeMessagesResult {
+  ///消息是否@当前用户的结果，key为uuid
+  @JsonKey(fromJson: castMapToTypeOfBoolString)
+  Map<String, bool>? result;
+
+  QChatAreMentionedMeMessagesResult({this.result});
+
+  factory QChatAreMentionedMeMessagesResult.fromJson(
+          Map<String, dynamic> json) =>
+      _$QChatAreMentionedMeMessagesResultFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$QChatAreMentionedMeMessagesResultToJson(this);
 }

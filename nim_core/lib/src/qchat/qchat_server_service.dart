@@ -263,4 +263,28 @@ class QChatServerService {
       QChatSubscribeAllChannelParam param) {
     return _platform.subscribeAllChannel(param);
   }
+
+  /// 以游客身份订阅服务器
+  ///
+  /// [param]
+  Future<NIMResult<QChatSubscribeServerAsVisitorResult>> subscribeAsVisitor(
+      QChatSubscribeServerAsVisitorParam param) {
+    return _platform.subscribeAsVisitor(param);
+  }
+
+  /// 以游客身份加入服务器
+  ///
+  /// [param]
+  Future<NIMResult<QChatEnterServerAsVisitorResult>> enterAsVisitor(
+      QChatEnterServerAsVisitorParam param) {
+    return _platform.enterAsVisitor(param);
+  }
+
+  /// 以游客身份离开服务器
+  ///
+  /// [param]
+  Future<NIMResult<QChatLeaveServerAsVisitorResult>> leaveAsVisitor(
+      QChatLeaveServerAsVisitorParam param) {
+    return _platform.leaveAsVisitor(param);
+  }
 }

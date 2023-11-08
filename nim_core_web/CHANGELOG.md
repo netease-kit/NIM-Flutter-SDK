@@ -5,7 +5,7 @@
 # 1.0.1(Sep 30, 2022)
 
 ### Behavior changes
-* environment sdk: ">=2.12.0 <3.0.0"
+* environment sdk: ">=2.17.0 <3.0.0"
 
 # 1.0.0(Sep 23, 2022)
 

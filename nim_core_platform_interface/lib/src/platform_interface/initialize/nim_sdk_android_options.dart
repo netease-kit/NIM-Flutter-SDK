@@ -3,9 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/auth/auth_models.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_options.dart';
-import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
+import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
 
 part 'nim_sdk_android_options.g.dart';
 
@@ -96,6 +94,32 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   @JsonKey(defaultValue: false)
   final bool enabledQChatMessageCache;
 
+  /// 为通知栏提供消息发送者显示名称（例如：如果是P2P聊天，可以显示备注名、昵称、帐号等；如果是群聊天，可以显示备注名，群昵称，昵称、帐号等）
+  /// 如果返回 null，SDK将会使用服务器下发昵称
+  /// [account]     消息发送者账号
+  /// [sessionId]   会话ID（如果是P2P聊天，那么会话ID即为发送者账号，如果是群聊天，那么会话ID就是群号）
+  /// [sessionType] 会话类型
+  /// 返回消息发送者对应的显示名称
+  final NIMDisplayNameForMessageNotifierProvider?
+      displayNameForMessageNotifierProvider;
+
+  /// 为云信通知栏提醒提供头像（个人、群组）
+  /// 一般从本地图片缓存中获取，若未下载或本地不存在，请返回默认本地头像（可以返回默认头像资源路径）
+  /// 目前仅支持 jpg 和 png 格式
+  ///
+  /// [sessionType] 会话类型（个人、群组）
+  /// [sessionId]  用户账号或者群ID
+  /// 返回头像信息
+  final NIMAvatarForMessageNotifierProvider? avatarForMessageNotifierProvider;
+
+  /// 为通知栏提供消息title显示名称（例如：如果是群聊天，可以设置自定义群名称等;如果圈组，可以显示圈组频道名称等）
+  /// 如果返回null，SDK 群和超大群会显示群名称，其他类型将会使用当前app名称展示
+  /// 不可以做耗时操作
+  /// [message] 收到的消息
+  /// 返回消息title显示名称
+  final NIMDisplayTitleForMessageNotifierProvider?
+      displayTitleForMessageNotifierProvider;
+
   NIMAndroidSDKOptions({
     /// android configurations
     this.improveSDKProcessPriority = true,
@@ -111,6 +135,9 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.mixPushConfig,
     this.notificationConfig,
     this.enableFcs = true,
+    this.displayNameForMessageNotifierProvider,
+    this.avatarForMessageNotifierProvider,
+    this.displayTitleForMessageNotifierProvider,
 
     /// common configurations
     required String appKey,
@@ -130,6 +157,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     bool? useAssetServerAddressConfig,
     NIMLoginInfo? autoLoginInfo,
     Map<NIMNosScene, int>? nosSceneConfig,
+    NIMServerConfig? serverConfig,
   }) : super(
           appKey: appKey,
           sdkRootDir: sdkRootDir,
@@ -150,6 +178,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
           useAssetServerAddressConfig: useAssetServerAddressConfig,
           autoLoginInfo: autoLoginInfo,
           nosSceneConfig: nosSceneConfig,
+          serverConfig: serverConfig,
         );
 
   factory NIMAndroidSDKOptions.fromMap(Map options) =>
@@ -254,6 +283,10 @@ class NIMMixPushConfig {
   @JsonKey(name: 'KEY_AUTO_SELECT_PUSH_TYPE')
   final bool autoSelectPushType;
 
+  ///荣耀推送 appId请在 AndroidManifest.xml 文件中配置 荣耀推送证书，请在云信管理后台申请
+  @JsonKey(name: 'KEY_HONOR_CERTIFICATE_NAME')
+  final String? honorCertificateName;
+
   NIMMixPushConfig({
     this.xmAppId,
     this.xmAppKey,
@@ -270,6 +303,7 @@ class NIMMixPushConfig {
     this.oppoAppSecret,
     this.oppoCertificateName,
     this.autoSelectPushType = false,
+    this.honorCertificateName,
   });
 
   factory NIMMixPushConfig.fromMap(Map<String, dynamic> json) {
@@ -464,3 +498,13 @@ enum NIMNotificationExtraType {
   /// 将消息转为JsonArray的字符串格式
   jsonArrStr,
 }
+
+typedef NIMDisplayNameForMessageNotifierProvider = Future<String?> Function(
+    String? account, String? sessionId, NIMSessionType? sessionType);
+
+typedef NIMAvatarForMessageNotifierProvider
+    = Future<UserInfoProviderAvatarInfo?> Function(
+        NIMSessionType? sessionType, String? sessionId);
+
+typedef NIMDisplayTitleForMessageNotifierProvider = Future<String?> Function(
+    NIMMessage? message);

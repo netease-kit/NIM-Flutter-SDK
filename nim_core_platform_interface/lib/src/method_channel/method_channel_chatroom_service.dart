@@ -52,6 +52,8 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
         break;
       case 'getIndependentModeLinkAddress':
         return onGetIndependentModeLinkAddress(arguments);
+      case 'getChatRoomDynamicToken':
+        return onGetChatRoomDynamicToken(arguments);
       default:
         throw UnimplementedError();
     }
@@ -443,5 +445,17 @@ class MethodChannelChatroomService extends ChatroomServicePlatform {
     assert(linkAddressProvider != null);
     if (linkAddressProvider == null) return null;
     return await linkAddressProvider(roomId, account);
+  }
+
+  Future<String?> onGetChatRoomDynamicToken(arguments) async {
+    assert(arguments is Map);
+    final tokenProvider = dynamicChatroomTokenProvider;
+    final account = arguments['account'] as String?;
+    final roomId = arguments['roomId'] as String?;
+    assert(dynamicChatroomTokenProvider != null);
+    assert(account != null);
+    assert(roomId != null);
+    if (tokenProvider == null || account == null || roomId == null) return null;
+    return await tokenProvider(account, roomId);
   }
 }

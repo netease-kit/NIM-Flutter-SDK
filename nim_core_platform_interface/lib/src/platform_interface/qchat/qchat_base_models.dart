@@ -225,6 +225,9 @@ class QChatUnreadInfo {
 
   int channelId;
 
+  /// 获取已读时间戳
+  int? ackTimeTag;
+
   /// 获取未读数
 
   int? unreadCount;
@@ -237,12 +240,21 @@ class QChatUnreadInfo {
 
   int? maxCount;
 
+  /// 获取最后一条消息的时间戳
+  int? lastMsgTime;
+
+  /// 获取服务器当前时间
+  int? time;
+
   QChatUnreadInfo(
       {required this.channelId,
       required this.serverId,
       this.maxCount,
       this.mentionedCount,
-      this.unreadCount});
+      this.unreadCount,
+      this.ackTimeTag,
+      this.lastMsgTime,
+      this.time});
 
   factory QChatUnreadInfo.fromJson(Map<String, dynamic> json) =>
       _$QChatUnreadInfoFromJson(json);

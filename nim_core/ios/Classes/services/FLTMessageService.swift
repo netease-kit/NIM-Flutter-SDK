@@ -73,6 +73,8 @@ enum MessageType: String {
   case LoadRecentSessions = "loadRecentSessions"
   case SortRecentSessions = "sortRecentSessions"
   case SaveMessageToLocalEx = "saveMessageToLocalEx"
+  case GetMessagesDynamically = "getMessagesDynamically"
+  case SetChattingAccount = "setChattingAccount"
 }
 
 class FLTMessageService: FLTBaseService, FLTService {
@@ -84,6 +86,11 @@ class FLTMessageService: FLTBaseService, FLTService {
 //        NIMSDK.shared().broadcastManager.add(self)
 //        NIMCustomObject.registerCustomDecoder(NIMCustomAttachmentDecoder())
 //    }
+
+  private let paramErrorTip = "param error"
+  private let paramErrorCode = 414
+
+  var currentChatSession: NIMSession?
 
   override func onInitialized() {
     NIMSDK.shared().chatManager.add(self)
@@ -308,6 +315,10 @@ class FLTMessageService: FLTBaseService, FLTService {
       sortRecentSessions(arguments, resultCallback)
     case MessageType.SaveMessageToLocalEx.rawValue:
       saveMessageToLocalEx(arguments, resultCallback)
+    case MessageType.GetMessagesDynamically.rawValue:
+      getMessagesDynamically(arguments, resultCallback)
+    case MessageType.SetChattingAccount.rawValue:
+      setChattingAccount(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -728,6 +739,25 @@ class FLTMessageService: FLTBaseService, FLTService {
     }
   }
 
+  private func setChattingAccount(_ argument: [String: Any],
+                                  _ resultCallback: ResultCallback) {
+    if let sessionId = argument["sessionId"] as? String,
+       let sessionTypeValue = argument["sessionType"] as? String,
+       let sessionType = FLT_NIMSessionType(rawValue: sessionTypeValue)?.convertToNIMSessionType() {
+      if sessionId == "none" {
+        currentChatSession = nil
+      } else {
+        currentChatSession = NIMSession(sessionId, type: sessionType)
+        // 清理一下当前的未读数消息
+        NIMSDK.shared().conversationManager.markAllMessagesRead(in: currentChatSession!)
+      }
+    } else {
+      currentChatSession = nil
+    }
+
+    successCallBack(resultCallback, nil)
+  }
+
   private func cancelFetchingMessageAttachment(_ message: NIMMessage,
                                                _ resultCallback: ResultCallback) {
     NIMSDK.shared().chatManager.cancelFetchingMessageAttachment(message)
@@ -743,11 +773,11 @@ class FLTMessageService: FLTBaseService, FLTService {
       do {
         let antiSpamCheckResult = try NIMSDK.shared().antispamManager.checkLocalAntispam(option)
         var antiSpamCheckResultJson = antiSpamCheckResult.toDic()
-        if antiSpamCheckResultJson?["operator"] as? Int == 0 {
-          antiSpamCheckResultJson?["content"] = content
-        } else {
-          antiSpamCheckResultJson?["content"] = replacement
-        }
+//        if antiSpamCheckResultJson?["operator"] as? Int == 0 {
+//          antiSpamCheckResultJson?["content"] = content
+//        } else {
+//          antiSpamCheckResultJson?["content"] = replacement
+//        }
 
         resultCallback.result(NimResult.success(antiSpamCheckResultJson).toDic())
       } catch let error as NSError {
@@ -868,6 +898,12 @@ extension FLTMessageService: NIMChatManagerDelegate {
                 session.sessionType == .chatroom {
         chatroom.append(message)
       } else {
+        // 判断当前聊天的Session，如果不为空并且SessionID 和 message的 SessionID相同，则将未读数清零
+        if let session = currentChatSession,
+           message.session?.sessionId == session.sessionId,
+           message.session?.sessionType == session.sessionType {
+          NIMSDK.shared().conversationManager.markAllMessagesRead(in: session)
+        }
         normal.append(message)
       }
     }
@@ -876,6 +912,7 @@ extension FLTMessageService: NIMChatManagerDelegate {
       let ret = normal.map { message in
         message.toDic()
       }
+
       notifyEvent(ServiceType.MessageService.rawValue, "onMessage", ["messageList": ret])
     }
 
@@ -1459,6 +1496,25 @@ extension FLTMessageService {
       }
     } else {
       resultCallback.result(NimResult.error("create message error").toDic())
+    }
+  }
+
+  func getMessagesDynamically(_ argument: [String: Any], _ resultCallback: ResultCallback) {
+    guard let param = NIMGetMessagesDynamicallyParam.convertToParam(argument) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().conversationManager.getMessagesDynamically(param) { [weak self] error, isReliable, messageList in
+      if let ns_error = error as NSError? {
+        self?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
+      } else {
+        self?.successCallBack(resultCallback, ["result": [
+          "isReliable": isReliable,
+          "messages": messageList?.map { msg in
+            msg.toDic()
+          },
+        ] as [String: Any?]])
+      }
     }
   }
 

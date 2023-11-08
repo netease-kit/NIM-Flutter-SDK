@@ -20,6 +20,7 @@ import com.netease.nimflutter.toQChatApplyServerJoinParam
 import com.netease.nimflutter.toQChatBanServerMemberParam
 import com.netease.nimflutter.toQChatCreateServerParam
 import com.netease.nimflutter.toQChatDeleteServerParam
+import com.netease.nimflutter.toQChatEnterServerAsVisitorParam
 import com.netease.nimflutter.toQChatGenerateInviteCodeParam
 import com.netease.nimflutter.toQChatGetBannedServerMembersByPageParam
 import com.netease.nimflutter.toQChatGetInviteApplyRecordOfSelfParam
@@ -32,6 +33,7 @@ import com.netease.nimflutter.toQChatGetUserServerPushConfigsParam
 import com.netease.nimflutter.toQChatInviteServerMembersParam
 import com.netease.nimflutter.toQChatJoinByInviteCodeParam
 import com.netease.nimflutter.toQChatKickServerMembersParam
+import com.netease.nimflutter.toQChatLeaveServerAsVisitorParam
 import com.netease.nimflutter.toQChatLeaveServerParam
 import com.netease.nimflutter.toQChatRejectServerApplyParam
 import com.netease.nimflutter.toQChatRejectServerInviteParam
@@ -39,6 +41,7 @@ import com.netease.nimflutter.toQChatSearchServerByPageParam
 import com.netease.nimflutter.toQChatSearchServerMemberByPageParam
 import com.netease.nimflutter.toQChatServerMarkReadParam
 import com.netease.nimflutter.toQChatSubscribeAllChannelParam
+import com.netease.nimflutter.toQChatSubscribeServerAsVisitorParam
 import com.netease.nimflutter.toQChatSubscribeServerParam
 import com.netease.nimflutter.toQChatUnbanServerMemberParam
 import com.netease.nimflutter.toQChatUpdateMyMemberInfoParam
@@ -49,6 +52,7 @@ import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.qchat.QChatServerService
 import com.netease.nimlib.sdk.qchat.result.QChatApplyServerJoinResult
 import com.netease.nimlib.sdk.qchat.result.QChatCreateServerResult
+import com.netease.nimlib.sdk.qchat.result.QChatEnterServerAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatGenerateInviteCodeResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetBannedServerMembersByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetInviteApplyRecordOfSelfResult
@@ -59,10 +63,12 @@ import com.netease.nimlib.sdk.qchat.result.QChatGetServersByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetServersResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetUserPushConfigsResult
 import com.netease.nimlib.sdk.qchat.result.QChatInviteServerMembersResult
+import com.netease.nimlib.sdk.qchat.result.QChatLeaveServerAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchServerByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchServerMemberByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatServerMarkReadResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeAllChannelResult
+import com.netease.nimlib.sdk.qchat.result.QChatSubscribeServerAsVisitorResult
 import com.netease.nimlib.sdk.qchat.result.QChatSubscribeServerResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateMyMemberInfoResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateServerMemberInfoResult
@@ -116,7 +122,10 @@ class FLTQChatServerService(
                 "getInviteApplyRecordOfServer" to ::getInviteApplyRecordOfServer,
                 "getInviteApplyRecordOfSelf" to ::getInviteApplyRecordOfSelf,
                 "markRead" to ::markRead,
-                "subscribeAllChannel" to ::subscribeAllChannel
+                "subscribeAllChannel" to ::subscribeAllChannel,
+                "subscribeAsVisitor" to ::subscribeAsVisitor,
+                "enterAsVisitor" to ::enterAsVisitor,
+                "leaveAsVisitor" to ::leaveAsVisitor
             )
         }
     }
@@ -603,6 +612,51 @@ class FLTQChatServerService(
         serverIdList ?: return false
         return serverIdList.isNotEmpty() && serverIdList.all {
             it > 0
+        }
+    }
+
+    private suspend fun subscribeAsVisitor(arguments: Map<String, *>): NimResult<QChatSubscribeServerAsVisitorResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatServerService.subscribeAsVisitor(arguments.toQChatSubscribeServerAsVisitorParam())
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
+        }
+    }
+
+    private suspend fun enterAsVisitor(arguments: Map<String, *>): NimResult<QChatEnterServerAsVisitorResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatServerService.enterAsVisitor(arguments.toQChatEnterServerAsVisitorParam())
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
+        }
+    }
+
+    private suspend fun leaveAsVisitor(arguments: Map<String, *>): NimResult<QChatLeaveServerAsVisitorResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatServerService.leaveAsVisitor(arguments.toQChatLeaveServerAsVisitorParam())
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { it.toMap() }
+                        )
+                    }
+                )
         }
     }
 }

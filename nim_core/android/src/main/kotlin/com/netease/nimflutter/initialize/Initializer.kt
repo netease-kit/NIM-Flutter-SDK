@@ -7,19 +7,30 @@
 package com.netease.nimflutter.initialize
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.text.TextUtils
 import com.netease.nimflutter.FLTService
+import com.netease.nimflutter.MethodChannelSuspendResult
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
 import com.netease.nimflutter.ResultCallback
 import com.netease.nimflutter.SafeResult
+import com.netease.nimflutter.convertToNIMServerAddresses
 import com.netease.nimflutter.convertToStatusBarNotificationConfig
 import com.netease.nimflutter.services.LoginInfoFactory
+import com.netease.nimflutter.stringFromSessionTypeEnum
+import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.NosTokenSceneConfig
 import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.lifecycle.SdkLifecycleObserver
 import com.netease.nimlib.sdk.mixpush.MixPushConfig
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
+import com.netease.nimlib.sdk.msg.model.IMMessage
+import com.netease.nimlib.sdk.uinfo.UserInfoProvider
+import com.netease.nimlib.sdk.uinfo.model.UserInfo
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -27,7 +38,13 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONObject
+
+// 获取用户信息返回超时 500ms
+const val userProviderTimeout = 500L
 
 class FLTInitializeService(
     applicationContext: Context,
@@ -41,6 +58,99 @@ class FLTInitializeService(
     override val serviceName = "InitializeService"
 
     private val state = MutableStateFlow(initial)
+
+    private val innerUserInfoProvider = object : UserInfoProvider {
+        override fun getUserInfo(account: String?): UserInfo? = null
+
+        override fun getDisplayNameForMessageNotifier(
+            account: String?,
+            sessionId: String?,
+            sessionType: SessionTypeEnum?
+        ): String? {
+            return runBlocking {
+                withTimeoutOrNull(userProviderTimeout) {
+                    suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "onGetDisplayNameForMessageNotifier",
+                            arguments = mapOf(
+                                "account" to account,
+                                "sessionId" to sessionId,
+                                "sessionType" to stringFromSessionTypeEnum(sessionType)
+                            ),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as String?
+                }
+            }
+        }
+
+        override fun getAvatarForMessageNotifier(
+            sessionType: SessionTypeEnum?,
+            sessionId: String?
+        ): Bitmap? {
+            return runBlocking {
+                withTimeoutOrNull(userProviderTimeout) {
+                    @Suppress("UNCHECKED_CAST")
+                    val map = suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "onGetAvatarForMessageNotifier",
+                            arguments = mapOf(
+                                "sessionId" to sessionId,
+                                "sessionType" to stringFromSessionTypeEnum(sessionType)
+                            ),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as Map<String, Any>?
+                    val path = map?.get("path") as String?
+                    val type = map?.get("type") as String?
+                    val inSampleSize = (map?.get("inSampleSize") as Int?) ?: 2
+                    if (TextUtils.isEmpty(path) || TextUtils.isEmpty(type)) {
+                        ALog.w(
+                            serviceName,
+                            "onGetAvatarForMessageNotifier##param error, path=$path, type=$type, inSampleSize=$inSampleSize"
+                        )
+                        return@withTimeoutOrNull null
+                    }
+                    when (type) {
+                        "asset" -> {
+                            val filePath = nimCore.flutterAssets.getAssetFilePathByName(path!!)
+                            applicationContext.assets.open(filePath).use {
+                                val options = BitmapFactory.Options()
+                                options.inSampleSize = inSampleSize
+                                BitmapFactory.decodeStream(it, null, options)
+                            }
+                        }
+                        "file" -> {
+                            val options = BitmapFactory.Options()
+                            options.inSampleSize = inSampleSize
+                            BitmapFactory.decodeFile(path!!, options)
+                        }
+                        else -> {
+                            ALog.w(
+                                serviceName,
+                                "onGetAvatarForMessageNotifier##type error, type=$type"
+                            )
+                            null
+                        }
+                    }
+                }
+            }
+        }
+
+        override fun getDisplayTitleForMessageNotifier(message: IMMessage?): String? {
+            return runBlocking {
+                withTimeoutOrNull(userProviderTimeout) {
+                    suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "onGetDisplayTitleForMessageNotifier",
+                            arguments = mapOf("message" to message?.toMap()),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as String?
+                }
+            }
+        }
+    }
 
     lateinit var sdkOptions: SDKOptions
 
@@ -82,7 +192,9 @@ class FLTInitializeService(
                 NIMClient.config(
                     applicationContext,
                     arguments["autoLoginInfo"]?.let { LoginInfoFactory.fromMap(it as Map<String, *>) },
-                    SDKOptions().configureWithMap(arguments).also {
+                    SDKOptions().configureWithMap(arguments).apply {
+                        this.userInfoProvider = innerUserInfoProvider
+                    }.also {
                         sdkOptions = it
                     }
                 )
@@ -105,6 +217,8 @@ class FLTInitializeService(
                         },
                         true
                     )
+                // 初始化ALog,使plugin层日志可以输出到本地日志文件
+                ALog.init(applicationContext, ALog.LEVEL_DEBUG)
             }.onFailure { exception ->
                 ALog.e(
                     serviceName,
@@ -159,6 +273,11 @@ fun SDKOptions.configureWithMap(configurations: Map<String, *>) = apply {
                 appendCustomScene(it.key, it.value.toInt())
             }
         }
+    }
+
+    val serverConfig: Map<String, *>? by args
+    if (serverConfig != null) {
+        this.serverConfig = convertToNIMServerAddresses(serverConfig)
     }
 
     val extras: Map<String, Any?>? by args

@@ -43,9 +43,7 @@ QChatMultiSpotLoginEvent _$QChatMultiSpotLoginEventFromJson(
     QChatMultiSpotLoginEvent(
       notifyType: $enumDecodeNullable(
           _$QChatMultiSpotNotifyTypeEnumMap, json['notifyType']),
-      otherClient: json['otherClient'] == null
-          ? null
-          : QChatClient.fromJson(json['otherClient'] as Map<String, dynamic>),
+      otherClient: qChatClientFromJson(json['otherClient'] as Map?),
     );
 
 Map<String, dynamic> _$QChatMultiSpotLoginEventToJson(
@@ -145,16 +143,14 @@ Map<String, dynamic> _$QChatUnreadInfoChangedEventToJson(
 
 AttachmentProgress _$AttachmentProgressFromJson(Map<String, dynamic> json) =>
     AttachmentProgress(
-      uuid: json['uuid'] as String,
-      total: json['total'] as int,
-      transferred: json['transferred'] as int,
+      id: json['id'] as String,
+      progress: json['progress'] as double,
     );
 
 Map<String, dynamic> _$AttachmentProgressToJson(AttachmentProgress instance) =>
     <String, dynamic>{
-      'uuid': instance.uuid,
-      'transferred': instance.transferred,
-      'total': instance.total,
+      'id': instance.id,
+      'progress': instance.progress,
     };
 
 QChatSystemNotificationUpdateEvent _$QChatSystemNotificationUpdateEventFromJson(

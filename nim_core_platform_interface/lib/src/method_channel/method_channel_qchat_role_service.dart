@@ -202,10 +202,10 @@ class MethodChannelQChatRoleService extends QChatRoleServicePlatform {
         convert: (json) => QChatCheckPermissionResult.fromJson(json));
   }
 
-  // Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
-  //     QChatCheckPermissionsParam param) async {
-  //   return NIMResult<QChatCheckPermissionsResult>.fromMap(
-  //       await invokeMethod('checkPermissions', arguments: param.toJson()),
-  //       convert: (json) => QChatCheckPermissionsResult.fromJson(json));
-  // }
+  Future<NIMResult<QChatCheckPermissionsResult>> checkPermissions(
+      QChatCheckPermissionsParam param) async {
+    return NIMResult<QChatCheckPermissionsResult>.fromMap(
+        await invokeMethod('checkPermissions', arguments: param.toJson()),
+        convert: (json) => QChatCheckPermissionsResult.fromJson(json));
+  }
 }

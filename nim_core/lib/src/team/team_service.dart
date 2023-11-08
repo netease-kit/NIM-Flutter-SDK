@@ -28,6 +28,15 @@ class TeamService {
   Stream<List<NIMTeam>> get onTeamListRemove =>
       TeamServicePlatform.instance.onTeamListRemove.stream;
 
+  /// 群成员资料变动观察者通知。群成员资料变动时，会收到该通知
+  Stream<List<NIMTeamMember>> get onTeamMemberUpdate =>
+      TeamServicePlatform.instance.onTeamMemberUpdate.stream;
+
+  /// 移除群成员的观察者通知。自己被移除群时，会收到该通知
+  /// ios端收到回调时NIMTeamMember中仅id 和 account 有效
+  Stream<List<NIMTeamMember>> get onTeamMemberRemove =>
+      TeamServicePlatform.instance.onTeamMemberRemove.stream;
+
   /// 创建一个群组
   /// 云信群组分为两类：普通群和高级群，两种群组的消息功能都是相同的，区别在于管理功能。普通群所有人都可以拉人入群，除群主外，其他人都不能踢人；
   /// 高级群则拥有完善的成员权限体系及管理功能。创建群的接口相同，传入不同的类型参数即可。

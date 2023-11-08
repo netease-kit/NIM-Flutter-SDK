@@ -23,6 +23,7 @@ import com.netease.nimflutter.convertToQueryDirectionEnum
 import com.netease.nimflutter.convertToSearchConfig
 import com.netease.nimflutter.convertToSearchOption
 import com.netease.nimflutter.stringFromSessionTypeEnum
+import com.netease.nimflutter.stringToGetMessageDirectionEnum
 import com.netease.nimflutter.stringToMsgTypeEnum
 import com.netease.nimflutter.stringToSessionTypeEnum
 import com.netease.nimflutter.toMap
@@ -42,6 +43,8 @@ import com.netease.nimlib.sdk.msg.model.AttachmentProgress
 import com.netease.nimlib.sdk.msg.model.BroadcastMessage
 import com.netease.nimlib.sdk.msg.model.CollectInfo
 import com.netease.nimlib.sdk.msg.model.CollectInfoPage
+import com.netease.nimlib.sdk.msg.model.GetMessagesDynamicallyParam
+import com.netease.nimlib.sdk.msg.model.GetMessagesDynamicallyResult
 import com.netease.nimlib.sdk.msg.model.HandleQuickCommentOption
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.LocalAntiSpamResult
@@ -81,7 +84,6 @@ class FLTMessageService(
     private val onMessage =
         Observer { messageList: List<IMMessage> ->
             run {
-                println("onMessage messageList = $messageList")
                 notifyEvent(
                     "onMessage",
                     mutableMapOf(
@@ -149,7 +151,6 @@ class FLTMessageService(
     private val revokeMessageObserver =
         Observer { revokeMsgNotification: RevokeMsgNotification ->
             run {
-                println("onMessageRevoked revokeMsg = $revokeMsgNotification")
                 notifyEvent(
                     "onMessageRevoked",
                     revokeMsgNotification.toMap() as MutableMap<String, Any?>
@@ -333,7 +334,8 @@ class FLTMessageService(
                 "updateStickTopSession" to ::updateStickTopSession,
                 "queryStickTopSession" to ::queryStickTopSession,
                 "queryRoamMsgHasMoreTime" to ::queryRoamMsgHasMoreTime,
-                "updateRoamMsgHasMoreTag" to ::updateRoamMsgHasMoreTag
+                "updateRoamMsgHasMoreTag" to ::updateRoamMsgHasMoreTag,
+                "getMessagesDynamically" to ::getMessagesDynamically
             )
             msgService.registerCustomAttachmentParser { attachJsonString ->
                 CustomAttachment(Utils.jsonStringToMap(attachJsonString))
@@ -425,12 +427,48 @@ class FLTMessageService(
     ) {
         val message: IMMessage? = MessageHelper.convertIMMessage(arguments)
         val thumb = arguments["thumb"] as Boolean? ?: false
-        message?.let {
-            NIMClient.getService(MsgService::class.java).downloadAttachment(it, thumb)
-        }?.setCallback(NimResultCallback(resultCallback))
-            ?: resultCallback.result(
+        if (message == null) {
+            resultCallback.result(
                 NimResult(code = -1, errorDetails = "download attachment error!")
             )
+        } else {
+            NIMClient.getService(MsgService::class.java)
+                .queryMessageListByUuid(listOf(message.uuid))
+                .setCallback(
+                    object : RequestCallback<List<IMMessage>> {
+                        override fun onSuccess(result: List<IMMessage>?) {
+                            val firstMessage = result?.firstOrNull()
+                            if (firstMessage != null && TextUtils.equals(firstMessage.uuid, message.uuid)) {
+                                NIMClient.getService(MsgService::class.java)
+                                    .downloadAttachment(firstMessage, thumb)
+                                    .setCallback(NimResultCallback(resultCallback))
+                            } else {
+                                resultCallback.result(
+                                    NimResult(
+                                        code = -1,
+                                        errorDetails = "download attachment error, query message info is empty or not correct."
+                                    )
+                                )
+                            }
+                        }
+
+                        override fun onFailed(code: Int) {
+                            resultCallback.result(
+                                NimResult(code = code, errorDetails = "download attachment error, query message failed code is $code.")
+                            )
+                        }
+
+                        override fun onException(exception: Throwable?) {
+                            resultCallback.result(
+                                NimResult(
+                                    code = -1,
+                                    errorDetails = "download attachment error, query message exception. exception is $exception."
+                                )
+                            )
+                        }
+                    }
+                )
+        }
     }
 
     private fun cancelUploadAttachment(
@@ -632,7 +670,7 @@ class FLTMessageService(
                                         ALog.e(
                                             tag,
                                             "find message failed! errorCode  = $code message = ${
-                                            getMessageInfo(message)
+                                                getMessageInfo(message)
                                             }"
                                         )
                                         resultCallback.result(
@@ -647,14 +685,14 @@ class FLTMessageService(
                                         ALog.e(
                                             tag,
                                             "cannot find send message! message = ${
-                                            getMessageInfo(message)
+                                                getMessageInfo(message)
                                             }  exception = $exception"
                                         )
                                         resultCallback.result(
                                             NimResult(
                                                 code = -2,
                                                 errorDetails = "cannot find send message= ${
-                                                getMessageInfo(message)
+                                                    getMessageInfo(message)
                                                 }  exception = $exception"
                                             )
                                         )
@@ -667,7 +705,7 @@ class FLTMessageService(
                         ALog.e(
                             tag,
                             "send message failed! errorCode = $code message = ${
-                            getMessageInfo(message)
+                                getMessageInfo(message)
                             }"
                         )
                         resultCallback.result(
@@ -684,7 +722,7 @@ class FLTMessageService(
                             NimResult(
                                 code = -2,
                                 errorDetails = "send message exception：message = ${
-                                getMessageInfo(message)
+                                    getMessageInfo(message)
                                 } exception = $exception"
                             )
                         )
@@ -1215,8 +1253,7 @@ class FLTMessageService(
             .setCallback(listMessageRequestCallback(resultCallback))
     }
 
-    private suspend fun querySessionList(arguments: Map<String, *>):
-        NimResult<List<RecentContact>> {
+    private suspend fun querySessionList(arguments: Map<String, *>): NimResult<List<RecentContact>> {
         return suspendCancellableCoroutine { cont ->
             val limit = (arguments.getOrElse("limit") { 0 } as Number).toInt()
             if (limit > 0) { // TODO: iOS 没有条数参数
@@ -1235,8 +1272,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun querySessionListFiltered(arguments: Map<String, *>):
-        NimResult<List<RecentContact>> {
+    private suspend fun querySessionListFiltered(arguments: Map<String, *>): NimResult<List<RecentContact>> {
         return suspendCancellableCoroutine { cont ->
             val filterMessageTypeList: List<String>? by arguments.withDefault { null }
             msgService.queryRecentContacts(
@@ -1255,8 +1291,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun querySession(arguments: Map<String, *>):
-        NimResult<RecentContact> {
+    private suspend fun querySession(arguments: Map<String, *>): NimResult<RecentContact> {
         val sessionId: String by arguments
         val sessionType = stringToSessionTypeEnum(arguments["sessionType"] as String)
         val result = withContext(Dispatchers.IO) {
@@ -1269,8 +1304,7 @@ class FLTMessageService(
         )
     }
 
-    private suspend fun createSession(arguments: Map<String, *>):
-        NimResult<RecentContact> {
+    private suspend fun createSession(arguments: Map<String, *>): NimResult<RecentContact> {
         val sessionId: String by arguments
         val sessionType = stringToSessionTypeEnum(arguments["sessionType"] as String)
         val tag: Number by arguments
@@ -1294,8 +1328,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun updateSession(arguments: Map<String, *>):
-        NimResult<Nothing> {
+    private suspend fun updateSession(arguments: Map<String, *>): NimResult<Nothing> {
         val needNotify: Boolean by arguments
         val session: Map<String, *> by arguments
         val sessionId: String by session
@@ -1318,8 +1351,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun updateSessionWithMessage(arguments: Map<String, *>):
-        NimResult<Nothing> {
+    private suspend fun updateSessionWithMessage(arguments: Map<String, *>): NimResult<Nothing> {
         val needNotify: Boolean by arguments
         val message: Map<String, *> by arguments
         return withContext(Dispatchers.IO) {
@@ -1328,8 +1360,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun queryTotalUnreadCount(arguments: Map<String, *>):
-        NimResult<Int> {
+    private suspend fun queryTotalUnreadCount(arguments: Map<String, *>): NimResult<Int> {
         val queryType: Int by arguments
         val count = withContext(Dispatchers.IO) {
             val queryTypeAll = 0
@@ -1351,16 +1382,14 @@ class FLTMessageService(
         )
     }
 
-    private suspend fun setChattingAccount(arguments: Map<String, *>):
-        NimResult<Nothing> {
+    private suspend fun setChattingAccount(arguments: Map<String, *>): NimResult<Nothing> {
         val sessionId: String by arguments
         val sessionType = stringToSessionTypeEnum(arguments["sessionType"] as String)
         msgService.setChattingAccount(sessionId, sessionType)
         return NimResult.SUCCESS
     }
 
-    private suspend fun clearSessionUnreadCount(arguments: Map<String, *>):
-        NimResult<List<SessionAckInfo>> {
+    private suspend fun clearSessionUnreadCount(arguments: Map<String, *>): NimResult<List<SessionAckInfo>> {
         return suspendCancellableCoroutine { cont ->
             val requestList: List<Map<String, String>> by arguments
             msgService.clearUnreadCount(
@@ -1385,8 +1414,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun clearAllSessionUnreadCount(arguments: Map<String, *>):
-        NimResult<Nothing> {
+    private suspend fun clearAllSessionUnreadCount(arguments: Map<String, *>): NimResult<Nothing> {
         return withContext(Dispatchers.IO) {
             runCatching {
                 msgService.clearAllUnreadCount()
@@ -1395,8 +1423,7 @@ class FLTMessageService(
         }.getOrElse { NimResult.FAILURE }
     }
 
-    private suspend fun deleteSession(arguments: Map<String, *>):
-        NimResult<Nothing> {
+    private suspend fun deleteSession(arguments: Map<String, *>): NimResult<Nothing> {
         val sessionInfo: Map<String, Any> by arguments
         val sessionId: String by sessionInfo
         val sessionType = stringToSessionTypeEnum(sessionInfo["sessionType"] as String)
@@ -1422,17 +1449,16 @@ class FLTMessageService(
         // 4个入参的 deleteRecentContact 方法不会触发 recentContactDeleteObserver 回调
         // 需要手动触发一下
         if (result.isSuccess && contact != null && (
-            deleteTypeEnum == DeleteTypeEnum.LOCAL ||
-                deleteTypeEnum == DeleteTypeEnum.LOCAL_AND_REMOTE
-            )
+                deleteTypeEnum == DeleteTypeEnum.LOCAL ||
+                    deleteTypeEnum == DeleteTypeEnum.LOCAL_AND_REMOTE
+                )
         ) {
             notifyEvent("onSessionDelete", contact.toMap())
         }
         return result
     }
 
-    private suspend fun addCollect(arguments: Map<String, *>):
-        NimResult<CollectInfo> {
+    private suspend fun addCollect(arguments: Map<String, *>): NimResult<CollectInfo> {
         val args = arguments.withDefault { null }
         val type: Number by args
         val data: String by args
@@ -1456,8 +1482,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun removeCollect(arguments: Map<String, *>):
-        NimResult<Int> {
+    private suspend fun removeCollect(arguments: Map<String, *>): NimResult<Int> {
         val args = arguments.withDefault { null }
         val collects: List<Map<String, *>> by args
         return suspendCancellableCoroutine { cont ->
@@ -1478,8 +1503,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun updateCollect(arguments: Map<String, *>):
-        NimResult<CollectInfo> {
+    private suspend fun updateCollect(arguments: Map<String, *>): NimResult<CollectInfo> {
         val args = arguments.withDefault { null }
         val id: Number by args
         val createTime: Number by args
@@ -1501,8 +1525,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun queryCollect(arguments: Map<String, *>):
-        NimResult<CollectInfoPage> {
+    private suspend fun queryCollect(arguments: Map<String, *>): NimResult<CollectInfoPage> {
         val args = arguments.withDefault { null }
         val anchor: Map<String, *>? by args
         val toTime: Number by args
@@ -1546,8 +1569,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun addMessagePin(arguments: Map<String, *>):
-        NimResult<Long> {
+    private suspend fun addMessagePin(arguments: Map<String, *>): NimResult<Long> {
         val args = arguments.withDefault { null }
         val message: Map<String, *> by args
         val ext: String? by args
@@ -1559,8 +1581,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun updateMessagePin(arguments: Map<String, *>):
-        NimResult<Long> {
+    private suspend fun updateMessagePin(arguments: Map<String, *>): NimResult<Long> {
         val args = arguments.withDefault { null }
         val message: Map<String, *> by args
         val ext: String? by args
@@ -1572,8 +1593,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun removeMessagePin(arguments: Map<String, *>):
-        NimResult<Long> {
+    private suspend fun removeMessagePin(arguments: Map<String, *>): NimResult<Long> {
         val args = arguments.withDefault { null }
         val message: Map<String, *> by args
         val ext: String? by args
@@ -1585,8 +1605,7 @@ class FLTMessageService(
         }
     }
 
-    private suspend fun queryMessagePinForSession(arguments: Map<String, *>):
-        NimResult<List<MsgPinDbOption>> {
+    private suspend fun queryMessagePinForSession(arguments: Map<String, *>): NimResult<List<MsgPinDbOption>> {
         val args = arguments.withDefault { null }
         val sessionId: String by args
         val sessionType = stringToSessionTypeEnum(args["sessionType"] as String)
@@ -1877,6 +1896,51 @@ class FLTMessageService(
             msgService.updateRoamMsgHasMoreTag(MessageHelper.convertIMMessage(newTag))
             NimResult.SUCCESS
         }
+    }
+
+    private suspend fun getMessagesDynamically(arguments: Map<String, *>): NimResult<GetMessagesDynamicallyResult> {
+        return suspendCancellableCoroutine { cont ->
+            msgService.getMessagesDynamically(arguments.toGetMessagesDynamicallyParam()).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { mapOf("result" to it.toMap()) }
+                    )
+                }
+            )
+        }
+    }
+
+    private fun GetMessagesDynamicallyResult.toMap() = mapOf<String, Any?>(
+        "messages" to messages?.map { it.toMap() }?.toList(),
+        "isReliable" to isReliable
+    )
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Map<String, *>.toGetMessagesDynamicallyParam(): GetMessagesDynamicallyParam {
+        val sessionId = this["sessionId"] as String
+        val sessionType = stringToSessionTypeEnum(this["sessionType"] as String)
+        val param = GetMessagesDynamicallyParam(sessionId, sessionType)
+        if (this["fromTime"] as Long? != null) {
+            param.fromTime = this["fromTime"] as Long
+        }
+        if (this["toTime"] as Long? != null) {
+            param.toTime = this["toTime"] as Long
+        }
+        if (this["limit"] as Int? != null) {
+            param.limit = this["limit"] as Int
+        }
+        if (this["anchorServerId"] as Long? != null) {
+            param.anchorServerId = this["anchorServerId"] as Long
+        }
+        if (this["anchorClientId"] as String? != null) {
+            param.anchorClientId = this["anchorClientId"] as String
+        }
+        if (this["direction"] as String? != null) {
+            param.direction = stringToGetMessageDirectionEnum(this["direction"] as String)
+        }
+        return param
     }
 }
 

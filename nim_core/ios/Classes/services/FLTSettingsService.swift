@@ -16,12 +16,17 @@ enum SettingType: String {
   case UpdatePushKitToken = "updatePushKitToken"
   case UploadLogs = "uploadLogs"
   case ArchiveLogs = "archiveLogs"
+  case RemoveResourceFiles = "removeResourceFiles"
+  case SearchResourceFiles = "searchResourceFiles"
+  case RegisterBadgeCountHandler = "registerBadgeCountHandler"
 }
 
 class FLTSettingsService: FLTBaseService, FLTService {
   func serviceName() -> String {
     ServiceType.SettingService.rawValue
   }
+
+  var badgeCount = -1
 
   func onMethodCalled(_ method: String, _ arguments: [String: Any],
                       _ resultCallback: ResultCallback) {
@@ -42,8 +47,27 @@ class FLTSettingsService: FLTBaseService, FLTService {
     case SettingType.UploadLogs.rawValue: uploadLogs(arguments, resultCallback)
     case SettingType.ArchiveLogs.rawValue: archiveLogs(arguments, resultCallback)
     case SettingType.UpdatePushKitToken.rawValue: updatePushKitToken(arguments, resultCallback)
+    case SettingType.RemoveResourceFiles.rawValue: removeResourceFiles(arguments, resultCallback)
+    case SettingType.SearchResourceFiles.rawValue: searchResourceFiles(arguments, resultCallback)
+    case SettingType.RegisterBadgeCountHandler.rawValue: registerBadgeCountHandler(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
+    }
+  }
+
+  override func onInitialized() {
+    registerBadgeCount()
+  }
+
+  private func registerBadgeCount() {
+    NIMSDK.shared().apnsManager.registerBadgeCountHandler {
+      [weak self] () -> UInt in
+      if let count = self?.badgeCount,
+         count >= 0 {
+        return UInt(count)
+      } else {
+        return UInt(NIMSDK.shared().conversationManager.allUnreadCount())
+      }
     }
   }
 
@@ -68,6 +92,16 @@ class FLTSettingsService: FLTBaseService, FLTService {
       }
     } else {
       errorCallBack(resultCallback, "parameter is nil")
+    }
+  }
+
+  private func registerBadgeCountHandler(_ arguments: [String: Any],
+                                         _ resultCallback: ResultCallback) {
+    if let count = arguments["count"] as? Int {
+      badgeCount = count
+      resultCallback.result(NimResult.success(nil).toDic())
+    } else {
+      resultCallback.result(NimResult.error(414, "param error"))
     }
   }
 
@@ -201,6 +235,48 @@ class FLTSettingsService: FLTBaseService, FLTService {
         resultCallback.result(result.toDic())
       }
     })
+  }
+
+  func removeResourceFiles(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let option = getQueryOption(arguments)
+    NIMSDK.shared().resourceManager.removeResourceFiles(option) {
+      [weak self] error, freeBytes in
+      if let ns_error = error as NSError? {
+        self?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
+      } else {
+        self?.successCallBack(resultCallback, freeBytes)
+      }
+    }
+  }
+
+  func searchResourceFiles(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let option = getQueryOption(arguments)
+    NIMSDK.shared().resourceManager.searchResourceFiles(option) {
+      [weak self] error, results in
+      if let ns_error = error as NSError? {
+        self?.errorCallBack(resultCallback, ns_error.description, ns_error.code)
+      } else {
+        self?.successCallBack(resultCallback, ["result": results?.map {
+          result in
+          [
+            "path": result.path,
+            "fileLength": result.fileLength,
+            "creationDate": Int(result.creationDate.timeIntervalSince1970 * 1000),
+          ] as [String: Any]
+        }])
+      }
+    }
+  }
+
+  func getQueryOption(_ arguments: [String: Any]) -> NIMResourceQueryOption {
+    let option = NIMResourceQueryOption()
+    if let timeInterval = arguments["timeInterval"] as? Int {
+      option.timeInterval = TimeInterval(Double(timeInterval) / 1000)
+    }
+    if let extensions = arguments["extensions"] as? [String] {
+      option.extensions = extensions
+    }
+    return option
   }
 
   func archiveLogs(_ arguments: [String: Any], _ resultCallback: ResultCallback) {

@@ -20,7 +20,10 @@ class NimCorePlugin : FlutterPlugin, ActivityAware {
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         ALog.i(tag, "on attached to engine.")
-        channel = MethodCallHandlerImpl(flutterPluginBinding.applicationContext)
+        channel = MethodCallHandlerImpl(
+            flutterPluginBinding.applicationContext,
+            flutterPluginBinding.flutterAssets
+        )
         channel!!.startListening(flutterPluginBinding.binaryMessenger)
     }
 

@@ -28,6 +28,7 @@ import com.netease.nimlib.sdk.team.constant.TeamInviteModeEnum
 import com.netease.nimlib.sdk.team.constant.TeamUpdateModeEnum
 import com.netease.nimlib.sdk.team.constant.VerifyTypeEnum
 import com.netease.yunxin.kit.alog.ALog
+import java.io.Serializable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
@@ -36,7 +37,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.json.JSONObject
-import java.io.Serializable
 
 class FLTSuperTeamService(
     applicationContext: Context,

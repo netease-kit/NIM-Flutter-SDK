@@ -179,4 +179,23 @@ class QChatMessageService {
       QChatSearchMsgByPageParam param) {
     return _platform.searchMsgByPage(param);
   }
+
+  /// 发送消息正在输入事件
+  /// 接收方需要调用订阅指定频道事件订阅正在输入事件后后才能就可以收到指定频道的正在输入事件
+  Future<NIMResult<QChatSendTypingEventResult>> sendTypingEvent(
+      QChatSendTypingEventParam param) {
+    return _platform.sendTypingEvent(param);
+  }
+
+  ///分页查询指定频道@我的消息
+  Future<NIMResult<QChatGetMentionedMeMessagesResult>> getMentionedMeMessages(
+      QChatGetMentionedMeMessagesParam param) {
+    return _platform.getMentionedMeMessages(param);
+  }
+
+  ///批量查询消息是否@当前用户
+  Future<NIMResult<QChatAreMentionedMeMessagesResult>> areMentionedMeMessages(
+      QChatAreMentionedMeMessagesParam param) {
+    return _platform.areMentionedMeMessages(param);
+  }
 }

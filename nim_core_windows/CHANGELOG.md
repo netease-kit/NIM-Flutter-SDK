@@ -1,3 +1,8 @@
+# v1.0.8(Feb 23, 2023)
+
+### Bug Fixes
+* add senderClientType for Message
+
 # v1.0.7(Feb 8, 2023)
 
 ### Bug Fixes

@@ -53,6 +53,10 @@ class NIMChatroomEnterRequest {
       fromJson: _chatRoomIndependentModeConfigDesktopFromJson)
   final NIMChatroomIndependentModeConfigDesktop? desktopIndependentModeConfig;
 
+  ///鉴权方式，0表示最初的loginToken的校验方式，1表示基于appSecret计算的token鉴权方式，2表示基于第三方回调的token鉴权方式，默认0
+  ///暂时只支持 0，不支持 1 和 2
+  final int loginAuthType;
+
   NIMChatroomEnterRequest(
       {required this.roomId,
       this.nickname,
@@ -63,7 +67,8 @@ class NIMChatroomEnterRequest {
       this.notifyTargetTags,
       this.retryCount,
       this.independentModeConfig,
-      this.desktopIndependentModeConfig});
+      this.desktopIndependentModeConfig,
+      this.loginAuthType = 0});
 
   factory NIMChatroomEnterRequest.fromMap(Map<String, dynamic> map) =>
       _$NIMChatroomEnterRequestFromJson(map);

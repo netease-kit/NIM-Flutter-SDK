@@ -144,4 +144,21 @@ class SettingsService {
       List<NIMDirCacheFileType> fileTypes, int startTime, int endTime) {
     return _platform.clearDirCache(fileTypes, startTime, endTime);
   }
+
+  ///搜索缓存的资源文件 *iOS可用*
+  Future<NIMResult<List<NIMCacheQueryResult>>> searchResourceFiles(
+      NIMResourceQueryOption option) {
+    return _platform.searchResourceFiles(option);
+  }
+
+  ///  删除缓存的资源文件 *iOS可用*
+  Future<NIMResult<int>> removeResourceFiles(NIMResourceQueryOption option) {
+    return _platform.removeResourceFiles(option);
+  }
+
+  /// 注册自定义云信角标未读数 *iOS可用*
+  /// 在每次角标数量变化时调用
+  Future<NIMResult<void>> registerBadgeCount(int count) {
+    return _platform.registerBadgeCount(count);
+  }
 }

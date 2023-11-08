@@ -38,6 +38,7 @@ import com.netease.nimlib.sdk.team.model.CreateTeamResult
 import com.netease.nimlib.sdk.team.model.Team
 import com.netease.nimlib.sdk.team.model.TeamMember
 import com.netease.yunxin.kit.alog.ALog
+import java.io.Serializable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
@@ -45,7 +46,6 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.suspendCancellableCoroutine
-import java.io.Serializable
 
 class FLTTeamService(
     applicationContext: Context,
@@ -96,6 +96,8 @@ class FLTTeamService(
         nimCore.onInitialized {
             observeTeamUpdateEvent()
             observeTeamRemoveEvent()
+            observeTeamMemberUpdate()
+            observeTeamMemberRemove()
         }
     }
 
@@ -144,6 +146,56 @@ class FLTTeamService(
                 method = "onTeamListRemove",
                 arguments = hashMapOf(
                     "team" to event.toMap()
+                )
+            )
+        }.launchIn(nimCore.lifeCycleScope)
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun observeTeamMemberUpdate() {
+        callbackFlow<List<TeamMember>> {
+            val observer = Observer<List<TeamMember>> { event ->
+                ALog.i(serviceName, "observeTeamMemberUpdate: $event")
+                trySend(event).onFailure {
+                    ALog.i(serviceName, "send kick out event fail: ${it?.message}")
+                }
+            }
+            NIMClient.getService(TeamServiceObserver::class.java).apply {
+                observeMemberUpdate(observer, true)
+                awaitClose {
+                    observeMemberUpdate(observer, false)
+                }
+            }
+        }.onEach { event ->
+            notifyEvent(
+                method = "onTeamMemberUpdate",
+                arguments = hashMapOf(
+                    "teamMemberList" to event.map { it.toMap() }.toList()
+                )
+            )
+        }.launchIn(nimCore.lifeCycleScope)
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun observeTeamMemberRemove() {
+        callbackFlow<List<TeamMember>> {
+            val observer = Observer<List<TeamMember>> { event ->
+                ALog.i(serviceName, "observeTeamMemberRemove: $event")
+                trySend(event).onFailure {
+                    ALog.i(serviceName, "send kick out event fail: ${it?.message}")
+                }
+            }
+            NIMClient.getService(TeamServiceObserver::class.java).apply {
+                observeMemberRemove(observer, true)
+                awaitClose {
+                    observeMemberRemove(observer, false)
+                }
+            }
+        }.onEach { event ->
+            notifyEvent(
+                method = "onTeamMemberRemove",
+                arguments = hashMapOf(
+                    "teamMemberList" to event.map { it.toMap() }.toList()
                 )
             )
         }.launchIn(nimCore.lifeCycleScope)

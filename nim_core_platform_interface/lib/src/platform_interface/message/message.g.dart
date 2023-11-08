@@ -66,6 +66,9 @@ NIMMessage _$NIMMessageFromJson(Map<String, dynamic> json) {
     env: json['env'] as String?,
     fromNickname: json['fromNickname'] as String?,
     isRemoteRead: json['isRemoteRead'] as bool?,
+    yidunAntiSpamExt: json['yidunAntiSpamExt'] as String?,
+    yidunAntiSpamRes: json['yidunAntiSpamRes'] as String?,
+    robotInfo: NIMMessageRobotInfo._fromMap(json['robotInfo'] as Map?),
   );
 }
 
@@ -113,6 +116,9 @@ Map<String, dynamic> _$NIMMessageToJson(NIMMessage instance) =>
       'env': instance.env,
       'fromNickname': instance.fromNickname,
       'isRemoteRead': instance.isRemoteRead,
+      'yidunAntiSpamRes': instance.yidunAntiSpamRes,
+      'yidunAntiSpamExt': instance.yidunAntiSpamExt,
+      'robotInfo': NIMMessageRobotInfo._toMap(instance.robotInfo),
     };
 
 K _$enumDecode<K, V>(
@@ -650,6 +656,8 @@ NIMChatroomMessage _$NIMChatroomMessageFromJson(Map<String, dynamic> json) {
     env: json['env'] as String?,
     fromNickname: json['fromNickname'] as String?,
     isRemoteRead: json['isRemoteRead'] as bool?,
+    yidunAntiSpamExt: json['yidunAntiSpamExt'] as String?,
+    yidunAntiSpamRes: json['yidunAntiSpamRes'] as String?,
   )..config = NIMCustomMessageConfig._fromMap(json['config'] as Map?);
 }
 
@@ -697,6 +705,8 @@ Map<String, dynamic> _$NIMChatroomMessageToJson(NIMChatroomMessage instance) =>
       'env': instance.env,
       'fromNickname': instance.fromNickname,
       'isRemoteRead': instance.isRemoteRead,
+      'yidunAntiSpamExt': instance.yidunAntiSpamExt,
+      'yidunAntiSpamRes': instance.yidunAntiSpamRes,
       'enableHistory': instance.enableHistory,
       'isHighPriorityMessage': instance.isHighPriorityMessage,
       'extension': _chatroomMessageExtensionToMap(instance.extension),
@@ -783,3 +793,68 @@ Map<String, dynamic> _$NIMTeamMessageAckInfoToJson(
       'ackAccountList': instance.ackAccountList,
       'unAckAccountList': instance.unAckAccountList,
     };
+
+NIMMessageRobotInfo _$NIMMessageRobotInfoFromJson(Map<String, dynamic> json) {
+  return NIMMessageRobotInfo(
+    function: json['function'] as String?,
+    topic: json['topic'] as String?,
+    customContent: json['customContent'] as String?,
+    account: json['account'] as String?,
+  );
+}
+
+Map<String, dynamic> _$NIMMessageRobotInfoToJson(
+        NIMMessageRobotInfo instance) =>
+    <String, dynamic>{
+      'function': instance.function,
+      'topic': instance.topic,
+      'customContent': instance.customContent,
+      'account': instance.account,
+    };
+
+GetMessagesDynamicallyResult _$GetMessagesDynamicallyResultFromJson(
+        Map<String, dynamic> json) =>
+    GetMessagesDynamicallyResult(
+      messages: GetMessagesDynamicallyResult.messageListFromMap(
+          json['messages'] as List?),
+      isReliable: json['isReliable'] as bool?,
+    );
+
+Map<String, dynamic> _$GetMessagesDynamicallyResultToJson(
+        GetMessagesDynamicallyResult instance) =>
+    <String, dynamic>{
+      'messages': instance.messages?.map((e) => e.toMap()).toList(),
+      'isReliable': instance.isReliable,
+    };
+
+GetMessagesDynamicallyParam _$GetMessagesDynamicallyParamFromJson(
+        Map<String, dynamic> json) =>
+    GetMessagesDynamicallyParam(
+      json['sessionId'] as String,
+      $enumDecode(_$NIMSessionTypeEnumMap, json['sessionType']),
+      fromTime: json['fromTime'] as int?,
+      toTime: json['toTime'] as int?,
+      anchorServerId: json['anchorServerId'] as int?,
+      anchorClientId: json['anchorClientId'] as String?,
+      limit: json['limit'] as int?,
+      direction: $enumDecodeNullable(
+          _$NIMGetMessageDirectionEnumMap, json['direction']),
+    );
+
+Map<String, dynamic> _$GetMessagesDynamicallyParamToJson(
+        GetMessagesDynamicallyParam instance) =>
+    <String, dynamic>{
+      'sessionId': instance.sessionId,
+      'sessionType': _$NIMSessionTypeEnumMap[instance.sessionType]!,
+      'fromTime': instance.fromTime,
+      'toTime': instance.toTime,
+      'anchorServerId': instance.anchorServerId,
+      'anchorClientId': instance.anchorClientId,
+      'limit': instance.limit,
+      'direction': _$NIMGetMessageDirectionEnumMap[instance.direction],
+    };
+
+const _$NIMGetMessageDirectionEnumMap = {
+  NIMGetMessageDirection.forward: 'forward',
+  NIMGetMessageDirection.backward: 'backward',
+};

@@ -5,6 +5,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/auth/auth_models.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_options.dart';
+import 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_server_config.dart';
 import 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart';
 
 part 'nim_sdk_ios_options.g.dart';
@@ -111,10 +112,12 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
     bool? useAssetServerAddressConfig,
     NIMLoginInfo? autoLoginInfo,
     Map<NIMNosScene, int>? nosSceneConfig,
+    NIMServerConfig? serverConfig,
   }) : super(
           appKey: appKey,
           autoLoginInfo: autoLoginInfo,
           nosSceneConfig: nosSceneConfig,
+          serverConfig: serverConfig,
           sdkRootDir: sdkRootDir,
           cdnTrackInterval: cndTrackInterval,
           customClientType: customClientType,

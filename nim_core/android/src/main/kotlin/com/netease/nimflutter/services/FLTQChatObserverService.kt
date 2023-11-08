@@ -28,6 +28,7 @@ import com.netease.nimlib.sdk.qchat.event.QChatUnreadInfoChangedEvent
 import com.netease.nimlib.sdk.qchat.model.QChatMessage
 import com.netease.nimlib.sdk.qchat.model.QChatServerUnreadInfo
 import com.netease.nimlib.sdk.qchat.model.QChatSystemNotification
+import com.netease.nimlib.sdk.qchat.model.QChatTypingEvent
 
 class FLTQChatObserverService(
     applicationContext: Context,
@@ -52,6 +53,7 @@ class FLTQChatObserverService(
                 observeReceiveSystemNotification(onReceiveSystemNotification, true)
                 observeSystemNotificationUpdate(onSystemNotificationUpdate, true)
                 observeServerUnreadInfoChanged(serverUnreadInfoChanged, true)
+                observeReceiveTypingEvent(onReceiveTypingEvent, true)
             }
         }
     }
@@ -210,5 +212,18 @@ class FLTQChatObserverService(
         "unreadCount" to unreadCount,
         "mentionedCount" to mentionedCount,
         "maxCount" to maxCount
+    )
+
+    private val onReceiveTypingEvent = Observer<QChatTypingEvent> { event ->
+        notifyEvent("onReceiveTypingEvent", event.toMap())
+    }
+
+    fun QChatTypingEvent.toMap() = mapOf<String, Any?>(
+        "serverId" to serverId,
+        "channelId" to channelId,
+        "fromAccount" to fromAccount,
+        "fromNick" to fromNick,
+        "time" to time,
+        "extension" to extension
     )
 }

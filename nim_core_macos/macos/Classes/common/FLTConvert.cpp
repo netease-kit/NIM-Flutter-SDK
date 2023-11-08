@@ -1780,18 +1780,21 @@ bool Convert::convertIMMessage2Map(flutter::EncodableMap& arguments,
   memberPushOption[flutter::EncodableValue("forcePushList")] = forcePushList;
   arguments[flutter::EncodableValue("memberPushOption")] = memberPushOption;
 
-  bFind = false;
   for (auto& it : m_clientType) {
     if (it.second == imMessage.readonly_sender_client_type_) {
       arguments[flutter::EncodableValue("senderClientType")] = it.first;
-      bFind = true;
       break;
     }
   }
-  if (!bFind) {
-    YXLOG(Warn) << "parse failed, sender_client_type: "
-                << imMessage.readonly_sender_client_type_ << YXLOGEnd;
-    return false;
+  if (arguments[flutter::EncodableValue("senderClientType")] ==
+          flutter::EncodableValue("") ||
+      arguments[flutter::EncodableValue("senderClientType")] ==
+          flutter::EncodableValue("unknown")) {
+#if defined(_WIN32)
+    arguments[flutter::EncodableValue("senderClientType")] = "windows";
+#else
+    arguments[flutter::EncodableValue("senderClientType")] = "macos";
+#endif
   }
 
   flutter::EncodableMap antiSpamOption;

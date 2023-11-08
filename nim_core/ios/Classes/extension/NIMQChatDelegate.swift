@@ -189,7 +189,7 @@ extension NIMQChatMessageUpdateOperatorInfo {
     }
     if let pushPayload = json["pushPayload"] as? String {
       model
-        .pushPayload = NSObject().getDictionaryFromJSONString(pushPayload)
+        .pushPayload = pushPayload
     }
     return model
   }
@@ -256,6 +256,9 @@ extension NIMQChatUnreadInfo {
       jsonObject["unreadCount"] = unreadCount
       jsonObject["mentionedCount"] = mentionedCount
       jsonObject["maxCount"] = maxCount
+      jsonObject["ackTimeTag"] = Int(ackTimestamp * 1000)
+      jsonObject["lastMsgTime"] = Int(lastMessageTimestamp * 1000)
+      jsonObject["time"] = Int(timestamp * 1000)
       return jsonObject
     }
     return nil
@@ -350,6 +353,10 @@ extension NIMQChatSystemNotification {
         attachJson["serverId"] = attachObject.value(forKeyPath: "serverId")
         attachJson["channelId"] = attachObject.value(forKeyPath: "channelId")
         attachJson["roleId"] = attachObject.value(forKeyPath: "roleId")
+        attachJson["parentRoleId"] = attachObject.value(forKeyPath: "parentRoleId")
+        if let accid = attachObject.value(forKeyPath: "accId") as? String {
+          attachJson["accid"] = accid
+        }
         if let info = attachObject
           .value(
             forKeyPath: "updateBlackWhiteRoleInfo"
@@ -384,7 +391,7 @@ extension NIMQChatSystemNotification {
         }
         if let info = attachObject
           .value(forKeyPath: "updateQuickCommentInfo") as? NIMQChatUpdateQuickCommentInfo {
-          attachJson["channelBlackWhiteToAccids"] = info.toDict()
+          attachJson["quickComment"] = info.toDict()
         }
         if let category = attachObject
           .value(forKeyPath: "channelCategory") as? NIMQChatChannelCategory {
@@ -394,8 +401,28 @@ extension NIMQChatSystemNotification {
         attachJson["addAccids"] = attachObject.value(forKeyPath: "addServerRoleAccIds")
         attachJson["deleteAccids"] = attachObject.value(forKeyPath: "removeServerRoleAccIds")
         if let type = attachObject
-          .value(forKeyPath: "removeServerRoleAccIds") as? NIMQChatInoutType {
-          attachJson["inOutType"] = FLTQChatInoutType.convert(type: type)?.rawValue
+          .value(forKeyPath: "inoutType") as? Int,
+          type > 0 {
+          if let inOutType = NIMQChatInoutType(rawValue: type) {
+            attachJson["inOutType"] = FLTQChatInoutType.convert(type: inOutType)?.rawValue
+          }
+        }
+
+        if let info = attachObject.value(forKeyPath: "updatedInfos") as? [NIMQChatUpdatedMyMemberInfo] {
+          attachJson["updatedInfos"] = info.map {
+            item in item.toDict()
+          }
+        }
+
+        if let updateAuths = attachObject.value(forKeyPath: "updateAuths") as? [NIMQChatPermissionStatusInfo] {
+          var updateAuthsMap = [String: String]()
+          updateAuths.forEach { item in
+            if let key = FLTQChatPermissionType.convert(type: item.type)?.rawValue,
+               let value = FLTQChatPermissionStatus.convert(type: item.status)?.rawValue {
+              updateAuthsMap[key] = value
+            }
+          }
+          attachJson["updateAuths"] = updateAuthsMap
         }
 
         attachJson["inviteCode"] = attachObject.value(forKeyPath: "inviteCode")
@@ -410,13 +437,27 @@ extension NIMQChatSystemNotification {
 
       jsonObject["pushPayload"] = pushPayload
       jsonObject["pushContent"] = pushContent
-      jsonObject["persistEnable"] = setting?.persistEnable
-      jsonObject["pushEnable"] = setting?.pushEnable
-      jsonObject["needBadge"] = setting?.needBadge
-      jsonObject["needPushNick"] = setting?.needPushNick
-      jsonObject["routeEnable"] = setting?.routeEnable
+      jsonObject["persistEnable"] = setting?.persistEnable ?? false
+      jsonObject["pushEnable"] = setting?.pushEnable ?? false
+      jsonObject["needBadge"] = setting?.needBadge ?? true
+      jsonObject["needPushNick"] = setting?.needPushNick ?? true
+      jsonObject["routeEnable"] = setting?.routeEnable ?? true
       jsonObject["env"] = env
       jsonObject["callbackExtension"] = callbackExt
+      return jsonObject
+    }
+    return nil
+  }
+}
+
+extension NIMQChatUpdatedMyMemberInfo {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["serverId"] = serverId
+      jsonObject["nick"] = nick
+      jsonObject["avatar"] = avatar
+      jsonObject["isNickChanged"] = nickChanged
+      jsonObject["isAvatarChanged"] = avatarChanged
       return jsonObject
     }
     return nil
@@ -446,5 +487,33 @@ extension NIMQChatSystemNotificationUpdateResult {
       return jsonObject
     }
     return nil
+  }
+}
+
+extension NIMQChatMessageTypingEvent {
+  func toDict() -> [String: Any]? {
+    if var jsonObject = yx_modelToJSONObject() as? [String: Any] {
+      jsonObject["serverId"] = serverId
+      jsonObject["channelId"] = channelId
+      jsonObject["fromAccount"] = fromAccount
+      jsonObject["fromNick"] = fromNick
+      jsonObject["time"] = Int(timestamp * 1000)
+      if let extJson = ext {
+        jsonObject["extension"] = getDictionaryFromJSONString(extJson)
+      }
+      return jsonObject
+    }
+    return nil
+  }
+
+  static func fromDic(_ json: [String: Any]) -> NIMQChatMessageTypingEvent? {
+    guard let model = NIMQChatMessageTypingEvent.yx_model(with: json) else {
+      print("❌NIMQChatMessageTypingEvent.yx_model(with: json) FAILED")
+      return nil
+    }
+    if let extensionDic = json["extension"] as? [String: Any] {
+      model.ext = model.getJsonStringFromDictionary(extensionDic)
+    }
+    return model
   }
 }

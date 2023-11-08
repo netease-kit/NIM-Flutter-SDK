@@ -25,6 +25,7 @@ NIMChatroomEnterRequest _$NIMChatroomEnterRequestFromJson(
         json['independentModeConfig'] as Map?),
     desktopIndependentModeConfig: _chatRoomIndependentModeConfigDesktopFromJson(
         json['desktopIndependentModeConfig'] as Map?),
+    loginAuthType: json['loginAuthType'] as int? ?? 0,
   );
 }
 
@@ -44,6 +45,7 @@ Map<String, dynamic> _$NIMChatroomEnterRequestToJson(
       'desktopIndependentModeConfig':
           _chatRoomIndependentModeConfigDesktopToJson(
               instance.desktopIndependentModeConfig),
+      'loginAuthType': instance.loginAuthType,
     };
 
 NIMChatroomIndependentModeConfig _$NIMChatroomIndependentModeConfigFromJson(

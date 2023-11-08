@@ -37,8 +37,11 @@ import com.netease.nimlib.sdk.qchat.model.QChatMessageQueryOption
 import com.netease.nimlib.sdk.qchat.model.QChatMessageQuickCommentDetail
 import com.netease.nimlib.sdk.qchat.model.QChatMessageThreadInfo
 import com.netease.nimlib.sdk.qchat.model.QChatQuickCommentDetail
+import com.netease.nimlib.sdk.qchat.model.QChatTypingEvent
 import com.netease.nimlib.sdk.qchat.param.QChatAddQuickCommentParam
+import com.netease.nimlib.sdk.qchat.param.QChatAreMentionedMeMessagesParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetLastMessageOfChannelsParam
+import com.netease.nimlib.sdk.qchat.param.QChatGetMentionedMeMessagesParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetMessageThreadInfosParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetQuickCommentsParam
 import com.netease.nimlib.sdk.qchat.param.QChatGetReferMessagesParam
@@ -46,8 +49,11 @@ import com.netease.nimlib.sdk.qchat.param.QChatGetThreadMessagesParam
 import com.netease.nimlib.sdk.qchat.param.QChatRemoveQuickCommentParam
 import com.netease.nimlib.sdk.qchat.param.QChatReplyMessageParam
 import com.netease.nimlib.sdk.qchat.param.QChatSearchMsgByPageParam
+import com.netease.nimlib.sdk.qchat.param.QChatSendTypingEventParam
+import com.netease.nimlib.sdk.qchat.result.QChatAreMentionedMeMessagesResult
 import com.netease.nimlib.sdk.qchat.result.QChatDeleteMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetLastMessageOfChannelsResult
+import com.netease.nimlib.sdk.qchat.result.QChatGetMentionedMeMessagesResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetMessageHistoryResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetMessageThreadInfosResult
 import com.netease.nimlib.sdk.qchat.result.QChatGetQuickCommentsResult
@@ -57,6 +63,7 @@ import com.netease.nimlib.sdk.qchat.result.QChatRevokeMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSearchMsgByPageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSendMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatSendSystemNotificationResult
+import com.netease.nimlib.sdk.qchat.result.QChatSendTypingEventResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateMessageResult
 import com.netease.nimlib.sdk.qchat.result.QChatUpdateSystemNotificationResult
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -99,7 +106,10 @@ class FLTQChatMessageService(
                 "getMessageCache" to ::getMessageCache,
                 "clearMessageCache" to ::clearMessageCache,
                 "getLastMessageOfChannels" to ::getLastMessageOfChannels,
-                "searchMsgByPage" to ::searchMsgByPage
+                "searchMsgByPage" to ::searchMsgByPage,
+                "sendTypingEvent" to ::sendTypingEvent,
+                "getMentionedMeMessages" to ::getMentionedMeMessages,
+                "areMentionedMeMessages" to ::areMentionedMeMessages
             )
         }
     }
@@ -380,7 +390,8 @@ class FLTQChatMessageService(
     @Suppress("UNCHECKED_CAST")
     private fun Map<String, *>.toQChatGetThreadMessagesParam(): QChatGetThreadMessagesParam {
         val message = (this["message"] as Map<String, *>).toQChatMessage()
-        val messageQueryOption = (this["messageQueryOption"] as Map<String, *>?)?.toQChatMessageQueryOption()
+        val messageQueryOption =
+            (this["messageQueryOption"] as Map<String, *>?)?.toQChatMessageQueryOption()
         return QChatGetThreadMessagesParam(message, messageQueryOption)
     }
 
@@ -424,7 +435,8 @@ class FLTQChatMessageService(
     private fun Map<String, *>.toQChatGetMessageThreadInfosParam(): QChatGetMessageThreadInfosParam {
         val serverId = (this["serverId"] as Number).toLong()
         val channelId = (this["channelId"] as Number).toLong()
-        val msgList = (this["msgList"] as List<*>?)?.map { (it as Map<String, *>).toQChatMessage() }?.toList()
+        val msgList =
+            (this["msgList"] as List<*>?)?.map { (it as Map<String, *>).toQChatMessage() }?.toList()
         return QChatGetMessageThreadInfosParam(serverId, channelId, msgList)
     }
 
@@ -486,7 +498,8 @@ class FLTQChatMessageService(
     private fun Map<String, *>.toQChatGetQuickCommentsParam(): QChatGetQuickCommentsParam {
         val serverId = (this["serverId"] as Number).toLong()
         val channelId = (this["channelId"] as Number).toLong()
-        val msgList = (this["msgList"] as List<*>?)?.map { (it as Map<String, *>).toQChatMessage() }?.toList()
+        val msgList =
+            (this["msgList"] as List<*>?)?.map { (it as Map<String, *>).toQChatMessage() }?.toList()
         return QChatGetQuickCommentsParam(serverId, channelId, msgList)
     }
 
@@ -594,7 +607,8 @@ class FLTQChatMessageService(
     @Suppress("UNCHECKED_CAST")
     private fun Map<String, *>.toQChatSearchMsgByPageParam(): QChatSearchMsgByPageParam {
         val serverId = (this["serverId"] as Number).toLong()
-        val msgTypes = (this["msgTypes"] as List<*>).map { stringToMsgTypeEnum(it as String) }.toList()
+        val msgTypes =
+            (this["msgTypes"] as List<*>).map { stringToMsgTypeEnum(it as String) }.toList()
         val param = QChatSearchMsgByPageParam(serverId, msgTypes)
         (this["keyword"] as String?).let {
             param.keyword = it
@@ -636,5 +650,106 @@ class FLTQChatMessageService(
         "messages" to messages?.map { it.toMap() }?.toList(),
         "hasMore" to isHasMore,
         "nextTimeTag" to nextTimeTag
+    )
+
+    private suspend fun getMentionedMeMessages(arguments: Map<String, *>): NimResult<QChatGetMentionedMeMessagesResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatMessageService.getMentionedMeMessages(
+                arguments.toQChatGetMentionedMeMessagesParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    private fun Map<String, *>.toQChatGetMentionedMeMessagesParam(): QChatGetMentionedMeMessagesParam {
+        val serverId = (this["serverId"] as Number).toLong()
+        val channelId = (this["channelId"] as Number).toLong()
+        val param = QChatGetMentionedMeMessagesParam(serverId, channelId)
+        (this["limit"] as Number?)?.toInt().let {
+            param.limit = it
+        }
+        (this["timetag"] as Number?)?.toLong().let {
+            param.timetag = it
+        }
+        return param
+    }
+
+    fun QChatGetMentionedMeMessagesResult.toMap() = mapOf<String, Any?>(
+        "messages" to messages?.map { it.toMap() }?.toList(),
+        "hasMore" to isHasMore,
+        "nextTimeTag" to nextTimeTag
+    )
+
+    private suspend fun areMentionedMeMessages(arguments: Map<String, *>): NimResult<QChatAreMentionedMeMessagesResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatMessageService.areMentionedMeMessages(
+                arguments.toQChatAreMentionedMeMessagesParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Map<String, *>.toQChatAreMentionedMeMessagesParam(): QChatAreMentionedMeMessagesParam {
+        val messages = (this["messages"] as List<Map<String, *>?>).map { it?.toQChatMessage() }
+        return QChatAreMentionedMeMessagesParam(messages)
+    }
+
+    fun QChatAreMentionedMeMessagesResult.toMap() = mapOf<String, Any?>(
+        "result" to result
+    )
+
+    private suspend fun sendTypingEvent(arguments: Map<String, *>): NimResult<QChatSendTypingEventResult> {
+        return suspendCancellableCoroutine { cont ->
+            qChatMessageService.sendTypingEvent(
+                arguments.toQChatSendTypingEventParam()
+            ).setCallback(
+                NimResultContinuationCallback(cont) { result ->
+                    NimResult(
+                        code = 0,
+                        data = result,
+                        convert = { it.toMap() }
+                    )
+                }
+            )
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun Map<String, *>.toQChatSendTypingEventParam(): QChatSendTypingEventParam {
+        val serverId = (this["serverId"] as Number).toLong()
+        val channelId = (this["channelId"] as Number).toLong()
+        val param = QChatSendTypingEventParam(serverId, channelId)
+        (this["extension"] as Map<String, *>?).let {
+            param.extension = it
+        }
+        return param
+    }
+
+    fun QChatSendTypingEventResult.toMap() = mapOf<String, Any?>(
+        "typingEvent" to typingEvent.toMap()
+    )
+
+    fun QChatTypingEvent.toMap() = mapOf<String, Any?>(
+        "serverId" to serverId,
+        "channelId" to channelId,
+        "fromAccount" to fromAccount,
+        "fromNick" to fromNick,
+        "time" to time,
+        "extension" to extension
     )
 }

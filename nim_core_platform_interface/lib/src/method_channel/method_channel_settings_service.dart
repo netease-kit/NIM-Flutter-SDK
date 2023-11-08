@@ -170,4 +170,21 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
       ),
     );
   }
+
+  @override
+  Future<NIMResult<int>> removeResourceFiles(
+      NIMResourceQueryOption option) async {
+    return NIMResult(-1, null, 'Support mobile platform only');
+  }
+
+  @override
+  Future<NIMResult<List<NIMCacheQueryResult>>> searchResourceFiles(
+      NIMResourceQueryOption option) async {
+    return NIMResult(-1, null, 'Support mobile platform only');
+  }
+
+  @override
+  Future<NIMResult<void>> registerBadgeCount(int count) async {
+    return NIMResult(-1, null, 'Support mobile platform only');
+  }
 }

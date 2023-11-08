@@ -26,6 +26,7 @@ import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.RequestCallback
 import com.netease.nimlib.sdk.StatusCode
+import com.netease.nimlib.sdk.auth.ChatRoomAuthProvider
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder
 import com.netease.nimlib.sdk.chatroom.ChatRoomService
 import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver
@@ -49,6 +50,7 @@ import com.netease.nimlib.sdk.robot.model.RobotMsgType
 import com.netease.nimlib.sdk.util.Entry
 import com.netease.yunxin.kit.alog.ALog
 import io.flutter.plugin.common.MethodChannel
+import java.io.File
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
@@ -56,14 +58,14 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import java.io.File
 
 class FLTChatroomService(
     applicationContext: Context,
     nimCore: NimCore
-) : FLTService(applicationContext, nimCore) {
+) : FLTService(applicationContext, nimCore), ChatRoomAuthProvider {
 
     override val serviceName = "ChatroomService"
 
@@ -97,6 +99,7 @@ class FLTChatroomService(
             "updateChatroomQueueEntry" to ::updateChatroomQueueEntry
         )
         nimCore.onInitialized {
+            nimCore.sdkOptions?.chatroomAuthProvider = this
             observeOnlineStatusEvent()
             observeKickOutEvent()
             observeChatroomMessage()
@@ -139,6 +142,7 @@ class FLTChatroomService(
                 }
                 setIndependentMode(callback, account, token)
             }
+            loginAuthType = arguments["loginAuthType"] as? Int
         }.let {
             suspendCancellableCoroutine { cont ->
                 chatroomService.enterChatRoomEx(
@@ -948,6 +952,26 @@ class FLTChatroomService(
                 chatroomService.updateQueueEx(roomId, key, value, isTransient)
                     .setCallback(NimResultContinuationCallbackOfNothing(cont))
             }
+        }
+    }
+
+    override fun getToken(account: String?, roomId: String?, appKey: String?): String? {
+        return if (account != null && roomId != null) {
+            var token: String? = null
+            runBlocking {
+                launch {
+                    token = suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "getChatRoomDynamicToken",
+                            arguments = mapOf("account" to account, "roomId" to roomId),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as? String
+                }
+            }
+            token
+        } else {
+            null
         }
     }
 }

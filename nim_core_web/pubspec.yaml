@@ -6,7 +6,7 @@ homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 publish_to: none
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
   flutter: ">=2.5.0"
 
 dependencies:

@@ -24,6 +24,7 @@ enum QChatChannelMethod: String {
   case updateUserChannelPushConfig
   case getUserChannelPushConfigs
   case getChannelCategoriesByPage
+  case subscribeAsVisitor
 }
 
 class FLTQChatChannelService: FLTBaseService, FLTService {
@@ -88,6 +89,8 @@ class FLTQChatChannelService: FLTBaseService, FLTService {
       qChatGetUserChannelPushConfigs(arguments, resultCallback)
     case QChatChannelMethod.getChannelCategoriesByPage.rawValue:
       qChatGetChannelCategoriesByPage(arguments, resultCallback)
+    case QChatChannelMethod.subscribeAsVisitor.rawValue:
+      subscribeAsVisitor(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -178,29 +181,47 @@ class FLTQChatChannelService: FLTBaseService, FLTService {
       errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
-    let targets = NIMQChatGetChannelUnreadInfosParam()
-    targets.targets = request.targets
     var unreadInfoList = [[String: Any]?]()
-    NIMSDK.shared().qchatChannelManager
-      .getChannelUnreadInfos(targets) { [weak self] error, result in
-        if let err = error {
-          print(
-            "@@#❌qChatSubscribeChannel() -> getChannelUnreadInfos() FAILED: \(err.localizedDescription)"
-          )
-          self?.qChatChannelCallback(error, nil, resultCallback)
-        } else {
-          if let res = result {
-            unreadInfoList = res.toDict()
+    let subType = request.subscribeType
+    let operationType = request.operationType
+    // 先进行订阅消息操作，然后查询结果，需要根据订阅类型区分是否需要查询操作
+    NIMSDK.shared().qchatChannelManager.subscribeChannel(request) { error, result in
+      if let err = error {
+        print(
+          "@@#❌qChatSubscribeChannel() -> subscribeChannel() FAILED: \(err.localizedDescription)"
+        )
+        self.qChatChannelCallback(error, nil, resultCallback)
+      } else {
+        let failedList = result?.toDict()
+        if operationType == NIMQChatSubscribeOperationType.subscribe, subType == NIMQChatSubscribeType.channelMsgUnreadCount || subType == NIMQChatSubscribeType.channelMsgUnreadStatus {
+          let targets = NIMQChatGetChannelUnreadInfosParam()
+          targets.targets = request.targets
+          NIMSDK.shared().qchatChannelManager.getChannelUnreadInfos(targets) { [weak self] error, result in
+            if let err = error {
+              print(
+                "@@#❌qChatSubscribeChannel() -> getChannelUnreadInfos() FAILED: \(err.localizedDescription)"
+              )
+              self?.qChatChannelCallback(error, nil, resultCallback)
+            } else {
+              if let res = result {
+                unreadInfoList = res.toDict()
+              }
+              self?.qChatChannelCallback(
+                error,
+                ["unreadInfoList": unreadInfoList, "failedList": failedList],
+                resultCallback
+              )
+            }
           }
-        }
-        NIMSDK.shared().qchatChannelManager.subscribeChannel(request) { error, result in
-          self?.qChatChannelCallback(
+        } else {
+          self.qChatChannelCallback(
             error,
             ["unreadInfoList": unreadInfoList, "failedList": result?.toDict()],
             resultCallback
           )
         }
       }
+    }
   }
 
   func qChatSearchChannelByPage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
@@ -345,6 +366,17 @@ class FLTQChatChannelService: FLTBaseService, FLTService {
       .getCategoriesInServer(byPage: request) { [weak self] error, result in
         self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
       }
+  }
+
+  func subscribeAsVisitor(_ arguments: [String: Any],
+                          _ resultCallback: ResultCallback) {
+    guard let request = NIMQChatSubscribeChannelAsVisitorParam.fromDic(arguments) else {
+      errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
+      return
+    }
+    NIMSDK.shared().qchatChannelManager.subscribe(asVisitor: request) { [weak self] error, result in
+      self?.qChatChannelCallback(error, result?.toDict(), resultCallback)
+    }
   }
 }
 

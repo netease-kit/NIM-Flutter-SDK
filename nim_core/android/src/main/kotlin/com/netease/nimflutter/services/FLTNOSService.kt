@@ -54,6 +54,7 @@ class FLTNOSService(
             }
         }
 
+    @OptIn(ExperimentalStdlibApi::class)
     private val nosTransferStatus =
         Observer { nosTransferInfo: NosTransferInfo ->
             run {

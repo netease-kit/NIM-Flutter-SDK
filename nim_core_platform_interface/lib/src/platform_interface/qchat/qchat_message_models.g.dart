@@ -566,6 +566,7 @@ const _$QChatSystemMessageToTypeEnumMap = {
   QChatSystemMessageToType.channel: 'channel',
   QChatSystemMessageToType.server_accids: 'server_accids',
   QChatSystemMessageToType.channel_accids: 'channel_accids',
+  QChatSystemMessageToType.accids: 'accids',
 };
 
 QChatSendSystemNotificationResult _$QChatSendSystemNotificationResultFromJson(
@@ -606,7 +607,8 @@ QChatSystemNotification _$QChatSystemNotificationFromJson(
       fromClientType: json['fromClientType'] as int?,
       callbackExtension: json['callbackExtension'] as String?,
       attachment: QChatSystemNotificationAttachment._fromJson(
-          json['attachment'] as Map?, json['type'] as String?),
+          json['attachment'] as Map?,
+          type: json['type'] as String?),
       updateTime: json['updateTime'] as int?,
       msgIdClient: json['msgIdClient'] as String?,
       toAccids: (json['toAccids'] as List<dynamic>?)
@@ -1245,10 +1247,8 @@ QChatUpdateChannelRoleAuthsAttachment
           serverId: json['serverId'] as int?,
           channelId: json['channelId'] as int?,
           parentRoleId: json['parentRoleId'] as int?,
-          updateAuths: (json['updateAuths'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry($enumDecode(_$QChatRoleResourceEnumMap, k),
-                $enumDecode(_$QChatRoleOptionEnumMap, e)),
-          ),
+          updateAuths:
+              resourceAuthsFromJsonNullable(json['updateAuths'] as Map?),
         );
 
 Map<String, dynamic> _$QChatUpdateChannelRoleAuthsAttachmentToJson(
@@ -1322,10 +1322,8 @@ QChatUpdateMemberRoleAuthsAttachment
           channelId: json['channelId'] as int?,
           serverId: json['serverId'] as int?,
           accid: json['accid'] as String?,
-          updateAuths: (json['updateAuths'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry($enumDecode(_$QChatRoleResourceEnumMap, k),
-                $enumDecode(_$QChatRoleOptionEnumMap, e)),
-          ),
+          updateAuths:
+              resourceAuthsFromJsonNullable(json['updateAuths'] as Map?),
         );
 
 Map<String, dynamic> _$QChatUpdateMemberRoleAuthsAttachmentToJson(
@@ -1336,6 +1334,39 @@ Map<String, dynamic> _$QChatUpdateMemberRoleAuthsAttachmentToJson(
       'channelId': instance.channelId,
       'updateAuths': instance.updateAuths?.map((k, e) => MapEntry(
           _$QChatRoleResourceEnumMap[k]!, _$QChatRoleOptionEnumMap[e]!)),
+    };
+
+QChatUpdatedMyMemberInfo _$QChatUpdatedMyMemberInfoFromJson(
+        Map<String, dynamic> json) =>
+    QChatUpdatedMyMemberInfo(
+      serverId: json['serverId'] as int?,
+      avatar: json['avatar'] as String?,
+      nick: json['nick'] as String?,
+      isAvatarChanged: json['isAvatarChanged'] as bool?,
+      isNickChanged: json['isNickChanged'] as bool?,
+    );
+
+Map<String, dynamic> _$QChatUpdatedMyMemberInfoToJson(
+        QChatUpdatedMyMemberInfo instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'nick': instance.nick,
+      'isNickChanged': instance.isNickChanged,
+      'avatar': instance.avatar,
+      'isAvatarChanged': instance.isAvatarChanged,
+    };
+
+QChatMyMemberInfoUpdatedAttachment _$QChatMyMemberInfoUpdatedAttachmentFromJson(
+        Map<String, dynamic> json) =>
+    QChatMyMemberInfoUpdatedAttachment(
+      updatedInfos:
+          _qChatUpdatedMyMemberInfoFromJson(json['updatedInfos'] as List?),
+    );
+
+Map<String, dynamic> _$QChatMyMemberInfoUpdatedAttachmentToJson(
+        QChatMyMemberInfoUpdatedAttachment instance) =>
+    <String, dynamic>{
+      'updatedInfos': instance.updatedInfos?.map((e) => e.toJson()).toList(),
     };
 
 QChatUpdateServerAttachment _$QChatUpdateServerAttachmentFromJson(
@@ -1366,10 +1397,8 @@ QChatUpdateServerRoleAuthsAttachment
     _$QChatUpdateServerRoleAuthsAttachmentFromJson(Map<String, dynamic> json) =>
         QChatUpdateServerRoleAuthsAttachment(
           serverId: json['serverId'] as int?,
-          updateAuths: (json['updateAuths'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry($enumDecode(_$QChatRoleResourceEnumMap, k),
-                $enumDecode(_$QChatRoleOptionEnumMap, e)),
-          ),
+          updateAuths:
+              resourceAuthsFromJsonNullable(json['updateAuths'] as Map?),
           roleId: json['roleId'] as int?,
         );
 
@@ -1751,4 +1780,112 @@ Map<String, dynamic> _$QChatSearchMsgByPageResultToJson(
       'nextTimeTag': instance.nextTimeTag,
       'cursor': instance.cursor,
       'messages': instance.messages?.map((e) => e.toJson()).toList(),
+    };
+
+QChatSendTypingEventParam _$QChatSendTypingEventParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatSendTypingEventParam(
+      serverId: json['serverId'] as int,
+      channelId: json['channelId'] as int,
+      extension: castPlatformMapToDartMap(json['extension'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatSendTypingEventParamToJson(
+        QChatSendTypingEventParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'extension': instance.extension,
+    };
+
+QChatTypingEvent _$QChatTypingEventFromJson(Map<String, dynamic> json) =>
+    QChatTypingEvent(
+      serverId: json['serverId'] as int?,
+      channelId: json['channelId'] as int?,
+      extension: castPlatformMapToDartMap(json['extension'] as Map?),
+      time: json['time'] as int?,
+      fromAccount: json['fromAccount'] as String?,
+      fromNick: json['fromNick'] as String?,
+    );
+
+Map<String, dynamic> _$QChatTypingEventToJson(QChatTypingEvent instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'fromAccount': instance.fromAccount,
+      'fromNick': instance.fromNick,
+      'time': instance.time,
+      'extension': instance.extension,
+    };
+
+QChatSendTypingEventResult _$QChatSendTypingEventResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatSendTypingEventResult(
+      typingEvent: qQChatTypingEventFromJson(json['typingEvent'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatSendTypingEventResultToJson(
+        QChatSendTypingEventResult instance) =>
+    <String, dynamic>{
+      'typingEvent': instance.typingEvent?.toJson(),
+    };
+
+QChatGetMentionedMeMessagesParam _$QChatGetMentionedMeMessagesParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetMentionedMeMessagesParam(
+      channelId: json['channelId'] as int,
+      serverId: json['serverId'] as int,
+      limit: json['limit'] as int?,
+      timetag: json['timetag'] as int?,
+    );
+
+Map<String, dynamic> _$QChatGetMentionedMeMessagesParamToJson(
+        QChatGetMentionedMeMessagesParam instance) =>
+    <String, dynamic>{
+      'serverId': instance.serverId,
+      'channelId': instance.channelId,
+      'timetag': instance.timetag,
+      'limit': instance.limit,
+    };
+
+QChatGetMentionedMeMessagesResult _$QChatGetMentionedMeMessagesResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatGetMentionedMeMessagesResult(
+      json['hasMore'] as bool?,
+      json['nextTimeTag'] as int?,
+      json['cursor'] as String?,
+      messages: _qChatMessageListFromJson(json['messages'] as List?),
+    );
+
+Map<String, dynamic> _$QChatGetMentionedMeMessagesResultToJson(
+        QChatGetMentionedMeMessagesResult instance) =>
+    <String, dynamic>{
+      'hasMore': instance.hasMore,
+      'nextTimeTag': instance.nextTimeTag,
+      'cursor': instance.cursor,
+      'messages': instance.messages?.map((e) => e.toJson()).toList(),
+    };
+
+QChatAreMentionedMeMessagesParam _$QChatAreMentionedMeMessagesParamFromJson(
+        Map<String, dynamic> json) =>
+    QChatAreMentionedMeMessagesParam(
+      messages: _qChatMessageListNotEmptyFromJson(json['messages'] as List),
+    );
+
+Map<String, dynamic> _$QChatAreMentionedMeMessagesParamToJson(
+        QChatAreMentionedMeMessagesParam instance) =>
+    <String, dynamic>{
+      'messages': instance.messages.map((e) => e.toJson()).toList(),
+    };
+
+QChatAreMentionedMeMessagesResult _$QChatAreMentionedMeMessagesResultFromJson(
+        Map<String, dynamic> json) =>
+    QChatAreMentionedMeMessagesResult(
+      result: castMapToTypeOfBoolString(json['result'] as Map?),
+    );
+
+Map<String, dynamic> _$QChatAreMentionedMeMessagesResultToJson(
+        QChatAreMentionedMeMessagesResult instance) =>
+    <String, dynamic>{
+      'result': instance.result,
     };
