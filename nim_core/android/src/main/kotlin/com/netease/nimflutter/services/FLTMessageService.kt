@@ -19,6 +19,7 @@ import com.netease.nimflutter.NimResultContinuationCallbackOfNothing
 import com.netease.nimflutter.ResultCallback
 import com.netease.nimflutter.SafeResult
 import com.netease.nimflutter.Utils
+import com.netease.nimflutter.convertToMessageKey
 import com.netease.nimflutter.convertToQueryDirectionEnum
 import com.netease.nimflutter.convertToSearchConfig
 import com.netease.nimflutter.convertToSearchOption
@@ -48,11 +49,13 @@ import com.netease.nimlib.sdk.msg.model.GetMessagesDynamicallyResult
 import com.netease.nimlib.sdk.msg.model.HandleQuickCommentOption
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.msg.model.LocalAntiSpamResult
+import com.netease.nimlib.sdk.msg.model.MessageKey
 import com.netease.nimlib.sdk.msg.model.MessageReceipt
 import com.netease.nimlib.sdk.msg.model.MsgFullKeywordSearchConfig
 import com.netease.nimlib.sdk.msg.model.MsgPinDbOption
 import com.netease.nimlib.sdk.msg.model.MsgPinSyncResponseOption
 import com.netease.nimlib.sdk.msg.model.MsgPinSyncResponseOptionWrapper
+import com.netease.nimlib.sdk.msg.model.NIMMessage
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum
 import com.netease.nimlib.sdk.msg.model.QuickCommentOptionWrapper
 import com.netease.nimlib.sdk.msg.model.RecentContact
@@ -67,6 +70,7 @@ import com.netease.nimlib.sdk.msg.model.ThreadTalkHistory
 import com.netease.nimlib.sdk.superteam.SuperTeamService
 import com.netease.nimlib.sdk.team.TeamService
 import com.netease.yunxin.kit.alog.ALog
+import kotlin.coroutines.resume
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -278,6 +282,25 @@ class FLTMessageService(
             )
         }
 
+    private val onMessageListDeleteObserver = Observer { messageList: List<IMMessage> ->
+        notifyEvent(
+            "onMessagesDelete",
+            mutableMapOf(
+                "messageList" to messageList.map { it.toMap() }.toList()
+            )
+        )
+    }
+
+    // iOS 没有单条的回调，此处单条批量化处理
+    private val onMessageDeleteObserver = Observer { messageList: IMMessage ->
+        notifyEvent(
+            "onMessagesDelete",
+            mutableMapOf(
+                "messageList" to listOf(messageList.toMap())
+            )
+        )
+    }
+
     init {
         nimCore.onInitialized {
             NIMClient.getService(MsgServiceObserve::class.java).apply {
@@ -300,6 +323,8 @@ class FLTMessageService(
                 observeAddStickTopSession(stickTopSessionAddObserver, true)
                 observeRemoveStickTopSession(stickTopSessionRemoveObserver, true)
                 observeUpdateStickTopSession(stickTopSessionUpdateObserver, true)
+                observeDeleteMsgSelfBatch(onMessageListDeleteObserver, true)
+                observeDeleteMsgSelf(onMessageDeleteObserver, true)
             }
             registerFlutterMethodCalls(
                 "querySessionList" to ::querySessionList,
@@ -335,7 +360,8 @@ class FLTMessageService(
                 "queryStickTopSession" to ::queryStickTopSession,
                 "queryRoamMsgHasMoreTime" to ::queryRoamMsgHasMoreTime,
                 "updateRoamMsgHasMoreTag" to ::updateRoamMsgHasMoreTag,
-                "getMessagesDynamically" to ::getMessagesDynamically
+                "getMessagesDynamically" to ::getMessagesDynamically,
+                "pullHistoryById" to ::pullHistoryById
             )
             msgService.registerCustomAttachmentParser { attachJsonString ->
                 CustomAttachment(Utils.jsonStringToMap(attachJsonString))
@@ -414,6 +440,14 @@ class FLTMessageService(
                 ResultCallback(safeResult)
             )
             "queryThreadTalkHistory" -> queryThreadTalkHistory(
+                arguments,
+                ResultCallback(safeResult)
+            )
+            "convertMessageToJson" -> convertMessageToJson(
+                arguments,
+                ResultCallback(safeResult)
+            )
+            "convertJsonToMessage" -> convertJsonToMessage(
                 arguments,
                 ResultCallback(safeResult)
             )
@@ -609,6 +643,40 @@ class FLTMessageService(
         } else {
             resultCallback.result(
                 NimResult(code = 0, message) { it.toMap() }
+            )
+        }
+    }
+
+    private fun convertMessageToJson(
+        arguments: Map<String, *>,
+        resultCallback: ResultCallback<String>
+    ) {
+        val message: IMMessage? = MessageHelper.convertIMMessage(arguments)
+        if (message == null) {
+            resultCallback.result(
+                NimResult(code = -1, errorDetails = "convert message error!")
+            )
+        } else {
+            resultCallback.result(
+                NimResult(code = 0, MessageBuilder.convertMessageToJson(message))
+            )
+        }
+    }
+
+    private fun convertJsonToMessage(
+        arguments: Map<String, *>,
+        resultCallback: ResultCallback<IMMessage>
+    ) {
+        val json: String? = arguments["messageJson"] as String?
+        if (json == null) {
+            resultCallback.result(
+                NimResult(code = -1, errorDetails = "convert json error!")
+            )
+        } else {
+            resultCallback.result(
+                NimResult(code = 0, MessageBuilder.createFromJson(json)) {
+                    it.toMap()
+                }
             )
         }
     }
@@ -985,6 +1053,9 @@ class FLTMessageService(
             )
         } else {
             val newMessage = MessageBuilder.createForwardMessage(message, sessionId, sessionType)
+            if (message?.needMsgAck() == true) {
+                newMessage.setMsgAck()
+            }
             NIMClient.getService(MsgService::class.java).sendMessage(newMessage, false)
                 .setCallback(NimResultCallback(resultCallback))
         }
@@ -1037,6 +1108,25 @@ class FLTMessageService(
         NIMClient.getService(MsgService::class.java)
             .queryMessageListEx(message, direction, limit, true)
             .setCallback(listMessageRequestCallback(resultCallback))
+    }
+
+    private suspend fun pullHistoryById(
+        arguments: Map<String, *>
+    ): NimResult<List<IMMessage>> {
+        val msgKeyList = (arguments["msgKeyList"] as List<Map<String, *>>?)?.map { convertToMessageKey(it) }?.toList()
+        val persist = arguments["persist"] as Boolean? ?: false
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(MsgService::class.java).pullHistoryById(msgKeyList, persist)
+                .setCallback(
+                    NimResultContinuationCallback(cont) { result ->
+                        NimResult(
+                            code = 0,
+                            data = result,
+                            convert = { mapOf("messageList" to it.map { e -> e.toMap() }.toList()) }
+                        )
+                    }
+                )
+        }
     }
 
     private fun queryMessageList(
@@ -1611,12 +1701,16 @@ class FLTMessageService(
         val sessionType = stringToSessionTypeEnum(args["sessionType"] as String)
         val key = sessionId to sessionType
         val timestamp = messagePinSyncTimestamp.getOrElse(key) { 0 }
+
+        var pinMessageKeys = emptyList<MessageKey>()
         // sync first
         suspendCancellableCoroutine<NimResult<MsgPinSyncResponseOptionWrapper>> { cont ->
             msgService.syncMsgPin(sessionType, sessionId, timestamp)
                 .setCallback(
                     NimResultContinuationCallback(cont) {
+                        ALog.d(tag, "syncMsgPin size  = ${it?.msgPinInfoList?.size}")
                         messagePinSyncTimestamp[key] = it?.time ?: 0
+                        pinMessageKeys = it?.msgPinInfoList?.map { e -> e.key } ?: emptyList()
                         NimResult(code = 0, data = it)
                     }
                 )
@@ -1625,9 +1719,35 @@ class FLTMessageService(
         return withContext(Dispatchers.IO) {
             val result = msgService.queryMsgPinBlock(sessionId, sessionType)
             val messages = msgService.queryMessageListByUuidBlock(result.map { it.uuid }.toList())
-                .groupBy { it.uuid }
+            val localMessageIds = messages.map { it.uuid }.toList()
+            val remoteUUIDs = result.filter { !localMessageIds.contains(it.uuid) }.map { it.uuid }
+            if (remoteUUIDs.isNotEmpty()) {
+                val remoteMsgKey = pinMessageKeys.filter { remoteUUIDs.contains(it.uuid) }.toList()
+                suspendCancellableCoroutine<List<NIMMessage>> { cont ->
+                    msgService.pullHistoryById(remoteMsgKey, true)
+                        .setCallback(
+                            object : RequestCallback<List<IMMessage?>?> {
+                                override fun onSuccess(param: List<IMMessage?>?) {
+                                    param?.let {
+                                        messages.addAll(it.filterNotNull())
+                                    }
+                                    cont.resume(param?.filterNotNull() ?: emptyList())
+                                }
+
+                                override fun onFailed(code: Int) {
+                                    cont.resume(emptyList())
+                                }
+
+                                override fun onException(exception: Throwable) {
+                                    cont.resume(emptyList())
+                                }
+                            }
+                        )
+                }
+            }
+            val messageMap = messages.groupBy { it.uuid }
             val pinList = result.map { msgPinDbOption ->
-                msgPinDbOption.toMap(sessionType, messages[msgPinDbOption.uuid]?.getOrNull(0))
+                msgPinDbOption.toMap(sessionType, messageMap[msgPinDbOption.uuid]?.getOrNull(0))
             }.toList()
             NimResult(
                 code = 0,

@@ -829,7 +829,7 @@ fun MsgPinDbOption.toMap(sessionType: SessionTypeEnum, message: IMMessage?) = ma
     "sessionType" to stringFromSessionTypeEnum(sessionType),
     "messageFromAccount" to message?.fromAccount,
     "messageToAccount" to message?.let { MessageHelper.receiverOfMsg(it) },
-//    "messageTime" to message.time,
+    "messageTime" to (message?.time ?: 0),
 //    "messageId" to (message as IMMessageImpl).messageId,
     "messageServerId" to message?.serverId,
     "messageUuid" to uuid,

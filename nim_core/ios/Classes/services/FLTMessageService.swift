@@ -75,6 +75,9 @@ enum MessageType: String {
   case SaveMessageToLocalEx = "saveMessageToLocalEx"
   case GetMessagesDynamically = "getMessagesDynamically"
   case SetChattingAccount = "setChattingAccount"
+  case ConvertMessageToJson = "convertMessageToJson"
+  case ConvertJsonToMessage = "convertJsonToMessage"
+  case PullHistoryById = "pullHistoryById"
 }
 
 class FLTMessageService: FLTBaseService, FLTService {
@@ -319,6 +322,12 @@ class FLTMessageService: FLTBaseService, FLTService {
       getMessagesDynamically(arguments, resultCallback)
     case MessageType.SetChattingAccount.rawValue:
       setChattingAccount(arguments, resultCallback)
+    case MessageType.ConvertMessageToJson.rawValue:
+      convertMessageToJson(arguments, resultCallback)
+    case MessageType.ConvertJsonToMessage.rawValue:
+      convertJsonToMessage(arguments, resultCallback)
+    case MessageType.PullHistoryById.rawValue:
+      pullHistoryById(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -359,6 +368,37 @@ class FLTMessageService: FLTBaseService, FLTService {
       }
     } else {
       resultCallback.result(NimResult.error("parse param failed").toDic())
+    }
+  }
+
+  private func convertMessageToJson(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if let message = NIMMessage.convertToMessage(arguments) {
+      let data = NIMSDK.shared().conversationManager.encodeMessage(toData: message)
+      // 将返回的NSData对象转换为String
+      if let encodedString = String(data: data, encoding: .utf8) {
+        // 使用转换后的String返回到dart
+        resultCallback.result(NimResult.successStringData(data: encodedString).toDic())
+      } else {
+        // 转换为String失败
+        resultCallback.result(NimResult.error("Failed to convert data to string").toDic() as Any)
+      }
+    } else {
+      resultCallback.result(NimResult.error("convert nim message failed").toDic() as Any)
+    }
+  }
+
+  private func convertJsonToMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if let massageJson = arguments["messageJson"] as? String {
+      // 将Swift的String对象转换为NSData对象
+      if let data = massageJson.data(using: .utf8) {
+        let message = NIMSDK.shared().conversationManager.decodeMessage(from: data)
+        resultCallback.result(NimResult.success(message.toDic(false)).toDic())
+      } else {
+        // 转换为NSData失败
+        resultCallback.result(NimResult.error("Failed to convert String to data").toDic() as Any)
+      }
+    } else {
+      resultCallback.result(NimResult.error("convert param failed").toDic() as Any)
     }
   }
 
@@ -1701,6 +1741,38 @@ extension FLTMessageService {
       }
     } else {
       resultCallback.result(NimResult.error("create message error").toDic())
+    }
+  }
+
+  func pullHistoryById(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if let msgKeys = arguments["msgKeyList"] as? [[String: Any]] {
+      var baseInfos = [NIMChatExtendBasicInfo]()
+      for msgKey in msgKeys {
+        if let baseInfo = NIMChatExtendBasicInfo.fromDic(msgKey) {
+          baseInfos.append(baseInfo)
+        }
+      }
+      let persist = arguments["persist"] as? Bool ?? false
+      NIMSDK.shared().chatExtendManager.fetchHistoryMessages(baseInfos, syncToDB: persist) {
+        [weak self] error, result in
+        if let err = error {
+          self?.errorCallBack(resultCallback, err.localizedDescription)
+        } else {
+          if let ret = result {
+            var messageList = [[String: Any]]()
+            ret.objectEnumerator()?.allObjects.forEach { e in
+              if let message = e as? NIMMessage,
+                 let msgDic = message.toDic() {
+                messageList.append(msgDic)
+              }
+            }
+            self?.successCallBack(resultCallback, ["messageList": messageList])
+          } else {
+            let result = NimResult(nil, 0, nil)
+            resultCallback.result(result.toDic())
+          }
+        }
+      }
     }
   }
 

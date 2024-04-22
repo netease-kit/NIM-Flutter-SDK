@@ -76,7 +76,7 @@ class NIMMessagePin {
   final String? messageToAccount;
 
   /// 消息发送时间
-  // final int messageTime;
+  final int messageTime;
 
   /// 消息ID,唯一标识，iOS 可用
   @JsonKey(defaultValue: '-1')
@@ -109,7 +109,7 @@ class NIMMessagePin {
     required this.sessionType,
     this.messageFromAccount,
     this.messageToAccount,
-    // this.messageTime = 0,
+    this.messageTime = 0,
     this.messageUuid,
     this.messageId,
     this.pinId,

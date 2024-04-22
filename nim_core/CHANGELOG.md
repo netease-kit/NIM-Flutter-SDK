@@ -1,3 +1,38 @@
+## 1.7.7(Apr 11, 2024)
+
+### New Features
+* add `enableFcs` for iOS InitializeOptions
+
+### Bug Fixes
+* fix VideoAttachment have no `path` in iOS
+
+## 1.7.6(Mar 8, 2024)
+
+### Dependency Updates
+* NIMSDK from 9.13.1 to 9.15.0 in Android
+* NIMSDK from 9.13.1 to 9.15.1 in iOS
+
+## 1.7.5(Feb 21, 2024)
+
+### New Features
+* add `pullHistoryById` in Android and iOS
+* add `makeNotifyContentProvider` in Android
+* add `makeTickerProvider` in Android
+* add `makeRevokeMsgTipProvider` in Android
+
+## 1.7.4(Jan 25, 2024)
+### Bug Fixes
+* fix offline error when `call` in iOS
+* fix `senderClientType` error when receive from web in iOS
+
+### New Features
+* add `convertMessageToJson` in Android and iOS
+* add `convertJsonToMessage` in Android and iOS
+* add `getCurrentAccount` in Android and iOS
+* add `onMessagesDelete` in Android and iOS
+* add `sendToOnlineUserOnly` on `CustomNotification` in Android and iOS
+* add `allMessagesReadForIOS` in iOS
+
 ## 1.7.3(Nov 8, 2023)
 ### Dependency Updates
 * yunxin_alog from 1.0.11 to 2.0.0

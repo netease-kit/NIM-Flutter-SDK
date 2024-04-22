@@ -5,30 +5,31 @@
 library nim_core;
 
 import 'dart:async';
-import 'package:universal_io/io.dart';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
+import 'package:hawk_meta/hawk_meta.dart';
 import 'package:nim_core/src/event_subscribe/event_subscribe_service.dart';
 import 'package:nim_core/src/log/log_service.dart';
 import 'package:nim_core/src/system_message/system_message_service.dart';
 import 'package:nim_core_platform_interface/nim_core_platform_interface.dart';
+import 'package:universal_io/io.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
-import 'package:hawk_meta/hawk_meta.dart';
 
+export 'package:nim_core/src/event_subscribe/event_subscribe_service.dart';
+export 'package:nim_core/src/system_message/system_message_service.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/audio/record_info.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/auth/auth_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/avsignalling/avsignalling_models.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/robot/robot_message_type.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/event_subscribe/platform_interface_event_subscribe_service.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_android_options.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_server_config.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_ios_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_macos_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_options.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_server_config.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/initialize/nim_sdk_windows_options.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/message.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/message/message_keyword_search_config.dart';
@@ -43,6 +44,16 @@ export 'package:nim_core_platform_interface/src/platform_interface/nim_base.dart
 export 'package:nim_core_platform_interface/src/platform_interface/nos/nos.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_notifydata.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/passthrough/pass_through_proxydata.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/platform_interface_qchat_push_service.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_base_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_channel_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_message_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_observer_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_push_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_role_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_server_models.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/robot/robot_message_type.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/settings/settings_models.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/super_team/platform_interface_super_team_service.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/super_team/super_team.dart';
@@ -56,44 +67,31 @@ export 'package:nim_core_platform_interface/src/platform_interface/team/create_t
 export 'package:nim_core_platform_interface/src/platform_interface/team/team.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/team/team_member.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/friend.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/user/user.dart';
 export 'package:nim_core_platform_interface/src/platform_interface/user/mute_list_changed_notify.dart';
+export 'package:nim_core_platform_interface/src/platform_interface/user/user.dart';
 export 'package:nim_core_platform_interface/src/utils/converter.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/avsignalling/avsignalling_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_base_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_channel_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_message_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_observer_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_server_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_role_models.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/platform_interface_qchat_push_service.dart';
-export 'package:nim_core_platform_interface/src/platform_interface/qchat/qchat_push_models.dart';
-export 'package:nim_core/src/system_message/system_message_service.dart';
-export 'package:nim_core/src/event_subscribe/event_subscribe_service.dart';
 
 part 'src/audio/audio_service.dart';
 part 'src/auth/auth_service.dart';
+part 'src/avsignalling/avsignalling_service.dart';
 part 'src/chatroom/chatroom_message_builder.dart';
 part 'src/chatroom/chatroom_service.dart';
 part 'src/message/message_builder.dart';
 part 'src/message/message_service.dart';
 part 'src/nos/nos_service.dart';
 part 'src/passthrough/passthrough_service.dart';
+part 'src/qchat/qchat_channel_service.dart';
+part 'src/qchat/qchat_message_service.dart';
+part 'src/qchat/qchat_observer.dart';
+part 'src/qchat/qchat_push_service.dart';
+part 'src/qchat/qchat_role_service.dart';
+part 'src/qchat/qchat_server_service.dart';
+part 'src/qchat/qchat_service.dart';
 part 'src/settings/settings_service.dart';
 part 'src/settings/settings_service_mobile.dart';
 part 'src/super_team/super_team_service.dart';
 part 'src/team/team_service.dart';
 part 'src/user/user_service.dart';
-
-part 'src/avsignalling/avsignalling_service.dart';
-part 'src/qchat/qchat_server_service.dart';
-part 'src/qchat/qchat_channel_service.dart';
-part 'src/qchat/qchat_service.dart';
-part 'src/qchat/qchat_message_service.dart';
-part 'src/qchat/qchat_observer.dart';
-part 'src/qchat/qchat_role_service.dart';
-part 'src/qchat/qchat_push_service.dart';
 
 class NimCore {
   NimCore._();
@@ -105,8 +103,8 @@ class NimCore {
 
   static const String tag = 'nim_core';
   //todo 发版前记得处理此处的版本号，数据统计使用
-  static const int _versionCode = 173;
-  static const String versionName = '1.7.3';
+  static const int _versionCode = 177;
+  static const String versionName = '1.7.7';
   static const String _hash = '02566d6321d1d27669d9d369d2f525bc2cdaee10';
 
   bool _initialized = false;

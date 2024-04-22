@@ -254,6 +254,12 @@ class MethodChannelUserService extends UserServicePlatform {
   }
 
   @override
+  Future<NIMResult<String?>> getCurrentAccount() async {
+    Map<String, dynamic> replyMap = await invokeMethod('getCurrentAccount');
+    return NIMResult.fromMap(replyMap);
+  }
+
+  @override
   String get serviceName => "UserService";
 
   @override

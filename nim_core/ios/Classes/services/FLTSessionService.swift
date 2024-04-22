@@ -383,4 +383,19 @@ extension FLTSessionService: NIMConversationManagerDelegate {
       }
     }
   }
+
+  func onRecvMessagesDeleted(_ messages: [NIMMessage], exts: [String: String]?) {
+    let messageList = messages.map { message in
+      message.toDic()
+    }
+    notifyEvent(
+      ServiceType.MessageService.rawValue,
+      "onMessagesDelete",
+      ["messageList": messageList]
+    )
+  }
+
+  func allMessagesRead() {
+    notifyEvent(ServiceType.MessageService.rawValue, "allMessagesRead", nil)
+  }
 }

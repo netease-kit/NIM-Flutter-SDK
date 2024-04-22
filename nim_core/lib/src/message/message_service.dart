@@ -86,7 +86,16 @@ class MessageService {
   Stream<NIMStickTopSessionInfo> get onStickTopSessionUpdate =>
       MessageServicePlatform.instance.onStickTopSessionUpdate.stream;
 
-  /// 发送消息
+  ///消息删除的同步接口回调
+  Stream<List<NIMMessage>> get onMessagesDelete =>
+      MessageServicePlatform.instance.onMessagesDelete.stream;
+
+  ///所有消息都已读的回调，在调用[MessageService.clearAllSessionUnreadCount]后触发
+  ///仅iOS端有效
+  Stream<void> get allMessagesReadForIOS =>
+      MessageServicePlatform.instance.allMessagesRead.stream;
+
+  /// 创建消息
   Future<NIMResult<NIMMessage>> _createMessage(
       {required NIMMessage message}) async {
     return _platform.createMessage(message: message);
@@ -106,6 +115,15 @@ class MessageService {
         return messageResult;
       }
     });
+  }
+
+  Future<NIMResult<String>> _convertMessageToJson(NIMMessage message) async {
+    return _platform.convertMessageToJson(message);
+  }
+
+  /// 消息转换
+  Future<NIMResult<NIMMessage>> _convertJsonToMessage(String json) async {
+    return _platform.convertJsonToMessage(json);
   }
 
   /// 发送消息
@@ -911,5 +929,13 @@ class MessageService {
   Future<NIMResult<GetMessagesDynamicallyResult>> getMessagesDynamically(
       GetMessagesDynamicallyParam param) {
     return _platform.getMessagesDynamically(param);
+  }
+
+  ///根据消息关键信息批量查询服务端历史消息。
+  ///[msgKeyList] 消息关键信息列表
+  ///[persist] 查询的漫游消息是否同步到本地数据库。
+  Future<NIMResult<List<NIMMessage>>> pullHistoryById(
+      List<NIMMessageKey> msgKeyList, bool persist) {
+    return _platform.pullHistoryById(msgKeyList, persist);
   }
 }

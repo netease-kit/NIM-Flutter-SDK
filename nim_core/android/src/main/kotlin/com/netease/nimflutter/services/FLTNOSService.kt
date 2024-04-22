@@ -11,6 +11,7 @@ import android.text.TextUtils
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultCallback
 import com.netease.nimflutter.ResultCallback
 import com.netease.nimflutter.SafeResult
 import com.netease.nimflutter.toMap
@@ -79,7 +80,7 @@ class FLTNOSService(
      */
     private fun download(
         arguments: Map<String, *>,
-        resultCallback: ResultCallback<String>
+        resultCallback: ResultCallback<Void>
     ) {
         val url = arguments["url"] as? String
         val path = arguments["path"] as? String
@@ -88,20 +89,9 @@ class FLTNOSService(
                 NimResult(code = -1, errorDetails = "download but the url is empty!")
             )
         } else {
-            NIMClient.getService(NosService::class.java).downloadFileSecure(url, path).setCallback(object : RequestCallback<Void> {
-                override fun onSuccess(param: Void) {
-                    ALog.d(tag, "download onSuccess")
-                    resultCallback.result(NimResult(code = 0))
-                }
-
-                override fun onFailed(code: Int) {
-                    onFailed("download onFailed", code, resultCallback)
-                }
-
-                override fun onException(exception: Throwable?) {
-                    onException("download onException", exception, resultCallback)
-                }
-            })
+            NIMClient.getService(NosService::class.java).download(url, null, path).setCallback(
+                NimResultCallback(resultCallback)
+            )
         }
     }
 

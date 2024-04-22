@@ -10,6 +10,7 @@ import android.content.Context
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.NimResultCallback
 import com.netease.nimflutter.ResultCallback
 import com.netease.nimflutter.SafeResult
 import com.netease.nimflutter.convertToCustomNotification
@@ -270,11 +271,10 @@ class FLTSystemMessageService(
 
     private fun sendCustomNotification(
         arguments: Map<String, *>,
-        resultCallback: ResultCallback<List<SystemMessage>>
+        resultCallback: ResultCallback<Void>
     ) {
         val customNotification =
             convertToCustomNotification(arguments["customNotification"] as Map<String, Any?>)
-        NIMClient.getService(MsgService::class.java).sendCustomNotification(customNotification)
-        resultCallback.result(NimResult(code = 0))
+        NIMClient.getService(MsgService::class.java).sendCustomNotification(customNotification).setCallback(NimResultCallback(resultCallback))
     }
 }

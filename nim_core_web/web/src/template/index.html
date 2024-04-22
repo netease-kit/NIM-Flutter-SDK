@@ -1,0 +1,103 @@
+<!-- Copyright (c) 2022 NetEase, Inc. All rights reserved.
+Use of this source code is governed by a MIT license that can be
+found in the LICENSE file. -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="$FLUTTER_BASE_HREF" />
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta
+      name="description"
+      content="Demonstrates how to use the flutter_plugin plugin."
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="flutter_plugin_example" />
+    <title>nim_core_web</title>
+    <script>
+      // The value below is injected by flutter build, do not touch.
+      var serviceWorkerVersion = null
+    </script>
+    <script src="flutter.js"></script>
+  </head>
+  <body>
+    <script>
+      var jsConfig = [
+        './index.umd.js',
+        // "https://yx-web-nosdn.netease.im/package/1663602694426/index.0.0.4.umd.js",
+        // "assets/packages/nim_core_web/dist/index.umd.js",
+      ]
+
+      window.onload = function () {
+        // Download main.dart.js
+        try {
+          _flutter.loader
+            .loadEntrypoint({
+              serviceWorker: {
+                serviceWorkerVersion: serviceWorkerVersion,
+              },
+            })
+            .then(function (engineInitializer) {
+              return engineInitializer.initializeEngine()
+            })
+            .then((appRunner) => {
+              require(jsConfig, (RootService) => {
+                window.$flutterWebGlobal = {
+                  rootService: new RootService.default(),
+                }
+                appRunner.runApp()
+              })
+            })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      function removeNullValue(obj) {
+        if (obj === null || obj === undefined) {
+          return obj
+        }
+        if (typeof obj === 'object') {
+          Object.keys(obj).forEach((key) => {
+            if (obj[key] === null || obj[key] === undefined) {
+              delete obj[key]
+            } else {
+              removeNullValue(obj[key])
+            }
+          })
+        }
+        return obj
+      }
+
+      async function dartCallNativeJs(callInfo = {}) {
+        const { serviceName, method, params, successCallback, errorCallback } =
+          callInfo
+        try {
+          console.log('dartCallNativeJs: ', callInfo)
+          const service = window.$flutterWebGlobal.rootService[serviceName]
+          if (!service) {
+            throw new Error(`You do not implement this service: ${serviceName}`)
+          }
+          if (!service[method]) {
+            throw new Error(
+              `This method: ${method} is not implemented on this service: ${serviceName}`
+            )
+          }
+          removeNullValue(params)
+          // 参数中删除serviceName
+          if (params.hasOwnProperty('serviceName')) {
+            delete params.serviceName
+          }
+          const res = await service[method](params)
+          successCallback(res)
+        } catch (error) {
+          console.error('dartCallNativeJs failed: ', error)
+          errorCallback(error)
+          throw error
+        }
+      }
+    </script>
+  </body>
+</html>

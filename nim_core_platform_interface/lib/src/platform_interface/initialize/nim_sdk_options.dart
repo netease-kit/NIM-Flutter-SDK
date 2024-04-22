@@ -86,6 +86,10 @@ abstract class NIMSDKOptions {
   @JsonKey(fromJson: serverConfigFromMap, toJson: serverConfigToJson)
   final NIMServerConfig? serverConfig;
 
+  ///是否开启融合存储,仅支持Android，iOS
+  @JsonKey(defaultValue: true)
+  bool enableFcs;
+
   NIMSDKOptions(
       {required this.appKey,
       this.sdkRootDir,
@@ -104,7 +108,8 @@ abstract class NIMSDKOptions {
       this.useAssetServerAddressConfig,
       this.autoLoginInfo,
       this.nosSceneConfig,
-      this.serverConfig});
+      this.serverConfig,
+      this.enableFcs = true});
 
   Map<String, dynamic> toMap();
 }

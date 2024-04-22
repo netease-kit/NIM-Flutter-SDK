@@ -27,6 +27,7 @@ import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.lifecycle.SdkLifecycleObserver
 import com.netease.nimlib.sdk.mixpush.MixPushConfig
+import com.netease.nimlib.sdk.msg.MessageNotifierCustomization
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider
@@ -58,6 +59,61 @@ class FLTInitializeService(
     override val serviceName = "InitializeService"
 
     private val state = MutableStateFlow(initial)
+
+    private val innerMessageNotifierCustomization = object : MessageNotifierCustomization {
+        override fun makeNotifyContent(nick: String?, message: IMMessage?): String? {
+            return runBlocking {
+                withTimeoutOrNull(userProviderTimeout) {
+                    suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "onMakeNotifyContent",
+                            arguments = mapOf(
+                                "nick" to nick,
+                                "message" to message?.toMap()
+                            ),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as String?
+                }
+            }
+        }
+
+        override fun makeTicker(nick: String?, message: IMMessage?): String? {
+            return runBlocking {
+                withTimeoutOrNull(userProviderTimeout) {
+                    suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "onMakeTicker",
+                            arguments = mapOf(
+                                "nick" to nick,
+                                "message" to message?.toMap()
+                            ),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as String?
+                }
+            }
+        }
+
+        override fun makeRevokeMsgTip(revokeAccount: String?, item: IMMessage?): String? {
+            return runBlocking {
+                withTimeoutOrNull(userProviderTimeout) {
+                    suspendCancellableCoroutine<Any?> { continuation ->
+                        notifyEvent(
+                            method = "onMakeRevokeMsgTip",
+                            arguments = mapOf(
+                                "revokeAccount" to revokeAccount,
+                                "item" to item?.toMap()
+                            ),
+                            callback = MethodChannelSuspendResult(continuation)
+                        )
+                    } as String?
+                }
+            }
+        }
+
+        override fun makeCategory(message: IMMessage?): String? = null
+    }
 
     private val innerUserInfoProvider = object : UserInfoProvider {
         override fun getUserInfo(account: String?): UserInfo? = null
@@ -194,6 +250,7 @@ class FLTInitializeService(
                     arguments["autoLoginInfo"]?.let { LoginInfoFactory.fromMap(it as Map<String, *>) },
                     SDKOptions().configureWithMap(arguments).apply {
                         this.userInfoProvider = innerUserInfoProvider
+                        this.messageNotifierCustomization = innerMessageNotifierCustomization
                     }.also {
                         sdkOptions = it
                     }

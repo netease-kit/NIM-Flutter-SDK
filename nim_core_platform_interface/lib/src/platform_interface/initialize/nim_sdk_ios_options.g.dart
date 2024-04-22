@@ -51,6 +51,7 @@ NIMIOSSDKOptions _$NIMIOSSDKOptionsFromJson(Map<String, dynamic> json) {
     autoLoginInfo: loginInfoFromMap(json['autoLoginInfo'] as Map?),
     nosSceneConfig: nosSceneConfigFromMap(json['nosSceneConfig'] as Map?),
     serverConfig: serverConfigFromMap(json['serverConfig'] as Map?),
+    enableFcs: json['enableFcs'] as bool? ?? true,
   )..disableTraceroute = json['disableTraceroute'] as bool?;
 }
 
@@ -72,6 +73,7 @@ Map<String, dynamic> _$NIMIOSSDKOptionsToJson(NIMIOSSDKOptions instance) {
     'shouldSyncStickTopSessionInfos': instance.shouldSyncStickTopSessionInfos,
     'enableReportLogAutomatically': instance.enableReportLogAutomatically,
     'useAssetServerAddressConfig': instance.useAssetServerAddressConfig,
+    'enableFcs': instance.enableFcs,
   };
 
   void writeNotNull(String key, dynamic value) {

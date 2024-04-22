@@ -53,6 +53,11 @@ class NimResult {
     return nimResult
   }
 
+  class func successStringData(data: String) -> NimResult {
+    let nimResult = NimResult(data, NSNumber(integerLiteral: 0), nil)
+    return nimResult
+  }
+
   class func success() -> NimResult {
     let nimResult = NimResult(nil, NSNumber(integerLiteral: 0), nil)
     return nimResult

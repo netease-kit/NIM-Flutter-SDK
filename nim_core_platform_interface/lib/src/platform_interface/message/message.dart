@@ -180,7 +180,7 @@ class NIMMessage {
   /// 易盾反垃圾返回的结果
   String? yidunAntiSpamRes;
 
-  /// 消息是否需要被抄送
+  /// 机器人消息
   @JsonKey(
       fromJson: NIMMessageRobotInfo._fromMap,
       toJson: NIMMessageRobotInfo._toMap)
@@ -1223,7 +1223,7 @@ class NIMSession {
   final NIMMessageAttachment? lastMessageAttachment;
 
   /// 获取该联系人的未读消息条数
-  final int? unreadCount;
+  int? unreadCount;
 
   /// 扩展字段
   @JsonKey(fromJson: castPlatformMapToDartMap)
@@ -1377,6 +1377,18 @@ class NIMMessageKey {
       serverId: param['serverId'] as int?,
       uuid: param['uuid'] as String?,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'sessionType':
+          NIMSessionTypeConverter(sessionType: sessionType).toValue(),
+      'fromAccount': fromAccount,
+      'toAccount': toAccount,
+      'time': time,
+      'serverId': serverId,
+      'uuid': uuid,
+    };
   }
 
   @override

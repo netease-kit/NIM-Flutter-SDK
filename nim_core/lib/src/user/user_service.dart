@@ -161,4 +161,10 @@ class UserService {
   Future<NIMResult<bool>> isMute(String userId) async {
     return _platform.isMute(userId);
   }
+
+  ///获取当前登录的帐号
+  ///如果未登录返回为空或者null
+  Future<NIMResult<String?>> getCurrentAccount() async {
+    return _platform.getCurrentAccount();
+  }
 }

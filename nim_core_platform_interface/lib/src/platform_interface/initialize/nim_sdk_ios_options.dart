@@ -113,6 +113,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
     NIMLoginInfo? autoLoginInfo,
     Map<NIMNosScene, int>? nosSceneConfig,
     NIMServerConfig? serverConfig,
+    bool enableFcs = true,
   }) : super(
           appKey: appKey,
           autoLoginInfo: autoLoginInfo,
@@ -134,6 +135,7 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
           enableAnimatedImageThumbnail: enableAnimatedImageThumbnail,
           enablePreloadMessageAttachment: enablePreloadMessageAttachment,
           useAssetServerAddressConfig: useAssetServerAddressConfig,
+          enableFcs: enableFcs,
 
           /// iOS => 是否在收到消息后自动下载附件 (群和个人)
           /// 默认为YES,SDK会在第一次收到消息是直接下载消息附件,上层开发可以根据自己的需要进行设置

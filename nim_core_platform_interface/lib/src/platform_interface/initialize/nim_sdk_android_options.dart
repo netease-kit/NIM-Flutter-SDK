@@ -39,10 +39,6 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   @JsonKey(defaultValue: false)
   final bool reducedIM;
 
-  ///是否开启融合存储
-  @JsonKey(defaultValue: true)
-  final bool enableFcs;
-
   ///
   /// 是否检查 Manifest 配置
   /// 最好在调试阶段打开，调试通过之后请关掉
@@ -120,6 +116,16 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   final NIMDisplayTitleForMessageNotifierProvider?
       displayTitleForMessageNotifierProvider;
 
+  ///定制消息提醒（通知栏提醒）內容文案 主要在通知栏下拉后展现其通知内容：content=[nick:发来一条消息]
+  NIMMakeNotifyContentProvider? makeNotifyContentProvider;
+
+  ///定制消息提醒（通知栏提醒）Ticker文案 主要在通知栏弹框提醒时的内容：ticker=[nick有新消息]
+  ///Android 5.0 后废弃
+  NIMMakeTickerProvider? makeTickerProvider;
+
+  ///定制消息撤回提醒文案
+  NIMMakeRevokeMsgTipProvider? makeRevokeMsgTipProvider;
+
   NIMAndroidSDKOptions({
     /// android configurations
     this.improveSDKProcessPriority = true,
@@ -134,10 +140,12 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.customPushContentType,
     this.mixPushConfig,
     this.notificationConfig,
-    this.enableFcs = true,
     this.displayNameForMessageNotifierProvider,
     this.avatarForMessageNotifierProvider,
     this.displayTitleForMessageNotifierProvider,
+    this.makeNotifyContentProvider,
+    this.makeTickerProvider,
+    this.makeRevokeMsgTipProvider,
 
     /// common configurations
     required String appKey,
@@ -158,6 +166,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     NIMLoginInfo? autoLoginInfo,
     Map<NIMNosScene, int>? nosSceneConfig,
     NIMServerConfig? serverConfig,
+    bool enableFcs = true,
   }) : super(
           appKey: appKey,
           sdkRootDir: sdkRootDir,
@@ -179,6 +188,7 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
           autoLoginInfo: autoLoginInfo,
           nosSceneConfig: nosSceneConfig,
           serverConfig: serverConfig,
+          enableFcs: enableFcs,
         );
 
   factory NIMAndroidSDKOptions.fromMap(Map options) =>
@@ -499,12 +509,39 @@ enum NIMNotificationExtraType {
   jsonArrStr,
 }
 
+/// 为通知栏提供消息发送者显示名称（例如：如果是P2P聊天，可以显示备注名、昵称、帐号等；如果是群聊天，可以显示备注名，群昵称，昵称、帐号等） 如果返回 null，SDK将会使用服务器下发昵称
 typedef NIMDisplayNameForMessageNotifierProvider = Future<String?> Function(
     String? account, String? sessionId, NIMSessionType? sessionType);
 
+///为云信通知栏提醒提供头像（个人、群组） 一般从本地图片缓存中获取，若未下载或本地不存在，请返回默认本地头像（可以返回默认头像资源ID对应的Bitmap）
 typedef NIMAvatarForMessageNotifierProvider
     = Future<UserInfoProviderAvatarInfo?> Function(
         NIMSessionType? sessionType, String? sessionId);
 
+///为通知栏提供消息title显示名称（例如：如果是群聊天，可以设置自定义群名称等;如果圈组，可以显示圈组频道名称等） 如果返回null，SDK 群和超大群会显示群名称，其他类型将会使用当前app名称展示
 typedef NIMDisplayTitleForMessageNotifierProvider = Future<String?> Function(
     NIMMessage? message);
+
+///定制消息提醒（通知栏提醒）內容文案 主要在通知栏下拉后展现其通知内容：content=[nick:发来一条消息]
+/// Params:
+/// [nick] – 发送者昵称 [message] – 发来的消息
+/// Returns:
+/// 定制的消息提醒内容文案
+typedef NIMMakeNotifyContentProvider = Future<String?> Function(
+    String? nick, NIMMessage? message);
+
+///定制消息提醒（通知栏提醒）Ticker文案 主要在通知栏弹框提醒时的内容：ticker=[nick有新消息]
+///params:
+/// [nick] – 发送者昵称 [message] – 发来的消息
+/// Returns:
+/// 定制的通知栏Ticker文案
+typedef NIMMakeTickerProvider = Future<String?> Function(
+    String? nick, NIMMessage? message);
+
+///定制消息撤回提醒文案
+///Params:
+/// [revokeAccount] – 撤回操作者账号 [message] – 被撤回的消息
+/// Returns:
+/// 消息撤回提醒文案
+typedef NIMMakeRevokeMsgTipProvider = Future<String?> Function(
+    String? revokeAccount, NIMMessage? message);
