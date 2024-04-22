@@ -15,7 +15,7 @@ class CustomNotification {
 
   final String? content;
 
-  final bool? sendToOnlineUserOnly = true;
+  final bool? sendToOnlineUserOnly;
 
   final String? apnsText;
 
@@ -37,7 +37,8 @@ class CustomNotification {
       this.pushPayload,
       this.config,
       this.antiSpamOption,
-      this.env});
+      this.env,
+      this.sendToOnlineUserOnly = true});
 
   factory CustomNotification.fromMap(Map<String, dynamic> param) {
     return CustomNotification(
@@ -53,6 +54,7 @@ class CustomNotification {
           (param["config"] as Map?)?.cast<String, dynamic>()),
       // antiSpamOption: NIMAntiSpamOption.fromMap(param["antiSpamOption"] as Map<String,dynamic>?) ,
       env: param["env"] as String?,
+      sendToOnlineUserOnly: param["sendToOnlineUserOnly"] as bool? ?? true,
     );
   }
 

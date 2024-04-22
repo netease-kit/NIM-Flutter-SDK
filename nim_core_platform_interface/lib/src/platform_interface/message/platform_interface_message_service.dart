@@ -90,6 +90,13 @@ abstract class MessageServicePlatform extends Service {
   final StreamController<NIMStickTopSessionInfo> onStickTopSessionUpdate =
       StreamController<NIMStickTopSessionInfo>.broadcast();
 
+  // ignore: close_sinks, never closed
+  final StreamController<List<NIMMessage>> onMessagesDelete =
+      StreamController<List<NIMMessage>>.broadcast();
+
+  final StreamController<void> allMessagesRead =
+      StreamController<void>.broadcast();
+
   Future<NIMResult<NIMMessage>> sendMessage(
       {required NIMMessage message, bool resend = false}) async {
     throw UnimplementedError('sendMessage() is not implemented');
@@ -651,5 +658,21 @@ abstract class MessageServicePlatform extends Service {
   Future<NIMResult<GetMessagesDynamicallyResult>> getMessagesDynamically(
       GetMessagesDynamicallyParam param) {
     throw UnimplementedError('getMessagesDynamically() is not implemented');
+  }
+
+  Future<NIMResult<String>> convertMessageToJson(NIMMessage message) async {
+    throw UnimplementedError('getMessagesDynamically() is not implemented');
+  }
+
+  Future<NIMResult<NIMMessage>> convertJsonToMessage(String json) async {
+    throw UnimplementedError('getMessagesDynamically() is not implemented');
+  }
+
+  ///根据消息关键信息批量查询服务端历史消息。
+  ///[msgKeyList] 消息关键信息列表
+  ///[persist] 查询的漫游消息是否同步到本地数据库。
+  Future<NIMResult<List<NIMMessage>>> pullHistoryById(
+      List<NIMMessageKey> msgKeyList, bool persist) async {
+    throw UnimplementedError('pullHistoryById() is not implemented');
   }
 }

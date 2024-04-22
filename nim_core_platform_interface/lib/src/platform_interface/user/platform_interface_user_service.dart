@@ -147,4 +147,8 @@ abstract class UserServicePlatform extends Service {
   Future<NIMResult<bool>> isMute(String userId) async {
     throw UnimplementedError('isMute() is not implemented');
   }
+
+  Future<NIMResult<String?>> getCurrentAccount() async {
+    throw UnimplementedError('getCurrentAccount() is not implemented');
+  }
 }

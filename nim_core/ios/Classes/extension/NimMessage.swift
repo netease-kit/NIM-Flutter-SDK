@@ -657,7 +657,7 @@ extension NIMMessage {
   }
 
   // 结构转换
-  func toDic() -> [String: Any]? {
+  func toDic(_ showYidunAnti: Bool = true) -> [String: Any]? {
     if var arguments = yx_modelToJSONObject() as? [String: Any] {
       if let sid = Int(serverID) {
         arguments["serverId"] = sid
@@ -751,8 +751,11 @@ extension NIMMessage {
       }
       arguments["yidunAntiSpamRes"] = yidunAntiSpamRes
       arguments["yidunAntiSpamExt"] = yidunAntiSpamExt
-      if let yidunAntiCheatingForMap = yidunAntiCheating as? [String: Any] {
+      if showYidunAnti,
+         let yidunAntiCheatingForMap = yidunAntiCheating as? [String: Any] {
         arguments["yidunAntiCheating"] = yidunAntiCheatingForMap
+      } else {
+        arguments["yidunAntiCheating"] = nil
       }
 
       arguments["sessionUpdate"] = setting?.isSessionUpdate ?? true
@@ -1213,7 +1216,7 @@ extension NIMAntiSpamOption {
 
 extension NIMImageObject: NimDataConvertProtrol {
   func convertVar() -> [String: String] {
-    ["_scene": "sen", "_fileLength": "size", "_sourceFilepath": "path", "_sourceExtension": "ext"]
+    ["_scene": "sen", "_fileLength": "size", "_sourceFilepath": "path"]
   }
 
   func toDic() -> [String: Any]? {
@@ -1222,7 +1225,10 @@ extension NIMImageObject: NimDataConvertProtrol {
 //      jsonObject["size"] = Int(size.height * size.width)
       jsonObject["w"] = Int(size.width)
       jsonObject["h"] = Int(size.height)
-      jsonObject["hash"] = nil
+      jsonObject["hash"] = md5
+      if let p = path {
+        jsonObject["path"] = p
+      }
       return jsonObject
     }
     return nil
@@ -1251,7 +1257,7 @@ extension NIMImageObject: NimDataConvertProtrol {
 
 extension NIMAudioObject: NimDataConvertProtrol {
   func convertVar() -> [String: String] {
-    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path", "_sourceExtension": "ext"]
+    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path"]
   }
 
   func toDic() -> [String: Any]? {
@@ -1260,7 +1266,6 @@ extension NIMAudioObject: NimDataConvertProtrol {
       if let p = path {
         jsonObject["path"] = p
       }
-      jsonObject["ext"] = value(forKeyPath: "_sourceExtension")
       return jsonObject
     }
     return nil
@@ -1351,7 +1356,7 @@ extension NIMFileObject: NimDataConvertProtrol {
 
 extension NIMVideoObject: NimDataConvertProtrol {
   func convertVar() -> [String: String] {
-    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path", "_sourceExtension": "ext"]
+    ["_scene": "sen", "_fileLength": "size", "_sourcePath": "path"]
   }
 
   func toDic() -> [String: Any]? {
@@ -1361,6 +1366,9 @@ extension NIMVideoObject: NimDataConvertProtrol {
       jsonObject["h"] = Int(coverSize.height)
       if jsonObject["thumbPath"] == nil {
         jsonObject["thumbPath"] = ""
+      }
+      if let p = path {
+        jsonObject["path"] = p
       }
       return jsonObject
     }
@@ -1597,6 +1605,34 @@ extension NIMMessageSearchOption {
       return model
     }
     return NIMMessageSearchOption()
+  }
+}
+
+extension NIMChatExtendBasicInfo {
+  static func fromDic(_ json: [String: Any]) -> NIMChatExtendBasicInfo? {
+    if let model = NIMChatExtendBasicInfo.yx_model(with: json) {
+      if let sessionTypeValue = json["sessionType"] as? String,
+         let sessionType = try? NIMSessionType.getType(sessionTypeValue) {
+        model.type = sessionType
+      }
+      if let fromAccount = json["fromAccount"] as? String {
+        model.fromAccount = fromAccount
+      }
+      if let toAccount = json["toAccount"] as? String {
+        model.toAccount = toAccount
+      }
+      if let time = json["time"] as? Int64 {
+        model.timestamp = TimeInterval(Double(time) / 1000)
+      }
+      if let serverId = json["serverId"] as? Int64 {
+        model.serverID = String(serverId)
+      }
+      if let uuid = json["uuid"] as? String {
+        model.messageID = uuid
+      }
+      return model
+    }
+    return nil
   }
 }
 

@@ -44,6 +44,9 @@ class FLTInitializeService: FLTService {
         NIMSDKConfig.shared().flutterSDKVersion = flutterVersionName ?? ""
       }
     }
+    if let enableFcs = arguments["enableFcs"] as? Bool {
+      NIMSDKConfig.shared().fcsEnable = enableFcs
+    }
     // 修复配置未打开问题
     if arguments["enablePreloadMessageAttachment"] as? Bool == nil {
       NIMSDKConfig.shared().fetchAttachmentAutomaticallyAfterReceiving = true

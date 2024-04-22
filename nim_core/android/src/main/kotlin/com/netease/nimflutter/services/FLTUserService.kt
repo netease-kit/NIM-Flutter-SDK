@@ -85,6 +85,7 @@ class FLTUserService(
             "getMuteList" -> getMuteList(ResultCallback(safeResult))
             "setMute" -> setMute(arguments, ResultCallback(safeResult))
             "isMute" -> isMute(arguments, ResultCallback(safeResult))
+            "getCurrentAccount" -> getCurrentAccount(ResultCallback(safeResult))
             else -> safeResult.notImplemented()
         }
     }
@@ -540,6 +541,14 @@ class FLTUserService(
         val isNotify = NIMClient.getService(FriendService::class.java).isNeedMessageNotify(userId)
         ALog.d(tag, "userId = $userId isMute = ${!isNotify}")
         resultCallback.result(NimResult(code = 0, !isNotify))
+    }
+
+    private fun getCurrentAccount(
+        resultCallback: ResultCallback<String>
+    ) {
+        val account = NIMClient.getCurrentAccount()
+        ALog.d(tag, "account = $account")
+        resultCallback.result(NimResult(code = 0, account))
     }
 
     /**

@@ -15,7 +15,7 @@ A Flutter plugin for NetEase IM SDK on Android and iOS.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'NIMSDK_LITE', '~> 9.13.0'
+  s.dependency 'NIMSDK_LITE/FCS', '~> 9.15.0'
   s.dependency 'YXAlog'
   s.platform = :ios, '11.0'
 

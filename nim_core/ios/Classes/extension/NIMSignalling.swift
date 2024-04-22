@@ -268,7 +268,7 @@ extension NIMSignalingCallRequest {
       if let customInfo = json["customInfo"] as? String {
         model.customInfo = customInfo
       }
-      if let offlineEnabled = json["offlineEnabled"] as? Bool {
+      if let offlineEnabled = json["offlineEnable"] as? Bool {
         model.offlineEnabled = offlineEnabled
       }
       if let pushConfig = json["pushConfig"] as? [String: Any] {

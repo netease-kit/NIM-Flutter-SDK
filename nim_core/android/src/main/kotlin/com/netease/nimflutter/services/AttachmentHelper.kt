@@ -72,10 +72,12 @@ object AttachmentHelper {
                 if (messageType == MsgTypeEnum.custom) {
                     (attachment as? CustomAttachment)?.toMap() ?: mapOf()
                 } else {
-                    ALog.e(
-                        "AttachmentHelper",
-                        "message type $messageType with unknown attachment type: ${attachment?.javaClass?.name}"
-                    )
+                    if (attachment != null) {
+                        ALog.e(
+                            "AttachmentHelper",
+                            "message type $messageType with unknown attachment type: ${attachment.javaClass.name}"
+                        )
+                    }
                     mapOf()
                 }
             }

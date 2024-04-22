@@ -1666,8 +1666,9 @@ bool Convert::convertIMMessage2Map(flutter::EncodableMap& arguments,
   // arguments[flutter::EncodableValue("attachmentStatus")];
 
   arguments[flutter::EncodableValue("uuid")] = imMessage.client_msg_id_;
+  // todo not support uint64_t
   arguments[flutter::EncodableValue("serverId")] =
-      imMessage.readonly_server_id_;
+      static_cast<int64_t>(imMessage.readonly_server_id_);
 
   flutter::EncodableMap config;
   if (BS_NOT_INIT != imMessage.msg_setting_.server_history_saved_) {

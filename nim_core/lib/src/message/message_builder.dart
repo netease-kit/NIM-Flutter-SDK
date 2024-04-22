@@ -170,4 +170,17 @@ class MessageBuilder {
         config: config);
     return NimCore.instance.messageService._createMessage(message: message);
   }
+
+  /// NIMMessage转换为json
+  static Future<NIMResult<String>> convertMessageToJson(
+      {required NIMMessage message}) async {
+    return NimCore.instance.messageService._convertMessageToJson(message);
+  }
+
+  /// json转换为NIMMessage
+  /// 返回结果不支持 yidunAnti相关字段
+  static Future<NIMResult<NIMMessage>> convertJsonToMessage(
+      {required String json}) async {
+    return NimCore.instance.messageService._convertJsonToMessage(json);
+  }
 }

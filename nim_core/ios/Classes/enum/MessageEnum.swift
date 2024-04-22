@@ -329,7 +329,7 @@ enum FLT_NIMLoginClientType: String {
     case NIMLoginClientType.typeWP:
       return FLT_NIMLoginClientType.wp
     case NIMLoginClientType.typeWeb:
-      return FLT_NIMLoginClientType.rest
+      return FLT_NIMLoginClientType.web
     case NIMLoginClientType.typeRestful:
       return FLT_NIMLoginClientType.rest
     case NIMLoginClientType.typemacOS:

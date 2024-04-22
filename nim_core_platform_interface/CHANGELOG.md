@@ -1,3 +1,26 @@
+## 1.7.7(Apr 11, 2024)
+
+### New Features
+* add `enableFcs` for iOS InitializeOptions
+
+## 1.7.5(Feb 21, 2024)
+
+### New Features
+* add `pullHistoryById` in Android and iOS
+* add `makeNotifyContentProvider` in Android
+* add `makeTickerProvider` in Android
+* add `makeRevokeMsgTipProvider` in Android
+
+## 1.7.4(Jan 24, 2024)
+
+### New Features
+* add `convertMessageToJson` in Android and iOS
+* add `convertJsonToMessage` in Android and iOS
+* add `getCurrentAccount` in Android and iOS
+* add `onMessagesDelete` in Android and iOS
+* add `sendToOnlineUserOnly` on `CustomNotification` in Android and iOS
+* add `allMessagesReadForIOS` in iOS
+
 ## 1.7.0(Jul 21, 2023)
 
 ### New Features

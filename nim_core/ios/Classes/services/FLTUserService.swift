@@ -25,6 +25,7 @@ enum UserType: String {
   case GetMuteList = "getMuteList"
   case SetMute = "setMute"
   case IsMute = "isMute"
+  case getCurrentAccount
 }
 
 class FLTUserService: FLTBaseService, FLTService {
@@ -88,6 +89,8 @@ class FLTUserService: FLTBaseService, FLTService {
       setMute(arguments, resultCallback)
     case UserType.IsMute.rawValue:
       isMute(arguments, resultCallback)
+    case UserType.getCurrentAccount.rawValue:
+      getCurrentAccount(resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -467,6 +470,12 @@ class FLTUserService: FLTBaseService, FLTService {
     }
     let notify = NIMSDK.shared().userManager.notify(forNewMsg: userId!)
     let result = NimResult(!notify, 0, nil)
+    resultCallback.result(result.toDic())
+  }
+
+  func getCurrentAccount(_ resultCallback: ResultCallback) {
+    let accId = NIMSDK.shared().loginManager.currentAccount()
+    let result = NimResult(accId, 0, nil)
     resultCallback.result(result.toDic())
   }
 

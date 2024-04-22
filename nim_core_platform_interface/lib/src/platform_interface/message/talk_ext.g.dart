@@ -47,6 +47,7 @@ NIMMessagePin _$NIMMessagePinFromJson(Map<String, dynamic> json) {
     pinExt: json['pinExt'] as String?,
     pinCreateTime: json['pinCreateTime'] as int? ?? 0,
     pinUpdateTime: json['pinUpdateTime'] as int? ?? 0,
+    messageTime: json['messageTime'] as int? ?? 0,
   );
 }
 
@@ -64,6 +65,7 @@ Map<String, dynamic> _$NIMMessagePinToJson(NIMMessagePin instance) =>
       'pinExt': instance.pinExt,
       'pinCreateTime': instance.pinCreateTime,
       'pinUpdateTime': instance.pinUpdateTime,
+      'messageTime': instance.messageTime,
     };
 
 K _$enumDecode<K, V>(

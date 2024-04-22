@@ -38,6 +38,7 @@ import com.netease.nimlib.sdk.msg.model.CustomNotification
 import com.netease.nimlib.sdk.msg.model.CustomNotificationConfig
 import com.netease.nimlib.sdk.msg.model.GetMessageDirectionEnum
 import com.netease.nimlib.sdk.msg.model.MemberPushOption
+import com.netease.nimlib.sdk.msg.model.MessageKey
 import com.netease.nimlib.sdk.msg.model.MessageRobotInfo
 import com.netease.nimlib.sdk.msg.model.MsgFullKeywordSearchConfig
 import com.netease.nimlib.sdk.msg.model.MsgSearchOption
@@ -454,6 +455,18 @@ fun convertNIMMessageRobotInfo(map: Map<String, Any?>?): MessageRobotInfo? {
 
 fun convertToQueryDirectionEnum(param: Int): QueryDirectionEnum {
     return if (param == 0) QueryDirectionEnum.QUERY_OLD else QueryDirectionEnum.QUERY_NEW
+}
+
+fun convertToMessageKey(param: Map<String, Any?>?): MessageKey? {
+    return param?.let {
+        val sessionType = stringToSessionTypeEnum(it["sessionType"] as String?)
+        val fromAccount = it["fromAccount"] as String?
+        val toAccount = it["toAccount"] as String?
+        val time = (it.getOrElse("time") { 0L } as Number).toLong()
+        val uuid = it["uuid"] as String?
+        val serverId = (it.getOrElse("serverId") { 0L } as Number).toLong()
+        return MessageKey(sessionType, fromAccount, toAccount, time, serverId, uuid)
+    }
 }
 
 fun convertToSearchOption(param: Map<String, Any?>?): MsgSearchOption? {

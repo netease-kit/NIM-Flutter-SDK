@@ -1,0 +1,40 @@
+{
+  "name": "@xkit-yx/im-flutter-kit",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "main": "dist/index.esm.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/types/index.d.ts",
+  "scripts": {
+    "watch": "rollup -c -w --env DEV",
+    "dev": "rm -rf ./dist && rollup -c --environment DEV",
+    "build": "rm -rf ./dist && rollup -c --environment PROD"
+  },
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@types/node": "^12.12.7",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-formatter-friendly": "^7.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^2.0.0",
+    "rollup": "^2.39.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.31.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.8.2"
+  },
+  "dependencies": {
+    "yunxin-log-debug": "^1.1.4"
+  }
+}

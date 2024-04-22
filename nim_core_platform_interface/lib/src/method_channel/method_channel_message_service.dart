@@ -299,6 +299,18 @@ class MethodChannelMessageService extends MessageServicePlatform {
         MessageServicePlatform.instance.onStickTopSessionUpdate
             .add(sessionInfo);
         break;
+      case 'onMessagesDelete':
+        final data = arguments["messageList"] as List?;
+        if (data != null) {
+          final list = data.whereType<Map>().map((e) {
+            return NIMMessage.fromMap(Map<String, dynamic>.from(e));
+          }).toList();
+          MessageServicePlatform.instance.onMessagesDelete.add(list);
+        }
+        break;
+      case 'allMessagesRead':
+        MessageServicePlatform.instance.allMessagesRead.add(null);
+        break;
       default:
         throw UnimplementedError('$method has not been implemented');
     }
@@ -1153,5 +1165,33 @@ class MethodChannelMessageService extends MessageServicePlatform {
         await invokeMethod("getMessagesDynamically", arguments: param.toMap()),
         convert: (map) => GetMessagesDynamicallyResult.fromMap(
             Map<String, dynamic>.from(map["result"] as Map)));
+  }
+
+  @override
+  Future<NIMResult<String>> convertMessageToJson(NIMMessage message) async {
+    return NIMResult.fromMap(
+        await invokeMethod('convertMessageToJson', arguments: message.toMap()));
+  }
+
+  @override
+  Future<NIMResult<NIMMessage>> convertJsonToMessage(String json) async {
+    return NIMResult.fromMap(
+        await invokeMethod('convertJsonToMessage',
+            arguments: {"messageJson": json}),
+        convert: (map) => NIMMessage.fromMap(map));
+  }
+
+  @override
+  Future<NIMResult<List<NIMMessage>>> pullHistoryById(
+      List<NIMMessageKey> msgKeyList, bool persist) async {
+    return NIMResult.fromMap(
+        await invokeMethod('pullHistoryById', arguments: {
+          "msgKeyList": msgKeyList.map((e) => e.toMap()).toList(),
+          "persist": persist
+        }), convert: (map) {
+      return (map['messageList'] as List?)
+          ?.map((e) => NIMMessage.fromMap(Map<String, dynamic>.from(e as Map)))
+          .toList();
+    });
   }
 }

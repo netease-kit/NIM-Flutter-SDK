@@ -11,6 +11,15 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
   NIMDisplayTitleForMessageNotifierProvider?
       _displayTitleForMessageNotifierProvider;
 
+  ///定制消息提醒（通知栏提醒）內容文案 主要在通知栏下拉后展现其通知内容：content=[nick:发来一条消息]
+  NIMMakeNotifyContentProvider? _makeNotifyContentProvider;
+
+  ///定制消息提醒（通知栏提醒）Ticker文案 主要在通知栏弹框提醒时的内容：ticker=[nick有新消息]
+  NIMMakeTickerProvider? _makeTickerProvider;
+
+  ///定制消息撤回提醒文案
+  NIMMakeRevokeMsgTipProvider? _makeRevokeMsgTipProvider;
+
   @override
   Future<NIMResult<void>> initialize(NIMSDKOptions options,
       [Map<String, dynamic>? extras]) async {
@@ -21,6 +30,9 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
           options.avatarForMessageNotifierProvider;
       this._displayTitleForMessageNotifierProvider =
           options.displayTitleForMessageNotifierProvider;
+      this._makeNotifyContentProvider = options.makeNotifyContentProvider;
+      this._makeTickerProvider = options.makeTickerProvider;
+      this._makeRevokeMsgTipProvider = options.makeRevokeMsgTipProvider;
     }
     return NIMResult.fromMap(
       await invokeMethod(
@@ -48,9 +60,54 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
         return onGetAvatarForMessageNotifier(arguments);
       case 'onGetDisplayTitleForMessageNotifier':
         return onGetDisplayTitleForMessageNotifier(arguments);
+      case 'onMakeNotifyContent':
+        return onMakeNotifyContent(arguments);
+      case 'onMakeTicker':
+        return onMakeTicker(arguments);
+      case 'onMakeRevokeMsgTip':
+        return onMakeRevokeMsgTip(arguments);
       default:
         throw UnimplementedError('$method has not been implemented');
     }
+  }
+
+  ///定制消息提醒
+  Future<String?> onMakeNotifyContent(arguments) async {
+    if (_makeNotifyContentProvider == null) {
+      return Future.value(null);
+    }
+    final nick = arguments['nick'] as String?;
+    final messageMap = arguments['message'] as Map?;
+    final message =
+        messageMap != null ? NIMMessage.fromMap(messageMap.cast()) : null;
+    final result = await _makeNotifyContentProvider!(nick, message);
+    return result;
+  }
+
+  ///定制消息提醒Ticker文案
+  Future<String?> onMakeTicker(arguments) async {
+    if (_makeTickerProvider == null) {
+      return Future.value(null);
+    }
+    final nick = arguments['nick'] as String?;
+    final messageMap = arguments['message'] as Map?;
+    final message =
+        messageMap != null ? NIMMessage.fromMap(messageMap.cast()) : null;
+    final result = await _makeTickerProvider!(nick, message);
+    return result;
+  }
+
+  ///定制消息撤回提醒文案
+  Future<String?> onMakeRevokeMsgTip(arguments) async {
+    if (_makeRevokeMsgTipProvider == null) {
+      return Future.value(null);
+    }
+    final revokeAccount = arguments['revokeAccount'] as String?;
+    final messageMap = arguments['item'] as Map?;
+    final message =
+        messageMap != null ? NIMMessage.fromMap(messageMap.cast()) : null;
+    final result = await _makeRevokeMsgTipProvider!(revokeAccount, message);
+    return result;
   }
 
   Future<String?> onGetDisplayNameForMessageNotifier(arguments) async {

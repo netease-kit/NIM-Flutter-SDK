@@ -107,6 +107,7 @@ extension NIMMessagePinItem {
       jsonObject["messageServerId"] = Int(messageServerID)
       jsonObject["messageUuid"] = messageId
       jsonObject["messageId"] = messageId
+      jsonObject["messageTime"] = Int(messageTime * 1000)
       return jsonObject
     }
     return nil

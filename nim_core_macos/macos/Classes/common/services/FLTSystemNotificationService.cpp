@@ -420,7 +420,7 @@ void FLTSystemNotificationService::sendCustomNotification(
 
   std::string receiver_id = "";
   nim::NIMSysMsgType type = nim::kNIMSysMsgTypeCustomP2PMsg;
-  std::string client_msg_id;
+  std::string client_msg_id = nim::Tool::GetUuid();
   std::string content;
   nim::SysMessageSetting msg_setting;
   int64_t timetag = 0;
@@ -443,14 +443,20 @@ void FLTSystemNotificationService::sendCustomNotification(
     }
 
     if (iter2->first == flutter::EncodableValue("sessionId")) {
-      client_msg_id =
+      receiver_id =
           std::get<std::string>(iter2->second);  // 不确定字段含义是否一致
     } else if (iter2->first == flutter::EncodableValue("sessionType")) {
-      // 不支持
+      std::string session_type = std::get<std::string>(iter2->second);
+      if (session_type == "p2p") {
+        type = nim::kNIMSysMsgTypeCustomP2PMsg;
+      } else if (session_type == "team") {
+        type = nim::kNIMSysMsgTypeCustomTeamMsg;
+      }
+      // 发送消息时不需要fromAccount
     } else if (iter2->first == flutter::EncodableValue("fromAccount")) {
-      receiver_id = std::get<std::string>(iter2->second);
+      // receiver_id = std::get<std::string>(iter2->second);
     } else if (iter2->first == flutter::EncodableValue("time")) {
-      timetag = std::get<int>(iter2->second);
+      timetag = std::get<int64_t>(iter2->second);
     } else if (iter2->first == flutter::EncodableValue("content")) {
       content = std::get<std::string>(iter2->second);
     } else if (iter2->first ==
