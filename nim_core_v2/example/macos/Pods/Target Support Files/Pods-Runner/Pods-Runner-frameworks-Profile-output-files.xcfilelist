@@ -1,0 +1,9 @@
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libne-alog.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/alog_macos.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/device_info_plus.framework
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libh_available.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim.10.3.0.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim_chatroom.10.3.0.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libnim_chatroom.dylib
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/path_provider_foundation.framework

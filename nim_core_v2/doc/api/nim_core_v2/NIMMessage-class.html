@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the NIMMessage class from the nim_core_v2 library, for the Dart programming language.">
+  <title>NIMMessage class - nim_core_v2 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li class="self-crumb">NIMMessage class</li>
+  </ol>
+  <div class="self-name">NIMMessage</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="nim_core_v2&#47;nim_core_v2-library-sidebar.html"
+    data-below-sidebar="nim_core_v2&#47;NIMMessage-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">NIMMessage</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>消息</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark clazz-relationships">
+      <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+        <li><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></li>
+      <li>NIMMessage</li>
+    </ul>
+  </dd>
+
+        
+        
+
+
+
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/json_annotation/4.9.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(explicitToJson: true)</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="NIMMessage" class="callable">
+          <span class="name"><a href="../nim_core_v2/NIMMessage/NIMMessage.html">NIMMessage</a></span><span class="signature">(<span class="parameter" id="-param-isSelf">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">isSelf</span>, </span><span class="parameter" id="-param-attachmentUploadState"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAttachmentUploadState.html">NIMMessageAttachmentUploadState</a>?</span> <span class="parameter-name">attachmentUploadState</span>, </span><span class="parameter" id="-param-sendingState"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageSendingState.html">NIMMessageSendingState</a>?</span> <span class="parameter-name">sendingState</span>, </span><span class="parameter" id="-param-messageType"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageType.html">NIMMessageType</a>?</span> <span class="parameter-name">messageType</span>, </span><span class="parameter" id="-param-subType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">subType</span>, </span><span class="parameter" id="-param-text"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">text</span>, </span><span class="parameter" id="-param-attachment"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAttachment-class.html">NIMMessageAttachment</a>?</span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="-param-localExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">localExtension</span>, </span><span class="parameter" id="-param-callbackExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">callbackExtension</span>, </span><span class="parameter" id="-param-messageConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageConfig-class.html">NIMMessageConfig</a>?</span> <span class="parameter-name">messageConfig</span>, </span><span class="parameter" id="-param-pushConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessagePushConfig-class.html">NIMMessagePushConfig</a>?</span> <span class="parameter-name">pushConfig</span>, </span><span class="parameter" id="-param-routeConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageRouteConfig-class.html">NIMMessageRouteConfig</a>?</span> <span class="parameter-name">routeConfig</span>, </span><span class="parameter" id="-param-antispamConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAntispamConfig-class.html">NIMMessageAntispamConfig</a>?</span> <span class="parameter-name">antispamConfig</span>, </span><span class="parameter" id="-param-robotConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageRobotConfig-class.html">NIMMessageRobotConfig</a>?</span> <span class="parameter-name">robotConfig</span>, </span><span class="parameter" id="-param-threadRoot"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a>?</span> <span class="parameter-name">threadRoot</span>, </span><span class="parameter" id="-param-threadReply"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a>?</span> <span class="parameter-name">threadReply</span>, </span><span class="parameter" id="-param-aiConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAIConfig-class.html">NIMMessageAIConfig</a>?</span> <span class="parameter-name">aiConfig</span>, </span><span class="parameter" id="-param-messageStatus"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageStatus-class.html">NIMMessageStatus</a>?</span> <span class="parameter-name">messageStatus</span>}</span>)</span>
+        </dt>
+        <dd>
+          
+        </dd>
+        <dt id="NIMMessage.fromJson" class="callable">
+          <span class="name"><a href="../nim_core_v2/NIMMessage/NIMMessage.fromJson.html">NIMMessage.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-map"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">map</span></span>)</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="aiConfig" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/aiConfig.html">aiConfig</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageAIConfig-class.html">NIMMessageAIConfig</a>?</span>
+  
+
+</dt>
+<dd>
+  AI数字人相关信息
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="antispamConfig" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/antispamConfig.html">antispamConfig</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageAntispamConfig-class.html">NIMMessageAntispamConfig</a>?</span>
+  
+
+</dt>
+<dd>
+  反垃圾相关
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="attachment" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/attachment.html">attachment</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageAttachment-class.html">NIMMessageAttachment</a>?</span>
+  
+
+</dt>
+<dd>
+  附件
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="attachmentUploadState" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/attachmentUploadState.html">attachmentUploadState</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageAttachmentUploadState.html">NIMMessageAttachmentUploadState</a>?</span>
+  
+
+</dt>
+<dd>
+  附件上传状态
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="callbackExtension" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/callbackExtension.html">callbackExtension</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  第三方回调扩展字段， 透传字段
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="conversationId" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/conversationId.html">conversationId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  会话 ID
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="conversationType" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/conversationType.html">conversationType</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMConversationType.html">NIMConversationType</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  会话类型
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="createTime" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/createTime.html">createTime</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  消息时间
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="isSelf" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/isSelf.html">isSelf</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  
+
+</dt>
+<dd>
+  消息发送者是否是自己
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="localExtension" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/localExtension.html">localExtension</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  客户端本地扩展信息
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="messageClientId" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/messageClientId.html">messageClientId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  客户端消息ID
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="messageConfig" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/messageConfig.html">messageConfig</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/NIMMessageConfig-class.html">NIMMessageConfig</a>?</span>
+  
+
+</dt>
+<dd>
+  消息相关配置，具体参见每一个字段定义
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="messageServerId" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/messageServerId.html">messageServerId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  服务器消息ID
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="messageStatus" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/messageStatus.html">messageStatus</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageStatus-class.html">NIMMessageStatus</a>?</span>
+  
+
+</dt>
+<dd>
+  消息状态相关
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="messageType" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/messageType.html">messageType</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageType.html">NIMMessageType</a>?</span>
+  
+
+</dt>
+<dd>
+  类型
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="pushConfig" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/pushConfig.html">pushConfig</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/NIMMessagePushConfig-class.html">NIMMessagePushConfig</a>?</span>
+  
+
+</dt>
+<dd>
+  推送设置
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="receiverId" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/receiverId.html">receiverId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  接收者账号
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="robotConfig" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/robotConfig.html">robotConfig</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageRobotConfig-class.html">NIMMessageRobotConfig</a>?</span>
+  
+
+</dt>
+<dd>
+  机器人相关配置
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="routeConfig" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/routeConfig.html">routeConfig</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageRouteConfig-class.html">NIMMessageRouteConfig</a>?</span>
+  
+
+</dt>
+<dd>
+  路由抄送相关配置
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="senderId" class="property inherited">
+  <span class="name"><a href="../nim_core_v2/NIMMessageRefer/senderId.html">senderId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  发送者账号
+  <div class="features"><span class="feature">getter/setter pair</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="sendingState" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/sendingState.html">sendingState</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageSendingState.html">NIMMessageSendingState</a>?</span>
+  
+
+</dt>
+<dd>
+  消息发送状态 可以主动查询 也可以根据回调监听来确认
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="serverExtension" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/serverExtension.html">serverExtension</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  服务端扩展信息，必须是Json 字符串，要不然会解析失败。
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="subType" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/subType.html">subType</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  子类型
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="text" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/text.html">text</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  文本
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="threadReply" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/threadReply.html">threadReply</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a>?</span>
+  
+
+</dt>
+<dd>
+  回复消息引用
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="threadRoot" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/threadRoot.html">threadRoot</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a>?</span>
+  
+
+</dt>
+<dd>
+  Thread消息引用
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toJson" class="callable">
+  <span class="name"><a href="../nim_core_v2/NIMMessage/toJson.html">toJson</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li class="self-crumb">NIMMessage class</li>
+</ol>
+
+
+    <h5>nim_core_v2 library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core_v2
+      10.3.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

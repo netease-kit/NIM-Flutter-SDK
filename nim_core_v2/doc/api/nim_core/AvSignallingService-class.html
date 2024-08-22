@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the AvSignallingService class from the nim_core library, for the Dart programming language.">
+  <title>AvSignallingService class - nim_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">AvSignallingService class</li>
+  </ol>
+  <div class="self-name">AvSignallingService</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="nim_core&#47;nim_core-library-sidebar.html"
+      data-below-sidebar="nim_core&#47;AvSignallingService-class-sidebar.html">
+      <div>
+<h1><span class="kind-class">AvSignallingService</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>信令服务类
+目前仅支持iOS和Android平台</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="AvSignallingService" class="callable">
+          <span class="name"><a href="../nim_core/AvSignallingService/AvSignallingService.html">AvSignallingService</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="offlineNotification" class="property">
+  <span class="name"><a href="../nim_core/AvSignallingService/offlineNotification.html">offlineNotification</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelCommonEvent-class.html">ChannelCommonEvent</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  离线通知事件观察者，在用户登录后sdk 会去服务器同步用户离线期间发生的各种通知，并以列表的形式返回。
+列表的排序方式为时间递增排序。
+注意：登录后第一次注册此回调时，如果sdk已经获取到了相应的离线通知列表，会立即回调一次（仅此一次）。
+可以根据事件类型获取对象中的特殊属性
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onlineNotification" class="property">
+  <span class="name"><a href="../nim_core/AvSignallingService/onlineNotification.html">onlineNotification</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelCommonEvent-class.html">ChannelCommonEvent</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  在线通知事件回调
+回调返回为<code>ChannelCommonEvent</code>的对象
+可以根据事件类型获取对象中的特殊属性
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMemberUpdateNotification" class="property">
+  <span class="name"><a href="../nim_core/AvSignallingService/onMemberUpdateNotification.html">onMemberUpdateNotification</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/SyncChannelEvent-class.html">SyncChannelEvent</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  频道成员更新事件回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="otherClientInviteAckNotification" class="property">
+  <span class="name"><a href="../nim_core/AvSignallingService/otherClientInviteAckNotification.html">otherClientInviteAckNotification</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelCommonEvent-class.html">ChannelCommonEvent</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  其他端响应（接收/拒绝）邀请事件回调，当其他端响应了邀请时触发
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="syncChannelListNotification" class="property">
+  <span class="name"><a href="../nim_core/AvSignallingService/syncChannelListNotification.html">syncChannelListNotification</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/SyncChannelEvent-class.html">SyncChannelEvent</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  同步未退出频道列表事件回调 ，在用户登录后sdk会去服务器获取当前还未退出的频道列表 。
+注意：登录后第一次注册此回调时，如果sdk已经获取到了相应的频道列表，会立即回调一次（仅此一次）。
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="acceptInvite" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/acceptInvite.html">acceptInvite</a></span><span class="signature">(<wbr><span class="parameter" id="acceptInvite-param-inviteParam"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/InviteParam-class.html">InviteParam</a></span> <span class="parameter-name">inviteParam</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  接受对方邀请，但并不代表加入了频道
+错误码如下：
+10201：已经成功接受邀请但是对方不在线（推送可达，但是离线）
+10404：频道不存在
+10408：邀请不存在或已过期
+10409：邀请已经拒绝
+10410：邀请已经接受
+<code>paramBuilder</code>
+  
+
+</dd>
+
+        <dt id="call" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/call.html">call</a></span><span class="signature">(<wbr><span class="parameter" id="call-param-callParam"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/CallParam-class.html">CallParam</a></span> <span class="parameter-name">callParam</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelFullInfo-class.html">ChannelFullInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  直接呼叫 ， 用于用户新开一个频道并邀请对方加入频道。该接口为组合接口，等同于用户先创建频道，然后加入频道并邀请对方。
+错误码如下：
+10201:已经成功发出邀请但是对方不在线（推送可达，但是离线）
+10202:已经成功发出邀请但是对方推送不可达
+10405:频道已存在
+<code>callParamBuilder</code>
+  
+
+</dd>
+
+        <dt id="cancelInvite" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/cancelInvite.html">cancelInvite</a></span><span class="signature">(<wbr><span class="parameter" id="cancelInvite-param-inviteParam"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/InviteParam-class.html">InviteParam</a></span> <span class="parameter-name">inviteParam</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  取消邀请
+错误码如下：
+10404：频道不存在
+10408：邀请不存在或已过期 （过期时间2min）
+10409：邀请已经拒绝
+10410：邀请已经接受
+<code>inviteParam</code>
+  
+
+</dd>
+
+        <dt id="closeChannel" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/closeChannel.html">closeChannel</a></span><span class="signature">(<wbr><span class="parameter" id="closeChannel-param-channelId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="closeChannel-param-offlineEnabled"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">offlineEnabled</span>, </span><span class="parameter" id="closeChannel-param-customInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customInfo</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  关闭频道
+错误码如下：
+10406：不在频道内
+  
+
+</dd>
+
+        <dt id="createChannel" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/createChannel.html">createChannel</a></span><span class="signature">(<wbr><span class="parameter" id="createChannel-param-type">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelType.html">ChannelType</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="createChannel-param-channelName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">channelName</span>, </span><span class="parameter" id="createChannel-param-channelExt"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">channelExt</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelBaseInfo-class.html">ChannelBaseInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  创建频道
+同一时刻频道名互斥，不能重复创建，但如果频道名缺省，服务器会自动分配频道id。
+错误码如下：
+10405：频道已存在
+  
+
+</dd>
+
+        <dt id="invite" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/invite.html">invite</a></span><span class="signature">(<wbr><span class="parameter" id="invite-param-inviteParam"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/InviteParam-class.html">InviteParam</a></span> <span class="parameter-name">inviteParam</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  邀请他人加入频道
+该接口用于邀请对方加入频道，邀请者必须是创建者或者是频道中成员。如果需要对离线成员邀请，
+可以打开离线邀请开关并填写推送信息，被邀请者上线后通过离线通知接收到该邀请。
+错误码如下：
+10201：已经成功发出邀请但是对方不在线（推送可达，但是离线）
+10202：已经成功发出邀请但是对方推送不可达
+10404：频道不存在
+10406：自己不在频道内（仅对于普通用户，频道创建者不在频道内也可以邀请别人）
+10407：对方已经频道内
+10419：频道人数超限
+<code>inviteParam</code>
+  
+
+</dd>
+
+        <dt id="joinChannel" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/joinChannel.html">joinChannel</a></span><span class="signature">(<wbr><span class="parameter" id="joinChannel-param-channelId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="joinChannel-param-selfUid"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">selfUid</span>, </span><span class="parameter" id="joinChannel-param-customInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customInfo</span>, </span><span class="parameter" id="joinChannel-param-offlineEnabled"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">offlineEnabled</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelFullInfo-class.html">ChannelFullInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  加入频道
+错误码如下：
+10407：已经频道内
+10417：uid冲突
+10419：频道人数超限,默认100，可通过APPID配置
+10420：自己的其他端已经在频道内
+  
+
+</dd>
+
+        <dt id="leaveChannel" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/leaveChannel.html">leaveChannel</a></span><span class="signature">(<wbr><span class="parameter" id="leaveChannel-param-channelId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="leaveChannel-param-offlineEnabled"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">offlineEnabled</span>, </span><span class="parameter" id="leaveChannel-param-customInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customInfo</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  离开频道
+错误码如下：
+10406：不在频道内
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="queryChannelInfo" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/queryChannelInfo.html">queryChannelInfo</a></span><span class="signature">(<wbr><span class="parameter" id="queryChannelInfo-param-channelName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelName</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/ChannelFullInfo-class.html">ChannelFullInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  根据channelName反查channelInfo
+10404:频道不存在
+<code>channelName</code>
+  
+
+</dd>
+
+        <dt id="rejectInvite" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/rejectInvite.html">rejectInvite</a></span><span class="signature">(<wbr><span class="parameter" id="rejectInvite-param-inviteParam"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/InviteParam-class.html">InviteParam</a></span> <span class="parameter-name">inviteParam</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  拒绝对方邀请
+错误码如下：
+10201：已经成功拒绝邀请但是对方不在线（推送可达，但是离线）
+10404：频道不存在
+10408：邀请不存在或已过期
+10409：邀请已经拒绝
+10410：邀请已经接受
+<code>paramBuilder</code>
+  
+
+</dd>
+
+        <dt id="sendControl" class="callable">
+  <span class="name"><a href="../nim_core/AvSignallingService/sendControl.html">sendControl</a></span><span class="signature">(<wbr><span class="parameter" id="sendControl-param-channelId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="sendControl-param-accountId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="sendControl-param-customInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customInfo</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  该接口用于在频道中透传一些自定义指令，协助频道管理。该接口允许非频道内成员调用，但接收者必须是频道内成员或创建者
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">AvSignallingService class</li>
+</ol>
+
+
+    <h5>nim_core library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core
+      1.7.7
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

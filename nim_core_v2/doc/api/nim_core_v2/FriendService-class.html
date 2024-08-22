@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the FriendService class from the nim_core_v2 library, for the Dart programming language.">
+  <title>FriendService class - nim_core_v2 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li class="self-crumb">FriendService class</li>
+  </ol>
+  <div class="self-name">FriendService</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="nim_core_v2&#47;nim_core_v2-library-sidebar.html"
+    data-below-sidebar="nim_core_v2&#47;FriendService-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">FriendService</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>好友服务</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/hawk_meta/0.0.1/hawk_meta/HawkEntryPoint-class.html">HawkEntryPoint</a>()</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="FriendService" class="callable">
+          <span class="name"><a href="../nim_core_v2/FriendService/FriendService.html">FriendService</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onFriendAddApplication" class="property">
+  <span class="name"><a href="../nim_core_v2/FriendService/onFriendAddApplication.html">onFriendAddApplication</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriendAddApplication-class.html">NIMFriendAddApplication</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  好友添加申请回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onFriendAdded" class="property">
+  <span class="name"><a href="../nim_core_v2/FriendService/onFriendAdded.html">onFriendAdded</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriend-class.html">NIMFriend</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  已添加好友
+触发条件， 本端直接添加好友，多端同步
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onFriendAddRejected" class="property">
+  <span class="name"><a href="../nim_core_v2/FriendService/onFriendAddRejected.html">onFriendAddRejected</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriendAddApplication-class.html">NIMFriendAddApplication</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  好友添加申请被拒绝回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onFriendDeleted" class="property">
+  <span class="name"><a href="../nim_core_v2/FriendService/onFriendDeleted.html">onFriendDeleted</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriendDeletion-class.html">NIMFriendDeletion</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  删除好友通知
+触发条件：本端删除好友，多端同步 ， 对方删除你（nimFriendDeletionTypeByFriend）
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onFriendInfoChanged" class="property">
+  <span class="name"><a href="../nim_core_v2/FriendService/onFriendInfoChanged.html">onFriendInfoChanged</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriend-class.html">NIMFriend</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  好友信息变更
+触发条件：本端修改好友信息，多端同步
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="acceptAddApplication" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/acceptAddApplication.html">acceptAddApplication</a></span><span class="signature">(<wbr><span class="parameter" id="acceptAddApplication-param-application"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendAddApplication-class.html">NIMFriendAddApplication</a></span> <span class="parameter-name">application</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  接受好友申请
+调用此方法后，会向对端发送一条系统通知。
+通知类型：FRIEND_ADD
+调用此接口后，本端SDK会触发：onFriendAdded
+  
+
+</dd>
+
+        <dt id="addFriend" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/addFriend.html">addFriend</a></span><span class="signature">(<wbr><span class="parameter" id="addFriend-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="addFriend-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendAddParams-class.html">NIMFriendAddParams</a>?</span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加好友
+调用此方法后，系统会向对端发送一条系统通知。
+通知类型：FRIEND_ADD
+调用此接口后：
+  
+
+</dd>
+
+        <dt id="checkFriend" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/checkFriend.html">checkFriend</a></span><span class="signature">(<wbr><span class="parameter" id="checkFriend-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  根据账号ID检查好友状态
+  
+
+</dd>
+
+        <dt id="deleteFriend" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/deleteFriend.html">deleteFriend</a></span><span class="signature">(<wbr><span class="parameter" id="deleteFriend-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="deleteFriend-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendDeleteParams-class.html">NIMFriendDeleteParams</a>?</span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除好友
+调用此方法后，系统会向对端发送一条系统通知。
+通知类型：FRIEND_DELETE
+调用此接口后，本端和对端SDK都会触发：onFriendDeleted
+  
+
+</dd>
+
+        <dt id="getAddApplicationList" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/getAddApplicationList.html">getAddApplicationList</a></span><span class="signature">(<wbr><span class="parameter" id="getAddApplicationList-param-option"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendAddApplicationQueryOption-class.html">NIMFriendAddApplicationQueryOption</a></span> <span class="parameter-name">option</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriendAddApplicationResult-class.html">NIMFriendAddApplicationResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取申请添加好友信息列表
+查询verifyType等于3的数据，从新到旧排序。
+  
+
+</dd>
+
+        <dt id="getAddApplicationUnreadCount" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/getAddApplicationUnreadCount.html">getAddApplicationUnreadCount</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取好友申请未读数量
+统计所有未处理且未读的申请数量。
+  
+
+</dd>
+
+        <dt id="getFriendByIds" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/getFriendByIds.html">getFriendByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getFriendByIds-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriend-class.html">NIMFriend</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  根据账号ID获取好友信息
+只返回存在的好友信息，返回顺序与输入顺序一致。
+  
+
+</dd>
+
+        <dt id="getFriendList" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/getFriendList.html">getFriendList</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriend-class.html">NIMFriend</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取好友列表
+本地查询，登录后开始同步好友信息，建议同步完成后拉取一次。
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="rejectAddApplication" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/rejectAddApplication.html">rejectAddApplication</a></span><span class="signature">(<wbr><span class="parameter" id="rejectAddApplication-param-application"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendAddApplication-class.html">NIMFriendAddApplication</a></span> <span class="parameter-name">application</span>, </span><span class="parameter" id="rejectAddApplication-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">postscript</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  拒绝添加好友申请
+调用此方法后，会向对端发送一条系统通知。
+通知类型：FRIEND_ADD
+调用此接口后，对端SDK会触发：onFriendAddRejected
+  
+
+</dd>
+
+        <dt id="searchFriendByOption" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/searchFriendByOption.html">searchFriendByOption</a></span><span class="signature">(<wbr><span class="parameter" id="searchFriendByOption-param-friendSearchOption"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendSearchOption-class.html">NIMFriendSearchOption</a></span> <span class="parameter-name">friendSearchOption</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMFriend-class.html">NIMFriend</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  根据关键字搜索好友信息
+  
+
+</dd>
+
+        <dt id="setAddApplicationRead" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/setAddApplicationRead.html">setAddApplicationRead</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置好友申请已读
+调用此方法后，所有历史未读数据将标记为已读。
+  
+
+</dd>
+
+        <dt id="setFriendInfo" class="callable">
+  <span class="name"><a href="../nim_core_v2/FriendService/setFriendInfo.html">setFriendInfo</a></span><span class="signature">(<wbr><span class="parameter" id="setFriendInfo-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="setFriendInfo-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMFriendSetParams-class.html">NIMFriendSetParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置好友信息
+调用此接口后，本端SDK会触发：onFriendsInfoChanged
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li class="self-crumb">FriendService class</li>
+</ol>
+
+
+    <h5>nim_core_v2 library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core_v2
+      10.3.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

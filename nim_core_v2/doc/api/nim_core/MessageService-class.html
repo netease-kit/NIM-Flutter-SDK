@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the MessageService class from the nim_core library, for the Dart programming language.">
+  <title>MessageService class - nim_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">MessageService class</li>
+  </ol>
+  <div class="self-name">MessageService</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="nim_core&#47;nim_core-library-sidebar.html"
+      data-below-sidebar="nim_core&#47;MessageService-class-sidebar.html">
+      <div>
+<h1><span class="kind-class">MessageService</span> class 
+ 
+</h1></div>
+
+    
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="MessageService" class="callable">
+          <span class="name"><a href="../nim_core/MessageService/MessageService.html">MessageService</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="allMessagesReadForIOS" class="property">
+  <span class="name"><a href="../nim_core/MessageService/allMessagesReadForIOS.html">allMessagesReadForIOS</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span> 
+
+</dt>
+<dd>
+  所有消息都已读的回调，在调用<a href="../nim_core/MessageService/clearAllSessionUnreadCount.html">MessageService.clearAllSessionUnreadCount</a>后触发
+仅iOS端有效
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onAttachmentProgress" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onAttachmentProgress.html">onAttachmentProgress</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMAttachmentProgress-class.html">NIMAttachmentProgress</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息附件上传进度
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onBroadcastMessage" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onBroadcastMessage.html">onBroadcastMessage</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMBroadcastMessage-class.html">NIMBroadcastMessage</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  广播消息接收
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessage" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMessage.html">onMessage</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息接收
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessagePinNotify" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMessagePinNotify.html">onMessagePinNotify</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessagePinEvent-class.html">NIMMessagePinEvent</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息PIN事件通知
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessageReceipt" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMessageReceipt.html">onMessageReceipt</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessageReceipt-class.html">NIMMessageReceipt</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息已读回执
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessageRevoked" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMessageRevoked.html">onMessageRevoked</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMRevokeMessage-class.html">NIMRevokeMessage</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息撤回内容
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessagesDelete" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMessagesDelete.html">onMessagesDelete</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息删除的同步接口回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessageStatus" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMessageStatus.html">onMessageStatus</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  消息状态变化
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMySessionUpdate" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onMySessionUpdate.html">onMySessionUpdate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/RecentSession-class.html">RecentSession</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  会话服务-更新会话
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onQuickCommentAdd" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onQuickCommentAdd.html">onQuickCommentAdd</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMHandleQuickCommentOption-class.html">NIMHandleQuickCommentOption</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  增加一条快捷评论的同步回包
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onQuickCommentRemove" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onQuickCommentRemove.html">onQuickCommentRemove</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMHandleQuickCommentOption-class.html">NIMHandleQuickCommentOption</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  删除一条快捷评论的同步回包
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onSessionDelete" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onSessionDelete.html">onSessionDelete</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a>?</span>&gt;</span></span> 
+
+</dt>
+<dd>
+  最近会话删除
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onSessionUpdate" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onSessionUpdate.html">onSessionUpdate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  最近会话更新
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onStickTopSessionAdd" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onStickTopSessionAdd.html">onStickTopSessionAdd</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMStickTopSessionInfo-class.html">NIMStickTopSessionInfo</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  增加一条置顶会话的多端同步回包
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onStickTopSessionRemove" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onStickTopSessionRemove.html">onStickTopSessionRemove</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMStickTopSessionInfo-class.html">NIMStickTopSessionInfo</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  移除一条置顶会话的多端同步回包
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onStickTopSessionUpdate" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onStickTopSessionUpdate.html">onStickTopSessionUpdate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMStickTopSessionInfo-class.html">NIMStickTopSessionInfo</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  更新一条置顶会话的扩展字段的多端同步回包
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onSyncStickTopSession" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onSyncStickTopSession.html">onSyncStickTopSession</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMStickTopSessionInfo-class.html">NIMStickTopSessionInfo</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  同步置顶会话的多端同步回包
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onTeamMessageReceipt" class="property">
+  <span class="name"><a href="../nim_core/MessageService/onTeamMessageReceipt.html">onTeamMessageReceipt</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMessageReceipt-class.html">NIMTeamMessageReceipt</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  群消息已读回执
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="addCollect" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/addCollect.html">addCollect</a></span><span class="signature">(<wbr><span class="parameter" id="addCollect-param-type">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="addCollect-param-data"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">data</span>, </span><span class="parameter" id="addCollect-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">ext</span>, </span><span class="parameter" id="addCollect-param-uniqueId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">uniqueId</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCollectInfo-class.html">NIMCollectInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加一条收藏
+  
+
+</dd>
+
+        <dt id="addMessagePin" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/addMessagePin.html">addMessagePin</a></span><span class="signature">(<wbr><span class="parameter" id="addMessagePin-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="addMessagePin-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  PIN一条消息
+  
+
+</dd>
+
+        <dt id="addQuickComment" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/addQuickComment.html">addQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="addQuickComment-param-msg"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">msg</span>, </span><span class="parameter" id="addQuickComment-param-replyType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">replyType</span>, </span><span class="parameter" id="addQuickComment-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span>, </span><span class="parameter" id="addQuickComment-param-needPush"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needPush</span>, </span><span class="parameter" id="addQuickComment-param-needBadge"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needBadge</span>, </span><span class="parameter" id="addQuickComment-param-pushTitle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">pushTitle</span>, </span><span class="parameter" id="addQuickComment-param-pushContent"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">pushContent</span>, </span><span class="parameter" id="addQuickComment-param-pushPayload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> <span class="parameter-name">pushPayload</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  增加一条快捷评论
+  
+
+</dd>
+
+        <dt id="addStickTopSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/addStickTopSession.html">addStickTopSession</a></span><span class="signature">(<wbr><span class="parameter" id="addStickTopSession-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="addStickTopSession-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="addStickTopSession-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMStickTopSessionInfo-class.html">NIMStickTopSessionInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加一个置顶会话
+  
+
+</dd>
+
+        <dt id="cancelUploadAttachment" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/cancelUploadAttachment.html">cancelUploadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="cancelUploadAttachment-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  取消上传消息附件
+  
+
+</dd>
+
+        <dt id="checkLocalAntiSpam" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/checkLocalAntiSpam.html">checkLocalAntiSpam</a></span><span class="signature">(<wbr><span class="parameter" id="checkLocalAntiSpam-param-content"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">content</span>, </span><span class="parameter" id="checkLocalAntiSpam-param-replacement"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">replacement</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMLocalAntiSpamResult-class.html">NIMLocalAntiSpamResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  检验本地反垃圾词库，支持单聊、群聊和聊天室的文本消息反垃圾
+  
+
+</dd>
+
+        <dt id="clearAllSessionUnreadCount" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/clearAllSessionUnreadCount.html">clearAllSessionUnreadCount</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清空所有会话的未读计数
+  
+
+</dd>
+
+        <dt id="clearChattingHistory" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/clearChattingHistory.html">clearChattingHistory</a></span><span class="signature">(<wbr><span class="parameter" id="clearChattingHistory-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="clearChattingHistory-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="clearChattingHistory-param-ignore"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">ignore</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清除与指定用户的所有本地消息记录
+<code>account</code>用户账号
+<code>sessionType</code>会话类型
+<code>ignore</code> true: 本地不记录清除操作; false: 本地记录清除操作，默认false, web端无效
+如果为true则<a href="../nim_core/MessageService/pullMessageHistory.html">pullMessageHistory</a>接口参数persist为true时会重新保存到数据库
+不推荐设置成true
+  
+
+</dd>
+
+        <dt id="clearMsgDatabase" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/clearMsgDatabase.html">clearMsgDatabase</a></span><span class="signature">(<wbr><span class="parameter" id="clearMsgDatabase-param-clearRecent"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">clearRecent</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清空消息数据库的所有消息记录。 可选择是否要同时清空最近联系人列表数据库。
+若最近联系人列表也被清空，会触发<a href="../nim_core/MessageService/onSessionDelete.html">onSessionDelete</a>通知
+  
+
+</dd>
+
+        <dt id="clearServerHistory" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/clearServerHistory.html">clearServerHistory</a></span><span class="signature">(<wbr><span class="parameter" id="clearServerHistory-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="clearServerHistory-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="clearServerHistory-param-sync"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">sync</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除单会话云端历史消息
+  
+
+</dd>
+
+        <dt id="clearSessionUnreadCount" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/clearSessionUnreadCount.html">clearSessionUnreadCount</a></span><span class="signature">(<wbr><span class="parameter" id="clearSessionUnreadCount-param-sessionInfoList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionInfo-class.html">NIMSessionInfo</a></span>&gt;</span></span> <span class="parameter-name">sessionInfoList</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionInfo-class.html">NIMSessionInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清除未读数
+  
+
+</dd>
+
+        <dt id="createSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/createSession.html">createSession</a></span><span class="signature">(<wbr><span class="parameter" id="createSession-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="createSession-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="createSession-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">tag</span> = <span class="default-value">0</span>, </span><span class="parameter" id="createSession-param-time"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">time</span>, </span><span class="parameter" id="createSession-param-linkToLastMessage"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">linkToLastMessage</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  创建一条空的联系人会话，并保存到数据库中
+<br> <code>sessionId</code> - 会话id ，对方帐号或群组id。
+<br> <code>sessionType</code> - 会话类型
+<br> <code>tag</code> - 会话tag ， eg:置顶标签（UIKit中的实现： RECENT_TAG_STICKY） ，用户参照自己的tag 实现即可， 如不需要，传 0 即可
+<br> <code>time</code> - 会话时间 ，单位为ms。
+<br> <code>linkToLastMessage</code> - 是否放入最后一条消息的相关信息
+  
+
+</dd>
+
+        <dt id="deleteChattingHistory" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/deleteChattingHistory.html">deleteChattingHistory</a></span><span class="signature">(<wbr><span class="parameter" id="deleteChattingHistory-param-anchor"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">anchor</span>, </span><span class="parameter" id="deleteChattingHistory-param-ignore"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">ignore</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除一条消息记录
+  
+
+</dd>
+
+        <dt id="deleteChattingHistoryList" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/deleteChattingHistoryList.html">deleteChattingHistoryList</a></span><span class="signature">(<wbr><span class="parameter" id="deleteChattingHistoryList-param-msgList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">msgList</span>, </span><span class="parameter" id="deleteChattingHistoryList-param-ignore"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">ignore</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  指定多条消息进行本地删除
+  
+
+</dd>
+
+        <dt id="deleteMsgListSelf" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/deleteMsgListSelf.html">deleteMsgListSelf</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMsgListSelf-param-msgList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">msgList</span>, </span><span class="parameter" id="deleteMsgListSelf-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  单向删除多条云端历史消息
+  
+
+</dd>
+
+        <dt id="deleteMsgSelf" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/deleteMsgSelf.html">deleteMsgSelf</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMsgSelf-param-msg"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">msg</span>, </span><span class="parameter" id="deleteMsgSelf-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  单向删除单条云端历史消息
+  
+
+</dd>
+
+        <dt id="deleteMySession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/deleteMySession.html">deleteMySession</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMySession-param-sessionList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMySessionKey-class.html">NIMMySessionKey</a></span>&gt;</span></span> <span class="parameter-name">sessionList</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  【会话服务】删除会话
+  
+
+</dd>
+
+        <dt id="deleteSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/deleteSession.html">deleteSession</a></span><span class="signature">(<wbr><span class="parameter" id="deleteSession-param-sessionInfo">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionInfo-class.html">NIMSessionInfo</a></span> <span class="parameter-name">sessionInfo</span>, </span><span class="parameter" id="deleteSession-param-deleteType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionDeleteType.html">NIMSessionDeleteType</a></span> <span class="parameter-name">deleteType</span>, </span><span class="parameter" id="deleteSession-param-sendAck"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">sendAck</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除最近联系人记录。
+调用该接口后，会触发<a href="../nim_core/MessageService/onSessionDelete.html">MessageService.onSessionDelete</a>通知
+  
+
+</dd>
+
+        <dt id="downloadAttachment" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/downloadAttachment.html">downloadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="downloadAttachment-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="downloadAttachment-param-thumb"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">thumb</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  正常情况收到消息后附件会自动下载。如果下载失败，可调用该接口重新下载
+<code>message</code> 附件所在的消息, <code>thumb</code> 下载缩略图还是原文件， 为<code>true</code>时仅下载缩略图。 缩略图参数仅对图片和视频类消息有效
+  
+
+</dd>
+
+        <dt id="fetchTeamMessageReceiptDetail" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/fetchTeamMessageReceiptDetail.html">fetchTeamMessageReceiptDetail</a></span><span class="signature">(<wbr><span class="parameter" id="fetchTeamMessageReceiptDetail-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="fetchTeamMessageReceiptDetail-param-accountList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">accountList</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMessageAckInfo-class.html">NIMTeamMessageAckInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  (群消息发送方)远程查询单条群组消息在指定用户中的已读、未读账号列表
+  
+
+</dd>
+
+        <dt id="forwardMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/forwardMessage.html">forwardMessage</a></span><span class="signature">(<wbr><span class="parameter" id="forwardMessage-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="forwardMessage-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="forwardMessage-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  消息转发
+支持更新客户端数据库内的消息的客户端扩展字段。
+  
+
+</dd>
+
+        <dt id="getMessagesDynamically" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/getMessagesDynamically.html">getMessagesDynamically</a></span><span class="signature">(<wbr><span class="parameter" id="getMessagesDynamically-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/GetMessagesDynamicallyParam-class.html">GetMessagesDynamicallyParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/GetMessagesDynamicallyResult-class.html">GetMessagesDynamicallyResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  动态途径获取消息，默认从本地获取，动态能力需要开通功能，并在同步完成后生效
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="pullHistoryById" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/pullHistoryById.html">pullHistoryById</a></span><span class="signature">(<wbr><span class="parameter" id="pullHistoryById-param-msgKeyList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessageKey-class.html">NIMMessageKey</a></span>&gt;</span></span> <span class="parameter-name">msgKeyList</span>, </span><span class="parameter" id="pullHistoryById-param-persist"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">persist</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  根据消息关键信息批量查询服务端历史消息。
+<code>msgKeyList</code> 消息关键信息列表
+<code>persist</code> 查询的漫游消息是否同步到本地数据库。
+  
+
+</dd>
+
+        <dt id="pullMessageHistory" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/pullMessageHistory.html">pullMessageHistory</a></span><span class="signature">(<wbr><span class="parameter" id="pullMessageHistory-param-anchor"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">anchor</span>, </span><span class="parameter" id="pullMessageHistory-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="pullMessageHistory-param-persist"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">persist</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从服务器拉取消息历史记录，结果不存本地消息数据库。
+  
+
+</dd>
+
+        <dt id="pullMessageHistoryExType" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/pullMessageHistoryExType.html">pullMessageHistoryExType</a></span><span class="signature">(<wbr><span class="parameter" id="pullMessageHistoryExType-param-anchor"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">anchor</span>, </span><span class="parameter" id="pullMessageHistoryExType-param-toTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">toTime</span>, </span><span class="parameter" id="pullMessageHistoryExType-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="pullMessageHistoryExType-param-direction"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/QueryDirection.html">QueryDirection</a></span> <span class="parameter-name">direction</span>, </span><span class="parameter" id="pullMessageHistoryExType-param-messageTypeList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessageType.html">NIMMessageType</a></span>&gt;</span></span> <span class="parameter-name">messageTypeList</span>, </span><span class="parameter" id="pullMessageHistoryExType-param-persist"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">persist</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从服务器拉取消息历史记录，可以指定查询的消息类型，结果不存本地消息数据库。
+<code>anchor</code> 起始时间点的消息
+<code>toTime</code> – 结束时间点单位毫秒
+<code>limit</code> – 本次查询的消息条数上限(最多100条)
+<code>direction</code> – 查询方向，QUERY_OLD按结束时间点逆序查询，逆序排列；QUERY_NEW按起始时间点正序起查，正序排列
+<code>messageTypeList</code> – 消息类型，数组。
+<code>persist</code> – 通过该接口获取的漫游消息记录，要不要保存到本地消息数据库。
+  
+
+</dd>
+
+        <dt id="queryCollect" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryCollect.html">queryCollect</a></span><span class="signature">(<wbr><span class="parameter" id="queryCollect-param-anchor">{<span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCollectInfo-class.html">NIMCollectInfo</a>?</span> <span class="parameter-name">anchor</span>, </span><span class="parameter" id="queryCollect-param-toTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">toTime</span> = <span class="default-value">0</span>, </span><span class="parameter" id="queryCollect-param-type"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">type</span>, </span><span class="parameter" id="queryCollect-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span> = <span class="default-value">100</span>, </span><span class="parameter" id="queryCollect-param-direction"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/QueryDirection.html">QueryDirection</a></span> <span class="parameter-name">direction</span> = <span class="default-value">QueryDirection.QUERY_OLD</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCollectInfoQueryResult-class.html">NIMCollectInfoQueryResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从服务端分页查询收藏列表
+  
+
+</dd>
+
+        <dt id="queryLastMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryLastMessage.html">queryLastMessage</a></span><span class="signature">(<wbr><span class="parameter" id="queryLastMessage-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="queryLastMessage-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询最近一条消息
+  
+
+</dd>
+
+        <dt id="queryMessageList" class="callable">
+  <span class="name deprecated"><a class="deprecated" href="../nim_core/MessageService/queryMessageList.html">queryMessageList</a></span><span class="signature">(<wbr><span class="parameter" id="queryMessageList-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="queryMessageList-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="queryMessageList-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询消息
+  
+
+</dd>
+
+        <dt id="queryMessageListByUuid" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryMessageListByUuid.html">queryMessageListByUuid</a></span><span class="signature">(<wbr><span class="parameter" id="queryMessageListByUuid-param-uuids"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">uuids</span>, </span><span class="parameter" id="queryMessageListByUuid-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="queryMessageListByUuid-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  按消息uuid查询
+  
+
+</dd>
+
+        <dt id="queryMessageListEx" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryMessageListEx.html">queryMessageListEx</a></span><span class="signature">(<wbr><span class="parameter" id="queryMessageListEx-param-anchor"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">anchor</span>, </span><span class="parameter" id="queryMessageListEx-param-direction"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/QueryDirection.html">QueryDirection</a></span> <span class="parameter-name">direction</span>, </span><span class="parameter" id="queryMessageListEx-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询消息
+  
+
+</dd>
+
+        <dt id="queryMessagePinForSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryMessagePinForSession.html">queryMessagePinForSession</a></span><span class="signature">(<wbr><span class="parameter" id="queryMessagePinForSession-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="queryMessagePinForSession-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessagePin-class.html">NIMMessagePin</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询会话所有的 PIN
+  
+
+</dd>
+
+        <dt id="queryMySession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryMySession.html">queryMySession</a></span><span class="signature">(<wbr><span class="parameter" id="queryMySession-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="queryMySession-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/RecentSession-class.html">RecentSession</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  【会话服务】获取某一个会话
+  
+
+</dd>
+
+        <dt id="queryMySessionList" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryMySessionList.html">queryMySessionList</a></span><span class="signature">(<wbr><span class="parameter" id="queryMySessionList-param-minTimestamp"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">minTimestamp</span>, </span><span class="parameter" id="queryMySessionList-param-maxTimestamp"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">maxTimestamp</span>, </span><span class="parameter" id="queryMySessionList-param-needLastMsg"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">needLastMsg</span>, </span><span class="parameter" id="queryMySessionList-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="queryMySessionList-param-hasMore"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">hasMore</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/RecentSessionList-class.html">RecentSessionList</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  【会话服务】增量获取会话列表，增量+翻页
+  
+
+</dd>
+
+        <dt id="queryQuickComment" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryQuickComment.html">queryQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="queryQuickComment-param-msgList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">msgList</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMQuickCommentOptionWrapper-class.html">NIMQuickCommentOptionWrapper</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取快捷评论列表
+  
+
+</dd>
+
+        <dt id="queryReplyCountInThreadTalkBlock" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryReplyCountInThreadTalkBlock.html">queryReplyCountInThreadTalkBlock</a></span><span class="signature">(<wbr><span class="parameter" id="queryReplyCountInThreadTalkBlock-param-msg"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">msg</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  本地获取某thread消息的回复消息的条数，thread消息不被计入总数
+  
+
+</dd>
+
+        <dt id="queryRoamMsgHasMoreTime" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryRoamMsgHasMoreTime.html">queryRoamMsgHasMoreTime</a></span><span class="signature">(<wbr><span class="parameter" id="queryRoamMsgHasMoreTime-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="queryRoamMsgHasMoreTime-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取是否有更多漫游消息标记的时间戳，如果没有，回调0
+  
+
+</dd>
+
+        <dt id="querySession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/querySession.html">querySession</a></span><span class="signature">(<wbr><span class="parameter" id="querySession-param-sessionInfo"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionInfo-class.html">NIMSessionInfo</a></span> <span class="parameter-name">sessionInfo</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询最近联系人会话列表数据(同步接口)，可以设置limit， 防止本地会话过多时，导致第一次加载慢
+<code>sessionInfo</code> - 会话信息
+  
+
+</dd>
+
+        <dt id="querySessionList" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/querySessionList.html">querySessionList</a></span><span class="signature">(<wbr><span class="parameter" id="querySessionList-param-limit">[<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">limit</span>]</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取最近会话列表
+  
+
+</dd>
+
+        <dt id="querySessionListFiltered" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/querySessionListFiltered.html">querySessionListFiltered</a></span><span class="signature">(<wbr><span class="parameter" id="querySessionListFiltered-param-filterMessageTypeList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessageType.html">NIMMessageType</a></span>&gt;</span></span> <span class="parameter-name">filterMessageTypeList</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  当希望返回的会话的最近一条消息不是某一类消息时，可以使用以下过滤接口。
+  
+
+</dd>
+
+        <dt id="queryStickTopSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryStickTopSession.html">queryStickTopSession</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMStickTopSessionInfo-class.html">NIMStickTopSessionInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取置顶会话信息的列表
+  
+
+</dd>
+
+        <dt id="queryTeamMessageReceiptDetail" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryTeamMessageReceiptDetail.html">queryTeamMessageReceiptDetail</a></span><span class="signature">(<wbr><span class="parameter" id="queryTeamMessageReceiptDetail-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="queryTeamMessageReceiptDetail-param-accountList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">accountList</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMessageAckInfo-class.html">NIMTeamMessageAckInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从本地数据库查询单条群组消息已读、未读账号列表（同步接口）
+/// 注意！！！：这里获取的数据通常比离线前的列表信息更陈旧
+  
+
+</dd>
+
+        <dt id="queryThreadTalkHistory" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryThreadTalkHistory.html">queryThreadTalkHistory</a></span><span class="signature">(<wbr><span class="parameter" id="queryThreadTalkHistory-param-anchor">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">anchor</span>, </span><span class="parameter" id="queryThreadTalkHistory-param-fromTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fromTime</span>, </span><span class="parameter" id="queryThreadTalkHistory-param-toTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">toTime</span>, </span><span class="parameter" id="queryThreadTalkHistory-param-limit"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="queryThreadTalkHistory-param-direction"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/QueryDirection.html">QueryDirection</a></span> <span class="parameter-name">direction</span>, </span><span class="parameter" id="queryThreadTalkHistory-param-persist"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">persist</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMThreadTalkHistory-class.html">NIMThreadTalkHistory</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询thread聊天云端历史（支持p2p、群、超大群）
+  
+
+</dd>
+
+        <dt id="queryTotalUnreadCount" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/queryTotalUnreadCount.html">queryTotalUnreadCount</a></span><span class="signature">(<wbr><span class="parameter" id="queryTotalUnreadCount-param-queryType">{<span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMUnreadCountQueryType.html">NIMUnreadCountQueryType</a></span> <span class="parameter-name">queryType</span> = <span class="default-value">NIMUnreadCountQueryType.all</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取未读数总数
+  
+
+</dd>
+
+        <dt id="refreshTeamMessageReceipt" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/refreshTeamMessageReceipt.html">refreshTeamMessageReceipt</a></span><span class="signature">(<wbr><span class="parameter" id="refreshTeamMessageReceipt-param-messageList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messageList</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  (群消息发送方)批量刷新群组消息已读、未读的数量信息，没有异步回调
+如果已读、未读数有变更，请监听 <a href="../nim_core/MessageService/onTeamMessageReceipt.html">onTeamMessageReceipt</a> 来批量通知，没有变更则不会通知
+  
+
+</dd>
+
+        <dt id="removeCollect" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/removeCollect.html">removeCollect</a></span><span class="signature">(<wbr><span class="parameter" id="removeCollect-param-collects"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCollectInfo-class.html">NIMCollectInfo</a></span>&gt;</span></span> <span class="parameter-name">collects</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  批量移除收藏
+  
+
+</dd>
+
+        <dt id="removeMessagePin" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/removeMessagePin.html">removeMessagePin</a></span><span class="signature">(<wbr><span class="parameter" id="removeMessagePin-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="removeMessagePin-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除一条消息的PIN
+  
+
+</dd>
+
+        <dt id="removeQuickComment" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/removeQuickComment.html">removeQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="removeQuickComment-param-msg"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">msg</span>, </span><span class="parameter" id="removeQuickComment-param-replyType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">replyType</span>, </span><span class="parameter" id="removeQuickComment-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span>, </span><span class="parameter" id="removeQuickComment-param-needPush"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needPush</span>, </span><span class="parameter" id="removeQuickComment-param-needBadge"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needBadge</span>, </span><span class="parameter" id="removeQuickComment-param-pushTitle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">pushTitle</span>, </span><span class="parameter" id="removeQuickComment-param-pushContent"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">pushContent</span>, </span><span class="parameter" id="removeQuickComment-param-pushPayload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> <span class="parameter-name">pushPayload</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除一条快捷评论
+  
+
+</dd>
+
+        <dt id="removeStickTopSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/removeStickTopSession.html">removeStickTopSession</a></span><span class="signature">(<wbr><span class="parameter" id="removeStickTopSession-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="removeStickTopSession-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="removeStickTopSession-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除一个置顶会话
+  
+
+</dd>
+
+        <dt id="replyMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/replyMessage.html">replyMessage</a></span><span class="signature">(<wbr><span class="parameter" id="replyMessage-param-msg">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">msg</span>, </span><span class="parameter" id="replyMessage-param-replyMsg"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">replyMsg</span>, </span><span class="parameter" id="replyMessage-param-resend"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  回复消息。<br>
+<code>msg</code>    待发送的消息体，由{@link MessageBuilder}构造
+ <code>replyMsg</code> 被回复的消息
+ <code>resend</code> 如果是发送失败后重发，标记为true，否则填false
+  
+
+</dd>
+
+        <dt id="revokeMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/revokeMessage.html">revokeMessage</a></span><span class="signature">(<wbr><span class="parameter" id="revokeMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="revokeMessage-param-customApnsText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customApnsText</span>, </span><span class="parameter" id="revokeMessage-param-pushPayload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span>?</span> <span class="parameter-name">pushPayload</span>, </span><span class="parameter" id="revokeMessage-param-shouldNotifyBeCount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldNotifyBeCount</span>, </span><span class="parameter" id="revokeMessage-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">postscript</span>, </span><span class="parameter" id="revokeMessage-param-attach"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">attach</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  撤回消息
+<code>message</code> - 要撤回的消息
+<code>customApnsText</code> – 第三方透传消息推送文本，不填则不推送
+<code>pushPayload</code> – 第三方自定义的推送属性，限制json类型，长度2048
+<code>shouldNotifyBeCount</code> – 撤回通知是否更新未读数
+<code>postscript</code> – 附言
+<code>attach</code> – 扩展字段
+  
+
+</dd>
+
+        <dt id="saveMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/saveMessage.html">saveMessage</a></span><span class="signature">(<wbr><span class="parameter" id="saveMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="saveMessage-param-fromAccount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">fromAccount</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  保存消息
+  
+
+</dd>
+
+        <dt id="saveMessageToLocalEx" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/saveMessageToLocalEx.html">saveMessageToLocalEx</a></span><span class="signature">(<wbr><span class="parameter" id="saveMessageToLocalEx-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="saveMessageToLocalEx-param-time"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">time</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  保存消息到本地
+  
+
+</dd>
+
+        <dt id="searchAllMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/searchAllMessage.html">searchAllMessage</a></span><span class="signature">(<wbr><span class="parameter" id="searchAllMessage-param-searchOption"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageSearchOption-class.html">MessageSearchOption</a></span> <span class="parameter-name">searchOption</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  全局检索(新)
+  
+
+</dd>
+
+        <dt id="searchCloudMessageHistory" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/searchCloudMessageHistory.html">searchCloudMessageHistory</a></span><span class="signature">(<wbr><span class="parameter" id="searchCloudMessageHistory-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageKeywordSearchConfig-class.html">MessageKeywordSearchConfig</a></span> <span class="parameter-name">config</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  全文云端消息检索
+  
+
+</dd>
+
+        <dt id="searchMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/searchMessage.html">searchMessage</a></span><span class="signature">(<wbr><span class="parameter" id="searchMessage-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="searchMessage-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="searchMessage-param-searchOption"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageSearchOption-class.html">MessageSearchOption</a></span> <span class="parameter-name">searchOption</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  单会话检索(新)
+  
+
+</dd>
+
+        <dt id="searchRoamingMsg" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/searchRoamingMsg.html">searchRoamingMsg</a></span><span class="signature">(<wbr><span class="parameter" id="searchRoamingMsg-param-otherAccid"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">otherAccid</span>, </span><span class="parameter" id="searchRoamingMsg-param-fromTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fromTime</span>, </span><span class="parameter" id="searchRoamingMsg-param-endTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">endTime</span>, </span><span class="parameter" id="searchRoamingMsg-param-keyword"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">keyword</span>, </span><span class="parameter" id="searchRoamingMsg-param-limit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="searchRoamingMsg-param-reverse"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reverse</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  单聊云端消息检索
+  
+
+</dd>
+
+        <dt id="sendAudioMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendAudioMessage.html">sendAudioMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendAudioMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendAudioMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendAudioMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendAudioMessage-param-fileSize"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fileSize</span>, </span><span class="parameter" id="sendAudioMessage-param-duration"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="sendAudioMessage-param-displayName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendAudioMessage-param-base64"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">base64</span>, </span><span class="parameter" id="sendAudioMessage-param-nosScene"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendAudioMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送音频消息
+<code>displayName</code> 字段无效，不建议使用
+<code>base64</code> 字段为web端专用，web端<code>filePath</code> 可传空字符串
+  
+
+</dd>
+
+        <dt id="sendCustomMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendCustomMessage.html">sendCustomMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendCustomMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendCustomMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendCustomMessage-param-content"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">content</span>, </span><span class="parameter" id="sendCustomMessage-param-attachment"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessageAttachment-class.html">NIMMessageAttachment</a>?</span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="sendCustomMessage-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCustomMessageConfig-class.html">NIMCustomMessageConfig</a>?</span> <span class="parameter-name">config</span>, </span><span class="parameter" id="sendCustomMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送自定义消息
+  
+
+</dd>
+
+        <dt id="sendFileMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendFileMessage.html">sendFileMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendFileMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendFileMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendFileMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendFileMessage-param-base64"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">base64</span>, </span><span class="parameter" id="sendFileMessage-param-fileSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">fileSize</span>, </span><span class="parameter" id="sendFileMessage-param-displayName"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendFileMessage-param-nosScene"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendFileMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送文件消息
+<code>base64</code> 字段为web端专用，web端<code>filePath</code> 可传空字符串
+  
+
+</dd>
+
+        <dt id="sendImageMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendImageMessage.html">sendImageMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendImageMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendImageMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendImageMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendImageMessage-param-fileSize"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fileSize</span>, </span><span class="parameter" id="sendImageMessage-param-displayName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendImageMessage-param-base64"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">base64</span>, </span><span class="parameter" id="sendImageMessage-param-nosScene"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendImageMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送图片消息
+<code>base64</code> 字段为web端专用，web端<code>filePath</code> 可传空字符串
+  
+
+</dd>
+
+        <dt id="sendLocationMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendLocationMessage.html">sendLocationMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendLocationMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendLocationMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendLocationMessage-param-latitude"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">latitude</span>, </span><span class="parameter" id="sendLocationMessage-param-longitude"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">longitude</span>, </span><span class="parameter" id="sendLocationMessage-param-address"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">address</span>, </span><span class="parameter" id="sendLocationMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送地理位置消息
+  
+
+</dd>
+
+        <dt id="sendMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendMessage.html">sendMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="sendMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送消息
+如果需要更新发送进度，请监听 <a href="../nim_core/MessageService/onMessageStatus.html">onMessageStatus</a>。
+如果需要监听附件进度，请监听 <a href="../nim_core/MessageService/onAttachmentProgress.html">onAttachmentProgress</a>。
+如果消息发送失败后需要重发，请使用<code>resend</code> 参数。
+  
+
+</dd>
+
+        <dt id="sendMessageReceipt" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendMessageReceipt.html">sendMessageReceipt</a></span><span class="signature">(<wbr><span class="parameter" id="sendMessageReceipt-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendMessageReceipt-param-message"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送单聊已读回执
+如果需要监听消息已读回执，请监听 <a href="../nim_core/MessageService/onMessageReceipt.html">onMessageReceipt</a>。
+  
+
+</dd>
+
+        <dt id="sendTeamMessageReceipt" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendTeamMessageReceipt.html">sendTeamMessageReceipt</a></span><span class="signature">(<wbr><span class="parameter" id="sendTeamMessageReceipt-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送群消息已读回执
+如果需要监听群消息已读回执，请监听 <a href="../nim_core/MessageService/onTeamMessageReceipt.html">onTeamMessageReceipt</a>。
+  
+
+</dd>
+
+        <dt id="sendTextMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendTextMessage.html">sendTextMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendTextMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendTextMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendTextMessage-param-text"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">text</span>, </span><span class="parameter" id="sendTextMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送文本消息
+  
+
+</dd>
+
+        <dt id="sendTipMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendTipMessage.html">sendTipMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendTipMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendTipMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendTipMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>, </span><span class="parameter" id="sendTipMessage-param-content"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">content</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送Tip消息
+<code>content</code> web端tip内容传这个字段
+  
+
+</dd>
+
+        <dt id="sendVideoMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/sendVideoMessage.html">sendVideoMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendVideoMessage-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="sendVideoMessage-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="sendVideoMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendVideoMessage-param-fileSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">fileSize</span>, </span><span class="parameter" id="sendVideoMessage-param-duration"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="sendVideoMessage-param-width"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">width</span>, </span><span class="parameter" id="sendVideoMessage-param-height"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">height</span>, </span><span class="parameter" id="sendVideoMessage-param-displayName"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendVideoMessage-param-base64"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">base64</span>, </span><span class="parameter" id="sendVideoMessage-param-nosScene"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendVideoMessage-param-action"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/MessageAction.html">MessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送视频消息
+<code>base64</code> 字段为web端专用，web端<code>filePath</code> 可传空字符串
+  
+
+</dd>
+
+        <dt id="setChattingAccount" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/setChattingAccount.html">setChattingAccount</a></span><span class="signature">(<wbr><span class="parameter" id="setChattingAccount-param-sessionId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="setChattingAccount-param-sessionType"><span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置当前会话，Android iOS 平台可用
+调用以下接口重置当前会话，SDK会自动管理消息的未读数。
+该接口会自动调用clearUnreadCount(String, SessionTypeEnum)将正在聊天对象的未读数清零。
+如果有新消息到达，且消息来源是正在聊天的对象，其未读数也不会递增。
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="updateCollect" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateCollect.html">updateCollect</a></span><span class="signature">(<wbr><span class="parameter" id="updateCollect-param-info"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCollectInfo-class.html">NIMCollectInfo</a></span> <span class="parameter-name">info</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCollectInfo-class.html">NIMCollectInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新一个收藏的扩展字段
+  
+
+</dd>
+
+        <dt id="updateMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateMessage.html">updateMessage</a></span><span class="signature">(<wbr><span class="parameter" id="updateMessage-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  消息更新
+支持更新客户端数据库内的消息的客户端扩展字段。
+  
+
+</dd>
+
+        <dt id="updateMessagePin" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateMessagePin.html">updateMessagePin</a></span><span class="signature">(<wbr><span class="parameter" id="updateMessagePin-param-message"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updateMessagePin-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新一条消息的PIN
+  
+
+</dd>
+
+        <dt id="updateMySession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateMySession.html">updateMySession</a></span><span class="signature">(<wbr><span class="parameter" id="updateMySession-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="updateMySession-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="updateMySession-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  【会话服务】更新某一个会话，主要是设置会话的ext字段，如果会话不存在，则会创建出来，此时会话没有lastMsg
+  
+
+</dd>
+
+        <dt id="updateRoamMsgHasMoreTag" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateRoamMsgHasMoreTag.html">updateRoamMsgHasMoreTag</a></span><span class="signature">(<wbr><span class="parameter" id="updateRoamMsgHasMoreTag-param-newTag"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">newTag</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新是否有更多漫游消息的标记
+  
+
+</dd>
+
+        <dt id="updateSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateSession.html">updateSession</a></span><span class="signature">(<wbr><span class="parameter" id="updateSession-param-session">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSession-class.html">NIMSession</a></span> <span class="parameter-name">session</span>, </span><span class="parameter" id="updateSession-param-needNotify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needNotify</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新会话对象
+  
+
+</dd>
+
+        <dt id="updateSessionWithMessage" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateSessionWithMessage.html">updateSessionWithMessage</a></span><span class="signature">(<wbr><span class="parameter" id="updateSessionWithMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updateSessionWithMessage-param-needNotify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needNotify</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  使用消息更新会话对象
+  
+
+</dd>
+
+        <dt id="updateStickTopSession" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/updateStickTopSession.html">updateStickTopSession</a></span><span class="signature">(<wbr><span class="parameter" id="updateStickTopSession-param-sessionId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sessionId</span>, </span><span class="parameter" id="updateStickTopSession-param-sessionType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMSessionType.html">NIMSessionType</a></span> <span class="parameter-name">sessionType</span>, </span><span class="parameter" id="updateStickTopSession-param-ext"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ext</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新一个会话在置顶上的扩展字段
+  
+
+</dd>
+
+        <dt id="voiceToText" class="callable">
+  <span class="name"><a href="../nim_core/MessageService/voiceToText.html">voiceToText</a></span><span class="signature">(<wbr><span class="parameter" id="voiceToText-param-message">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="voiceToText-param-scene"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">scene</span>, </span><span class="parameter" id="voiceToText-param-mimeType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">mimeType</span> = <span class="default-value">&#39;aac&#39;</span>, </span><span class="parameter" id="voiceToText-param-sampleRate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">sampleRate</span> = <span class="default-value">&#39;16000&#39;</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  语音转文字
+<code>mimeType</code> PC 端使用，指定语音类型 aac, wav, mp3, amr，默认 aac
+<code>sampleRate</code> PC 端使用，指定语音采样率 8000kHz, 16000kHz，默认 16000
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">MessageService class</li>
+</ol>
+
+
+    <h5>nim_core library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core
+      1.7.7
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
