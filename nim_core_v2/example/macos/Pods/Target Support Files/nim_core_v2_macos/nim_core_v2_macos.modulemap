@@ -1,0 +1,6 @@
+framework module nim_core_v2_macos {
+  umbrella header "nim_core_v2_macos-umbrella.h"
+
+  export *
+  module * { export * }
+}

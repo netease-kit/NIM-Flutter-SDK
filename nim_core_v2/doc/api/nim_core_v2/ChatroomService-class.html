@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the ChatroomService class from the nim_core_v2 library, for the Dart programming language.">
+  <title>ChatroomService class - nim_core_v2 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li class="self-crumb">ChatroomService class</li>
+  </ol>
+  <div class="self-name">ChatroomService</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="nim_core_v2&#47;nim_core_v2-library-sidebar.html"
+      data-below-sidebar="nim_core_v2&#47;ChatroomService-class-sidebar.html">
+      <div>
+<h1><span class="kind-class">ChatroomService</span> class 
+ 
+</h1></div>
+
+    
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="ChatroomService" class="callable">
+          <span class="name"><a href="../nim_core_v2/ChatroomService/ChatroomService.html">ChatroomService</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="independentModeLinkAddressProvider" class="property">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/independentModeLinkAddressProvider.html">independentModeLinkAddressProvider</a></span>
+  <span class="signature">&#8596; NIMChatroomIndependentModeLinkAddressProvider?</span> 
+
+</dt>
+<dd>
+  获取聊天室独立模式link地址提供者。
+独立模式下需要设置该字段，否则无法进入聊天室
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="onEventNotified" class="property">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/onEventNotified.html">onEventNotified</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomEvent-class.html">NIMChatroomEvent</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  聊天室事件流
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessageAttachmentProgressUpdate" class="property">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/onMessageAttachmentProgressUpdate.html">onMessageAttachmentProgressUpdate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMAttachmentProgress-class.html">NIMAttachmentProgress</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  聊天室消息附件上传/下载进度通知，以 <a href="../nim_core_v2/NIMMessage/uuid.html">NIMMessage.uuid</a> 作为key
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessageReceived" class="property">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/onMessageReceived.html">onMessageReceived</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  聊天室消息
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onMessageStatusChanged" class="property">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/onMessageStatusChanged.html">onMessageStatusChanged</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  聊天室消息状态变更事件
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="batchUpdateChatroomQueue" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/batchUpdateChatroomQueue.html">batchUpdateChatroomQueue</a></span><span class="signature">(<wbr><span class="parameter" id="batchUpdateChatroomQueue-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="batchUpdateChatroomQueue-param-entryList"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomQueueEntry-class.html">NIMChatroomQueueEntry</a></span>&gt;</span></span> <span class="parameter-name">entryList</span>, </span><span class="parameter" id="batchUpdateChatroomQueue-param-needNotify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needNotify</span> = <span class="default-value">true</span>, </span><span class="parameter" id="batchUpdateChatroomQueue-param-notifyExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">notifyExtension</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  批量更新聊天室队列
+  
+
+</dd>
+
+        <dt id="clearChatroomQueue" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/clearChatroomQueue.html">clearChatroomQueue</a></span><span class="signature">(<wbr><span class="parameter" id="clearChatroomQueue-param-roomId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清空聊天室队列
+  
+
+</dd>
+
+        <dt id="downloadAttachment" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/downloadAttachment.html">downloadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="downloadAttachment-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="downloadAttachment-param-thumb">[<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">thumb</span> = <span class="default-value">false</span>]</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  下载聊天室消息附件
+  
+
+</dd>
+
+        <dt id="enterChatroom" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/enterChatroom.html">enterChatroom</a></span><span class="signature">(<wbr><span class="parameter" id="enterChatroom-param-request"><span class="type-annotation"><a href="../nim_core_v2/NIMChatroomEnterRequest-class.html">NIMChatroomEnterRequest</a></span> <span class="parameter-name">request</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomEnterResult-class.html">NIMChatroomEnterResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  加入聊天室
+  
+
+</dd>
+
+        <dt id="exitChatroom" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/exitChatroom.html">exitChatroom</a></span><span class="signature">(<wbr><span class="parameter" id="exitChatroom-param-roomId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  退出聊天室
+  
+
+</dd>
+
+        <dt id="fetchChatroomInfo" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/fetchChatroomInfo.html">fetchChatroomInfo</a></span><span class="signature">(<wbr><span class="parameter" id="fetchChatroomInfo-param-roomId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomInfo-class.html">NIMChatroomInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取当前聊天室信息
+  
+
+</dd>
+
+        <dt id="fetchChatroomMembers" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/fetchChatroomMembers.html">fetchChatroomMembers</a></span><span class="signature">(<wbr><span class="parameter" id="fetchChatroomMembers-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="fetchChatroomMembers-param-queryType"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberQueryType.html">NIMChatroomMemberQueryType</a></span> <span class="parameter-name">queryType</span>, </span><span class="parameter" id="fetchChatroomMembers-param-limit"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="fetchChatroomMembers-param-lastMemberAccount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">lastMemberAccount</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMember-class.html">NIMChatroomMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取当前聊天室成员
+  
+
+</dd>
+
+        <dt id="fetchChatroomMembersByAccount" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/fetchChatroomMembersByAccount.html">fetchChatroomMembersByAccount</a></span><span class="signature">(<wbr><span class="parameter" id="fetchChatroomMembersByAccount-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="fetchChatroomMembersByAccount-param-accountList"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountList</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMember-class.html">NIMChatroomMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取当前聊天室成员
+  
+
+</dd>
+
+        <dt id="fetchChatroomQueue" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/fetchChatroomQueue.html">fetchChatroomQueue</a></span><span class="signature">(<wbr><span class="parameter" id="fetchChatroomQueue-param-roomId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomQueueEntry-class.html">NIMChatroomQueueEntry</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取聊天室队列
+  
+
+</dd>
+
+        <dt id="fetchMessageHistory" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/fetchMessageHistory.html">fetchMessageHistory</a></span><span class="signature">(<wbr><span class="parameter" id="fetchMessageHistory-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="fetchMessageHistory-param-startTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">startTime</span>, </span><span class="parameter" id="fetchMessageHistory-param-limit"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">limit</span>, </span><span class="parameter" id="fetchMessageHistory-param-direction"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/QueryDirection.html">QueryDirection</a></span> <span class="parameter-name">direction</span>, </span><span class="parameter" id="fetchMessageHistory-param-messageTypeList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageType.html">NIMMessageType</a></span>&gt;</span>?</span> <span class="parameter-name">messageTypeList</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取历史消息,可选择给定时间往前或者往后查询，若方向往前，则结果排序按时间逆序，反之则结果排序按时间顺序。
+拉取到的消息中也包含聊天室通知消息。
+  
+
+</dd>
+
+        <dt id="kickChatroomMember" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/kickChatroomMember.html">kickChatroomMember</a></span><span class="signature">(<wbr><span class="parameter" id="kickChatroomMember-param-options"><span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberOptions-class.html">NIMChatroomMemberOptions</a></span> <span class="parameter-name">options</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  踢掉聊天室特定成员
+  
+
+</dd>
+
+        <dt id="markChatroomMemberBeManager" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/markChatroomMemberBeManager.html">markChatroomMemberBeManager</a></span><span class="signature">(<wbr><span class="parameter" id="markChatroomMemberBeManager-param-isAdd">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isAdd</span>, </span><span class="parameter" id="markChatroomMemberBeManager-param-options"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberOptions-class.html">NIMChatroomMemberOptions</a></span> <span class="parameter-name">options</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMember-class.html">NIMChatroomMember</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置/取消设置聊天室管理员
+  
+
+</dd>
+
+        <dt id="markChatroomMemberBeNormal" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/markChatroomMemberBeNormal.html">markChatroomMemberBeNormal</a></span><span class="signature">(<wbr><span class="parameter" id="markChatroomMemberBeNormal-param-isAdd">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isAdd</span>, </span><span class="parameter" id="markChatroomMemberBeNormal-param-options"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberOptions-class.html">NIMChatroomMemberOptions</a></span> <span class="parameter-name">options</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMember-class.html">NIMChatroomMember</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置/取消设置聊天室普通成员
+  
+
+</dd>
+
+        <dt id="markChatroomMemberInBlackList" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/markChatroomMemberInBlackList.html">markChatroomMemberInBlackList</a></span><span class="signature">(<wbr><span class="parameter" id="markChatroomMemberInBlackList-param-isAdd">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isAdd</span>, </span><span class="parameter" id="markChatroomMemberInBlackList-param-options"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberOptions-class.html">NIMChatroomMemberOptions</a></span> <span class="parameter-name">options</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMember-class.html">NIMChatroomMember</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加/移出聊天室黑名单
+  
+
+</dd>
+
+        <dt id="markChatroomMemberMuted" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/markChatroomMemberMuted.html">markChatroomMemberMuted</a></span><span class="signature">(<wbr><span class="parameter" id="markChatroomMemberMuted-param-isAdd">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isAdd</span>, </span><span class="parameter" id="markChatroomMemberMuted-param-options"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberOptions-class.html">NIMChatroomMemberOptions</a></span> <span class="parameter-name">options</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMember-class.html">NIMChatroomMember</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加/解除禁言聊天室成员
+  
+
+</dd>
+
+        <dt id="markChatroomMemberTempMuted" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/markChatroomMemberTempMuted.html">markChatroomMemberTempMuted</a></span><span class="signature">(<wbr><span class="parameter" id="markChatroomMemberTempMuted-param-duration">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="markChatroomMemberTempMuted-param-options"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMemberOptions-class.html">NIMChatroomMemberOptions</a></span> <span class="parameter-name">options</span>, </span><span class="parameter" id="markChatroomMemberTempMuted-param-needNotify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needNotify</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加/解除临时禁言聊天室成员
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="pollChatroomQueueEntry" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/pollChatroomQueueEntry.html">pollChatroomQueueEntry</a></span><span class="signature">(<wbr><span class="parameter" id="pollChatroomQueueEntry-param-roomId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="pollChatroomQueueEntry-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">key</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomQueueEntry-class.html">NIMChatroomQueueEntry</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从列表中删除某个元素
+  
+
+</dd>
+
+        <dt id="sendChatroomAudioMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomAudioMessage.html">sendChatroomAudioMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomAudioMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomAudioMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendChatroomAudioMessage-param-duration"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="sendChatroomAudioMessage-param-nosScene"><span class="type-annotation"><a href="../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendChatroomAudioMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomAudioMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室音频消息
+  
+
+</dd>
+
+        <dt id="sendChatroomCustomMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomCustomMessage.html">sendChatroomCustomMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomCustomMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomCustomMessage-param-attachment"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAttachment-class.html">NIMMessageAttachment</a>?</span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="sendChatroomCustomMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomCustomMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室自定义消息
+  
+
+</dd>
+
+        <dt id="sendChatroomFileMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomFileMessage.html">sendChatroomFileMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomFileMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomFileMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendChatroomFileMessage-param-displayName"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendChatroomFileMessage-param-nosScene"><span class="type-annotation"><a href="../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendChatroomFileMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomFileMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室文件消息
+  
+
+</dd>
+
+        <dt id="sendChatroomImageMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomImageMessage.html">sendChatroomImageMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomImageMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomImageMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendChatroomImageMessage-param-displayName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendChatroomImageMessage-param-nosScene"><span class="type-annotation"><a href="../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendChatroomImageMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomImageMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室图片消息
+  
+
+</dd>
+
+        <dt id="sendChatroomLocationMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomLocationMessage.html">sendChatroomLocationMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomLocationMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomLocationMessage-param-latitude"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">latitude</span>, </span><span class="parameter" id="sendChatroomLocationMessage-param-longitude"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">longitude</span>, </span><span class="parameter" id="sendChatroomLocationMessage-param-address"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">address</span>, </span><span class="parameter" id="sendChatroomLocationMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomLocationMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室地理位置消息
+  
+
+</dd>
+
+        <dt id="sendChatroomMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomMessage.html">sendChatroomMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomMessage-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="sendChatroomMessage-param-resend">[<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>]</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室消息
+  
+
+</dd>
+
+        <dt id="sendChatroomRobotMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomRobotMessage.html">sendChatroomRobotMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomRobotMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-robotAccount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">robotAccount</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-type"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMRobotMessageType.html">NIMRobotMessageType</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-text"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">text</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-content"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">content</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-target"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">target</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-params"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">params</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomRobotMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  创建机器人消息
+  
+
+</dd>
+
+        <dt id="sendChatroomTextMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomTextMessage.html">sendChatroomTextMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomTextMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomTextMessage-param-text"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">text</span>, </span><span class="parameter" id="sendChatroomTextMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomTextMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室文本消息
+  
+
+</dd>
+
+        <dt id="sendChatroomTipMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomTipMessage.html">sendChatroomTipMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomTipMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomTipMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomTipMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室Tip消息
+  
+
+</dd>
+
+        <dt id="sendChatroomVideoMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/sendChatroomVideoMessage.html">sendChatroomVideoMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendChatroomVideoMessage-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-filePath"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-duration"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">duration</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-width"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">width</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-height"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">height</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-displayName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">displayName</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-nosScene"><span class="type-annotation"><a href="../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span> <span class="parameter-name">nosScene</span> = <span class="default-value">NIMNosScenes.defaultIm</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-resend"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resend</span> = <span class="default-value">false</span>, </span><span class="parameter" id="sendChatroomVideoMessage-param-action"><span class="type-annotation"><a href="../nim_core_v2/ChatroomMessageAction.html">ChatroomMessageAction</a>?</span> <span class="parameter-name">action</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMChatroomMessage-class.html">NIMChatroomMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送聊天室视频消息
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="updateChatroomInfo" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/updateChatroomInfo.html">updateChatroomInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateChatroomInfo-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="updateChatroomInfo-param-request"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomUpdateRequest-class.html">NIMChatroomUpdateRequest</a></span> <span class="parameter-name">request</span>, </span><span class="parameter" id="updateChatroomInfo-param-needNotify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needNotify</span> = <span class="default-value">true</span>, </span><span class="parameter" id="updateChatroomInfo-param-notifyExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span>?</span> <span class="parameter-name">notifyExtension</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新聊天室信息。只有创建者和管理员拥有权限修改聊天室信息。
+可以设置修改是否通知，若设置通知，聊天室内会收到类型为 <a href="../nim_core_v2/NIMChatroomNotificationTypes/chatRoomInfoUpdated-constant.html">NIMChatroomNotificationTypes.chatRoomInfoUpdated</a> 的消息。
+  
+
+</dd>
+
+        <dt id="updateChatroomMyMemberInfo" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/updateChatroomMyMemberInfo.html">updateChatroomMyMemberInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateChatroomMyMemberInfo-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="updateChatroomMyMemberInfo-param-request"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomUpdateMyMemberInfoRequest-class.html">NIMChatroomUpdateMyMemberInfoRequest</a></span> <span class="parameter-name">request</span>, </span><span class="parameter" id="updateChatroomMyMemberInfo-param-needNotify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needNotify</span> = <span class="default-value">true</span>, </span><span class="parameter" id="updateChatroomMyMemberInfo-param-notifyExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">notifyExtension</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新聊天室内的自身信息
+  
+
+</dd>
+
+        <dt id="updateChatroomQueueEntry" class="callable">
+  <span class="name"><a href="../nim_core_v2/ChatroomService/updateChatroomQueueEntry.html">updateChatroomQueueEntry</a></span><span class="signature">(<wbr><span class="parameter" id="updateChatroomQueueEntry-param-roomId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">roomId</span>, </span><span class="parameter" id="updateChatroomQueueEntry-param-entry"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMChatroomQueueEntry-class.html">NIMChatroomQueueEntry</a></span> <span class="parameter-name">entry</span>, </span><span class="parameter" id="updateChatroomQueueEntry-param-isTransient"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isTransient</span> = <span class="default-value">false</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新聊天室队列
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li class="self-crumb">ChatroomService class</li>
+</ol>
+
+
+    <h5>nim_core_v2 library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core_v2
+      1.7.7
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

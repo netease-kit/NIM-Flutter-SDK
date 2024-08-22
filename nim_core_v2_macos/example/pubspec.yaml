@@ -1,0 +1,25 @@
+name: nim_core_v2_macos_example
+description: Demonstrates the Windows implementation of the nim_core_v2 plugin.
+publish_to: none
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=1.20.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  nim_core_v2:
+    path: ../../nim_core_v2
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  pedantic: ^1.10.0
+  process_run: ^0.12.0
+#  yunxin_integration_test: ^0.0.1-rc.15
+
+flutter:
+  uses-material-design: true

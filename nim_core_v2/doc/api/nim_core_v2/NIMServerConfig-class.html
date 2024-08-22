@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the NIMServerConfig class from the nim_core_v2 library, for the Dart programming language.">
+  <title>NIMServerConfig class - nim_core_v2 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li class="self-crumb">NIMServerConfig class</li>
+  </ol>
+  <div class="self-name">NIMServerConfig</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="nim_core_v2&#47;nim_core_v2-library-sidebar.html"
+    data-below-sidebar="nim_core_v2&#47;NIMServerConfig-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">NIMServerConfig</span> class 
+ 
+</h1></div>
+
+    
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/json_annotation/4.9.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(explicitToJson: true)</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="NIMServerConfig" class="callable">
+          <span class="name"><a href="../nim_core_v2/NIMServerConfig/NIMServerConfig.html">NIMServerConfig</a></span><span class="signature">(<span class="parameter" id="-param-module">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">module</span>, </span><span class="parameter" id="-param-publicKeyVersion"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">publicKeyVersion</span> = <span class="default-value">0</span>, </span><span class="parameter" id="-param-lbs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">lbs</span>, </span><span class="parameter" id="-param-defaultLink"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">defaultLink</span>, </span><span class="parameter" id="-param-nosUploadLbs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUploadLbs</span>, </span><span class="parameter" id="-param-nosUploadDefaultLink"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUploadDefaultLink</span>, </span><span class="parameter" id="-param-nosUpload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUpload</span>, </span><span class="parameter" id="-param-nosSupportHttps"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">nosSupportHttps</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-nosDownloadUrlFormat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosDownloadUrlFormat</span>, </span><span class="parameter" id="-param-nosDownload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosDownload</span>, </span><span class="parameter" id="-param-nosAccess"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosAccess</span>, </span><span class="parameter" id="-param-negoKeyNeca"><span class="type-annotation"><a href="../nim_core_v2/AsymmetricType.html">AsymmetricType</a></span> <span class="parameter-name">negoKeyNeca</span> = <span class="default-value">AsymmetricType.rsa</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyVersion"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">negoKeyEncaKeyVersion</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyParta"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">negoKeyEncaKeyParta</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyPartb"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">negoKeyEncaKeyPartb</span>, </span><span class="parameter" id="-param-commEnca"><span class="type-annotation"><a href="../nim_core_v2/SymmetryType.html">SymmetryType</a></span> <span class="parameter-name">commEnca</span> = <span class="default-value">SymmetryType.rc4</span>, </span><span class="parameter" id="-param-linkIpv6"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">linkIpv6</span>, </span><span class="parameter" id="-param-ipProtocolVersion"><span class="type-annotation"><a href="../nim_core_v2/IPVersion.html">IPVersion</a></span> <span class="parameter-name">ipProtocolVersion</span> = <span class="default-value">IPVersion.ipv4</span>, </span><span class="parameter" id="-param-probeIpv4Url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">probeIpv4Url</span>, </span><span class="parameter" id="-param-probeIpv6Url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">probeIpv6Url</span>, </span><span class="parameter" id="-param-handshakeType"><span class="type-annotation"><a href="../nim_core_v2/NimHandshakeType.html">NimHandshakeType</a></span> <span class="parameter-name">handshakeType</span> = <span class="default-value">NimHandshakeType.v1</span>, </span><span class="parameter" id="-param-nosCdnEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">nosCdnEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-nosDownloadSet"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">nosDownloadSet</span>}</span>)</span>
+        </dt>
+        <dd>
+          
+        </dd>
+        <dt id="NIMServerConfig.fromJson" class="callable">
+          <span class="name"><a href="../nim_core_v2/NIMServerConfig/NIMServerConfig.fromJson.html">NIMServerConfig.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="commEnca" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/commEnca.html">commEnca</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/SymmetryType.html">SymmetryType</a></span>
+  
+
+</dt>
+<dd>
+  通信加密算法 {1(RC4), 2(AES128), 4(SM4)}
+默认: 1(RC4) 对称加密<a href="../nim_core_v2/SymmetryType.html">SymmetryType.rc4</a>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="defaultLink" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/defaultLink.html">defaultLink</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  IM 默认的link服务器地址，当IM LBS不可用时先连接该地址
+填"IP/Host:PORT"
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="handshakeType" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/handshakeType.html">handshakeType</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/NimHandshakeType.html">NimHandshakeType</a></span>
+  
+
+</dt>
+<dd>
+  握手协议选择字段，默认<a href="../nim_core_v2/NimHandshakeType.html">NimHandshakeType.v1</a>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="ipProtocolVersion" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/ipProtocolVersion.html">ipProtocolVersion</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/IPVersion.html">IPVersion</a></span>
+  
+
+</dt>
+<dd>
+  IP协议版本{0(IPV4), 1(IPV6), 2(Auto, SDK测试后自行选择, 存在性能损耗)}。
+默认: 0(IPV4) 非对称加密<a href="../nim_core_v2/IPVersion.html">IPVersion.ipv4</a>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="lbs" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/lbs.html">lbs</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  IM LBS服务器地址，通过它获取IM link 地址信息
+填http/https地址
+<code>NIMServerConfig.lbsBackup</code>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="linkIpv6" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/linkIpv6.html">linkIpv6</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  ipv6的缺省连接地址
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="module" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/module.html">module</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  连接云信服务器加密数据通道的公钥参数1 rsaModulus
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="negoKeyEncaKeyParta" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/negoKeyEncaKeyParta.html">negoKeyEncaKeyParta</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  "交换密钥"协议加密算法密钥 part A 自定义时则必填 BigNumHex string 不含0x RSA: module, SM2: X
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="negoKeyEncaKeyPartb" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/negoKeyEncaKeyPartb.html">negoKeyEncaKeyPartb</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  "交换密钥"协议加密算法密钥 part B 自定义时则必填 BigNumHex string 不含0x RSA: EXP, SM2: Y
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="negoKeyEncaKeyVersion" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/negoKeyEncaKeyVersion.html">negoKeyEncaKeyVersion</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  "交换密钥"协议加密算法密钥版本 version 自定义时则必填
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="negoKeyNeca" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/negoKeyNeca.html">negoKeyNeca</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/AsymmetricType.html">AsymmetricType</a></span>
+  
+
+</dt>
+<dd>
+  "交换密钥"协议加密算法 {1(RSA),2(SM2)}, def:1(RSA) 非对称加密，默认 <a href="../nim_core_v2/AsymmetricType.html">AsymmetricType.rsa</a>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosAccess" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosAccess.html">nosAccess</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  NOS下载加速域名/地址，用于替换NOS下载url中的 nosDownload。
+提供两种方式：
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosCdnEnable" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosCdnEnable.html">nosCdnEnable</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  是否优先使用Cdn域名进行NOS下载，默认true
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosDownload" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosDownload.html">nosDownload</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  NOS下载地址的host，用于拼接最终获得的文件URL地址，也支持该host替换成下载加速域名/地址 nosAccess.
+填host地址, 默认是 nos.netease.com
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosDownloadSet" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosDownloadSet.html">nosDownloadSet</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  每个元素为使用过的NOS下载地址的特征以及桶名是否在host中组成的{@link Pair}对象
+如new Pair("nim.nos.netease.com", true), new Pair("nos.netease.com/nim", false)等
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosDownloadUrlFormat" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosDownloadUrlFormat.html">nosDownloadUrlFormat</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  NOS下载地址拼接模板，用于拼接最终得到的下载地址。
+默认是 {bucket}.nosdn.127.net/{object}，SDK 上传资源后生成的下载地址为 <a href="https://bucket.nosdn.127.net/object">https://bucket.nosdn.127.net/object</a>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosSupportHttps" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosSupportHttps.html">nosSupportHttps</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  NOS上传是否需要支持https。SDK 3.2版本后默认支持https，同时需要配置 nosUpload， 默认 true;
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosUpload" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosUpload.html">nosUpload</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  NOS上传服务器主机地址（仅nosSupportHttps=true时有效，用作https上传时的域名校验及http header host字段填充）
+填host地址
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosUploadDefaultLink" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosUploadDefaultLink.html">nosUploadDefaultLink</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  NOS上传默认的link服务器地址，当NOS LBS不可用时先连接该地址
+填http/https地址
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="nosUploadLbs" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/nosUploadLbs.html">nosUploadLbs</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  NOS上传LBS服务器地址
+填http/https地址
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="probeIpv4Url" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/probeIpv4Url.html">probeIpv4Url</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  探测ipv4地址类型使用的url,  <a href="../nim_core_v2/IPVersion.html">IPVersion.any</a>时生效
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="probeIpv6Url" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/probeIpv6Url.html">probeIpv6Url</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  探测ipv6地址类型使用的url,  <a href="../nim_core_v2/IPVersion.html">IPVersion.any</a>时生效
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="publicKeyVersion" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/publicKeyVersion.html">publicKeyVersion</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  连接云信服务器加密数据通道的公钥的版本号（默认0）
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toJson" class="callable">
+  <span class="name"><a href="../nim_core_v2/NIMServerConfig/toJson.html">toJson</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li class="self-crumb">NIMServerConfig class</li>
+</ol>
+
+
+    <h5>nim_core_v2 library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core_v2
+      10.3.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

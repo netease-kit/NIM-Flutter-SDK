@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "268211F8-4175-4195-9B2F-993E288C8CDC"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "22F0E30C-3095-4EC1-A9A5-CAD395522A08"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/NimCore.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "invokeMethod(eventName, arguments, callback)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "10653E4C-CE36-4949-851A-0A2F0AE943F2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/NimCore.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "invokeMethod(eventName, arguments, callback)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65FFFF47-A303-4A66-BA91-B89FB1CB354B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "FLTLoginService::~FLTLoginService()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "65FFFF47-A303-4A66-BA91-B89FB1CB354B - a50d3e38c85e769b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::~FLTLoginService()"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94">
+               </Location>
+               <Location
+                  uuid = "65FFFF47-A303-4A66-BA91-B89FB1CB354B - a50d3e38c85e769b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::~FLTLoginService()"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94">
+               </Location>
+               <Location
+                  uuid = "65FFFF47-A303-4A66-BA91-B89FB1CB354B - a50d3e38c85e769b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::~FLTLoginService()"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "94"
+                  endingLineNumber = "94">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E6C52DEE-49B8-4B31-95C6-25A5E665C384"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/NimCore.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "invokeMethod(eventName, arguments, callback)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3979EC9B-BB0E-4623-9286-FD4FFFBBD4A5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "518"
+            endingLineNumber = "518"
+            landmarkName = "FLTFriendService::getAddApplicationList(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E3FECF83-7A80-49AC-93B2-562092825ADA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "convertV2NIMFriendAddApplicationToMap(application)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1B8376CB-1AF8-4A14-8B17-8C4C7D491134"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
+            landmarkName = "FLTLoginService::getLoginStatus(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F6E2FD58-1D86-462E-B64A-F205691F8F74"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "357"
+            endingLineNumber = "357"
+            landmarkName = "FLTLoginService::kickOffline(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1F619A25-7154-44D7-A607-B0DB16C2B3F4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
+            landmarkName = "FLTLoginService::kickOffline(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "50E991A7-7FB6-4908-A6C9-16A5E621294A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
+            landmarkName = "FLTLoginService::kickOffline(arguments, result)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "50E991A7-7FB6-4908-A6C9-16A5E621294A - a318adb80c3e169"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::kickOffline(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*, std::__1::shared_ptr&lt;flutter::MethodResult&lt;flutter::EncodableValue&gt;&gt;)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "366"
+                  endingLineNumber = "366">
+               </Location>
+               <Location
+                  uuid = "50E991A7-7FB6-4908-A6C9-16A5E621294A - 2537833ffe997ceb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::kickOffline(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*, std::__1::shared_ptr&lt;flutter::MethodResult&lt;flutter::EncodableValue&gt;&gt;)::$_14::~$_14()"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "366"
+                  endingLineNumber = "366">
+               </Location>
+               <Location
+                  uuid = "50E991A7-7FB6-4908-A6C9-16A5E621294A - 3e2e5780e981bbe1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::kickOffline(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*, std::__1::shared_ptr&lt;flutter::MethodResult&lt;flutter::EncodableValue&gt;&gt;)::$_14::operator()() const"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "368"
+                  endingLineNumber = "368">
+               </Location>
+               <Location
+                  uuid = "50E991A7-7FB6-4908-A6C9-16A5E621294A - 65ddc1e751815c26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FLTLoginService::kickOffline(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*, std::__1::shared_ptr&lt;flutter::MethodResult&lt;flutter::EncodableValue&gt;&gt;)::$_14::$_14($_14 const&amp;)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "366"
+                  endingLineNumber = "366">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "58B9C4A0-7435-41F6-84A8-D83B1B5A4EDC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageCreator.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "FLTMessageCreator::createTextMessage(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADD9845A-4635-416D-9596-EA2228C0E102"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1733"
+            endingLineNumber = "1733"
+            landmarkName = "convertMessageAttachment(object)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "95E80AAB-88C4-41F7-ACAF-4B9D82B31FEA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A0AA7CFC-68FB-48F5-A238-AF7B3ECB3752"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
+            landmarkName = "FLTLoginService::login(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DE2BDC38-78DD-437B-A430-C2A9A57FAA5C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
+            landmarkName = "FLTLoginService::login(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EFC07823-6B81-41E8-AF2C-C917ED657A50"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
+            landmarkName = "FLTLoginService::login(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61D4C524-C7A9-4ED3-ACC8-6F386BE4E4C6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
+            landmarkName = "FLTLoginService::login(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D2D1BF58-28A6-40DE-A4D9-CB5BB34F2D80"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "FLTLoginService::login(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D3173C41-8AD9-4934-B476-2CEC2D5A7510"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "FLTLoginService::login(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AE06D7B9-9168-4BA6-96DA-94AF6AE09748"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "getFriendAddApplication(arguments)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1C1B69A6-ADFF-40B8-9DB2-E930D9288358"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
+            landmarkName = "getFriendAddApplication(arguments)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "63906BB3-1624-4393-B2A9-41D2E7764557"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
+            landmarkName = "FLTFriendService::rejectAddApplication(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BE902CDE-ABE2-467E-9DF7-7C630FB911F4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "FLTFriendService::rejectAddApplication(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EDFD2BB9-BFF5-4258-9605-D0CD6B1708B4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "FLTFriendService::rejectAddApplication(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "96CFEF3F-28F7-4CF5-8B6B-6D83FA62C027"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTFriendService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "FLTFriendService::rejectAddApplication(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "34D357C4-5123-4C3D-B82B-915D3054B92F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/NimCore.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "invokeMethod(eventName, arguments, callback)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9DC122DF-661A-496F-97D8-35E70ED4E7FE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
+            landmarkName = "FLTLoginService::setReconnectDelayProvider(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F9A519C6-B223-43FD-BB38-553469E2478B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "420"
+            endingLineNumber = "420"
+            landmarkName = "FLTLoginService::setReconnectDelayProvider(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EB6A69F1-156F-400A-B3AD-01FAF7B84634"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/NimCore.mm"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "invokeMethod(eventName, arguments, callback)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5CC624EF-FFE3-46C1-B0CE-8CA1CE4BBE9F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
+            landmarkName = "FLTLoginService::setReconnectDelayProvider(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9D866D04-2AB6-4FCA-AF22-C85A8E73801F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTLoginService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
+            landmarkName = "FLTLoginService::setReconnectDelayProvider(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7635968D-4CE3-427F-9DFA-D5ECEBCDE6CE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1194"
+            endingLineNumber = "1194"
+            landmarkName = "FLTMessageService::getP2PMessageReceipt(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0840257A-F92A-4CFA-96E5-BFBDAA68CE24"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1252"
+            endingLineNumber = "1252"
+            landmarkName = "FLTMessageService::sendTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9549E276-CE46-44F6-BF4E-7E40DACE99B1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1158"
+            endingLineNumber = "1158"
+            landmarkName = "FLTMessageService::sendP2PMessageReceipt(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CF90C6A2-86D3-4B1A-876D-99250D6BC6CA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1207"
+            endingLineNumber = "1207"
+            landmarkName = "FLTMessageService::isPeerRead(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "232BB5B1-55A5-4BC2-85BB-E987C3BD1975"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1212"
+            endingLineNumber = "1212"
+            landmarkName = "FLTMessageService::isPeerRead(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "83DA6C3F-C157-456F-88EF-14043B27A682"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1168"
+            endingLineNumber = "1168"
+            landmarkName = "FLTMessageService::getP2PMessageReceipt(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8CE5890C-0CCC-4F84-9010-F6C8E6D2F3E2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1180"
+            endingLineNumber = "1180"
+            landmarkName = "FLTMessageService::getP2PMessageReceipt(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6CC9306A-1E8C-4670-815C-E1EBB67B25C3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1175"
+            endingLineNumber = "1175"
+            landmarkName = "FLTMessageService::getP2PMessageReceipt(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9BF78C20-3ADB-483A-B19F-01381930ADE1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1176"
+            endingLineNumber = "1176"
+            landmarkName = "FLTMessageService::getP2PMessageReceipt(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E3F68D8B-3C4C-4204-B5D9-C4DFCBE566C2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1315"
+            endingLineNumber = "1315"
+            landmarkName = "FLTMessageService::getTeamMessageReceiptDetail(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E5C56B3B-D46A-45D9-B9EA-ED0EC614AED5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1293"
+            endingLineNumber = "1293"
+            landmarkName = "FLTMessageService::getTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B428099A-7274-4663-82C3-5A32F425F66E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1305"
+            endingLineNumber = "1305"
+            landmarkName = "FLTMessageService::getTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "79490AB0-CAD3-46C8-BC91-6B6F89E138B5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1306"
+            endingLineNumber = "1306"
+            landmarkName = "FLTMessageService::getTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "28390568-1EFA-455F-9FBD-F91B8A235428"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1320"
+            endingLineNumber = "1320"
+            landmarkName = "FLTMessageService::getTeamMessageReceiptDetail(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AA60D8B4-6B1F-461E-8999-1D63EE55105B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1325"
+            endingLineNumber = "1325"
+            landmarkName = "FLTMessageService::getTeamMessageReceiptDetail(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "40727F6B-BA4B-4508-AC60-4C22197E7ACB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3596"
+            endingLineNumber = "3596"
+            landmarkName = "getTeamMessageReadReceiptDetail(arguments)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E832EBE8-1948-4563-8994-997B2D5AE414"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "3621"
+            endingLineNumber = "3621"
+            landmarkName = "getTeamMessageReadReceiptDetail(arguments)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "E832EBE8-1948-4563-8994-997B2D5AE414 - fdb931cac0e59718"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "getTeamMessageReadReceiptDetail(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "3621"
+                  endingLineNumber = "3621">
+               </Location>
+               <Location
+                  uuid = "E832EBE8-1948-4563-8994-997B2D5AE414 - fdb931cac0e59718"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "getTeamMessageReadReceiptDetail(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "3621"
+                  endingLineNumber = "3621">
+               </Location>
+               <Location
+                  uuid = "E832EBE8-1948-4563-8994-997B2D5AE414 - fdb931cac0e59718"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "getTeamMessageReadReceiptDetail(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "3621"
+                  endingLineNumber = "3621">
+               </Location>
+               <Location
+                  uuid = "E832EBE8-1948-4563-8994-997B2D5AE414 - fdb931cac0e59718"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "getTeamMessageReadReceiptDetail(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "3621"
+                  endingLineNumber = "3621">
+               </Location>
+               <Location
+                  uuid = "E832EBE8-1948-4563-8994-997B2D5AE414 - fdb931cac0e59718"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "getTeamMessageReadReceiptDetail(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "3621"
+                  endingLineNumber = "3621">
+               </Location>
+               <Location
+                  uuid = "E832EBE8-1948-4563-8994-997B2D5AE414 - fdb931cac0e59718"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "getTeamMessageReadReceiptDetail(std::__1::map&lt;flutter::EncodableValue, flutter::EncodableValue, std::__1::less&lt;flutter::EncodableValue&gt;, std::__1::allocator&lt;std::__1::pair&lt;flutter::EncodableValue const, flutter::EncodableValue&gt;&gt;&gt; const*)"
+                  moduleName = "example"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/houchengdong/flutterProject/xkit-flutter/nim_core_v2/nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "3621"
+                  endingLineNumber = "3621">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9B50F888-DB0D-4852-B38E-23A45D91B88F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1307"
+            endingLineNumber = "1307"
+            landmarkName = "FLTMessageService::getTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5630B1D7-81D3-4D25-92BC-8CF621290353"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1340"
+            endingLineNumber = "1340"
+            landmarkName = "FLTMessageService::getTeamMessageReceiptDetail(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3085D5C6-8E42-4A5C-BB64-C0741ED4D3BE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1365"
+            endingLineNumber = "1365"
+            landmarkName = "FLTMessageService::voiceToText(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "06CD5C17-CD9B-455B-A539-64F2A9DCEAD5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1370"
+            endingLineNumber = "1370"
+            landmarkName = "FLTMessageService::voiceToText(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8D0668E4-CF53-4ABB-932B-14098A8FCC0B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1374"
+            endingLineNumber = "1374"
+            landmarkName = "FLTMessageService::voiceToText(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "35B25017-FD23-4CB1-BCCD-7B08558970AC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1296"
+            endingLineNumber = "1296"
+            landmarkName = "FLTMessageService::getTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E2A602C8-6C29-4CA8-8000-6BFA914B8BA5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../nim_core_v2_macos/macos/Classes/common/services/FLTMessageService.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1304"
+            endingLineNumber = "1304"
+            landmarkName = "FLTMessageService::getTeamMessageReceipts(arguments, result)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

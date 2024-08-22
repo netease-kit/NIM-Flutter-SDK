@@ -1,0 +1,8 @@
+
+analyzer:
+  exclude:
+    - lib/src/method_channel/method_channel_settings_service.dart
+#   language:
+#     strict-raw-types: true
+#   strong-mode:
+#     implicit-casts: false

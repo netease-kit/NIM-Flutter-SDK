@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the NIMStatusBarNotificationConfig class from the nim_core library, for the Dart programming language.">
+  <title>NIMStatusBarNotificationConfig class - nim_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">NIMStatusBarNotificationConfig class</li>
+  </ol>
+  <div class="self-name">NIMStatusBarNotificationConfig</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="nim_core&#47;nim_core-library-sidebar.html"
+      data-below-sidebar="nim_core&#47;NIMStatusBarNotificationConfig-class-sidebar.html">
+      <div>
+<h1><span class="kind-class">NIMStatusBarNotificationConfig</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>SDK提供状态栏提醒的配置</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>()</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="NIMStatusBarNotificationConfig" class="callable">
+          <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/NIMStatusBarNotificationConfig.html">NIMStatusBarNotificationConfig</a></span><span class="signature">(<span class="parameter" id="-param-ring">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">ring</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-notificationSound"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">notificationSound</span>, </span><span class="parameter" id="-param-vibrate"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">vibrate</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-ledARGB"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">ledARGB</span>, </span><span class="parameter" id="-param-ledOnMs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">ledOnMs</span>, </span><span class="parameter" id="-param-ledOffMs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">ledOffMs</span>, </span><span class="parameter" id="-param-hideContent"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">hideContent</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-downTimeToggle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">downTimeToggle</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-downTimeBegin"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">downTimeBegin</span>, </span><span class="parameter" id="-param-downTimeEnd"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">downTimeEnd</span>, </span><span class="parameter" id="-param-downTimeEnableNotification"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">downTimeEnableNotification</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-notificationEntranceClassName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">notificationEntranceClassName</span>, </span><span class="parameter" id="-param-titleOnlyShowAppName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">titleOnlyShowAppName</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-notificationFoldStyle"><span class="type-annotation"><a href="../nim_core/NIMNotificationFoldStyle.html">NIMNotificationFoldStyle</a></span> <span class="parameter-name">notificationFoldStyle</span> = <span class="default-value">NIMNotificationFoldStyle.all</span>, </span><span class="parameter" id="-param-notificationColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">notificationColor</span>, </span><span class="parameter" id="-param-showBadge"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">showBadge</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-customTitleWhenTeamNameEmpty"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customTitleWhenTeamNameEmpty</span>, </span><span class="parameter" id="-param-notificationExtraType"><span class="type-annotation"><a href="../nim_core/NIMNotificationExtraType.html">NIMNotificationExtraType</a></span> <span class="parameter-name">notificationExtraType</span> = <span class="default-value">NIMNotificationExtraType.message</span>}</span>)</span>
+        </dt>
+        <dd>
+          
+        </dd>
+        <dt id="NIMStatusBarNotificationConfig.fromMap" class="callable">
+          <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/NIMStatusBarNotificationConfig.fromMap.html">NIMStatusBarNotificationConfig.fromMap</a></span><span class="signature">(<span class="parameter" id="fromMap-param-map"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">map</span></span>)</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="customTitleWhenTeamNameEmpty" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/customTitleWhenTeamNameEmpty.html">customTitleWhenTeamNameEmpty</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  如果群名称为null 或者空串，则使用customTitleWhenTeamNameEmpty 作为通知栏title
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="downTimeBegin" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/downTimeBegin.html">downTimeBegin</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  免打扰的开始时间, 格式为HH:mm(24小时制)。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="downTimeEnableNotification" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/downTimeEnableNotification.html">downTimeEnableNotification</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  免打扰期间，是否显示通知，默认为显示
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="downTimeEnd" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/downTimeEnd.html">downTimeEnd</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  免打扰的结束时间, 格式为HH:mm(24小时制)。<br>
+如果结束时间小于开始时间，免打扰时间为开始时间-24:00-结束时间。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="downTimeToggle" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/downTimeToggle.html">downTimeToggle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  免打扰设置开关。默认为关闭。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hideContent" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/hideContent.html">hideContent</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  不显示消息详情开关, 同时也不再显示消息发送者昵称<br>
+默认为false
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="ledARGB" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/ledARGB.html">ledARGB</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+  呼吸灯的颜色
+建议尽量使用绿色、蓝色、红色等基本颜色，不要去用混合色。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="ledOffMs" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/ledOffMs.html">ledOffMs</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+  呼吸灯熄灭时的持续时间（毫秒）
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="ledOnMs" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/ledOnMs.html">ledOnMs</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+  呼吸灯亮时的持续时间（毫秒）
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="notificationColor" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/notificationColor.html">notificationColor</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+  消息通知栏颜色，将应用到 NotificationCompat.Builder 的 setColor 方法
+对Android 5.0 以后机型会影响到smallIcon
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="notificationEntranceClassName" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/notificationEntranceClassName.html">notificationEntranceClassName</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  通知栏提醒的响应intent的activity类型。<br>
+可以为null。如果未提供，将使用包的launcher的入口intent的activity。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="notificationExtraType" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/notificationExtraType.html">notificationExtraType</a></span>
+  <span class="signature">&#8594; <a href="../nim_core/NIMNotificationExtraType.html">NIMNotificationExtraType</a></span> 
+
+</dt>
+<dd>
+  点击通知栏传递的extra类型
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="notificationFoldStyle" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/notificationFoldStyle.html">notificationFoldStyle</a></span>
+  <span class="signature">&#8594; <a href="../nim_core/NIMNotificationFoldStyle.html">NIMNotificationFoldStyle</a></span> 
+
+</dt>
+<dd>
+  消息通知栏的折叠类型，不配置时，以notificationFolded的值为准, 如果为null，表示默认所有折叠
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="notificationSound" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/notificationSound.html">notificationSound</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  响铃提醒的声音资源，如果不提供，使用系统默认提示音。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="ring" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/ring.html">ring</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  状态栏提醒的小图标的资源名称。<br>
+如果不提供，使用app的icon
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="showBadge" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/showBadge.html">showBadge</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  是否APP图标显示未读数(红点)
+仅针对Android 8.0+有效
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="titleOnlyShowAppName" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/titleOnlyShowAppName.html">titleOnlyShowAppName</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  通知栏提醒的标题是否只显示应用名。默认是 false，当有一个会话发来消息时，显示会话名；当有多个会话发来时，显示应用名。
+修改为true，那么无论一个还是多个会话发来消息，标题均显示应用名。
+应用名称请在AndroidManifest的application节点下设置android:label。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="vibrate" class="property">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/vibrate.html">vibrate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  是否需要振动提醒。<br>
+默认为true
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toMap" class="callable">
+  <span class="name"><a href="../nim_core/NIMStatusBarNotificationConfig/toMap.html">toMap</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">NIMStatusBarNotificationConfig class</li>
+</ol>
+
+
+    <h5>nim_core library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core
+      1.7.4
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

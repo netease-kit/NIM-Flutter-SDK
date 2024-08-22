@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the TeamService class from the nim_core library, for the Dart programming language.">
+  <title>TeamService class - nim_core library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">TeamService class</li>
+  </ol>
+  <div class="self-name">TeamService</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="nim_core&#47;nim_core-library-sidebar.html"
+      data-below-sidebar="nim_core&#47;TeamService-class-sidebar.html">
+      <div>
+<h1><span class="kind-class">TeamService</span> class 
+ 
+</h1></div>
+
+    
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+
+    <dl class="constructor-summary-list">
+        <dt id="TeamService" class="callable">
+          <span class="name"><a href="../nim_core/TeamService/TeamService.html">TeamService</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onTeamListRemove" class="property">
+  <span class="name"><a href="../nim_core/TeamService/onTeamListRemove.html">onTeamListRemove</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  移除群的观察者通知。自己退群，群被解散，自己被踢出群时，会收到该通知
+observer 观察者, 参数为被移除的群资料，此时群的isMyTeam接口返回false
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onTeamListUpdate" class="property">
+  <span class="name"><a href="../nim_core/TeamService/onTeamListUpdate.html">onTeamListUpdate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  群资料变动观察者通知。新建群和群更新的通知都通过该接口传递
+observer 观察者, 参数为有更新的群资料列表
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onTeamMemberRemove" class="property">
+  <span class="name"><a href="../nim_core/TeamService/onTeamMemberRemove.html">onTeamMemberRemove</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  移除群成员的观察者通知。自己被移除群时，会收到该通知
+ios端收到回调时NIMTeamMember中仅id 和 account 有效
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onTeamMemberUpdate" class="property">
+  <span class="name"><a href="../nim_core/TeamService/onTeamMemberUpdate.html">onTeamMemberUpdate</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  群成员资料变动观察者通知。群成员资料变动时，会收到该通知
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="acceptInvite" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/acceptInvite.html">acceptInvite</a></span><span class="signature">(<wbr><span class="parameter" id="acceptInvite-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="acceptInvite-param-inviter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">inviter</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  接受别人的入群邀请
+  
+
+</dd>
+
+        <dt id="addManagers" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/addManagers.html">addManagers</a></span><span class="signature">(<wbr><span class="parameter" id="addManagers-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="addManagers-param-accounts"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accounts</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  群主添加管理员
+仅群主有此权限
+teamId   群ID
+accounts 待提升为管理员的用户帐号列表
+Future 可以设置回调函数,如果成功，参数为新增的群管理员列表
+  
+
+</dd>
+
+        <dt id="addMembersEx" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/addMembersEx.html">addMembersEx</a></span><span class="signature">(<wbr><span class="parameter" id="addMembersEx-param-teamId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="addMembersEx-param-accounts"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accounts</span>, </span><span class="parameter" id="addMembersEx-param-msg"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">msg</span>, </span><span class="parameter" id="addMembersEx-param-customInfo"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">customInfo</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加成员并设置自定义字段
+teamId	群组ID
+accounts	待加入的群成员帐号列表
+msg	邀请附言 ，不需要的话设置为空
+customInfo	自定义扩展字段，不需要的话设置为空
+  
+
+</dd>
+
+        <dt id="applyJoinTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/applyJoinTeam.html">applyJoinTeam</a></span><span class="signature">(<wbr><span class="parameter" id="applyJoinTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="applyJoinTeam-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">postscript</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  用户申请加入群。
+teamId 申请加入的群ID
+postscript 申请附言
+  
+
+</dd>
+
+        <dt id="createTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/createTeam.html">createTeam</a></span><span class="signature">(<wbr><span class="parameter" id="createTeam-param-createTeamOptions">{<span>required</span> <span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCreateTeamOptions-class.html">NIMCreateTeamOptions</a></span> <span class="parameter-name">createTeamOptions</span>, </span><span class="parameter" id="createTeam-param-members"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">members</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMCreateTeamResult-class.html">NIMCreateTeamResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  创建一个群组
+云信群组分为两类：普通群和高级群，两种群组的消息功能都是相同的，区别在于管理功能。普通群所有人都可以拉人入群，除群主外，其他人都不能踢人；
+高级群则拥有完善的成员权限体系及管理功能。创建群的接口相同，传入不同的类型参数即可。
+  
+
+</dd>
+
+        <dt id="declineInvite" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/declineInvite.html">declineInvite</a></span><span class="signature">(<wbr><span class="parameter" id="declineInvite-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="declineInvite-param-inviter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">inviter</span>, </span><span class="parameter" id="declineInvite-param-reason"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">reason</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  拒绝入群邀请
+<code>teamId</code> 群组ID
+<code>inviter</code> 邀请我的用户帐号
+<code>reason</code>  拒绝理由，长度不得超过5000
+  
+
+</dd>
+
+        <dt id="dismissTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/dismissTeam.html">dismissTeam</a></span><span class="signature">(<wbr><span class="parameter" id="dismissTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  解散群，只有群主有此权限
+可以设置回调函数，监听操作结果
+  
+
+</dd>
+
+        <dt id="getMemberInvitor" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/getMemberInvitor.html">getMemberInvitor</a></span><span class="signature">(<wbr><span class="parameter" id="getMemberInvitor-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="getMemberInvitor-param-accids"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accids</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取群成员入群邀请人（为空表示主动入群，没有邀请人）
+teamId
+accids 查询用户accid列表，最多两百
+返回用户的对应关系，key为accid value是inviteAccid
+  
+
+</dd>
+
+        <dt id="muteAllTeamMember" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/muteAllTeamMember.html">muteAllTeamMember</a></span><span class="signature">(<wbr><span class="parameter" id="muteAllTeamMember-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="muteAllTeamMember-param-mute"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mute</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  对整个群禁言、解除禁言，对普通成员生效，只有群组、管理员有权限
+teamId 群组 ID
+mute   true表示禁言，false表示解除禁言
+  
+
+</dd>
+
+        <dt id="muteTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/muteTeam.html">muteTeam</a></span><span class="signature">(<wbr><span class="parameter" id="muteTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="muteTeam-param-notifyType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMessageNotifyTypeEnum.html">NIMTeamMessageNotifyTypeEnum</a></span> <span class="parameter-name">notifyType</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  设置指定群消息通知类型，支持多端同步
+notifyType   通知类型枚举
+  
+
+</dd>
+
+        <dt id="muteTeamMember" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/muteTeamMember.html">muteTeamMember</a></span><span class="signature">(<wbr><span class="parameter" id="muteTeamMember-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="muteTeamMember-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="muteTeamMember-param-mute"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mute</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  禁言、解除禁言
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="passApply" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/passApply.html">passApply</a></span><span class="signature">(<wbr><span class="parameter" id="passApply-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="passApply-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  通过用户的入群申请
+仅管理员和群主有此权限
+  
+
+</dd>
+
+        <dt id="queryMemberList" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/queryMemberList.html">queryMemberList</a></span><span class="signature">(<wbr><span class="parameter" id="queryMemberList-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取指定群的成员信息列表. <br>
+该操作有可能只是从本地数据库读取缓存数据，也有可能会从服务器同步新的数据, 因此耗时可能会比较长。
+teamId 群ID
+可以设置回调函数，如果成功，参数为群的成员信息列表
+  
+
+</dd>
+
+        <dt id="queryMutedTeamMembers" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/queryMutedTeamMembers.html">queryMutedTeamMembers</a></span><span class="signature">(<wbr><span class="parameter" id="queryMutedTeamMembers-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询被禁言群成员列表
+该操作，只返回调用TeamService#muteTeamMember(String, String, boolean) 禁言的用户。
+teamId    群ID
+群成员信息列表
+  
+
+</dd>
+
+        <dt id="queryTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/queryTeam.html">queryTeam</a></span><span class="signature">(<wbr><span class="parameter" id="queryTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询群资料，如果本地没有群组资料，则去服务器查询。
+如果自己不在这个群中，该接口返回的可能是过期资料，如需最新的，请调用{@link #searchTeam(String)}接口
+<code>teamId</code> 群ID
+  
+
+</dd>
+
+        <dt id="queryTeamList" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/queryTeamList.html">queryTeamList</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从本地获取所有群组
+获取自己加入的群的列表
+可以设置回调函数，如果成功，参数为自己加入的群的列表
+  
+
+</dd>
+
+        <dt id="queryTeamMember" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/queryTeamMember.html">queryTeamMember</a></span><span class="signature">(<wbr><span class="parameter" id="queryTeamMember-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="queryTeamMember-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询群成员资料。如果本地群成员资料已过期会去服务器获取最新的。
+<code>teamId</code>  群ID
+<code>account</code> 群成员帐号
+  
+
+</dd>
+
+        <dt id="quitTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/quitTeam.html">quitTeam</a></span><span class="signature">(<wbr><span class="parameter" id="quitTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  退出群
+teamId 群ID
+  
+
+</dd>
+
+        <dt id="rejectApply" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/rejectApply.html">rejectApply</a></span><span class="signature">(<wbr><span class="parameter" id="rejectApply-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="rejectApply-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="rejectApply-param-reason"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">reason</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  拒绝用户的入群申请
+仅管理员和拥有者有此权限
+  
+
+</dd>
+
+        <dt id="removeManagers" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/removeManagers.html">removeManagers</a></span><span class="signature">(<wbr><span class="parameter" id="removeManagers-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="removeManagers-param-managers"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">managers</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  群主撤销管理员权限
+仅群主有此权限
+teamId   群ID
+managers 待撤销的管理员的帐号列表
+可以设置回调函数，如果成功，参数为被撤销的群成员列表(权限已被降为Normal)。
+  
+
+</dd>
+
+        <dt id="removeMembers" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/removeMembers.html">removeMembers</a></span><span class="signature">(<wbr><span class="parameter" id="removeMembers-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="removeMembers-param-members"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">members</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  移除成员，只有创建者有此权限
+  
+
+</dd>
+
+        <dt id="searchTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/searchTeam.html">searchTeam</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从服务器上查询群资料信息
+teamId 群ID
+  
+
+</dd>
+
+        <dt id="searchTeamIdByName" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/searchTeamIdByName.html">searchTeamIdByName</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeamIdByName-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  通过群名称反查群组ID
+name 群组名称
+群ID列表
+  
+
+</dd>
+
+        <dt id="searchTeamsByKeyword" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/searchTeamsByKeyword.html">searchTeamsByKeyword</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeamsByKeyword-param-keyword"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">keyword</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  用户在客户端本地可以搜索与关键字匹配的所有群：
+通过群名称反查群组ID
+name 群组名称
+群ID列表
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="transferTeam" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/transferTeam.html">transferTeam</a></span><span class="signature">(<wbr><span class="parameter" id="transferTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="transferTeam-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="transferTeam-param-quit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">quit</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  群主将群的群主权限转给另外一个人，转移后，另外一个人成为群主。
+原群主变成普通成员。若参数quit为true，原群主直接退出该群。
+InvocationFuture 可以设置回调函数，如果成功，视参数quit值：
+quit为false：参数仅包含原群主和当前群主的(即操作者和account)，权限已被更新。
+quit为true: 参数为空。
+  
+
+</dd>
+
+        <dt id="updateMemberNick" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/updateMemberNick.html">updateMemberNick</a></span><span class="signature">(<wbr><span class="parameter" id="updateMemberNick-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateMemberNick-param-account"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">account</span>, </span><span class="parameter" id="updateMemberNick-param-nick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">nick</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  群组管理员修改群内其他成员的群昵称。
+仅群管理员和群主有此权限
+<code>teamId</code>  所在群组ID
+<code>account</code> 要修改的群成员帐号
+<code>nick</code>    新的群昵称
+  
+
+</dd>
+
+        <dt id="updateMyMemberExtension" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/updateMyMemberExtension.html">updateMyMemberExtension</a></span><span class="signature">(<wbr><span class="parameter" id="updateMyMemberExtension-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateMyMemberExtension-param-extension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span></span> <span class="parameter-name">extension</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  修改自己的群成员扩展字段（自定义属性）
+teamId    所在群组ID
+extension 新的扩展字段（自定义属性）
+  
+
+</dd>
+
+        <dt id="updateMyTeamNick" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/updateMyTeamNick.html">updateMyTeamNick</a></span><span class="signature">(<wbr><span class="parameter" id="updateMyTeamNick-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateMyTeamNick-param-nick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">nick</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  修改自己的群昵称
+  
+
+</dd>
+
+        <dt id="updateTeamFields" class="callable">
+  <span class="name"><a href="../nim_core/TeamService/updateTeamFields.html">updateTeamFields</a></span><span class="signature">(<wbr><span class="parameter" id="updateTeamFields-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateTeamFields-param-request"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMTeamUpdateFieldRequest-class.html">NIMTeamUpdateFieldRequest</a></span> <span class="parameter-name">request</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_platform_interface/1.7.7/nim_core_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  批量更新群组资料，可一次性更新多个字段的值。
+teamId    群ID
+request 需要更新的属性及其值
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core</a></li>
+    <li><a href="../nim_core/nim_core-library.html">nim_core</a></li>
+    <li class="self-crumb">TeamService class</li>
+</ol>
+
+
+    <h5>nim_core library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    nim_core
+      1.7.7
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
