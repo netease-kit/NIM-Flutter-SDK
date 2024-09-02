@@ -1,4 +1,10 @@
-import { successRes, failRes, emit } from '../utils'
+import {
+  successRes,
+  failRes,
+  emit,
+  NIMAIModelRoleType,
+  formatAIModelRoleType,
+} from '../utils'
 import { NIMResult } from '../types'
 import RootService from './rootService'
 import { logger } from '../logger'
@@ -6,6 +12,7 @@ import { createLoggerDecorator } from '@xkit-yx/utils'
 import V2NIM from 'nim-web-sdk-ng'
 import { V2NIMError } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/types'
 import {
+  V2NIMAIModelCallMessage,
   V2NIMAIModelCallResponse,
   V2NIMAIUser,
   V2NIMProxyAIModelCallParams,
@@ -38,11 +45,23 @@ class AIService {
 
   @loggerDec
   async proxyAIModelCall(params: {
-    params: V2NIMProxyAIModelCallParams
+    params: Omit<V2NIMProxyAIModelCallParams, 'messages'> & {
+      messages?: (Omit<V2NIMAIModelCallMessage, 'role'> & {
+        role: NIMAIModelRoleType
+      })[]
+    }
   }): Promise<NIMResult<void>> {
     try {
       return successRes(
-        await this.nim.V2NIMAIService.proxyAIModelCall(params.params)
+        await this.nim.V2NIMAIService.proxyAIModelCall({
+          ...params.params,
+          messages: params.params.messages?.length
+            ? params.params.messages.map((item) => ({
+                ...item,
+                role: formatAIModelRoleType(item.role),
+              }))
+            : void 0,
+        })
       )
     } catch (error) {
       throw failRes(error as V2NIMError)

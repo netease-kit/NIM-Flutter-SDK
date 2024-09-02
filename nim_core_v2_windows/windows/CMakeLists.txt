@@ -19,7 +19,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/include")
 link_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/lib/x64/${CMAKE_BUILD_TYPE}")
 
 # nim_sdk
-set(NIM_SDK_URL "https://yx-nosdn.chatnos.com/package/1720090578526/nim-win32-x64-10-3-0-2553-build-2562014.tar.gz?download=nim-win32-x64-10-3-0-2553-build-2562014.tar.gz")
+set(NIM_SDK_URL "https://yx-nosdn.chatnos.com/package/1724219651040/nim-win32-x64-10-4-0-2924-build-2659156.tar.gz?download=nim-win32-x64-10-4-0-2924-build-2659156.tar.gz")
 set(SPLIT "download=")
 string(LENGTH ${SPLIT} SPLIT_LENGTH)
 string(LENGTH ${NIM_SDK_URL} NIM_SDK_URL_LENGTH)

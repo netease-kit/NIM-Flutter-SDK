@@ -95,7 +95,7 @@ flutter::EncodableMap convertTeamMessageReadReceipt(
 flutter::EncodableMap convertTeamMessageReadReceiptDetail(
     const v2::V2NIMTeamMessageReadReceiptDetail object);
 flutter::EncodableMap convertThreadMessageListOption(
-    const v2::V2NIMTheadMessageListOption object);
+    const v2::V2NIMThreadMessageListOption object);
 flutter::EncodableMap convertThreadMessageListResult(
     const v2::V2NIMThreadMessageListResult object);
 flutter::EncodableMap convertVoiceToTextParams(
@@ -192,7 +192,7 @@ v2::V2NIMTeamMessageReadReceipt getTeamMessageReadReceipt(
     const flutter::EncodableMap* arguments);
 v2::V2NIMTeamMessageReadReceiptDetail getTeamMessageReadReceiptDetail(
     const flutter::EncodableMap* arguments);
-v2::V2NIMTheadMessageListOption getThreadMessageListOption(
+v2::V2NIMThreadMessageListOption getThreadMessageListOption(
     const flutter::EncodableMap* arguments);
 v2::V2NIMThreadMessageListResult getThreadMessageListResult(
     const flutter::EncodableMap* arguments);

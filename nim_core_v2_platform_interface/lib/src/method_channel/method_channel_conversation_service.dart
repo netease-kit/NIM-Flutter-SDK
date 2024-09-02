@@ -232,7 +232,7 @@ class MethodChannelConversationService extends ConversationServicePlatform {
         convert: (json) =>
             (json['conversationOperationResult'] as List<dynamic>?)
                 ?.map((e) => NIMConversationOperationResult.fromJson(
-                    (e as Map).cast<String, dynamic>()))
+                    Map<String, dynamic>.from(e)))
                 .toList());
   }
 

@@ -18,7 +18,7 @@ A Flutter plugin for NetEase IM SDK on Android and iOS.
   s.dependency 'NIMSDK_LITE/FCS', '10.4.0-beta'
   s.dependency 'YXAlog'
   s.platform = :ios, '11.0'
-
+  s.public_header_files = 'Classes/**/*.h'
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = {
             'DEFINES_MODULE' => 'YES',

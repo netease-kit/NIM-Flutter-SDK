@@ -19,7 +19,7 @@ class MethodChannelAPNSService extends APNSServicePlatform {
   }
 
   @override
-  String get serviceName => "UserService";
+  String get serviceName => "APNSService";
 
   Future<NIMResult<void>> updateApnsToken(Uint8List token) async {
     return NIMResult.fromMap(

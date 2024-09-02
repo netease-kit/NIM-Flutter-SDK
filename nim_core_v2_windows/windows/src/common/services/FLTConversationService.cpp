@@ -456,7 +456,34 @@ void FLTConversationService::stickTopConversation(
 }
 void FLTConversationService::updateConversation(
     const flutter::EncodableMap* arguments,
-    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {}
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  std::string conversationId;
+  std::string serverExt;
+  flutter::EncodableMap updateInfo;
+  auto iter = arguments->find(flutter::EncodableValue("conversationId"));
+  if (iter != arguments->end()) {
+    conversationId = std::get<std::string>(iter->second);
+  }
+  auto iter2 = arguments->find(flutter::EncodableValue("updateInfo"));
+  if (iter2 != arguments->end()) {
+    updateInfo = std::get<flutter::EncodableMap>(iter2->second);
+  }
+  auto iter3 = updateInfo.find(flutter::EncodableValue("serverExtension"));
+  if (iter3 != updateInfo.end()) {
+    serverExt = std::get<std::string>(iter3->second);
+  }
+  v2::V2NIMConversationUpdate updateParam;
+  updateParam.serverExtension = serverExt;
+  auto& client = v2::V2NIMClient::get();
+  auto& conversationService = client.getConversationService();
+  conversationService.updateConversation(
+      conversationId, updateParam,
+      [=]() { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
 
 void FLTConversationService::updateConversationLocalExtension(
     const flutter::EncodableMap* arguments,
@@ -518,7 +545,24 @@ void FLTConversationService::getUnreadCountByIds(
 
 void FLTConversationService::getUnreadCountByFilter(
     const flutter::EncodableMap* arguments,
-    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {}
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto filterIter = arguments->find(flutter::EncodableValue("filter"));
+  v2::V2NIMConversationFilter filter;
+  filter = createConversationFilterFromMap(arguments);
+
+  auto& client = v2::V2NIMClient::get();
+  auto& conversationService = client.getConversationService();
+  conversationService.getUnreadCountByFilter(
+      filter,
+      [=](const int unreadCount) {
+        result->Success(
+            NimResult::getSuccessResult(static_cast<int64_t>(unreadCount)));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
 
 void FLTConversationService::clearTotalUnreadCount(
     const flutter::EncodableMap* arguments,
@@ -626,9 +670,10 @@ void FLTConversationService::subscribeUnreadCountByFilter(
   auto filterIter = arguments->find(flutter::EncodableValue("filter"));
   v2::V2NIMConversationFilter filter;
   if (filterIter != arguments->end()) {
-    auto filterParam = std::get<flutter::EncodableMap>(filterIter->second);
+    flutter::EncodableMap filterParam =
+        std::get<flutter::EncodableMap>(filterIter->second);
+    filter = createConversationFilterFromMap(&filterParam);
   }
-  filter = createConversationFilterFromMap(arguments);
 
   auto& client = v2::V2NIMClient::get();
   auto& conversationService = client.getConversationService();
@@ -648,9 +693,10 @@ void FLTConversationService::unsubscribeUnreadCountByFilter(
   auto filterIter = arguments->find(flutter::EncodableValue("filter"));
   v2::V2NIMConversationFilter filter;
   if (filterIter != arguments->end()) {
-    auto filterParam = std::get<flutter::EncodableMap>(filterIter->second);
+    flutter::EncodableMap filterParam =
+        std::get<flutter::EncodableMap>(filterIter->second);
+    filter = createConversationFilterFromMap(&filterParam);
   }
-  filter = createConversationFilterFromMap(arguments);
 
   auto& client = v2::V2NIMClient::get();
   auto& conversationService = client.getConversationService();

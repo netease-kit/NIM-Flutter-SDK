@@ -47,7 +47,7 @@ class V2FLTSettingsService : public FLTService {
   void setP2PMessageMuteMode(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
-  void setPushMobileOnDesktopOnlineState(
+  void setPushMobileOnDesktopOnline(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
   void setTeamMessageMuteMode(

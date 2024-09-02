@@ -176,7 +176,7 @@ void FLTMessageCreator::createVideoMessage(
     }
   }
   auto message = v2::V2NIMMessageCreator::createVideoMessage(
-      videoPath, name, sceneName, width, height, duration);
+      videoPath, name, sceneName, duration, width, height);
   if (!message) {
     result->Error("", "createVideoMessage failed",
                   NimResult::getErrorResult(MESSAGE_BUILD_ERROR,

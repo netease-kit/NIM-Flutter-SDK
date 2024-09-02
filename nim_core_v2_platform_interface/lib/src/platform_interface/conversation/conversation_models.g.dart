@@ -197,9 +197,7 @@ NIMConversationOperationResult _$NIMConversationOperationResultFromJson(
         Map<String, dynamic> json) =>
     NIMConversationOperationResult(
       conversationId: json['conversationId'] as String?,
-      error: json['error'] == null
-          ? null
-          : NIMError.fromJson(json['error'] as Map<String, dynamic>),
+      error: _nimErrorFromJson(json['error'] as Map?),
     );
 
 Map<String, dynamic> _$NIMConversationOperationResultToJson(

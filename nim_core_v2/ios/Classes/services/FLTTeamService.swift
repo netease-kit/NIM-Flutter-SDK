@@ -35,6 +35,8 @@ enum V2TeamNameType: String {
   case searchTeamMembers
 }
 
+let teamClassName = "FLTTeamService"
+
 class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
   override func onInitialized() {
     NIMSDK.shared().v2TeamService.add(self)
@@ -63,6 +65,7 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
 
   /// 创建群
   public func createTeam(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "createTeam argument \(arguments)")
     guard let createTeamParamsArguments = arguments["createTeamParams"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -93,11 +96,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, resut.toDictionary(), resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "createTeam error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 更新群信息
   public func updateTeamInfo(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "updateTeamInfo argument \(arguments)")
+
     guard let updateTeamInfoParamsArguments = arguments["updateTeamInfoParams"] as? [String: Any], let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       parameterError(resultCallback)
 
@@ -118,17 +124,21 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "updateTeamInfo error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 退出群
   public func leaveTeam(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "leaveTeam argument \(arguments)")
+
     if let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) {
       weak var weakSelf = self
       NIMSDK.shared().v2TeamService.leaveTeam(teamId, teamType: teamType) {
         weakSelf?.teamCallback(nil, nil, resultCallback)
       } failure: { error in
         weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+        FLTALog.errorLog(teamClassName, desc: "leaveTeam error \(error.nserror.localizedDescription)")
       }
     } else {
       parameterError(resultCallback)
@@ -137,6 +147,8 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
 
   /// 获取群信息
   public func getTeamInfo(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getTeamInfo argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       parameterError(resultCallback)
 
@@ -146,12 +158,16 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
     NIMSDK.shared().v2TeamService.getTeamInfo(teamId, teamType: teamType) { team in
       weakSelf?.teamCallback(nil, team.toDictionary(), resultCallback)
     } failure: { error in
+
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getTeamInfo error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 批量获取群信息
   public func getTeamInfoByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getTeamInfoByIds argument \(arguments)")
+
     guard let teamIds = arguments["teamIds"] as? [String], let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       parameterError(resultCallback)
 
@@ -162,17 +178,21 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, ["teamList": teams.map { $0.toDictionary() }], resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getTeamInfoByIds error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 解散群
   public func dismissTeam(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "dismissTeam argument \(arguments)")
+
     if let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) {
       weak var weakSelf = self
       NIMSDK.shared().v2TeamService.dismissTeam(teamId, teamType: teamType) {
         weakSelf?.teamCallback(nil, nil, resultCallback)
       } failure: { error in
         weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+        FLTALog.errorLog(teamClassName, desc: "dismissTeam error \(error.nserror.localizedDescription)")
       }
     } else {
       parameterError(resultCallback)
@@ -181,6 +201,8 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
 
   /// 邀请成员
   public func inviteMember(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "inviteMember argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let inviteeAccountIds = arguments["inviteeAccountIds"] as? [String], let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       return
     }
@@ -193,11 +215,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, ["failedList": failedList], resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "inviteMember error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 接受邀请
   public func acceptInvitation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "acceptInvitation argument \(arguments)")
+
     guard let invitationInfoParam = arguments["invitationInfo"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -211,11 +236,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, team.toDictionary(), resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "acceptInvitation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 拒绝邀请
   public func rejectInvitation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "rejectInvitation argument \(arguments)")
+
     guard let invitationInfoParam = arguments["invitationInfo"] as? [String: Any] else {
       return
     }
@@ -234,11 +262,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "rejectInvitation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 踢人
   public func kickMember(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "kickMember argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let accountIds = arguments["memberAccountIds"] as? [String] else {
       return
     }
@@ -248,11 +279,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "kickMember error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 申请加入群
   public func applyJoinTeam(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "applyJoinTeam argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       return
     }
@@ -263,11 +297,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, team.toDictionary(), resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "applyJoinTeam error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 同意入群申请
   public func acceptJoinApplication(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "acceptJoinApplication argument \(arguments)")
+
     guard let acceptJoinApplicationParam = arguments["joinInfo"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -281,11 +318,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "acceptJoinApplication error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 拒绝入群申请
   public func rejectJoinApplication(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "rejectJoinApplication argument \(arguments)")
+
     guard let rejectJoinParamAgruments = arguments["joinInfo"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -301,11 +341,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "rejectJoinApplication error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 更新群成员角色
   public func updateTeamMemberRole(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "updateTeamMemberRole argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let memberAccountIds = arguments["memberAccountIds"] as? [String], let memberRole = arguments["memberRole"] as? Int, let memberRole = V2NIMTeamMemberRole(rawValue: memberRole) else {
       parameterError(resultCallback)
       return
@@ -317,11 +360,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "updateTeamMemberRole error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 转让群主
   public func transferTeamOwner(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "transferTeamOwner argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let accountId = arguments["accountId"] as? String, let leave = arguments["leave"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -331,12 +377,16 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
     NIMSDK.shared().v2TeamService.transferTeamOwner(teamId, teamType: teamType, accountId: accountId, leave: leave) {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
+
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "transferTeamOwner error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 更新自己的群成员信息
   public func updateSelfTeamMemberInfo(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "updateSelfTeamMemberInfo argument \(arguments)")
+
     guard let memberInfoParamsArguments = arguments["memberInfoParams"] as? [String: Any], let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       return
     }
@@ -353,11 +403,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "updateSelfTeamMemberInfo error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 更新群成员昵称
   public func updateTeamMemberNick(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "updateTeamMemberNick argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let accountId = arguments["accountId"] as? String, let teamNick = arguments["teamNick"] as? String else {
       parameterError(resultCallback)
       return
@@ -367,11 +420,15 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     }, failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "updateTeamMemberNick error \(error.nserror.localizedDescription)")
+
     })
   }
 
   /// 设置群聊禁言模式
   public func setTeamChatBannedMode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "setTeamChatBannedMode argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let chatBannedMode = arguments["chatBannedMode"] as? Int, let chatBannedMode = V2NIMTeamChatBannedMode(rawValue: chatBannedMode) else {
       parameterError(resultCallback)
       return
@@ -382,11 +439,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "setTeamChatBannedMode error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 设置群成员禁言状态
   public func setTeamMemberChatBannedStatus(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "teamClassName argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let accountId = arguments["accountId"] as? String, let chatBannedStatus = arguments["chatBanned"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -397,11 +457,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "setTeamMemberChatBannedStatus error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取已加入的群列表
   public func getJoinedTeamList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getJoinedTeamList argument \(arguments)")
+
     guard let teamTypes = arguments["teamTypes"] as? [NSNumber] else {
       parameterError(resultCallback)
       return
@@ -414,11 +477,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       }], resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getJoinedTeamList error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取已加入的群数量
   public func getJoinedTeamCount(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getJoinedTeamCount argument \(arguments)")
+
     guard let teamTypes = arguments["teamTypes"] as? [NSNumber] else {
       parameterError(resultCallback)
       return
@@ -431,6 +497,8 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
 
   /// 获取群成员列表
   public func getTeamMemberList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getTeamMemberList argument \(arguments)")
+
     guard let queryOption = arguments["queryOption"] as? [String: Any], let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) else {
       parameterError(resultCallback)
       return
@@ -444,11 +512,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, result.toDictionary(), resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getTeamMemberList error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 批量获取群成员列表
   public func getTeamMemberListByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getTeamMemberListByIds argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let accountIds = arguments["accountIds"] as? [String] else {
       parameterError(resultCallback)
       return
@@ -459,11 +530,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, ["memberList": members.map { $0.toDictionary() }], resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getTeamMemberListByIds error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取群成员邀请者
   public func getTeamMemberInvitor(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getTeamMemberInvitor argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamType = V2NIMTeamType(rawValue: teamType), let accountIds = arguments["accountIds"] as? [String] else {
       parameterError(resultCallback)
       return
@@ -473,11 +547,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, result, resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getTeamMemberInvitor error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取群入群申请列表
   public func getTeamJoinActionInfoList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "getTeamJoinActionInfoList argument \(arguments)")
+
     guard let queryOptionParam = arguments["queryOption"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -502,11 +579,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, result.toDictionary(), resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "getTeamJoinActionInfoList error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 搜索群
   public func searchTeamByKeyword(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "searchTeamByKeyword argument \(arguments)")
+
     guard let keyword = arguments["keyword"] as? String else {
       parameterError(resultCallback)
       return
@@ -518,11 +598,14 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       }], resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "searchTeamByKeyword error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 搜索群成员
   public func searchTeamMembers(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(teamClassName, desc: "searchTeamMembers argument \(arguments)")
+
     guard let searchOptionArguments = arguments["searchOption"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -559,6 +642,7 @@ class FLTTeamService: FLTBaseService, FLTService, V2NIMTeamListener {
       weakSelf?.teamCallback(nil, result.toDictionary(), resultCallback)
     } failure: { error in
       weakSelf?.teamCallback(error.nserror, nil, resultCallback)
+      FLTALog.errorLog(teamClassName, desc: "searchTeamMembers error \(error.nserror.localizedDescription)")
     }
   }
 

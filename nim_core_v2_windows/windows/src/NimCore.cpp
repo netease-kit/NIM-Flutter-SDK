@@ -10,6 +10,7 @@
 #include <flutter/standard_method_codec.h>
 
 #include "FLTConvert.h"
+#include "common/services/FLTAIService.h"
 #include "common/services/FLTConversationIdUtil.h"
 #include "common/services/FLTConversationService.h"
 #include "common/services/FLTFriendService.h"
@@ -17,6 +18,8 @@
 #include "common/services/FLTLoginService.h"
 #include "common/services/FLTMessageCreator.h"
 #include "common/services/FLTMessageService.h"
+#include "common/services/FLTNotificationService.h"
+#include "common/services/FLTStorageService.h"
 #include "common/services/V2FLTSettingsService.h"
 #include "common/services/V2FLTTeamService.h"
 #include "common/services/V2FLTUserService.h"
@@ -29,6 +32,9 @@ NimCore::~NimCore() {}
 
 void NimCore::regService() {
   addService(new FLTLoginService());
+  addService(new FLTAIService());
+  addService(new FLTNotificationService());
+  addService(new FLTStorageService());
   addService(new FLTMessageService());
   addService(new FLTConversationService());
   addService(new FLTConversationIdUtil());

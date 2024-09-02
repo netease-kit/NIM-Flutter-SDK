@@ -42,14 +42,11 @@ V2FLTTeamService::V2FLTTeamService() {
     convertV2NIMTeamToMap(arguments, team);
     notifyEvent("onTeamCreated", arguments);
   };
-  listener.onTeamDismissed = [=](nstd::vector<v2::V2NIMTeam> teams) {
+  listener.onTeamDismissed = [=](v2::V2NIMTeam team) {
     // team dismissed
-    flutter::EncodableMap result_map;
-    for (auto& team : teams) {
-      flutter::EncodableMap teamMap;
-      convertV2NIMTeamToMap(teamMap, team);
-      notifyEvent("onTeamDismissed", teamMap);
-    }
+    flutter::EncodableMap teamMap;
+    convertV2NIMTeamToMap(teamMap, team);
+    notifyEvent("onTeamDismissed", teamMap);
   };
   listener.onTeamJoined = [=](v2::V2NIMTeam team) {
     // team joined

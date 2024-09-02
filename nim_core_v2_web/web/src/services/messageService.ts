@@ -1,4 +1,11 @@
-import { successRes, failRes, emit, formatV2Message } from '../utils'
+import {
+  successRes,
+  failRes,
+  emit,
+  formatV2Message,
+  NIMAIModelRoleType,
+  formatAIModelRoleType,
+} from '../utils'
 import { NIMResult } from '../types'
 import RootService from './rootService'
 import { logger } from '../logger'
@@ -12,6 +19,7 @@ import {
   V2NIMCollection,
   V2NIMCollectionOption,
   V2NIMMessage,
+  V2NIMMessageAIConfigParams,
   V2NIMMessageDeletedNotification,
   V2NIMMessageListOption,
   V2NIMMessagePin,
@@ -33,6 +41,7 @@ import {
   V2NIMVoiceToTextParams,
 } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMMessageService'
 import { NOT_IMPLEMENTED_ERROR } from 'src/constants'
+import { V2NIMAIModelCallMessage } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMAIService'
 
 const TAG_NAME = 'MessageService'
 const loggerDec = createLoggerDecorator(TAG_NAME, logger)
@@ -224,7 +233,13 @@ class MessageService {
   async sendMessage(params: {
     message: V2NIMMessage
     conversationId: string
-    params?: V2NIMSendMessageParams
+    params?: Omit<V2NIMSendMessageParams, 'aiConfig'> & {
+      aiConfig?: Omit<V2NIMMessageAIConfigParams, 'messages'> & {
+        messages?: (Omit<V2NIMAIModelCallMessage, 'role'> & {
+          role: NIMAIModelRoleType
+        })[]
+      }
+    }
   }): Promise<NIMResult<V2NIMSendMessageResult>> {
     try {
       const messageClientId = params.message.messageClientId
@@ -234,11 +249,24 @@ class MessageService {
       const res = await this.nim.V2NIMMessageService.sendMessage(
         finalMsg,
         params.conversationId,
-        params.params,
+        {
+          ...params.params,
+          aiConfig: params.params?.aiConfig
+            ? {
+                ...params.params.aiConfig,
+                messages: params.params.aiConfig.messages?.length
+                  ? params.params.aiConfig.messages.map((item) => ({
+                      ...item,
+                      role: formatAIModelRoleType(item.role),
+                    }))
+                  : void 0,
+              }
+            : void 0,
+        },
         (percentage: number) => {
           emit('MessageService', 'onSendMessageProgress', {
             messageClientId: messageClientId,
-            percentage: percentage,
+            progress: percentage,
           })
         }
       )
@@ -263,7 +291,7 @@ class MessageService {
         (percentage: number) => {
           emit('MessageService', 'onSendMessageProgress', {
             messageClientId: params.message.messageClientId,
-            percentage: percentage,
+            progress: percentage,
           })
         }
       )
