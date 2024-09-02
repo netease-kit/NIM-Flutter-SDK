@@ -289,7 +289,8 @@ void FLTStorageService::downloadFile(
   storageService.downloadFile(
       url, filePath,
       [result](nstd::string path) {
-        result->Success(NimResult::getSuccessResult(path));
+        std::string pathStr = path;
+        result->Success(NimResult::getSuccessResult(pathStr));
       },
       [result](v2::V2NIMError error) {
         result->Error("", error.desc,

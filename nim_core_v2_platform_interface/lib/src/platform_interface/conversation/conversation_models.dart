@@ -218,12 +218,21 @@ class ReadTimeUpdateResult {
 @JsonSerializable(explicitToJson: true)
 class NIMConversationOperationResult {
   String? conversationId;
+  @JsonKey(fromJson: _nimErrorFromJson)
   NIMError? error;
   NIMConversationOperationResult({this.conversationId, this.error});
 
   Map<String, dynamic> toJson() => _$NIMConversationOperationResultToJson(this);
   factory NIMConversationOperationResult.fromJson(Map<String, dynamic> map) =>
       _$NIMConversationOperationResultFromJson(map);
+}
+
+NIMError? _nimErrorFromJson(Map? map) {
+  if (map != null) {
+    return NIMError.fromJson(map.cast<String, dynamic>());
+  } else {
+    return null;
+  }
 }
 
 @JsonSerializable(explicitToJson: true)

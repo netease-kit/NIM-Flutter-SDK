@@ -1,6 +1,6 @@
 name: nim_core_v2
 description: A Flutter plugin for NetEase IM SDK on Android, iOS and Windows.
-version: 10.3.0
+version: 10.3.1
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 # remove before publish
 #publish_to: none
@@ -13,17 +13,17 @@ dependencies:
   flutter:
     sdk: flutter
   nim_core_v2_platform_interface:
-     '>=10.3.0 <10.4.0'
-#    path: ../nim_core_v2_platform_interface
+#     '>=10.3.1 <10.4.0'
+    path: ../nim_core_v2_platform_interface
   nim_core_v2_windows:
-    '>=10.3.0 <10.4.0'
-#    path: ../nim_core_v2_windows
+#    '>=10.3.1 <10.4.0'
+    path: ../nim_core_v2_windows
   nim_core_v2_macos:
-    '>=10.3.0 <10.4.0'
-#    path: ../nim_core_v2_macos
+#    '>=10.3.1 <10.4.0'
+    path: ../nim_core_v2_macos
   nim_core_v2_web:
-    '>=10.3.0 <10.4.0'
-#     path: ../nim_core_v2_web
+#    '>=10.3.1 <10.4.0'
+     path: ../nim_core_v2_web
   path_provider: ^2.0.2
   # yunxin_base: ^0.1.0-rc.0
   universal_io: ^2.0.4
@@ -36,8 +36,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   permission_handler: ^10.0.0
-  hawk_source_gen:
-    path: ../../auto_test/hawk_source_gen
+  hawk_source_gen: ^0.0.1
+#    path: ../../auto_test/hawk_source_gen
   build_runner:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -66,53 +66,53 @@ class ConversationService {
       _platform.onConversationReadTimeUpdated;
 
   /// 获取会话列表
-  /// offset – 分页偏移，首次传0，后续拉取采用上一次返回的offset limit – 分页拉取数量，不建议超过100;
+  /// [offset] – 分页偏移，首次传0，后续拉取采用上一次返回的offset limit – 分页拉取数量，不建议超过100;
   Future<NIMResult<NIMConversationResult>> getConversationList(
       int offset, int limit) async {
     return _platform.getConversationList(offset, limit);
   }
 
   /// 根据查询参数获取会话列表
-  /// offset – 分页偏移，首次传0，后续拉取采用上一次返回的offset
-  /// limit – 分页拉取数量，不建议超过100;
-  /// option – 查询选项
+  /// [offset] – 分页偏移，首次传0，后续拉取采用上一次返回的offset
+  /// [limit] – 分页拉取数量，不建议超过100;
+  /// [option] – 查询选项
   Future<NIMResult<NIMConversationResult>> getConversationListByOption(
       int offset, int limit, NIMConversationOption option) async {
     return _platform.getConversationListByOption(offset, limit, option);
   }
 
   /// 获取会话列表，通过会话id
-  /// conversationId – 会话id
+  /// [conversationId] – 会话id
   Future<NIMResult<NIMConversation>> getConversation(
       String conversationId) async {
     return _platform.getConversation(conversationId);
   }
 
   /// 获取会话列表，通过会话id
-  /// conversationIds – 会话id列表
+  /// [conversationIds] – 会话id列表
   Future<NIMResult<List<NIMConversation>>> getConversationListByIds(
       List<String> conversationIds) async {
     return _platform.getConversationListByIds(conversationIds);
   }
 
   /// 创建会话
-  /// conversationId – 会话id
+  /// [conversationId] – 会话id
   Future<NIMResult<NIMConversation>> createConversation(
       String conversationId) async {
     return _platform.createConversation(conversationId);
   }
 
   /// 删除会话
-  /// conversationId – 会话id
-  /// clearMessage – 是否清除消息
+  /// [conversationId] – 会话id
+  /// [clearMessage] – 是否清除消息
   Future<NIMResult<void>> deleteConversation(
       String conversationId, bool clearMessage) async {
     return _platform.deleteConversation(conversationId, clearMessage);
   }
 
   /// 删除会话
-  /// conversationId – 会话id
-  /// clearMessage – 是否清除消息
+  /// [conversationId] – 会话id
+  /// [clearMessage] – 是否清除消息
   Future<NIMResult<List<NIMConversationOperationResult>>>
       deleteConversationListByIds(
           List<String> conversationIds, bool clearMessage) async {
@@ -120,24 +120,24 @@ class ConversationService {
   }
 
   /// 置顶会话
-  /// conversationId – 会话id
-  /// stickTop – 是否置顶
+  /// [conversationId] – 会话id
+  /// [stickTop] – 是否置顶
   Future<NIMResult<void>> stickTopConversation(
       String conversationId, bool stickTop) async {
     return _platform.stickTopConversation(conversationId, stickTop);
   }
 
   /// 更新会话
-  /// conversationId – 会话id
-  /// updateInfo – 更新信息
+  /// [conversationId] – 会话id
+  /// [updateInfo] – 更新信息
   Future<NIMResult<void>> updateConversation(
       String conversationId, NIMConversationUpdate updateInfo) async {
     return _platform.updateConversation(conversationId, updateInfo);
   }
 
   /// 更新会话本地扩展字段
-  /// conversationId – 会话id
-  /// localExtension – 本地扩展字段更新信息
+  /// [conversationId] – 会话id
+  /// [localExtension] – 本地扩展字段更新信息
   Future<NIMResult<void>> updateConversationLocalExtension(
       String conversationId, String localExtension) async {
     return _platform.updateConversationLocalExtension(
@@ -150,14 +150,14 @@ class ConversationService {
   }
 
   /// 根据会话id获取会话未读数
-  /// conversationIds – 会话id列表
+  /// [conversationIds] – 会话id列表
   Future<NIMResult<int>> getUnreadCountByIds(
       List<String> conversationIds) async {
     return _platform.getUnreadCountByIds(conversationIds);
   }
 
   /// 根据过滤条件获取相应的未读数
-  /// filter – 查询选项
+  /// [filter] – 查询选项
   Future<NIMResult<int>> getUnreadCountByFilter(
       NIMConversationFilter filter) async {
     return _platform.getUnreadCountByFilter(filter);
@@ -169,7 +169,7 @@ class ConversationService {
   }
 
   /// 根据会话id清空会话未读数
-  /// conversationIds – 会话id列表
+  /// [conversationIds] – 会话id列表
   Future<NIMResult<List<NIMConversationOperationResult>>> clearUnreadCountByIds(
       List<String> conversationIds) async {
     return _platform.clearUnreadCountByIds(conversationIds);
@@ -182,34 +182,34 @@ class ConversationService {
   // }
 
   /// 根据会话类型清空相应会话的未读数
-  /// groupId – 会话分组Id
+  /// [groupId] – 会话分组Id
   Future<NIMResult<void>> clearUnreadCountByTypes(
       List<NIMConversationType> conversationTypes) async {
     return _platform.clearUnreadCountByTypes(conversationTypes);
   }
 
   /// 订阅指定过滤条件的会话未读数
-  /// filter – 过滤条件
+  /// [filter] – 过滤条件
   Future<NIMResult<NIMError>> subscribeUnreadCountByFilter(
       NIMConversationFilter filter) async {
     return _platform.subscribeUnreadCountByFilter(filter);
   }
 
   /// 取消订阅指定过滤条件的会话未读数
-  /// filter – 过滤条件
+  /// [filter] – 过滤条件
   Future<NIMResult<NIMError>> unsubscribeUnreadCountByFilter(
       NIMConversationFilter filter) async {
     return _platform.unsubscribeUnreadCountByFilter(filter);
   }
 
   /// 获取会话已读时间戳 当前只支持P2P，高级群， 超大群
-  /// conversationId – 会话id
+  /// [conversationId] – 会话id
   Future<NIMResult<int>> getConversationReadTime(String conversationId) async {
     return _platform.getConversationReadTime(conversationId);
   }
 
   /// 更新会话已读时间戳
-  /// conversationId – 会话id
+  /// [conversationId] – 会话id
   Future<NIMResult<int>> markConversationRead(String conversationId) async {
     return _platform.markConversationRead(conversationId);
   }

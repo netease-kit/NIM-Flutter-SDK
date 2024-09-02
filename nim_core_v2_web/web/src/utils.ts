@@ -2,10 +2,9 @@ import { V2NIMError } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/types'
 import { logger } from './logger'
 import { NIMResult, ServiceName } from './types'
 import { V2NIMMessage } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMMessageService'
-import {
-  V2NIMConversation,
-  V2NIMLastMessage,
-} from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMConversationService'
+import { V2NIMConversation } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMConversationService'
+import { V2NIMAIModelRoleType } from 'nim-web-sdk-ng/dist/v2/NIM_BROWSER_SDK/V2NIMAIService'
+import { V2NIMConst } from 'nim-web-sdk-ng'
 
 export const successRes = <T>(data?: T): NIMResult<T> => {
   return {
@@ -50,6 +49,25 @@ export const formatV2ConversationLastMessage = (
             : void 0,
         }
       : void 0,
+  }
+}
+
+export const enum NIMAIModelRoleType {
+  system = 0,
+  user = 1,
+  assistant = 2,
+}
+
+export const formatAIModelRoleType = (
+  role: NIMAIModelRoleType
+): V2NIMAIModelRoleType => {
+  switch (role) {
+    case NIMAIModelRoleType.system:
+      return V2NIMConst.V2NIMAIModelRoleType.V2NIM_AI_MODEL_ROLE_TYPE_SYSTEM
+    case NIMAIModelRoleType.user:
+      return V2NIMConst.V2NIMAIModelRoleType.V2NIM_AI_MODEL_ROLE_TYPE_USER
+    case NIMAIModelRoleType.assistant:
+      return V2NIMConst.V2NIMAIModelRoleType.V2NIM_AI_MODEL_ROLE_TYPE_ASSISTANT
   }
 }
 

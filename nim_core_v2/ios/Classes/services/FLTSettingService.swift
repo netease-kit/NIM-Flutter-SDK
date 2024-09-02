@@ -17,6 +17,8 @@ enum V2SettingType: String {
   case getP2PMessageMuteList
 }
 
+let settingClassName = "FLTSettingsService"
+
 class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
   func serviceName() -> String {
     ServiceType.SettingService.rawValue
@@ -54,6 +56,8 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
   }
 
   public func getConversationMuteStatus(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "getConversationMuteStatus argument \(arguments)")
+
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -63,6 +67,8 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
   }
 
   public func getP2PMessageMuteMode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "getP2PMessageMuteMode argument \(arguments)")
+
     guard let accountId = arguments["accountId"] as? String else {
       parameterError(resultCallback)
       return
@@ -72,6 +78,8 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
   }
 
   public func getTeamMessageMuteMode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "getTeamMessageMuteMode argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let teamTypeEnum = V2NIMTeamType(rawValue: teamType) else {
       parameterError(resultCallback)
       return
@@ -81,6 +89,8 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
   }
 
   public func setDndConfig(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "setDndConfig argument \(arguments)")
+
     guard let config = arguments["config"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -109,10 +119,13 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(settingClassName, desc: "setDndConfig error \(error.nserror.localizedDescription)")
     }
   }
 
   public func setP2PMessageMuteMode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "setP2PMessageMuteMode argument \(arguments)")
+
     guard let accountId = arguments["accountId"] as? String, let muteMode = arguments["muteMode"] as? Int, let muteModeEnum = V2NIMP2PMessageMuteMode(rawValue: muteMode) else {
       parameterError(resultCallback)
       return
@@ -122,10 +135,13 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(settingClassName, desc: "setP2PMessageMuteMode error \(error.nserror.localizedDescription)")
     }
   }
 
   public func setPushMobileOnDesktopOnline(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "setPushMobileOnDesktopOnline argument \(arguments)")
+
     guard let need = arguments["need"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -135,10 +151,13 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(settingClassName, desc: "setPushMobileOnDesktopOnline error \(error.nserror.localizedDescription)")
     }
   }
 
   public func setTeamMessageMuteMode(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    FLTALog.infoLog(settingClassName, desc: "setTeamMessageMuteMode argument \(arguments)")
+
     guard let teamId = arguments["teamId"] as? String, let teamType = arguments["teamType"] as? Int, let muteMode = arguments["muteMode"] as? Int, let teamTypeEnum = V2NIMTeamType(rawValue: teamType), let muteModeEnum = V2NIMTeamMessageMuteMode(rawValue: muteMode) else {
       parameterError(resultCallback)
       return
@@ -148,13 +167,19 @@ class FLTSettingsService: FLTBaseService, FLTService, V2NIMSettingListener {
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(settingClassName, desc: "setTeamMessageMuteMode error \(error.nserror.localizedDescription)")
     }
   }
 
   public func getP2PMessageMuteList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     weak var weakSelf = self
+    FLTALog.infoLog(settingClassName, desc: "getP2PMessageMuteList argument \(arguments)")
+
     NIMSDK.shared().v2SettingService.getP2PMessageMuteList { muteList in
       weakSelf?.successCallBack(resultCallback, ["muteList": muteList])
+    } failure: { error in
+      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(settingClassName, desc: "getP2PMessageMuteList error \(error.nserror.localizedDescription)")
     }
   }
 

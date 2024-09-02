@@ -47,10 +47,12 @@ class ConversationUtil {
 
   @loggerDec
   async superTeamConversationId(params: {
-    teamId: string
+    superTeamId: string
   }): Promise<NIMResult<string>> {
     return successRes(
-      this.nim.V2NIMConversationIdUtil.superTeamConversationId(params.teamId)
+      this.nim.V2NIMConversationIdUtil.superTeamConversationId(
+        params.superTeamId
+      )
     )
   }
 

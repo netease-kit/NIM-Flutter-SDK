@@ -95,8 +95,8 @@ class NimCore {
 
   static const String tag = 'nim_core_v2';
   //todo 发版前记得处理此处的版本号，数据统计使用
-  static const int _versionCode = 1030;
-  static const String versionName = '10.3.0';
+  static const int _versionCode = 1031;
+  static const String versionName = '10.3.1';
   static const String _hash = '02566d6321d1d27669d9d369d2f525bc2cdaee10';
 
   bool _initialized = false;
@@ -141,6 +141,9 @@ class NimCore {
 
   ///AI 数字人服务
   final AiService aiService = AiService();
+
+  /// 推送
+  final APNSService apnsService = APNSService();
 
   /// 初始化云信 IM SDK
   ///

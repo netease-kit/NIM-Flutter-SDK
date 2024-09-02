@@ -1038,7 +1038,10 @@ void FLTMessageService::removeCollections(
   auto& messageService = instance.getMessageService();
   messageService.removeCollections(
       collections,
-      [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](uint32_t count) {
+        result->Success(
+            NimResult::getSuccessResult(static_cast<int64_t>(count)));
+      },
       [result](v2::V2NIMError error) {
         result->Error("", error.desc,
                       NimResult::getErrorResult(error.code, error.desc));
@@ -1492,7 +1495,7 @@ void FLTMessageService::getThreadMessageList(
     return;
   }
 
-  v2::V2NIMTheadMessageListOption option;
+  v2::V2NIMThreadMessageListOption option;
 
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
@@ -1776,9 +1779,10 @@ flutter::EncodableMap convertMessageAttachment(
         break;
       }
       default:
-        resultMap.insert(std::make_pair("raw", object->raw));
+        break;
     }
   }
+  resultMap.insert(std::make_pair("raw", object->raw));
   return resultMap;
 }
 
@@ -2322,7 +2326,7 @@ flutter::EncodableMap convertTeamMessageReadReceiptDetail(
 }
 
 flutter::EncodableMap convertThreadMessageListOption(
-    const v2::V2NIMTheadMessageListOption object) {
+    const v2::V2NIMThreadMessageListOption object) {
   flutter::EncodableMap resultMap;
   flutter::EncodableMap messageRefer = convertMessageRefer(object.messageRefer);
   resultMap.insert(std::make_pair("messageRefer", messageRefer));
@@ -3197,6 +3201,9 @@ v2::V2NIMMessageListOption getMessageListOption(
         messageTypes.emplace_back(v2::V2NIMMessageType(messageType));
       }
       object.messageTypes = messageTypes;
+    } else if (iter->first == flutter::EncodableValue("anchorMessage")) {
+      auto anchorMessageMap = std::get<flutter::EncodableMap>(iter->second);
+      object.anchorMessage = getMessage(&anchorMessageMap);
     }
   }
   return object;
@@ -3627,9 +3634,9 @@ v2::V2NIMTeamMessageReadReceiptDetail getTeamMessageReadReceiptDetail(
   return object;
 }
 
-v2::V2NIMTheadMessageListOption getThreadMessageListOption(
+v2::V2NIMThreadMessageListOption getThreadMessageListOption(
     const flutter::EncodableMap* arguments) {
-  v2::V2NIMTheadMessageListOption object;
+  v2::V2NIMThreadMessageListOption object;
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {

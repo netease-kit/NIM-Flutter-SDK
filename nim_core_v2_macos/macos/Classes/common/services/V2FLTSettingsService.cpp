@@ -47,10 +47,55 @@ V2FLTSettingsService::~V2FLTSettingsService() {
 
 void V2FLTSettingsService::getDndConfig(
     const flutter::EncodableMap* arguments,
-    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {}
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& client = v2::V2NIMClient::get();
+  auto& settingService = client.getSettingService();
+  v2::V2NIMDndConfig config = settingService.getDndConfig();
+  flutter::EncodableMap result_map;
+  result_map.insert(std::make_pair("showDetail", config.showDetail));
+  result_map.insert(std::make_pair("dndOn", config.dndOn));
+  result_map.insert(
+      std::make_pair("fromH", static_cast<int32_t>(config.fromH)));
+  result_map.insert(
+      std::make_pair("fromM", static_cast<int32_t>(config.fromM)));
+  result_map.insert(std::make_pair("toH", static_cast<int32_t>(config.toH)));
+  result_map.insert(std::make_pair("toM", static_cast<int32_t>(config.toM)));
+  result->Success(NimResult::getSuccessResult(result_map));
+}
 void V2FLTSettingsService::setDndConfig(
     const flutter::EncodableMap* arguments,
-    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {}
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  v2::V2NIMDndConfig config;
+  auto iter = arguments->find(flutter::EncodableValue("config"));
+  if (iter != arguments->end()) {
+    auto configinfo = std::get<flutter::EncodableMap>(iter->second);
+    auto configIter = configinfo.begin();
+    for (configIter; configIter != configinfo.end(); ++configIter) {
+      if (configIter->second.IsNull()) continue;
+      if (configIter->first == flutter::EncodableValue("showDetail")) {
+        config.showDetail = std::get<bool>(configIter->second);
+      } else if (configIter->first == flutter::EncodableValue("dndOn")) {
+        config.dndOn = std::get<bool>(configIter->second);
+      } else if (configIter->first == flutter::EncodableValue("fromH")) {
+        config.fromH = configIter->second.LongValue();
+      } else if (configIter->first == flutter::EncodableValue("fromM")) {
+        config.fromM = configIter->second.LongValue();
+      } else if (configIter->first == flutter::EncodableValue("toH")) {
+        config.toH = configIter->second.LongValue();
+      } else if (configIter->first == flutter::EncodableValue("toM")) {
+        config.toM = configIter->second.LongValue();
+      }
+    }
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& settingService = client.getSettingService();
+  settingService.setDndConfig(
+      config, [=]() { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
 void V2FLTSettingsService::getConversationMuteStatus(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
@@ -160,7 +205,7 @@ void V2FLTSettingsService::setP2PMessageMuteMode(
                       NimResult::getErrorResult(error.code, error.desc));
       });
 }
-void V2FLTSettingsService::setPushMobileOnDesktopOnlineState(
+void V2FLTSettingsService::setPushMobileOnDesktopOnline(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   bool need;
@@ -220,10 +265,14 @@ void V2FLTSettingsService::onMethodCalled(
     getTeamMessageMuteMode(arguments, result);
   } else if (method == "setP2PMessageMuteMode") {
     setP2PMessageMuteMode(arguments, result);
-  } else if (method == "setPushMobileOnDesktopOnlineState") {
-    setPushMobileOnDesktopOnlineState(arguments, result);
+  } else if (method == "setPushMobileOnDesktopOnline") {
+    setPushMobileOnDesktopOnline(arguments, result);
   } else if (method == "setTeamMessageMuteMode") {
     setTeamMessageMuteMode(arguments, result);
+  } else if (method == "setDndConfig") {
+    setDndConfig(arguments, result);
+  } else if (method == "getDndConfig") {
+    getDndConfig(arguments, result);
   } else {
     result->NotImplemented();
   }

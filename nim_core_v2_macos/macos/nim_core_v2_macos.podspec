@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   }
   s.prepare_command = <<-CMD
     cd ../
-    dart pub get
+    flutter pub get
     python3 ./scripts/build.py
                       CMD
 end

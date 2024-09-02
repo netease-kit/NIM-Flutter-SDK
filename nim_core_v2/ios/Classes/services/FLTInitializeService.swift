@@ -10,6 +10,8 @@ class FLTInitializeService: FLTService {
 
   var flutterVersionName: String?
 
+  var isInitLog = false
+
   func serviceName() -> String {
     ServiceType.LifeCycleService.rawValue
   }
@@ -29,6 +31,10 @@ class FLTInitializeService: FLTService {
   }
 
   private func initSDK(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    if isInitLog == false {
+      isInitLog = true
+      FLTALog.setUp()
+    }
     if let config = NIMSDKConfig.yx_model(with: arguments) {
       let keyPaths = NIMSDKConfig.getKeyPaths(NIMSDKConfig.self)
       for (key, value) in keyPaths {

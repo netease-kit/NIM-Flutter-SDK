@@ -635,17 +635,17 @@ class TeamService {
     emit('TeamService', 'onTeamMemberInfoUpdated', { memberList })
   }
 
-  private async _onTeamMemberJoined(data: V2NIMTeamMember[]) {
-    logger.log('_onTeamMemberJoined: ', data)
-    emit('TeamService', 'onTeamMemberJoined', data)
+  private async _onTeamMemberJoined(memberList: V2NIMTeamMember[]) {
+    logger.log('_onTeamMemberJoined: ', memberList)
+    emit('TeamService', 'onTeamMemberJoined', { memberList })
   }
 
   private async _onTeamMemberKicked(
-    operateAccountId: string,
+    operatorAccountId: string,
     memberList: V2NIMTeamMember[]
   ) {
-    logger.log('_onTeamMemberKicked: ', operateAccountId, memberList)
-    emit('TeamService', 'onTeamMemberKicked', { operateAccountId, memberList })
+    logger.log('_onTeamMemberKicked: ', operatorAccountId, memberList)
+    emit('TeamService', 'onTeamMemberKicked', { operatorAccountId, memberList })
   }
 
   private async _onTeamMemberLeft(memberList: V2NIMTeamMember[]) {

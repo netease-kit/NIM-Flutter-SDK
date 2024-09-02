@@ -11,9 +11,9 @@ import 'package:process_run/shell.dart';
 
 main() async {
   var url = Platform.isWindows
-      ? "https://yx-nosdn.chatnos.com/package/1720090578526/nim-win32-x64-10-3-0-2553-build-2562014.tar.gz?download=nim-win32-x64-10-3-0-2553-build-2562014.tar.gz"
+      ? "https://yx-nosdn.chatnos.com/package/1724219651040/nim-win32-x64-10-4-0-2924-build-2659156.tar.gz?download=nim-win32-x64-10-4-0-2924-build-2659156.tar.gz"
       : Platform.isMacOS
-          ? "https://yx-nosdn.chatnos.com/package/1720090546520/nim-darwin-x64-10-3-0-2553-build-2562014.tar.gz?download=nim-darwin-x64-10-3-0-2553-build-2562014.tar.gz"
+          ? "https://yx-nosdn.chatnos.com/package/1724219624715/nim-darwin-x64-10-4-0-2924-build-2659156.tar.gz?download=nim-darwin-x64-10-4-0-2924-build-2659156.tar.gz"
           : "";
   if (url.isEmpty) {
     print("[downloadSDK]: Platform not supported.");
