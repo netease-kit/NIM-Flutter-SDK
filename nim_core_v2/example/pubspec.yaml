@@ -42,8 +42,6 @@ dev_dependencies:
 #      url: ssh://git@g.hz.netease.com:22222/yunxin-app/xkit-flutter.git
 #      ref: lcd/release/hawk_ohos
 #      path: ./auto_test/hawk
-  hawk_source_gen:
-    path: ../../../auto_test/hawk_source_gen
   build_runner:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
