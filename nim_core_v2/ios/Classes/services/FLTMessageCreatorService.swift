@@ -72,8 +72,8 @@ class FLTMessageCreatorService: FLTBaseService, FLTService {
     }
 
     let name = arguments["name"] as? String
-    let sceneName = arguments["sceneName"] as? String
-
+    var sceneName = arguments["sceneName"] as? String
+    sceneName = sceneName ?? V2NIMStorageSceneConfig.default_IM().sceneName
     let message = V2NIMMessageCreator.createAudioMessage(path, name: name, sceneName: sceneName, duration: duration)
     successCallBack(resultCallback, message.toDict())
   }
@@ -85,7 +85,8 @@ class FLTMessageCreatorService: FLTBaseService, FLTService {
       return
     }
     let name = arguments["name"] as? String
-    let sceneName = arguments["sceneName"] as? String
+    var sceneName = arguments["sceneName"] as? String
+    sceneName = sceneName ?? V2NIMStorageSceneConfig.default_IM().sceneName
     let message = V2NIMMessageCreator.createImageMessage(imagePath, name: name, sceneName: sceneName, width: width, height: height)
     successCallBack(resultCallback, message.toDict())
   }
@@ -97,7 +98,8 @@ class FLTMessageCreatorService: FLTBaseService, FLTService {
       return
     }
     let name = arguments["name"] as? String
-    let sceneName = arguments["sceneName"] as? String
+    var sceneName = arguments["sceneName"] as? String
+    sceneName = sceneName ?? V2NIMStorageSceneConfig.default_IM().sceneName
     let message = V2NIMMessageCreator.createVideoMessage(videoPath, name: name, sceneName: sceneName, duration: duration, width: width, height: height)
     successCallBack(resultCallback, message.toDict())
   }
@@ -109,14 +111,17 @@ class FLTMessageCreatorService: FLTBaseService, FLTService {
       return
     }
     let name = arguments["name"] as? String
-    let sceneName = arguments["sceneName"] as? String
+    var sceneName = arguments["sceneName"] as? String
+    sceneName = sceneName ?? V2NIMStorageSceneConfig.default_IM().sceneName
     let message = V2NIMMessageCreator.createFileMessage(filePath, name: name, sceneName: sceneName)
     successCallBack(resultCallback, message.toDict())
   }
 
   /// 创建地理位置消息
   func createLocationMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    guard let latitude = arguments["latitude"] as? Double, let longitude = arguments["longitude"] as? Double, let address = arguments["address"] as? String else {
+    guard let latitude = arguments["latitude"] as? Double,
+          let longitude = arguments["longitude"] as? Double,
+          let address = arguments["address"] as? String else {
       parameterError(resultCallback)
       return
     }

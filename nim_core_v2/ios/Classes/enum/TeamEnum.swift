@@ -185,7 +185,7 @@ enum FLT_NIMTeamBeInviteMode: String {
   /// 不需要被邀请方同意
   case noAuth
 
-  public func convertNIMBeINviteMode() -> NIMTeamBeInviteMode {
+  func convertNIMBeINviteMode() -> NIMTeamBeInviteMode {
     switch self {
     case .needAuth:
       return .needAuth
@@ -214,7 +214,7 @@ enum FLT_NIMTeamUpdateInfoMode: String {
   /// 所有人可以修改
   case all
 
-  public func convertNIMUpdateMode() -> NIMTeamUpdateInfoMode {
+  func convertNIMUpdateMode() -> NIMTeamUpdateInfoMode {
     switch self {
     case .manager:
       return .manager

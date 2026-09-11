@@ -126,6 +126,12 @@ void FLTFriendService::onMethodCalled(
     setAddApplicationRead(arguments, result);
   } else if (method == "searchFriendByOption") {
     searchFriendByOption(arguments, result);
+  } else if (method == "clearAllAddApplication") {
+    clearAllAddApplication(arguments, result);
+  } else if (method == "clearAllAddApplicationEx") {
+    clearAllAddApplicationEx(arguments, result);
+  } else if (method == "deleteAddApplication") {
+    deleteAddApplication(arguments, result);
   }
 }
 
@@ -605,6 +611,84 @@ void FLTFriendService::searchFriendByOption(
         resultMap.insert(std::make_pair("friendList", resultList));
         result->Success(NimResult::getSuccessResult(resultMap));
       },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTFriendService::clearAllAddApplication(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& instance = v2::V2NIMClient::get();
+  auto& friendService = instance.getFriendService();
+  friendService.clearAllAddApplication(
+      [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+void FLTFriendService::clearAllAddApplicationEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& instance = v2::V2NIMClient::get();
+  auto& friendService = instance.getFriendService();
+  v2::V2NIMFriendClearAddApplicationOption option;
+  if (arguments) {
+    auto optionIter = arguments->find(flutter::EncodableValue("option"));
+    if (optionIter != arguments->end() && !optionIter->second.IsNull()) {
+      if (auto optionMap =
+              std::get_if<flutter::EncodableMap>(&optionIter->second)) {
+        // timestamp (milliseconds from Dart → seconds for native)
+        auto tsIter = optionMap->find(flutter::EncodableValue("timestamp"));
+        if (tsIter != optionMap->end() && !tsIter->second.IsNull()) {
+          if (auto tsVal = std::get_if<int64_t>(&tsIter->second)) {
+            option.timestamp = static_cast<double>(*tsVal) / 1000.0;
+          } else if (auto tsValD = std::get_if<double>(&tsIter->second)) {
+            option.timestamp = *tsValD / 1000.0;
+          }
+        }
+        // type: Dart 0=legacy, 1=fromSelf, 2=toSelf, 3=all → native type
+        // mapping (aligned with Android)
+        auto typeIter = optionMap->find(flutter::EncodableValue("type"));
+        if (typeIter != optionMap->end() && !typeIter->second.IsNull()) {
+          if (auto typeVal = std::get_if<int32_t>(&typeIter->second)) {
+            option.type =
+                static_cast<v2::V2NIMFriendAddApplicationType>(*typeVal);
+          }
+        }
+      }
+    }
+  }
+  friendService.clearAllAddApplicationEx(
+      option, [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTFriendService::deleteAddApplication(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  v2::V2NIMFriendAddApplication applicationInfo;
+  auto iter = arguments->begin();
+  for (iter; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("application")) {
+      auto params = std::get<flutter::EncodableMap>(iter->second);
+      applicationInfo = getFriendAddApplication(&params);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& friendService = instance.getFriendService();
+  friendService.deleteAddApplication(
+      applicationInfo,
+      [result]() { result->Success(NimResult::getSuccessResult()); },
       [result](v2::V2NIMError error) {
         result->Error("", error.desc,
                       NimResult::getErrorResult(error.code, error.desc));

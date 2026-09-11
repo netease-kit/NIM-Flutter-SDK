@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -50,7 +46,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -60,8 +55,14 @@
 <h1><span class="kind-property">displayNameForMessageNotifierProvider</span> property 
 </h1></div>
 
+    
       <section class="multi-line-signature">
         
+  <div>
+    <ol class="annotation-list">
+        <li>@JsonKey(includeFromJson: false, includeToJson: false)</li>
+    </ol>
+  </div>
         <a href="../../nim_core_v2/NIMDisplayNameForMessageNotifierProvider.html">NIMDisplayNameForMessageNotifierProvider</a>?
         <span class="name ">displayNameForMessageNotifierProvider</span>
         <div class="features"><span class="feature">final</span></div>
@@ -74,19 +75,21 @@
 <code>account</code>     消息发送者账号
 <code>sessionId</code>   会话ID（如果是P2P聊天，那么会话ID即为发送者账号，如果是群聊天，那么会话ID就是群号）
 <code>sessionType</code> 会话类型
-返回消息发送者对应的显示名称</p>
+返回消息发送者对应的显示名称
+<a href="../../nim_core_v2/NIMAndroidSDKOptions/enableUserInfoProvider.html">enableUserInfoProvider</a> 设置为true 方能生效</p>
 </section>
 
       
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">final NIMDisplayNameForMessageNotifierProvider?
+  <pre class="language-dart"><code class="language-dart">@JsonKey(includeFromJson: false, includeToJson: false)
+final NIMDisplayNameForMessageNotifierProvider?
     displayNameForMessageNotifierProvider;</code></pre>
 </section>
 
 
+    
 </div> <!-- /.main-content -->
-
 <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
   <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -94,7 +97,6 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nim_core_v2</a></li>
     <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
@@ -102,33 +104,24 @@
     <li class="self-crumb">displayNameForMessageNotifierProvider property</li>
 </ol>
 
-
   <h5>NIMAndroidSDKOptions class</h5>
   <div id="dartdoc-sidebar-left-content"></div>
 </div><!--/.sidebar-offcanvas-->
-
 <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
 </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

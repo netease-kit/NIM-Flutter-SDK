@@ -180,10 +180,9 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/alog_macos/alog_macos.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/device_info_plus/device_info_plus.framework"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libh_available.dylib"
-  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim.10.3.0.dylib"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim.dylib"
-  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_chatroom.10.3.0.dylib"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_chatroom.dylib"
+  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_quic.dylib"
   install_framework "${BUILT_PRODUCTS_DIR}/path_provider_foundation/path_provider_foundation.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile" ]]; then
@@ -191,10 +190,9 @@ if [[ "$CONFIGURATION" == "Profile" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/alog_macos/alog_macos.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/device_info_plus/device_info_plus.framework"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libh_available.dylib"
-  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim.10.3.0.dylib"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim.dylib"
-  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_chatroom.10.3.0.dylib"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_chatroom.dylib"
+  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_quic.dylib"
   install_framework "${BUILT_PRODUCTS_DIR}/path_provider_foundation/path_provider_foundation.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -202,10 +200,9 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/alog_macos/alog_macos.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/device_info_plus/device_info_plus.framework"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libh_available.dylib"
-  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim.10.3.0.dylib"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim.dylib"
-  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_chatroom.10.3.0.dylib"
   install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_chatroom.dylib"
+  install_framework "${PODS_ROOT}/../Flutter/ephemeral/.symlinks/plugins/nim_core_v2_macos/macos/nim_sdk/lib/libnim_quic.dylib"
   install_framework "${BUILT_PRODUCTS_DIR}/path_provider_foundation/path_provider_foundation.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

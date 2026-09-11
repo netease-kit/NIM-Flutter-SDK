@@ -18,18 +18,30 @@ class NIMLoginOption {
   /// 强制登录模式
   bool? forceMode;
 
+  /// 离线登录模式
+  bool? offlineMode;
+
   /// 认证类型
   NIMLoginAuthType? authType;
 
   /// 数据同步等级
   NIMDataSyncLevel? syncLevel;
 
+  /// 是否设置了扩展提供者（用户无需设置）
+  bool extensionProvider = false;
+
+  /// 是否设置了token （用户无需设置）
+  bool tokenProvider = false;
+
   NIMLoginOption(
       {this.retryCount,
       this.timeout,
       this.authType,
       this.forceMode,
-      this.syncLevel});
+      this.offlineMode,
+      this.syncLevel,
+      this.extensionProvider = false,
+      this.tokenProvider = false});
 
   Map<String, dynamic> toJson() => _$NIMLoginOptionToJson(this);
 
@@ -114,13 +126,17 @@ class NIMLoginClient {
   /// 客户端ID
   String? clientId;
 
+  ///登录客户端IP信息
+  String? clientIP;
+
   NIMLoginClient(
       {this.type,
       this.clientId,
       this.os,
       this.customClientType,
       this.customTag,
-      this.timestamp});
+      this.timestamp,
+      this.clientIP});
 
   Map<String, dynamic> toJson() => _$NIMLoginClientToJson(this);
 

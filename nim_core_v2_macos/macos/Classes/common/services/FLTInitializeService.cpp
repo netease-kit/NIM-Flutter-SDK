@@ -46,16 +46,45 @@ v2::V2NIMBasicOption getBasicOption(const flutter::EncodableMap* arguments) {
       option.useHttps = std::get<bool>(iter->second);
     } else if (iter->first == flutter::EncodableValue("useHttpdns")) {
       option.useHttpdns = std::get<bool>(iter->second);
+    } else if (iter->first ==
+               flutter::EncodableValue("enableCloudConversation")) {
+      option.enableCloudConversation = std::get<bool>(iter->second);
+    } else if (iter->first ==
+               flutter::EncodableValue("enableCloudFriendAddApplication")) {
+      option.enableCloudFriendAddApplication = std::get<bool>(iter->second);
+    } else if (iter->first ==
+               flutter::EncodableValue("enableCloudTeamJoinActionInfo")) {
+      option.enableCloudTeamJoinActionInfo = std::get<bool>(iter->second);
     } else if (iter->first == flutter::EncodableValue("customClientType")) {
       option.customClientType = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("customTag")) {
       option.customTag = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("logMaxSize")) {
+      option.logMaxSize = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("logReserveDays")) {
       option.logReserveDays = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("sdkLogLevel")) {
       option.sdkLogLevel = v2::V2NIMSDKLogLevel(std::get<int>(iter->second));
+    } else if (iter->first ==
+               flutter::EncodableValue("customizeLogCollectionDirectory")) {
+      option.customizeLogCollectionDirectory =
+          std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("disableAppNap")) {
       option.disableAppNap = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("enableCompass")) {
+      option.enableCompass = std::get<bool>(iter->second);
+    } else if (iter->first ==
+               flutter::EncodableValue("teamNotificationBadge")) {
+      option.teamNotificationBadge = std::get<bool>(iter->second);
+    } else if (iter->first ==
+               flutter::EncodableValue("reduceUnreadOnMessageRecall")) {
+      option.reduceUnreadOnMessageRecall = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("conversationSnapshot")) {
+      option.conversationSnapshot = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("compassDataEndpoint")) {
+      option.compassDataEndpoint = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("abTestEndpoint")) {
+      option.abTestEndpoint = std::get<std::string>(iter->second);
     }
   }
   option.sdkType = nim::kNIMSDKTypeFlutter;
@@ -212,6 +241,7 @@ void FLTInitializeService::initializeSDK(
         std::cout << "appkey: " << appkey << std::endl;
       } else if (iter->first == flutter::EncodableValue("sdkRootDir")) {
         sdkRootDir = std::get<std::string>(iter->second);
+        option.appDataPath = sdkRootDir;
         std::cout << "sdkRootDir: " << sdkRootDir << std::endl;
       } else if (iter->first == flutter::EncodableValue("basicOption")) {
         auto params = std::get<flutter::EncodableMap>(iter->second);
@@ -250,7 +280,7 @@ void FLTInitializeService::initializeSDK(
       result->Error("", "",
                     NimResult::getErrorResult(error->code, error->desc));
     } else {
-      NimCore::getInstance()->regService();
+      NimCore::getInstance()->regService(basicOption.enableCloudConversation);
       result->Success(NimResult::getSuccessResult());
     }
   }

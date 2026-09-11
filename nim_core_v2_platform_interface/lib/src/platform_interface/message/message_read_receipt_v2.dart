@@ -68,10 +68,10 @@ class NIMTeamMessageReadReceiptDetail {
   NIMTeamMessageReadReceipt? readReceipt;
 
   /// 已读账号列表
-  List<String?>? readAccountList;
+  List<String>? readAccountList;
 
   /// 未读账号列表
-  List<String?>? unreadAccountList;
+  List<String>? unreadAccountList;
 
   NIMTeamMessageReadReceiptDetail(
       {this.readReceipt, this.readAccountList, this.unreadAccountList});

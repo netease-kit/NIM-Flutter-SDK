@@ -34,7 +34,7 @@ class NimCore {
   void onMethodCall(const std::string& methodName, const flutter::EncodableMap& arguments,
                     const NimResultCallback& resultCallback = NimResultCallback());
 
-  void regService();
+  void regService(bool enableCloudConversation);
   void cleanService();
   void addService(FLTService* service);
   FLTService* getService(const std::string& serviceName) const;

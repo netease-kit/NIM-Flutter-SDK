@@ -85,10 +85,8 @@ if [ "$BACKUP_DIR" != "" ] && [ "$BACKUP_DIR" != "--" ]; then
     #fi
     rm -rf build_tools
     git clone ssh://git@g.hz.netease.com:22222/yunxin-app/tools.git build_tools
-    sh $PROJECT_PATH/build_tools/backup/upload-artifacts.sh outputs/. "${BACKUP_DIR}/im_flutter_v2_example/${VERSION_NAME}"
-    platform_lowercase=$(echo "$PLATFORM" | tr '[A-Z]' '[a-z]')
-    sh $PROJECT_PATH/build_tools/notification/notify.sh --platform "$PLATFORM" --env "${ENV}" --version "${VERSION_NAME}" \
-      --downloadurl "http://10.242.141.186/xkit/${BACKUP_DIR}/im_flutter_v2_example/${VERSION_NAME}/$platform_lowercase"
+    sh $PROJECT_PATH/build_tools/backup/upload-artifacts.sh outputs/. "${BACKUP_DIR}/im_flutter_v2_example/${VERSION_NAME}" platform_lowercase=$(echo "$PLATFORM" | tr '[A-Z]' '[a-z]')
+    sh $PROJECT_PATH/build_tools/notification/notify_ex.sh --platform "$PLATFORM" --mode team --receiver "5058614" --env "${ENV}" --version "${VERSION_NAME}" --downloadurl "http://10.242.141.186/xkit/${BACKUP_DIR}/im_flutter_v2_example/${VERSION_NAME}/$platform_lowercase"
     rm -rf build_tools
 fi
 ## upload done

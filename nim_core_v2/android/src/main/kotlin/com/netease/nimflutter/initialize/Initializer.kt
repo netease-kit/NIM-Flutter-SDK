@@ -10,6 +10,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.TextUtils
+import android.util.Pair
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.MethodChannelSuspendResult
 import com.netease.nimflutter.NimCore
@@ -18,19 +19,24 @@ import com.netease.nimflutter.ResultCallback
 import com.netease.nimflutter.SafeResult
 import com.netease.nimflutter.convertToNIMServerAddresses
 import com.netease.nimflutter.convertToStatusBarNotificationConfig
+import com.netease.nimflutter.extension.toMap
 import com.netease.nimflutter.stringFromSessionTypeEnum
-import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.NosTokenSceneConfig
 import com.netease.nimlib.sdk.Observer
 import com.netease.nimlib.sdk.SDKOptions
 import com.netease.nimlib.sdk.lifecycle.SdkLifecycleObserver
+import com.netease.nimlib.sdk.mixpush.IManualProvidePushTokenCallback
 import com.netease.nimlib.sdk.mixpush.MixPushConfig
+import com.netease.nimlib.sdk.mixpush.NIMPushClient
+import com.netease.nimlib.sdk.mixpush.model.MixPushTypeEnum
 import com.netease.nimlib.sdk.msg.MessageNotifierCustomization
+import com.netease.nimlib.sdk.msg.NotificationChannelProvider
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum
 import com.netease.nimlib.sdk.msg.model.IMMessage
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider
 import com.netease.nimlib.sdk.uinfo.model.UserInfo
+import com.netease.nimlib.sdk.v2.utils.DataStructureConverter
 import com.netease.yunxin.kit.alog.ALog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -50,7 +56,6 @@ class FLTInitializeService(
     applicationContext: Context,
     nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
-
     private val initial = 0
     private val initializing = 1
     private val initialized = 2
@@ -59,153 +64,213 @@ class FLTInitializeService(
 
     private val state = MutableStateFlow(initial)
 
-    private val innerMessageNotifierCustomization = object : MessageNotifierCustomization {
-        override fun makeNotifyContent(nick: String?, message: IMMessage?): String? {
-            return runBlocking {
-                withTimeoutOrNull(userProviderTimeout) {
-                    suspendCancellableCoroutine<Any?> { continuation ->
-                        notifyEvent(
-                            method = "onMakeNotifyContent",
-                            arguments = mapOf(
-                                "nick" to nick,
-                                "message" to message?.toMap()
-                            ),
-                            callback = MethodChannelSuspendResult(continuation)
-                        )
-                    } as String?
-                }
-            }
-        }
-
-        override fun makeTicker(nick: String?, message: IMMessage?): String? {
-            return runBlocking {
-                withTimeoutOrNull(userProviderTimeout) {
-                    suspendCancellableCoroutine<Any?> { continuation ->
-                        notifyEvent(
-                            method = "onMakeTicker",
-                            arguments = mapOf(
-                                "nick" to nick,
-                                "message" to message?.toMap()
-                            ),
-                            callback = MethodChannelSuspendResult(continuation)
-                        )
-                    } as String?
-                }
-            }
-        }
-
-        override fun makeRevokeMsgTip(revokeAccount: String?, item: IMMessage?): String? {
-            return runBlocking {
-                withTimeoutOrNull(userProviderTimeout) {
-                    suspendCancellableCoroutine<Any?> { continuation ->
-                        notifyEvent(
-                            method = "onMakeRevokeMsgTip",
-                            arguments = mapOf(
-                                "revokeAccount" to revokeAccount,
-                                "item" to item?.toMap()
-                            ),
-                            callback = MethodChannelSuspendResult(continuation)
-                        )
-                    } as String?
-                }
-            }
-        }
-
-        override fun makeCategory(message: IMMessage?): String? = null
-    }
-
-    private val innerUserInfoProvider = object : UserInfoProvider {
-        override fun getUserInfo(account: String?): UserInfo? = null
-
-        override fun getDisplayNameForMessageNotifier(
-            account: String?,
-            sessionId: String?,
-            sessionType: SessionTypeEnum?
-        ): String? {
-            return runBlocking {
-                withTimeoutOrNull(userProviderTimeout) {
-                    suspendCancellableCoroutine<Any?> { continuation ->
-                        notifyEvent(
-                            method = "onGetDisplayNameForMessageNotifier",
-                            arguments = mapOf(
-                                "account" to account,
-                                "sessionId" to sessionId,
-                                "sessionType" to stringFromSessionTypeEnum(sessionType)
-                            ),
-                            callback = MethodChannelSuspendResult(continuation)
-                        )
-                    } as String?
-                }
-            }
-        }
-
-        override fun getAvatarForMessageNotifier(
-            sessionType: SessionTypeEnum?,
-            sessionId: String?
-        ): Bitmap? {
-            return runBlocking {
-                withTimeoutOrNull(userProviderTimeout) {
-                    @Suppress("UNCHECKED_CAST")
-                    val map = suspendCancellableCoroutine<Any?> { continuation ->
-                        notifyEvent(
-                            method = "onGetAvatarForMessageNotifier",
-                            arguments = mapOf(
-                                "sessionId" to sessionId,
-                                "sessionType" to stringFromSessionTypeEnum(sessionType)
-                            ),
-                            callback = MethodChannelSuspendResult(continuation)
-                        )
-                    } as Map<String, Any>?
-                    val path = map?.get("path") as String?
-                    val type = map?.get("type") as String?
-                    val inSampleSize = (map?.get("inSampleSize") as Int?) ?: 2
-                    if (TextUtils.isEmpty(path) || TextUtils.isEmpty(type)) {
-                        ALog.w(
-                            serviceName,
-                            "onGetAvatarForMessageNotifier##param error, path=$path, type=$type, inSampleSize=$inSampleSize"
-                        )
-                        return@withTimeoutOrNull null
+    private val innerMessageNotifierCustomization =
+        object : MessageNotifierCustomization {
+            override fun makeNotifyContent(
+                nick: String?,
+                message: IMMessage?
+            ): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            val v2Message = DataStructureConverter.messageConvertToV2(message)
+                            notifyEvent(
+                                method = "onMakeNotifyContent",
+                                arguments =
+                                mapOf(
+                                    "nick" to nick,
+                                    "message" to v2Message?.toMap()
+                                ),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
                     }
-                    when (type) {
-                        "asset" -> {
-                            val filePath = nimCore.flutterAssets.getAssetFilePathByName(path!!)
-                            applicationContext.assets.open(filePath).use {
-                                val options = BitmapFactory.Options()
-                                options.inSampleSize = inSampleSize
-                                BitmapFactory.decodeStream(it, null, options)
-                            }
-                        }
-                        "file" -> {
-                            val options = BitmapFactory.Options()
-                            options.inSampleSize = inSampleSize
-                            BitmapFactory.decodeFile(path!!, options)
-                        }
-                        else -> {
+                }
+
+            override fun makeTicker(
+                nick: String?,
+                message: IMMessage?
+            ): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            val v2Message = DataStructureConverter.messageConvertToV2(message)
+                            notifyEvent(
+                                method = "onMakeTicker",
+                                arguments =
+                                mapOf(
+                                    "nick" to nick,
+                                    "message" to v2Message?.toMap()
+                                ),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
+                    }
+                }
+
+            override fun makeRevokeMsgTip(
+                revokeAccount: String?,
+                item: IMMessage?
+            ): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            val v2Message = DataStructureConverter.messageConvertToV2(item)
+                            notifyEvent(
+                                method = "onMakeRevokeMsgTip",
+                                arguments =
+                                mapOf(
+                                    "revokeAccount" to revokeAccount,
+                                    "item" to v2Message?.toMap()
+                                ),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
+                    }
+                }
+
+            override fun makeCategory(message: IMMessage?): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            val v2Message = DataStructureConverter.messageConvertToV2(message)
+                            notifyEvent(
+                                method = "onMakeCategory",
+                                arguments =
+                                mapOf(
+                                    "message" to v2Message?.toMap()
+                                ),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
+                    }
+                }
+        }
+
+    private val innerUserInfoProvider =
+        object : UserInfoProvider {
+            override fun getUserInfo(account: String?): UserInfo? = null
+
+            override fun getDisplayNameForMessageNotifier(
+                account: String?,
+                sessionId: String?,
+                sessionType: SessionTypeEnum?
+            ): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            notifyEvent(
+                                method = "onGetDisplayNameForMessageNotifier",
+                                arguments =
+                                mapOf(
+                                    "account" to account,
+                                    "sessionId" to sessionId,
+                                    "sessionType" to stringFromSessionTypeEnum(sessionType)
+                                ),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
+                    }
+                }
+
+            override fun getAvatarForMessageNotifier(
+                sessionType: SessionTypeEnum?,
+                sessionId: String?
+            ): Bitmap? {
+                return runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        @Suppress("UNCHECKED_CAST")
+                        val map =
+                            suspendCancellableCoroutine<Any?> { continuation ->
+                                notifyEvent(
+                                    method = "onGetAvatarForMessageNotifier",
+                                    arguments =
+                                    mapOf(
+                                        "sessionId" to sessionId,
+                                        "sessionType" to stringFromSessionTypeEnum(sessionType)
+                                    ),
+                                    callback = MethodChannelSuspendResult(continuation)
+                                )
+                            } as Map<String, Any>?
+                        val path = map?.get("path") as String?
+                        val type = map?.get("type") as String?
+                        val inSampleSize = (map?.get("inSampleSize") as Int?) ?: 2
+                        if (TextUtils.isEmpty(path) || TextUtils.isEmpty(type)) {
                             ALog.w(
                                 serviceName,
-                                "onGetAvatarForMessageNotifier##type error, type=$type"
+                                "onGetAvatarForMessageNotifier##param error, path=$path, type=$type, inSampleSize=$inSampleSize"
                             )
-                            null
+                            return@withTimeoutOrNull null
+                        }
+                        when (type) {
+                            "asset" -> {
+                                val filePath = nimCore.flutterAssets.getAssetFilePathByName(path!!)
+                                applicationContext.assets.open(filePath).use {
+                                    val options = BitmapFactory.Options()
+                                    options.inSampleSize = inSampleSize
+                                    BitmapFactory.decodeStream(it, null, options)
+                                }
+                            }
+
+                            "file" -> {
+                                val options = BitmapFactory.Options()
+                                options.inSampleSize = inSampleSize
+                                BitmapFactory.decodeFile(path!!, options)
+                            }
+
+                            else -> {
+                                ALog.w(
+                                    serviceName,
+                                    "onGetAvatarForMessageNotifier##type error, type=$type"
+                                )
+                                null
+                            }
                         }
                     }
                 }
             }
+
+            override fun getDisplayTitleForMessageNotifier(message: IMMessage?): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            val v2Message = DataStructureConverter.messageConvertToV2(message)
+                            notifyEvent(
+                                method = "onGetDisplayTitleForMessageNotifier",
+                                arguments = mapOf("message" to v2Message?.toMap()),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
+                    }
+                }
         }
 
-        override fun getDisplayTitleForMessageNotifier(message: IMMessage?): String? {
-            return runBlocking {
-                withTimeoutOrNull(userProviderTimeout) {
-                    suspendCancellableCoroutine<Any?> { continuation ->
-                        notifyEvent(
-                            method = "onGetDisplayTitleForMessageNotifier",
-                            arguments = mapOf("message" to message?.toMap()),
-                            callback = MethodChannelSuspendResult(continuation)
-                        )
-                    } as String?
+    private val innerNotificationChannelProvider =
+        object : NotificationChannelProvider {
+            override fun getChannelId(
+                donNotDisturb: Boolean,
+                tooFast: Boolean,
+                ring: Boolean,
+                vibrate: Boolean
+            ): String? =
+                runBlocking {
+                    withTimeoutOrNull(userProviderTimeout) {
+                        suspendCancellableCoroutine<Any?> { continuation ->
+                            notifyEvent(
+                                method = "onGetChannelId",
+                                arguments =
+                                mapOf(
+                                    "donNotDisturb" to donNotDisturb,
+                                    "tooFast" to tooFast,
+                                    "ring" to ring,
+                                    "vibrate" to vibrate
+                                ),
+                                callback = MethodChannelSuspendResult(continuation)
+                            )
+                        } as String?
+                    }
                 }
-            }
         }
-    }
 
     lateinit var sdkOptions: SDKOptions
 
@@ -227,7 +292,8 @@ class FLTInitializeService(
         }
 
     fun onInitialized(callback: suspend () -> Unit) =
-        state.filter { st -> st == initialized }
+        state
+            .filter { st -> st == initialized }
             .take(count = 1)
             .onEach { callback() }
             .catch { exp ->
@@ -235,25 +301,44 @@ class FLTInitializeService(
                     serviceName,
                     "onInitialized callback exception: ${exp.message}"
                 )
-            }
-            .launchIn(nimCore.lifeCycleScope)
+            }.launchIn(nimCore.lifeCycleScope)
 
     @Suppress("UNCHECKED_CAST")
-    override fun onMethodCalled(method: String, arguments: Map<String, *>, safeResult: SafeResult) {
+    override fun onMethodCalled(
+        method: String,
+        arguments: Map<String, *>,
+        safeResult: SafeResult
+    ) {
         val callback = ResultCallback<Nothing>(safeResult)
         if (method == "initialize" && state.value == initial) {
             state.value = initializing
+            val enableUserInfoProvider = arguments["enableUserInfoProvider"] as? Boolean? ?: false
+            val enableNotificationChannelProvider = arguments["enableNotificationChannelProvider"] as? Boolean? ?: false
+            val enableMessageNotifierCustomization = arguments["enableMessageNotifierCustomization"] as? Boolean? ?: false
             runCatching {
                 NIMClient.initV2(
                     applicationContext,
-                    SDKOptions().configureWithMap(arguments).apply {
-                        this.userInfoProvider = innerUserInfoProvider
-                        this.messageNotifierCustomization = innerMessageNotifierCustomization
-                    }.also {
-                        sdkOptions = it
-                    }
+                    SDKOptions()
+                        .configureWithMap(arguments)
+                        .apply {
+                            if (enableUserInfoProvider) {
+                                this.userInfoProvider = innerUserInfoProvider
+                            }
+                            if (enableMessageNotifierCustomization) {
+                                this.messageNotifierCustomization = innerMessageNotifierCustomization
+                            }
+                            if (enableNotificationChannelProvider) {
+                                this.notificationChannelProvider = innerNotificationChannelProvider
+                            }
+                        }.also {
+                            sdkOptions = it
+                        }
                 )
-                NIMClient.getService(SdkLifecycleObserver::class.java)
+                if (sdkOptions.mixPushConfig?.manualProvidePushToken == true) {
+                    registerManualPushToken()
+                }
+                NIMClient
+                    .getService(SdkLifecycleObserver::class.java)
                     .observeMainProcessInitCompleteResult(
                         object : Observer<Boolean> {
                             override fun onEvent(success: Boolean) {
@@ -264,7 +349,8 @@ class FLTInitializeService(
                                     )
                                     state.value = if (success) initialized else initial
                                     callback.result(if (success) NimResult.SUCCESS else NimResult.FAILURE)
-                                    NIMClient.getService(SdkLifecycleObserver::class.java)
+                                    NIMClient
+                                        .getService(SdkLifecycleObserver::class.java)
                                         .observeMainProcessInitCompleteResult(this, false)
                                 }
                             }
@@ -293,80 +379,126 @@ class FLTInitializeService(
             )
         }
     }
-}
 
-fun SDKOptions.configureWithMap(configurations: Map<String, *>) = apply {
-    val args = configurations.withDefault { null }
-
-    appKey = configurations["appKey"] as String
-    require(appKey.isNotEmpty()) { "AppKey cannot be empty!" }
-    useAssetServerAddressConfig =
-        configurations.getOrElse("useAssetServerAddressConfig") { false } as Boolean
-    sdkStorageRootPath = configurations["sdkRootDir"] as String?
-    cdnRequestDataInterval =
-        (configurations.getOrElse("cdnTrackInterval") { 3000 } as Number).toInt()
-    loginCustomTag = configurations["loginCustomTag"] as String?
-    enableDatabaseBackup = configurations.getOrElse("enableDatabaseBackup") { false } as Boolean
-    sessionReadAck = configurations.getOrElse("shouldSyncUnreadCount") { false } as Boolean
-    shouldConsiderRevokedMessageUnreadCount =
-        configurations.getOrElse("shouldConsiderRevokedMessageUnreadCount") { false } as Boolean
-    enableTeamMsgAck = configurations.getOrElse("enableTeamMessageReadReceipt") { false } as Boolean
-    teamNotificationMessageMarkUnread =
-        configurations.getOrElse("shouldTeamNotificationMessageMarkUnread") { false } as Boolean
-    animatedImageThumbnailEnabled =
-        configurations.getOrElse("enableAnimatedImageThumbnail") { false } as Boolean
-    preloadAttach =
-        configurations.getOrElse("enablePreloadMessageAttachment") { true } as Boolean
-    notifyStickTopSession =
-        configurations.getOrElse("shouldSyncStickTopSessionInfos") { false } as Boolean
-    reportImLog = configurations.getOrElse("enableReportLogAutomatically") { false } as Boolean
-    val nosSceneConfig: Map<String, Number>? by args
-    if (nosSceneConfig != null) {
-        mNosTokenSceneConfig = NosTokenSceneConfig().apply {
-            nosSceneConfig!!.forEach {
-                appendCustomScene(it.key, it.value.toInt())
-            }
-        }
-    }
-
-    val serverConfig: Map<String, *>? by args
-    if (serverConfig != null) {
-        this.serverConfig = convertToNIMServerAddresses(serverConfig)
-    }
-
-    val extras: Map<String, Any?>? by args
-    flutterSdkVersion = extras?.get("versionName") as String?
-
-    improveSDKProcessPriority =
-        configurations.getOrElse("improveSDKProcessPriority") { true } as Boolean
-    preLoadServers = configurations.getOrElse("preLoadServers") { true } as Boolean
-    reducedIM = configurations.getOrElse("reducedIM") { false } as Boolean
-    enableFcs = configurations.getOrElse("enableFcs") { true } as Boolean
-    checkManifestConfig = configurations.getOrElse("checkManifestConfig") { false } as Boolean
-    disableAwake = configurations.getOrElse("disableAwake") { false } as Boolean
-    fetchServerTimeInterval =
-        (configurations.getOrElse("fetchServerTimeInterval") { 1000 } as Number).toLong()
-    customPushContentType = configurations["customPushContentType"] as String?
-    databaseEncryptKey = configurations["databaseEncryptKey"] as String?
-    thumbnailSize = (configurations.getOrElse("thumbnailSize") { 350 } as Number).toInt()
-    enabledQChatMessageCache = configurations.getOrElse("enabledQChatMessageCache") { false } as Boolean
-
-    val mixPushConfig: Map<String, *>? by args
-    if (mixPushConfig != null) {
-        this.mixPushConfig =
-            MixPushConfig.fromJson(
-                JSONObject(
-                    mixPushConfig!!.filter {
-                        it.value != null
+    fun registerManualPushToken() {
+        NIMPushClient.registerManuallyProvidePushTokenCallback(
+            object : IManualProvidePushTokenCallback {
+                override fun onToken(suggestedPushType: MixPushTypeEnum?): Pair<MixPushTypeEnum, String>? =
+                    runBlocking {
+                        withTimeoutOrNull(userProviderTimeout) {
+                            val result =
+                                suspendCancellableCoroutine<Any?> { continuation ->
+                                    notifyEvent(
+                                        method = "onManualProvidePushToken",
+                                        arguments =
+                                        mapOf(
+                                            "suggestedPushType" to suggestedPushType?.value
+                                        ),
+                                        callback = MethodChannelSuspendResult(continuation)
+                                    )
+                                } as Map<*, *>?
+                            if (result != null) {
+                                val type = MixPushTypeEnum.typeOfValue(result["type"] as Int)
+                                val token = result["token"] as String
+                                Pair(type, token)
+                            } else {
+                                null
+                            }
+                        }
                     }
-                )
-            )
+            }
+        )
     }
-
-    val notificationConfig: Map<String, Any?>? by args
-    if (notificationConfig != null) {
-        statusBarNotificationConfig = convertToStatusBarNotificationConfig(notificationConfig)
-    }
-    // 状态对齐ios
-    enableLoseConnection = true
 }
+
+fun SDKOptions.configureWithMap(configurations: Map<String, *>) =
+    apply {
+        val args = configurations.withDefault { null }
+
+        appKey = configurations["appKey"] as String
+        require(appKey.isNotEmpty()) { "AppKey cannot be empty!" }
+        useAssetServerAddressConfig =
+            configurations.getOrElse("useAssetServerAddressConfig") { false } as Boolean
+        sdkStorageRootPath = configurations["sdkRootDir"] as String?
+        cdnRequestDataInterval =
+            (configurations.getOrElse("cdnTrackInterval") { 3000 } as Number).toInt()
+        loginCustomTag = configurations["loginCustomTag"] as String?
+        enableDatabaseBackup = configurations.getOrElse("enableDatabaseBackup") { false } as Boolean
+        sessionReadAck = configurations.getOrElse("shouldSyncUnreadCount") { false } as Boolean
+        shouldConsiderRevokedMessageUnreadCount =
+            configurations.getOrElse("shouldConsiderRevokedMessageUnreadCount") { false } as Boolean
+        enableTeamMsgAck = configurations.getOrElse("enableTeamMessageReadReceipt") { false } as Boolean
+        teamNotificationMessageMarkUnread =
+            configurations.getOrElse("shouldTeamNotificationMessageMarkUnread") { false } as Boolean
+        animatedImageThumbnailEnabled =
+            configurations.getOrElse("enableAnimatedImageThumbnail") { false } as Boolean
+        preloadAttach =
+            configurations.getOrElse("enablePreloadMessageAttachment") { true } as Boolean
+        notifyStickTopSession =
+            configurations.getOrElse("shouldSyncStickTopSessionInfos") { false } as Boolean
+        reportImLog = configurations.getOrElse("enableReportLogAutomatically") { false } as Boolean
+        val nosSceneConfig: Map<String, Number>? by args
+        if (nosSceneConfig != null) {
+            mNosTokenSceneConfig =
+                NosTokenSceneConfig().apply {
+                    nosSceneConfig!!.forEach {
+                        appendCustomScene(it.key, it.value.toInt())
+                    }
+                }
+        }
+
+        val customClientType = configurations["customClientType"] as Int?
+        if (customClientType != null) {
+            this.customClientType = customClientType
+        }
+
+        val serverConfig: Map<String, *>? by args
+        if (serverConfig != null) {
+            this.serverConfig = convertToNIMServerAddresses(serverConfig)
+        }
+
+        val extras: Map<String, Any?>? by args
+        flutterSdkVersion = extras?.get("versionName") as String?
+
+        improveSDKProcessPriority =
+            configurations.getOrElse("improveSDKProcessPriority") { true } as Boolean
+        preLoadServers = configurations.getOrElse("preLoadServers") { true } as Boolean
+        reducedIM = configurations.getOrElse("reducedIM") { false } as Boolean
+        enableFcs = configurations.getOrElse("enableFcs") { true } as Boolean
+        checkManifestConfig = configurations.getOrElse("checkManifestConfig") { false } as Boolean
+        consoleLogEnabled = configurations.getOrElse("consoleLogEnabled") { false } as Boolean
+        disableAwake = configurations.getOrElse("disableAwake") { false } as Boolean
+        fetchServerTimeInterval =
+            (configurations.getOrElse("fetchServerTimeInterval") { 1000 } as Number).toLong()
+        customPushContentType = configurations["customPushContentType"] as String?
+        databaseEncryptKey = configurations["databaseEncryptKey"] as String?
+        thumbnailSize = (configurations.getOrElse("thumbnailSize") { 350 } as Number).toInt()
+        enabledQChatMessageCache = configurations.getOrElse("enabledQChatMessageCache") { false } as Boolean
+        enableV2CloudConversation = configurations.getOrElse("enableV2CloudConversation") { false } as Boolean
+
+        val mixPushConfig: Map<String, *>? by args
+        if (mixPushConfig != null) {
+            this.mixPushConfig =
+                MixPushConfig.fromJson(
+                    JSONObject(
+                        mixPushConfig!!.filter {
+                            it.value != null
+                        }
+                    )
+                )
+        }
+
+        val notificationConfig: Map<String, Any?>? by args
+        if (notificationConfig != null) {
+            statusBarNotificationConfig = convertToStatusBarNotificationConfig(notificationConfig)
+        }
+        enableServerV2FriendAddApplication =
+            configurations.getOrElse("enableServerV2FriendAddApplication") { false } as Boolean
+        enableServerV2TeamJoinActionInfo =
+            configurations.getOrElse("enableServerV2TeamJoinActionInfo") { false } as Boolean
+        searchAccountIdEnabled =
+            configurations.getOrElse("searchAccountIdEnabled") { false } as Boolean
+
+        // 状态对齐ios
+        enableLoseConnection = true
+    }

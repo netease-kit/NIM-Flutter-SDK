@@ -53,6 +53,9 @@ class FLTLoginService : public FLTService {
   void getLoginClients(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getCurrentLoginClient(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
  private:
   v2::V2NIMLoginListener listener;

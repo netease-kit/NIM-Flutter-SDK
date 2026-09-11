@@ -5,42 +5,73 @@
 library nim_core_v2;
 
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:hawk_meta/hawk_meta.dart';
 import 'package:nim_core_v2/src/log/log_service.dart';
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:universal_io/io.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
-import 'package:universal_html/html.dart' as html;
 
+export 'package:nim_core_v2_platform_interface/src/platform_interface/ai/ai_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/apns/apns_data.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/apns/platform_interface_apns_service.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/auth/auth_models.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/avsignalling/avsignalling_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/chatroom/chatroom_member.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/chatroom/chatroom_message.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/chatroom/chatroom_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/chatroom/chatroom_queue.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/conversation_group_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/conversation_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/platform_interface_conversation_group_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/platform_interface_conversation_id_util.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/platform_interface_conversation_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/platform_interface_local_conversation_service.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/event_subscribe/event.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/event_subscribe/event_subscribe_request.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/event_subscribe/event_subscribe_result.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/event_subscribe/platform_interface_event_subscribe_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/friend/friend_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_android_options.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_web_options.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_ios_options.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_pc_options.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_ohos_options.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_options.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_pc_options.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_server_config.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/initialize/nim_sdk_web_options.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/login/login_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_collection_v2.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_insert_params.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_notification_v2.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_pin_v2.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_quick_comment_v2.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_read_receipt_v2.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_search.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_thread_v2.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/message/v2_message_enum.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/message/message_translate_io.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/message/platform_interface_client_antispam_util.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/message/platform_interface_message_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/message/v2_message_enum.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/mixpush/mixpush.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/nim_base.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/nos/nos.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/notify/notify_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/passthrough/pass_through_notifydata.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/passthrough/pass_through_proxydata.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/push/platform_interface_ohos_push_service.dart';
+//qchat
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_channel_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_message_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_observer.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_push_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_role_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_server_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/platform_interface_qchat_service.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_base_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_channel_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_message_attachment.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_message_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_observer_models.dart';
@@ -48,45 +79,66 @@ export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qcha
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_role_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/qchat/qchat_server_models.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/robot/robot_message_type.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/user/mute_list_changed_notify.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/user/user.dart';
-export 'package:nim_core_v2_platform_interface/src/utils/converter.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/login/login_models.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/friend/friend_models.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/conversation_models.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/platform_interface_conversation_service.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/conversation/platform_interface_conversation_id_util.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/setting/dnd_config.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/setting/platform_interface_settings_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/setting/setting_enum.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/signalling/signalling_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/statistics/statistics_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/statistics/statistics_service_platform.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/storage/storage_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/subscription/platform_interface_subscription_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/subscription/subscription_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/team/antispam_config.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/team/nim_team_search.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/team/platform_interface_team_service.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/team/team.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/team/team_enum.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/team/team_member.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/team/team_param.dart';
 export 'package:nim_core_v2_platform_interface/src/platform_interface/team/team_result.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/team/antispam_config.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/team/team_enum.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/topic/platform_interface_topic_service.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/topic/topic_models.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/user/mute_list_changed_notify.dart';
+export 'package:nim_core_v2_platform_interface/src/platform_interface/user/user.dart';
+export 'package:nim_core_v2_platform_interface/src/utils/converter.dart';
+export 'package:yunxin_alog/yunxin_alog.dart';
 
-export 'package:nim_core_v2_platform_interface/src/platform_interface/setting/platform_interface_settings_service.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/setting/setting_enum.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/setting/dnd_config.dart';
-
-export 'package:nim_core_v2_platform_interface/src/platform_interface/apns/platform_interface_apns_service.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/apns/apns_data.dart';
-export 'package:nim_core_v2_platform_interface/src/platform_interface/notify/notify_models.dart';
-
-part 'src/login/login_service.dart';
-part 'src/message/message_service.dart';
-part 'src/user/user_service.dart';
-part 'src/friend/friend_service.dart';
-part 'src/message/message_creator.dart';
-part 'src/conversation/conversation_service.dart';
+part 'src/ai/ai_service.dart';
+part 'src/apns/apns_service.dart';
+part 'src/chatroom/chatroom_client.dart';
+part 'src/chatroom/chatroom_message_creator.dart';
+part 'src/chatroom/chatroom_queue.dart';
+part 'src/chatroom/chatroom_service.dart';
+part 'src/conversation/conversation_group_service.dart';
 part 'src/conversation/conversation_id_util.dart';
+part 'src/conversation/conversation_service.dart';
+part 'src/conversation/local_conversation_service.dart';
+part 'src/friend/friend_service.dart';
+part 'src/login/login_service.dart';
+part 'src/message/message_creator.dart';
+part 'src/message/v2_nim_client_antispam_util.dart';
+part 'src/message/message_service.dart';
+part 'src/mixpush/mixpush_service.dart';
+part 'src/notification/notification_service.dart';
+part 'src/push/ohos_push_service.dart';
+//qchat
+part 'src/qchat/qchat_channel_service.dart';
+part 'src/qchat/qchat_message_service.dart';
+part 'src/qchat/qchat_observer.dart';
+part 'src/qchat/qchat_push_service.dart';
+part 'src/qchat/qchat_role_service.dart';
+part 'src/qchat/qchat_server_service.dart';
+part 'src/qchat/qchat_service.dart';
+part 'src/settings/setting_service.dart';
+part 'src/signalling/signalling_service.dart';
+part 'src/statistics/statistics_service.dart';
 part 'src/storage/storage_service.dart';
 part 'src/storage/storage_utils.dart';
-part 'src/notification/notification_service.dart';
+part 'src/subscription/subscription_service.dart';
 part 'src/team/team_service.dart';
-part 'src/settings/setting_service.dart';
-part 'src/apns/apns_service.dart';
-part 'src/ai/ai_service.dart';
+part 'src/topic/topic_service.dart';
+part 'src/user/user_service.dart';
+part 'src/utility/utility_service.dart';
 
 class NimCore {
   NimCore._();
@@ -95,8 +147,8 @@ class NimCore {
 
   static const String tag = 'nim_core_v2';
   //todo 发版前记得处理此处的版本号，数据统计使用
-  static const int _versionCode = 1031;
-  static const String versionName = '10.3.1';
+  static const int _versionCode = 10990;
+  static const String versionName = '10.9.90';
   static const String _hash = '02566d6321d1d27669d9d369d2f525bc2cdaee10';
 
   bool _initialized = false;
@@ -115,11 +167,22 @@ class NimCore {
   /// 消息服务
   final MessageService messageService = MessageService();
 
+  /// 客户端本地反垃圾工具
+  final V2NIMClientAntispamUtil clientAntispamUtil = V2NIMClientAntispamUtil();
+
   /// 会话列表
   final ConversationService conversationService = ConversationService();
 
+  /// 本地会话服务
+  final V2NIMLocalConversationService localConversationService =
+      V2NIMLocalConversationService();
+
   /// 会话工具
   final ConversationIdUtil conversationIdUtil = ConversationIdUtil();
+
+  /// 会话分组服务
+  final V2NIMConversationGroupService conversationGroupService =
+      V2NIMConversationGroupService();
 
   /// 群组服务
   final TeamService teamService = TeamService();
@@ -133,8 +196,14 @@ class NimCore {
   /// 存储服务
   final StorageService storageService = StorageService();
 
-  /// 存储工具
+  /// 存储通用工具
   final StorageUtil storageUtil = StorageUtil();
+
+  /// 工具类服务（消息迁移）
+  final V2NIMUtilityService utilityService = V2NIMUtilityService();
+
+  /// 信令服务
+  final SignallingService signallingService = SignallingService();
 
   ///通知服务
   final NotificationService notificationService = NotificationService();
@@ -142,8 +211,44 @@ class NimCore {
   ///AI 数字人服务
   final AiService aiService = AiService();
 
+  /// 话题服务
+  final V2NIMTopicService topicService = V2NIMTopicService();
+
   /// 推送
   final APNSService apnsService = APNSService();
+
+  /// 在线状态
+  final SubscriptionService subscriptionService = SubscriptionService();
+
+  /// 混合推送服务 (仅 Android 平台)
+  final MixPushService mixPushService = MixPushService();
+
+  /// 鸿蒙第三方推送服务
+  final OhosPushService ohosPushService = OhosPushService();
+
+  /// 圈组
+  final QChatService qChatService = QChatService();
+
+  /// 圈组Channel
+  final QChatChannelService qChatChannelService = QChatChannelService();
+
+  /// 圈组Role
+  final QChatRoleService qChatRoleService = QChatRoleService();
+
+  /// 圈组Server
+  final QChatServerService qChatServerService = QChatServerService();
+
+  /// 圈组Message
+  final QChatMessageService qChatMessageService = QChatMessageService();
+
+  /// 圈组Push
+  final QChatPushService qChatPushService = QChatPushService();
+
+  /// 圈组Observer
+  final QChatObserver qChatObserver = QChatObserver();
+
+  /// 统计服务
+  final StatisticsService statisticsService = StatisticsService();
 
   /// 初始化云信 IM SDK
   ///
@@ -197,7 +302,13 @@ class NimCore {
   /// 释放云信 IM SDK
   /// 仅windows&macos&web平台有效
   Future<NIMResult<void>> releaseDesktop() async {
-    return InitializeServicePlatform.instance.releaseDesktop();
+    return InitializeServicePlatform.instance.releaseDesktop().then((result) {
+      if (result.isSuccess) {
+        _initialized = false;
+        _sdkOptions = null;
+      }
+      return result;
+    });
   }
 }
 

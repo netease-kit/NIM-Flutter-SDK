@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">QChatMessageService class</li>
   </ol>
   <div class="self-name">QChatMessageService</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -75,7 +67,7 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
@@ -91,10 +83,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="QChatMessageService" class="callable">
-          <span class="name"><a href="../nim_core_v2/QChatMessageService/QChatMessageService.html">QChatMessageService</a></span><span class="signature">()</span>
+        <dt id="QChatMessageService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/QChatMessageService/QChatMessageService.html">QChatMessageService.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -134,6 +125,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -141,8 +133,8 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="addQuickComment" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/addQuickComment.html">addQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="addQuickComment-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAddQuickCommentParam-class.html">QChatAddQuickCommentParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/addQuickComment.html">addQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="addQuickComment-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddQuickCommentParam-class.html">QChatAddQuickCommentParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -154,8 +146,8 @@
 </dd>
 
         <dt id="areMentionedMeMessages" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/areMentionedMeMessages.html">areMentionedMeMessages</a></span><span class="signature">(<wbr><span class="parameter" id="areMentionedMeMessages-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAreMentionedMeMessagesParam-class.html">QChatAreMentionedMeMessagesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatAreMentionedMeMessagesResult-class.html">QChatAreMentionedMeMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/areMentionedMeMessages.html">areMentionedMeMessages</a></span><span class="signature">(<wbr><span class="parameter" id="areMentionedMeMessages-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAreMentionedMeMessagesParam-class.html">QChatAreMentionedMeMessagesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAreMentionedMeMessagesResult-class.html">QChatAreMentionedMeMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -168,7 +160,7 @@
 
         <dt id="clearMessageCache" class="callable">
   <span class="name"><a href="../nim_core_v2/QChatMessageService/clearMessageCache.html">clearMessageCache</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -181,7 +173,7 @@
 
         <dt id="clearMsgNotifyAndroid" class="callable">
   <span class="name"><a href="../nim_core_v2/QChatMessageService/clearMsgNotifyAndroid.html">clearMsgNotifyAndroid</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -193,8 +185,8 @@
 </dd>
 
         <dt id="deleteMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/deleteMessage.html">deleteMessage</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMessage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatDeleteMessageParam-class.html">QChatDeleteMessageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatDeleteMessageResult-class.html">QChatDeleteMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/deleteMessage.html">deleteMessage</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMessage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatDeleteMessageParam-class.html">QChatDeleteMessageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatDeleteMessageResult-class.html">QChatDeleteMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -206,8 +198,8 @@
 </dd>
 
         <dt id="downloadAttachment" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/downloadAttachment.html">downloadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="downloadAttachment-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatDownloadAttachmentParam-class.html">QChatDownloadAttachmentParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/downloadAttachment.html">downloadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="downloadAttachment-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatDownloadAttachmentParam-class.html">QChatDownloadAttachmentParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -220,8 +212,8 @@
 </dd>
 
         <dt id="getLastMessageOfChannels" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getLastMessageOfChannels.html">getLastMessageOfChannels</a></span><span class="signature">(<wbr><span class="parameter" id="getLastMessageOfChannels-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetLastMessageOfChannelsParam-class.html">QChatGetLastMessageOfChannelsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetLastMessageOfChannelsResult-class.html">QChatGetLastMessageOfChannelsResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getLastMessageOfChannels.html">getLastMessageOfChannels</a></span><span class="signature">(<wbr><span class="parameter" id="getLastMessageOfChannels-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetLastMessageOfChannelsParam-class.html">QChatGetLastMessageOfChannelsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetLastMessageOfChannelsResult-class.html">QChatGetLastMessageOfChannelsResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -233,8 +225,8 @@
 </dd>
 
         <dt id="getMentionedMeMessages" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMentionedMeMessages.html">getMentionedMeMessages</a></span><span class="signature">(<wbr><span class="parameter" id="getMentionedMeMessages-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetMentionedMeMessagesParam-class.html">QChatGetMentionedMeMessagesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetMentionedMeMessagesResult-class.html">QChatGetMentionedMeMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMentionedMeMessages.html">getMentionedMeMessages</a></span><span class="signature">(<wbr><span class="parameter" id="getMentionedMeMessages-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMentionedMeMessagesParam-class.html">QChatGetMentionedMeMessagesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMentionedMeMessagesResult-class.html">QChatGetMentionedMeMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -247,7 +239,7 @@
 
         <dt id="getMessageCache" class="callable">
   <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageCache.html">getMessageCache</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageCache-param-qchatServerId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">qchatServerId</span>, </span><span class="parameter" id="getMessageCache-param-qchatChannelId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">qchatChannelId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatMessageCache-class.html">QChatMessageCache</a></span>&gt;</span>?</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatMessageCache-class.html">QChatMessageCache</a></span>&gt;</span>?</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -261,8 +253,8 @@
 </dd>
 
         <dt id="getMessageHistory" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageHistory.html">getMessageHistory</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageHistory-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetMessageHistoryParam-class.html">QChatGetMessageHistoryParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetMessageHistoryResult-class.html">QChatGetMessageHistoryResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageHistory.html">getMessageHistory</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageHistory-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMessageHistoryParam-class.html">QChatGetMessageHistoryParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMessageHistoryResult-class.html">QChatGetMessageHistoryResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -274,8 +266,8 @@
 </dd>
 
         <dt id="getMessageHistoryByIds" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageHistoryByIds.html">getMessageHistoryByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageHistoryByIds-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetMessageHistoryByIdsParam-class.html">QChatGetMessageHistoryByIdsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetMessageHistoryResult-class.html">QChatGetMessageHistoryResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageHistoryByIds.html">getMessageHistoryByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageHistoryByIds-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMessageHistoryByIdsParam-class.html">QChatGetMessageHistoryByIdsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMessageHistoryResult-class.html">QChatGetMessageHistoryResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -287,8 +279,8 @@
 </dd>
 
         <dt id="getMessageThreadInfos" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageThreadInfos.html">getMessageThreadInfos</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageThreadInfos-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetMessageThreadInfosParam-class.html">QChatGetMessageThreadInfosParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetMessageThreadInfosResult-class.html">QChatGetMessageThreadInfosResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getMessageThreadInfos.html">getMessageThreadInfos</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageThreadInfos-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMessageThreadInfosParam-class.html">QChatGetMessageThreadInfosParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMessageThreadInfosResult-class.html">QChatGetMessageThreadInfosResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -300,8 +292,8 @@
 </dd>
 
         <dt id="getQuickComments" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getQuickComments.html">getQuickComments</a></span><span class="signature">(<wbr><span class="parameter" id="getQuickComments-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetQuickCommentsParam-class.html">QChatGetQuickCommentsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetQuickCommentsResult-class.html">QChatGetQuickCommentsResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getQuickComments.html">getQuickComments</a></span><span class="signature">(<wbr><span class="parameter" id="getQuickComments-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetQuickCommentsParam-class.html">QChatGetQuickCommentsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetQuickCommentsResult-class.html">QChatGetQuickCommentsResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -313,8 +305,8 @@
 </dd>
 
         <dt id="getReferMessages" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getReferMessages.html">getReferMessages</a></span><span class="signature">(<wbr><span class="parameter" id="getReferMessages-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetReferMessagesParam-class.html">QChatGetReferMessagesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetReferMessagesResult-class.html">QChatGetReferMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getReferMessages.html">getReferMessages</a></span><span class="signature">(<wbr><span class="parameter" id="getReferMessages-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetReferMessagesParam-class.html">QChatGetReferMessagesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetReferMessagesResult-class.html">QChatGetReferMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -326,8 +318,8 @@
 </dd>
 
         <dt id="getThreadMessages" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/getThreadMessages.html">getThreadMessages</a></span><span class="signature">(<wbr><span class="parameter" id="getThreadMessages-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetThreadMessagesParam-class.html">QChatGetThreadMessagesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetThreadMessagesResult-class.html">QChatGetThreadMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/getThreadMessages.html">getThreadMessages</a></span><span class="signature">(<wbr><span class="parameter" id="getThreadMessages-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetThreadMessagesParam-class.html">QChatGetThreadMessagesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetThreadMessagesResult-class.html">QChatGetThreadMessagesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -339,8 +331,8 @@
 </dd>
 
         <dt id="markMessageRead" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/markMessageRead.html">markMessageRead</a></span><span class="signature">(<wbr><span class="parameter" id="markMessageRead-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatMarkMessageReadParam-class.html">QChatMarkMessageReadParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/markMessageRead.html">markMessageRead</a></span><span class="signature">(<wbr><span class="parameter" id="markMessageRead-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatMarkMessageReadParam-class.html">QChatMarkMessageReadParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -352,8 +344,8 @@
 </dd>
 
         <dt id="markSystemNotificationsRead" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/markSystemNotificationsRead.html">markSystemNotificationsRead</a></span><span class="signature">(<wbr><span class="parameter" id="markSystemNotificationsRead-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatMarkSystemNotificationsReadParam-class.html">QChatMarkSystemNotificationsReadParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/markSystemNotificationsRead.html">markSystemNotificationsRead</a></span><span class="signature">(<wbr><span class="parameter" id="markSystemNotificationsRead-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatMarkSystemNotificationsReadParam-class.html">QChatMarkSystemNotificationsReadParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -378,8 +370,8 @@
 </dd>
 
         <dt id="removeQuickComment" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/removeQuickComment.html">removeQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="removeQuickComment-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRemoveQuickCommentParam-class.html">QChatRemoveQuickCommentParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/removeQuickComment.html">removeQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="removeQuickComment-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRemoveQuickCommentParam-class.html">QChatRemoveQuickCommentParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -391,8 +383,8 @@
 </dd>
 
         <dt id="replyMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/replyMessage.html">replyMessage</a></span><span class="signature">(<wbr><span class="parameter" id="replyMessage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatReplyMessageParam-class.html">QChatReplyMessageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSendMessageResult-class.html">QChatSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/replyMessage.html">replyMessage</a></span><span class="signature">(<wbr><span class="parameter" id="replyMessage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatReplyMessageParam-class.html">QChatReplyMessageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendMessageResult-class.html">QChatSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -404,8 +396,8 @@
 </dd>
 
         <dt id="resendMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/resendMessage.html">resendMessage</a></span><span class="signature">(<wbr><span class="parameter" id="resendMessage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatResendMessageParam-class.html">QChatResendMessageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSendMessageResult-class.html">QChatSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/resendMessage.html">resendMessage</a></span><span class="signature">(<wbr><span class="parameter" id="resendMessage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatResendMessageParam-class.html">QChatResendMessageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendMessageResult-class.html">QChatSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -417,8 +409,8 @@
 </dd>
 
         <dt id="resendSystemNotification" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/resendSystemNotification.html">resendSystemNotification</a></span><span class="signature">(<wbr><span class="parameter" id="resendSystemNotification-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatResendSystemNotificationParam-class.html">QChatResendSystemNotificationParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSendSystemNotificationResult-class.html">QChatSendSystemNotificationResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/resendSystemNotification.html">resendSystemNotification</a></span><span class="signature">(<wbr><span class="parameter" id="resendSystemNotification-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatResendSystemNotificationParam-class.html">QChatResendSystemNotificationParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendSystemNotificationResult-class.html">QChatSendSystemNotificationResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -430,8 +422,8 @@
 </dd>
 
         <dt id="revokeMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/revokeMessage.html">revokeMessage</a></span><span class="signature">(<wbr><span class="parameter" id="revokeMessage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRevokeMessageParam-class.html">QChatRevokeMessageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatRevokeMessageResult-class.html">QChatRevokeMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/revokeMessage.html">revokeMessage</a></span><span class="signature">(<wbr><span class="parameter" id="revokeMessage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRevokeMessageParam-class.html">QChatRevokeMessageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRevokeMessageResult-class.html">QChatRevokeMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -443,8 +435,8 @@
 </dd>
 
         <dt id="searchMsgByPage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/searchMsgByPage.html">searchMsgByPage</a></span><span class="signature">(<wbr><span class="parameter" id="searchMsgByPage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSearchMsgByPageParam-class.html">QChatSearchMsgByPageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSearchMsgByPageResult-class.html">QChatSearchMsgByPageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/searchMsgByPage.html">searchMsgByPage</a></span><span class="signature">(<wbr><span class="parameter" id="searchMsgByPage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSearchMsgByPageParam-class.html">QChatSearchMsgByPageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSearchMsgByPageResult-class.html">QChatSearchMsgByPageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -456,8 +448,8 @@
 </dd>
 
         <dt id="sendMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/sendMessage.html">sendMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendMessage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSendMessageParam-class.html">QChatSendMessageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSendMessageResult-class.html">QChatSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/sendMessage.html">sendMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendMessage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendMessageParam-class.html">QChatSendMessageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendMessageResult-class.html">QChatSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -469,8 +461,8 @@
 </dd>
 
         <dt id="sendSystemNotification" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/sendSystemNotification.html">sendSystemNotification</a></span><span class="signature">(<wbr><span class="parameter" id="sendSystemNotification-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSendSystemNotificationParam-class.html">QChatSendSystemNotificationParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSendSystemNotificationResult-class.html">QChatSendSystemNotificationResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/sendSystemNotification.html">sendSystemNotification</a></span><span class="signature">(<wbr><span class="parameter" id="sendSystemNotification-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendSystemNotificationParam-class.html">QChatSendSystemNotificationParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendSystemNotificationResult-class.html">QChatSendSystemNotificationResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -482,8 +474,8 @@
 </dd>
 
         <dt id="sendTypingEvent" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/sendTypingEvent.html">sendTypingEvent</a></span><span class="signature">(<wbr><span class="parameter" id="sendTypingEvent-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSendTypingEventParam-class.html">QChatSendTypingEventParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSendTypingEventResult-class.html">QChatSendTypingEventResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/sendTypingEvent.html">sendTypingEvent</a></span><span class="signature">(<wbr><span class="parameter" id="sendTypingEvent-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendTypingEventParam-class.html">QChatSendTypingEventParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSendTypingEventResult-class.html">QChatSendTypingEventResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -509,8 +501,8 @@
 </dd>
 
         <dt id="updateMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/updateMessage.html">updateMessage</a></span><span class="signature">(<wbr><span class="parameter" id="updateMessage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateMessageParam-class.html">QChatUpdateMessageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateMessageResult-class.html">QChatUpdateMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/updateMessage.html">updateMessage</a></span><span class="signature">(<wbr><span class="parameter" id="updateMessage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateMessageParam-class.html">QChatUpdateMessageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateMessageResult-class.html">QChatUpdateMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -522,8 +514,8 @@
 </dd>
 
         <dt id="updateSystemNotification" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatMessageService/updateSystemNotification.html">updateSystemNotification</a></span><span class="signature">(<wbr><span class="parameter" id="updateSystemNotification-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateSystemNotificationParam-class.html">QChatUpdateSystemNotificationParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateSystemNotificationResult-class.html">QChatUpdateSystemNotificationResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatMessageService/updateSystemNotification.html">updateSystemNotification</a></span><span class="signature">(<wbr><span class="parameter" id="updateSystemNotification-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateSystemNotificationParam-class.html">QChatUpdateSystemNotificationParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateSystemNotificationResult-class.html">QChatUpdateSystemNotificationResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -562,9 +554,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -572,40 +562,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">QChatMessageService class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

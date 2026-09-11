@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">QChatRoleService class</li>
   </ol>
   <div class="self-name">QChatRoleService</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -67,14 +59,33 @@
 </section>
 
 
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+        
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/hawk_meta/0.0.1/hawk_meta/HawkEntryPoint-class.html">HawkEntryPoint</a>()</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
 
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="QChatRoleService" class="callable">
-          <span class="name"><a href="../nim_core_v2/QChatRoleService/QChatRoleService.html">QChatRoleService</a></span><span class="signature">()</span>
+        <dt id="QChatRoleService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/QChatRoleService/QChatRoleService.html">QChatRoleService.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -114,6 +125,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -121,8 +133,8 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="addChannelRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/addChannelRole.html">addChannelRole</a></span><span class="signature">(<wbr><span class="parameter" id="addChannelRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAddChannelRoleParam-class.html">QChatAddChannelRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatAddChannelRoleResult-class.html">QChatAddChannelRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/addChannelRole.html">addChannelRole</a></span><span class="signature">(<wbr><span class="parameter" id="addChannelRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddChannelRoleParam-class.html">QChatAddChannelRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddChannelRoleResult-class.html">QChatAddChannelRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -134,8 +146,8 @@
 </dd>
 
         <dt id="addMemberRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/addMemberRole.html">addMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="addMemberRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAddMemberRoleParam-class.html">QChatAddMemberRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatAddMemberRoleResult-class.html">QChatAddMemberRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/addMemberRole.html">addMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="addMemberRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddMemberRoleParam-class.html">QChatAddMemberRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddMemberRoleResult-class.html">QChatAddMemberRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -147,8 +159,8 @@
 </dd>
 
         <dt id="addMembersToServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/addMembersToServerRole.html">addMembersToServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="addMembersToServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAddMembersToServerRoleParam-class.html">QChatAddMembersToServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatAddMembersToServerRoleResult-class.html">QChatAddMembersToServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/addMembersToServerRole.html">addMembersToServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="addMembersToServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddMembersToServerRoleParam-class.html">QChatAddMembersToServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAddMembersToServerRoleResult-class.html">QChatAddMembersToServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -160,8 +172,8 @@
 </dd>
 
         <dt id="checkPermission" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/checkPermission.html">checkPermission</a></span><span class="signature">(<wbr><span class="parameter" id="checkPermission-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatCheckPermissionParam-class.html">QChatCheckPermissionParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatCheckPermissionResult-class.html">QChatCheckPermissionResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/checkPermission.html">checkPermission</a></span><span class="signature">(<wbr><span class="parameter" id="checkPermission-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCheckPermissionParam-class.html">QChatCheckPermissionParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCheckPermissionResult-class.html">QChatCheckPermissionResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -173,8 +185,8 @@
 </dd>
 
         <dt id="checkPermissions" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/checkPermissions.html">checkPermissions</a></span><span class="signature">(<wbr><span class="parameter" id="checkPermissions-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatCheckPermissionsParam-class.html">QChatCheckPermissionsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatCheckPermissionsResult-class.html">QChatCheckPermissionsResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/checkPermissions.html">checkPermissions</a></span><span class="signature">(<wbr><span class="parameter" id="checkPermissions-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCheckPermissionsParam-class.html">QChatCheckPermissionsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCheckPermissionsResult-class.html">QChatCheckPermissionsResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -186,8 +198,8 @@
 </dd>
 
         <dt id="createServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/createServerRole.html">createServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="createServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatCreateServerRoleParam-class.html">QChatCreateServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatCreateServerRoleResult-class.html">QChatCreateServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/createServerRole.html">createServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="createServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCreateServerRoleParam-class.html">QChatCreateServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCreateServerRoleResult-class.html">QChatCreateServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -199,8 +211,8 @@
 </dd>
 
         <dt id="deleteServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/deleteServerRole.html">deleteServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="deleteServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatDeleteServerRoleParam-class.html">QChatDeleteServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/deleteServerRole.html">deleteServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="deleteServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatDeleteServerRoleParam-class.html">QChatDeleteServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -212,8 +224,8 @@
 </dd>
 
         <dt id="getChannelRoles" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getChannelRoles.html">getChannelRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getChannelRoles-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetChannelRolesParam-class.html">QChatGetChannelRolesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetChannelRolesResult-class.html">QChatGetChannelRolesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getChannelRoles.html">getChannelRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getChannelRoles-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetChannelRolesParam-class.html">QChatGetChannelRolesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetChannelRolesResult-class.html">QChatGetChannelRolesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -225,8 +237,8 @@
 </dd>
 
         <dt id="getExistingAccidsInServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingAccidsInServerRole.html">getExistingAccidsInServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingAccidsInServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetExistingAccidsInServerRoleParam-class.html">QChatGetExistingAccidsInServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetExistingAccidsInServerRoleResult-class.html">QChatGetExistingAccidsInServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingAccidsInServerRole.html">getExistingAccidsInServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingAccidsInServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingAccidsInServerRoleParam-class.html">QChatGetExistingAccidsInServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingAccidsInServerRoleResult-class.html">QChatGetExistingAccidsInServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -238,8 +250,8 @@
 </dd>
 
         <dt id="getExistingAccidsOfMemberRoles" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingAccidsOfMemberRoles.html">getExistingAccidsOfMemberRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingAccidsOfMemberRoles-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetExistingAccidsOfMemberRolesParam-class.html">QChatGetExistingAccidsOfMemberRolesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetExistingAccidsOfMemberRolesResult-class.html">QChatGetExistingAccidsOfMemberRolesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingAccidsOfMemberRoles.html">getExistingAccidsOfMemberRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingAccidsOfMemberRoles-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingAccidsOfMemberRolesParam-class.html">QChatGetExistingAccidsOfMemberRolesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingAccidsOfMemberRolesResult-class.html">QChatGetExistingAccidsOfMemberRolesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -251,8 +263,8 @@
 </dd>
 
         <dt id="getExistingChannelRolesByServerRoleIds" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingChannelRolesByServerRoleIds.html">getExistingChannelRolesByServerRoleIds</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingChannelRolesByServerRoleIds-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetExistingChannelRolesByServerRoleIdsParam-class.html">QChatGetExistingChannelRolesByServerRoleIdsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetExistingChannelRolesByServerRoleIdsResult-class.html">QChatGetExistingChannelRolesByServerRoleIdsResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingChannelRolesByServerRoleIds.html">getExistingChannelRolesByServerRoleIds</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingChannelRolesByServerRoleIds-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingChannelRolesByServerRoleIdsParam-class.html">QChatGetExistingChannelRolesByServerRoleIdsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingChannelRolesByServerRoleIdsResult-class.html">QChatGetExistingChannelRolesByServerRoleIdsResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -264,8 +276,8 @@
 </dd>
 
         <dt id="getExistingServerRolesByAccids" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingServerRolesByAccids.html">getExistingServerRolesByAccids</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingServerRolesByAccids-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetExistingServerRolesByAccidsParam-class.html">QChatGetExistingServerRolesByAccidsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetExistingServerRolesByAccidsResult-class.html">QChatGetExistingServerRolesByAccidsResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getExistingServerRolesByAccids.html">getExistingServerRolesByAccids</a></span><span class="signature">(<wbr><span class="parameter" id="getExistingServerRolesByAccids-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingServerRolesByAccidsParam-class.html">QChatGetExistingServerRolesByAccidsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetExistingServerRolesByAccidsResult-class.html">QChatGetExistingServerRolesByAccidsResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -277,8 +289,8 @@
 </dd>
 
         <dt id="getMemberRoles" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getMemberRoles.html">getMemberRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getMemberRoles-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetMemberRolesParam-class.html">QChatGetMemberRolesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetMemberRolesResult-class.html">QChatGetMemberRolesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getMemberRoles.html">getMemberRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getMemberRoles-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMemberRolesParam-class.html">QChatGetMemberRolesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMemberRolesResult-class.html">QChatGetMemberRolesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -290,8 +302,8 @@
 </dd>
 
         <dt id="getMembersFromServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getMembersFromServerRole.html">getMembersFromServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="getMembersFromServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetMembersFromServerRoleParam-class.html">QChatGetMembersFromServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetMembersFromServerRoleResult-class.html">QChatGetMembersFromServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getMembersFromServerRole.html">getMembersFromServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="getMembersFromServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMembersFromServerRoleParam-class.html">QChatGetMembersFromServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetMembersFromServerRoleResult-class.html">QChatGetMembersFromServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -303,8 +315,8 @@
 </dd>
 
         <dt id="getServerRoles" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getServerRoles.html">getServerRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getServerRoles-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetServerRolesParam-class.html">QChatGetServerRolesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetServerRolesResult-class.html">QChatGetServerRolesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getServerRoles.html">getServerRoles</a></span><span class="signature">(<wbr><span class="parameter" id="getServerRoles-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerRolesParam-class.html">QChatGetServerRolesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerRolesResult-class.html">QChatGetServerRolesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -316,8 +328,8 @@
 </dd>
 
         <dt id="getServerRolesByAccid" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/getServerRolesByAccid.html">getServerRolesByAccid</a></span><span class="signature">(<wbr><span class="parameter" id="getServerRolesByAccid-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetServerRolesByAccidParam-class.html">QChatGetServerRolesByAccidParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetServerRolesByAccidResult-class.html">QChatGetServerRolesByAccidResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/getServerRolesByAccid.html">getServerRolesByAccid</a></span><span class="signature">(<wbr><span class="parameter" id="getServerRolesByAccid-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerRolesByAccidParam-class.html">QChatGetServerRolesByAccidParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerRolesByAccidResult-class.html">QChatGetServerRolesByAccidResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -342,8 +354,8 @@
 </dd>
 
         <dt id="removeChannelRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/removeChannelRole.html">removeChannelRole</a></span><span class="signature">(<wbr><span class="parameter" id="removeChannelRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRemoveChannelRoleParam-class.html">QChatRemoveChannelRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/removeChannelRole.html">removeChannelRole</a></span><span class="signature">(<wbr><span class="parameter" id="removeChannelRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRemoveChannelRoleParam-class.html">QChatRemoveChannelRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -355,8 +367,8 @@
 </dd>
 
         <dt id="removeMemberRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/removeMemberRole.html">removeMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="removeMemberRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRemoveMemberRoleParam-class.html">QChatRemoveMemberRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/removeMemberRole.html">removeMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="removeMemberRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRemoveMemberRoleParam-class.html">QChatRemoveMemberRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -368,8 +380,8 @@
 </dd>
 
         <dt id="removeMembersFromServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/removeMembersFromServerRole.html">removeMembersFromServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="removeMembersFromServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRemoveMembersFromServerRoleParam-class.html">QChatRemoveMembersFromServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatRemoveMembersFromServerRoleResult-class.html">QChatRemoveMembersFromServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/removeMembersFromServerRole.html">removeMembersFromServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="removeMembersFromServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRemoveMembersFromServerRoleParam-class.html">QChatRemoveMembersFromServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRemoveMembersFromServerRoleResult-class.html">QChatRemoveMembersFromServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -394,8 +406,8 @@
 </dd>
 
         <dt id="updateChannelRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateChannelRole.html">updateChannelRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateChannelRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateChannelRoleParam-class.html">QChatUpdateChannelRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateChannelRoleResult-class.html">QChatUpdateChannelRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateChannelRole.html">updateChannelRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateChannelRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateChannelRoleParam-class.html">QChatUpdateChannelRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateChannelRoleResult-class.html">QChatUpdateChannelRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -407,8 +419,8 @@
 </dd>
 
         <dt id="updateMemberRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateMemberRole.html">updateMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateMemberRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateMemberRoleParam-class.html">QChatUpdateMemberRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateMemberRoleResult-class.html">QChatUpdateMemberRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateMemberRole.html">updateMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateMemberRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateMemberRoleParam-class.html">QChatUpdateMemberRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateMemberRoleResult-class.html">QChatUpdateMemberRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -420,8 +432,8 @@
 </dd>
 
         <dt id="updateServerRole" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateServerRole.html">updateServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateServerRole-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateServerRoleParam-class.html">QChatUpdateServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateServerRoleResult-class.html">QChatUpdateServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateServerRole.html">updateServerRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateServerRole-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerRoleParam-class.html">QChatUpdateServerRoleParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerRoleResult-class.html">QChatUpdateServerRoleResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -433,8 +445,8 @@
 </dd>
 
         <dt id="updateServerRolePriorities" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateServerRolePriorities.html">updateServerRolePriorities</a></span><span class="signature">(<wbr><span class="parameter" id="updateServerRolePriorities-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateServerRolePrioritiesParam-class.html">QChatUpdateServerRolePrioritiesParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateServerRolePrioritiesResult-class.html">QChatUpdateServerRolePrioritiesResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatRoleService/updateServerRolePriorities.html">updateServerRolePriorities</a></span><span class="signature">(<wbr><span class="parameter" id="updateServerRolePriorities-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerRolePrioritiesParam-class.html">QChatUpdateServerRolePrioritiesParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerRolePrioritiesResult-class.html">QChatUpdateServerRolePrioritiesResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -472,9 +484,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -482,40 +492,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">QChatRoleService class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

@@ -163,9 +163,9 @@ abstract class ConversationServicePlatform extends Service {
 
   /// 根据会话id清空会话未读数
   /// groupId – 会话分组Id
-  // Future<NIMResult<void>> clearUnreadCountByGroupId(String groupId) async {
-  //   throw UnimplementedError('clearUnreadCountByGroupId() is not implemented');
-  // }
+  Future<NIMResult<void>> clearUnreadCountByGroupId(String groupId) async {
+    throw UnimplementedError('clearUnreadCountByGroupId() is not implemented');
+  }
 
   /// 根据会话类型清空相应会话的未读数
   /// groupId – 会话分组Id
@@ -200,5 +200,12 @@ abstract class ConversationServicePlatform extends Service {
   /// conversationId – 会话id
   Future<NIMResult<int>> markConversationRead(String conversationId) async {
     throw UnimplementedError('markConversationRead() is not implemented');
+  }
+
+  /// 查询当前全量置顶的会话列表
+  /// 排序方式：倒序
+  Future<NIMResult<List<NIMConversation>>> getStickTopConversationList() async {
+    throw UnimplementedError(
+        'getStickTopConversationList() is not implemented');
   }
 }

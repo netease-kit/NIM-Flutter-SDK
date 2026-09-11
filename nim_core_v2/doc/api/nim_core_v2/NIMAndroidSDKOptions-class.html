@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -49,7 +45,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -79,12 +74,12 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
     <ul class="annotation-list clazz-relationships">
-        <li>@<a href="https://pub.dev/documentation/json_annotation/4.9.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>()</li>
+        <li>@JsonSerializable()</li>
     </ul>
   </dd>
 
@@ -95,10 +90,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
         <dt id="NIMAndroidSDKOptions" class="callable">
-          <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/NIMAndroidSDKOptions.html">NIMAndroidSDKOptions</a></span><span class="signature">(<span class="parameter" id="-param-improveSDKProcessPriority">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">improveSDKProcessPriority</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-preLoadServers"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">preLoadServers</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-reducedIM"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reducedIM</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-checkManifestConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">checkManifestConfig</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-disableAwake"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">disableAwake</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-enabledQChatMessageCache"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabledQChatMessageCache</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-databaseEncryptKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">databaseEncryptKey</span>, </span><span class="parameter" id="-param-thumbnailSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">thumbnailSize</span> = <span class="default-value">350</span>, </span><span class="parameter" id="-param-fetchServerTimeInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fetchServerTimeInterval</span> = <span class="default-value">2000</span>, </span><span class="parameter" id="-param-customPushContentType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customPushContentType</span>, </span><span class="parameter" id="-param-mixPushConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMixPushConfig-class.html">NIMMixPushConfig</a>?</span> <span class="parameter-name">mixPushConfig</span>, </span><span class="parameter" id="-param-notificationConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMStatusBarNotificationConfig-class.html">NIMStatusBarNotificationConfig</a>?</span> <span class="parameter-name">notificationConfig</span>, </span><span class="parameter" id="-param-displayNameForMessageNotifierProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMDisplayNameForMessageNotifierProvider.html">NIMDisplayNameForMessageNotifierProvider</a>?</span> <span class="parameter-name">displayNameForMessageNotifierProvider</span>, </span><span class="parameter" id="-param-avatarForMessageNotifierProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMAvatarForMessageNotifierProvider.html">NIMAvatarForMessageNotifierProvider</a>?</span> <span class="parameter-name">avatarForMessageNotifierProvider</span>, </span><span class="parameter" id="-param-displayTitleForMessageNotifierProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMDisplayTitleForMessageNotifierProvider.html">NIMDisplayTitleForMessageNotifierProvider</a>?</span> <span class="parameter-name">displayTitleForMessageNotifierProvider</span>, </span><span class="parameter" id="-param-makeNotifyContentProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeNotifyContentProvider.html">NIMMakeNotifyContentProvider</a>?</span> <span class="parameter-name">makeNotifyContentProvider</span>, </span><span class="parameter" id="-param-makeTickerProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeTickerProvider.html">NIMMakeTickerProvider</a>?</span> <span class="parameter-name">makeTickerProvider</span>, </span><span class="parameter" id="-param-makeRevokeMsgTipProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeRevokeMsgTipProvider.html">NIMMakeRevokeMsgTipProvider</a>?</span> <span class="parameter-name">makeRevokeMsgTipProvider</span>, </span><span class="parameter" id="-param-appKey"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">appKey</span>, </span><span class="parameter" id="-param-sdkRootDir"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">sdkRootDir</span>, </span><span class="parameter" id="-param-cdnTrackInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">cdnTrackInterval</span>, </span><span class="parameter" id="-param-customClientType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">customClientType</span>, </span><span class="parameter" id="-param-shouldSyncStickTopSessionInfos"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldSyncStickTopSessionInfos</span>, </span><span class="parameter" id="-param-enableReportLogAutomatically"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableReportLogAutomatically</span>, </span><span class="parameter" id="-param-loginCustomTag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">loginCustomTag</span>, </span><span class="parameter" id="-param-enableDatabaseBackup"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableDatabaseBackup</span>, </span><span class="parameter" id="-param-shouldSyncUnreadCount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldSyncUnreadCount</span>, </span><span class="parameter" id="-param-shouldConsiderRevokedMessageUnreadCount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldConsiderRevokedMessageUnreadCount</span>, </span><span class="parameter" id="-param-enableTeamMessageReadReceipt"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableTeamMessageReadReceipt</span>, </span><span class="parameter" id="-param-shouldTeamNotificationMessageMarkUnread"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldTeamNotificationMessageMarkUnread</span>, </span><span class="parameter" id="-param-enableAnimatedImageThumbnail"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableAnimatedImageThumbnail</span>, </span><span class="parameter" id="-param-enablePreloadMessageAttachment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enablePreloadMessageAttachment</span>, </span><span class="parameter" id="-param-useAssetServerAddressConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">useAssetServerAddressConfig</span>, </span><span class="parameter" id="-param-nosSceneConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">nosSceneConfig</span>, </span><span class="parameter" id="-param-serverConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMServerConfig-class.html">NIMServerConfig</a>?</span> <span class="parameter-name">serverConfig</span>, </span><span class="parameter" id="-param-enableFcs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableFcs</span> = <span class="default-value">true</span>}</span>)</span>
+          <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/NIMAndroidSDKOptions.html">NIMAndroidSDKOptions</a></span><span class="signature">({<span class="parameter" id="-param-improveSDKProcessPriority"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">improveSDKProcessPriority</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-preLoadServers"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">preLoadServers</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-reducedIM"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reducedIM</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-checkManifestConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">checkManifestConfig</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-consoleLogEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">consoleLogEnabled</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-disableAwake"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">disableAwake</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-enabledQChatMessageCache"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabledQChatMessageCache</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-enableServerV2FriendAddApplication"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableServerV2FriendAddApplication</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-enableServerV2TeamJoinActionInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableServerV2TeamJoinActionInfo</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-searchAccountIdEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">searchAccountIdEnabled</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-databaseEncryptKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">databaseEncryptKey</span>, </span><span class="parameter" id="-param-thumbnailSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">thumbnailSize</span> = <span class="default-value">350</span>, </span><span class="parameter" id="-param-fetchServerTimeInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fetchServerTimeInterval</span> = <span class="default-value">2000</span>, </span><span class="parameter" id="-param-customPushContentType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">customPushContentType</span>, </span><span class="parameter" id="-param-mixPushConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMixPushConfig-class.html">NIMMixPushConfig</a>?</span> <span class="parameter-name">mixPushConfig</span>, </span><span class="parameter" id="-param-notificationConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMStatusBarNotificationConfig-class.html">NIMStatusBarNotificationConfig</a>?</span> <span class="parameter-name">notificationConfig</span>, </span><span class="parameter" id="-param-displayNameForMessageNotifierProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMDisplayNameForMessageNotifierProvider.html">NIMDisplayNameForMessageNotifierProvider</a>?</span> <span class="parameter-name">displayNameForMessageNotifierProvider</span>, </span><span class="parameter" id="-param-avatarForMessageNotifierProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMAvatarForMessageNotifierProvider.html">NIMAvatarForMessageNotifierProvider</a>?</span> <span class="parameter-name">avatarForMessageNotifierProvider</span>, </span><span class="parameter" id="-param-displayTitleForMessageNotifierProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMDisplayTitleForMessageNotifierProvider.html">NIMDisplayTitleForMessageNotifierProvider</a>?</span> <span class="parameter-name">displayTitleForMessageNotifierProvider</span>, </span><span class="parameter" id="-param-makeNotifyContentProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeNotifyContentProvider.html">NIMMakeNotifyContentProvider</a>?</span> <span class="parameter-name">makeNotifyContentProvider</span>, </span><span class="parameter" id="-param-makeTickerProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeTickerProvider.html">NIMMakeTickerProvider</a>?</span> <span class="parameter-name">makeTickerProvider</span>, </span><span class="parameter" id="-param-makeRevokeMsgTipProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeRevokeMsgTipProvider.html">NIMMakeRevokeMsgTipProvider</a>?</span> <span class="parameter-name">makeRevokeMsgTipProvider</span>, </span><span class="parameter" id="-param-makeCategoryProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMMakeCategoryProvider.html">NIMMakeCategoryProvider</a>?</span> <span class="parameter-name">makeCategoryProvider</span>, </span><span class="parameter" id="-param-notificationChannelProvider"><span class="type-annotation"><a href="../nim_core_v2/NIMNotificationChannelProvider.html">NIMNotificationChannelProvider</a>?</span> <span class="parameter-name">notificationChannelProvider</span>, </span><span class="parameter" id="-param-enableV2CloudConversation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableV2CloudConversation</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-enableMessageNotifierCustomization"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableMessageNotifierCustomization</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-manualProvidePushTokenProvider"><span class="type-annotation"><a href="../nim_core_v2/NIManualProvidePushTokenProvider.html">NIManualProvidePushTokenProvider</a>?</span> <span class="parameter-name">manualProvidePushTokenProvider</span>, </span><span class="parameter" id="-param-enableUserInfoProvider"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableUserInfoProvider</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-enableNotificationChannelProvider"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableNotificationChannelProvider</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-appKey"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">appKey</span>, </span><span class="parameter" id="-param-sdkRootDir"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">sdkRootDir</span>, </span><span class="parameter" id="-param-cdnTrackInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">cdnTrackInterval</span>, </span><span class="parameter" id="-param-customClientType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">customClientType</span>, </span><span class="parameter" id="-param-shouldSyncStickTopSessionInfos"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldSyncStickTopSessionInfos</span>, </span><span class="parameter" id="-param-enableReportLogAutomatically"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableReportLogAutomatically</span>, </span><span class="parameter" id="-param-loginCustomTag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">loginCustomTag</span>, </span><span class="parameter" id="-param-enableDatabaseBackup"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableDatabaseBackup</span>, </span><span class="parameter" id="-param-shouldSyncUnreadCount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldSyncUnreadCount</span>, </span><span class="parameter" id="-param-shouldConsiderRevokedMessageUnreadCount"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldConsiderRevokedMessageUnreadCount</span>, </span><span class="parameter" id="-param-enableTeamMessageReadReceipt"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableTeamMessageReadReceipt</span>, </span><span class="parameter" id="-param-shouldTeamNotificationMessageMarkUnread"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">shouldTeamNotificationMessageMarkUnread</span>, </span><span class="parameter" id="-param-enableAnimatedImageThumbnail"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableAnimatedImageThumbnail</span>, </span><span class="parameter" id="-param-enablePreloadMessageAttachment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enablePreloadMessageAttachment</span>, </span><span class="parameter" id="-param-useAssetServerAddressConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">useAssetServerAddressConfig</span>, </span><span class="parameter" id="-param-nosSceneConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">nosSceneConfig</span>, </span><span class="parameter" id="-param-serverConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMServerConfig-class.html">NIMServerConfig</a>?</span> <span class="parameter-name">serverConfig</span>, </span><span class="parameter" id="-param-enableFcs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableFcs</span> = <span class="default-value">true</span></span>})</span>
         </dt>
         <dd>
           
@@ -170,6 +164,19 @@ windows&amp;macos 暂不支持
 
 </dd>
 
+        <dt id="consoleLogEnabled" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/consoleLogEnabled.html">consoleLogEnabled</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  是否开启控制台日志，默认为 false，即不开启。
+开启后，SDK 会在 Logcat 中输出详细的调试日志，便于开发调试。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="customClientType" class="property inherited">
   <span class="name"><a href="../nim_core_v2/NIMSDKOptions/customClientType.html">customClientType</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
@@ -234,6 +241,7 @@ windows&amp;macos 暂不支持
 <code>sessionId</code>   会话ID（如果是P2P聊天，那么会话ID即为发送者账号，如果是群聊天，那么会话ID就是群号）
 <code>sessionType</code> 会话类型
 返回消息发送者对应的显示名称
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableUserInfoProvider.html">enableUserInfoProvider</a> 设置为true 方能生效
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -250,6 +258,7 @@ windows&amp;macos 暂不支持
 不可以做耗时操作
 <code>message</code> 收到的消息
 返回消息title显示名称
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableUserInfoProvider.html">enableUserInfoProvider</a> 设置为true 方能生效
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -304,6 +313,30 @@ windows&amp;macos 暂不支持
 
 </dd>
 
+        <dt id="enableMessageNotifierCustomization" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/enableMessageNotifierCustomization.html">enableMessageNotifierCustomization</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  开启定制通知栏消息提醒的文案
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="enableNotificationChannelProvider" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/enableNotificationChannelProvider.html">enableNotificationChannelProvider</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  开启弹出通知前获取通道ID的回调。
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
         <dt id="enablePreloadMessageAttachment" class="property inherited">
   <span class="name"><a href="../nim_core_v2/NIMSDKOptions/enablePreloadMessageAttachment.html">enablePreloadMessageAttachment</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
@@ -332,6 +365,30 @@ windows&amp;macos 暂不支持
 
 </dd>
 
+        <dt id="enableServerV2FriendAddApplication" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/enableServerV2FriendAddApplication.html">enableServerV2FriendAddApplication</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  是否开启服务端好友申请记录功能，默认为 false，即不开启。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="enableServerV2TeamJoinActionInfo" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/enableServerV2TeamJoinActionInfo.html">enableServerV2TeamJoinActionInfo</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  是否开启服务端群申请记录功能，默认为 false，即不开启。
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="enableTeamMessageReadReceipt" class="property inherited">
   <span class="name"><a href="../nim_core_v2/NIMSDKOptions/enableTeamMessageReadReceipt.html">enableTeamMessageReadReceipt</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
@@ -341,6 +398,30 @@ windows&amp;macos 暂不支持
 <dd class="inherited">
   是否启用群消息已读功能，默认关闭
   <div class="features"><span class="feature">final</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="enableUserInfoProvider" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/enableUserInfoProvider.html">enableUserInfoProvider</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  开启用户信息提供者，由开发者提供给 NIM SDK 使用，主要用于通知栏显示的用户昵称和头像。
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="enableV2CloudConversation" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/enableV2CloudConversation.html">enableV2CloudConversation</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  启动V2云端会话功能，V2云端会话功能需要在业务平台开启相关功能才可以使用
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
@@ -394,6 +475,19 @@ windows&amp;macos 暂不支持
 
 </dd>
 
+        <dt id="makeCategoryProvider" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/makeCategoryProvider.html">makeCategoryProvider</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMakeCategoryProvider.html">NIMMakeCategoryProvider</a>?</span>
+  
+
+</dt>
+<dd>
+  定制消息提醒（通知栏提醒）本地通知 Category 类型
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableMessageNotifierCustomization.html">enableMessageNotifierCustomization</a> 设置为true 方能生效
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
         <dt id="makeNotifyContentProvider" class="property">
   <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/makeNotifyContentProvider.html">makeNotifyContentProvider</a></span>
   <span class="signature">&#8596; <a href="../nim_core_v2/NIMMakeNotifyContentProvider.html">NIMMakeNotifyContentProvider</a>?</span>
@@ -402,6 +496,7 @@ windows&amp;macos 暂不支持
 </dt>
 <dd>
   定制消息提醒（通知栏提醒）內容文案 主要在通知栏下拉后展现其通知内容：content=<code>nick:发来一条消息</code>
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableMessageNotifierCustomization.html">enableMessageNotifierCustomization</a> 设置为true 方能生效
   <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
@@ -414,6 +509,7 @@ windows&amp;macos 暂不支持
 </dt>
 <dd>
   定制消息撤回提醒文案
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableMessageNotifierCustomization.html">enableMessageNotifierCustomization</a> 设置为true 方能生效
   <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
@@ -426,8 +522,24 @@ windows&amp;macos 暂不支持
 </dt>
 <dd>
   定制消息提醒（通知栏提醒）Ticker文案 主要在通知栏弹框提醒时的内容：ticker=<code>nick有新消息</code>
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableMessageNotifierCustomization.html">enableMessageNotifierCustomization</a> 设置为true 方能生效
 Android 5.0 后废弃
   <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="manualProvidePushTokenProvider" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/manualProvidePushTokenProvider.html">manualProvidePushTokenProvider</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/NIManualProvidePushTokenProvider.html">NIManualProvidePushTokenProvider</a>?</span>
+  
+
+</dt>
+<dd>
+  注册用户自主提供的推送token的回调，仅在 MixPushConfig.manualProvidePushToken 为true时有效
+手动设置推送token的回调，使用者需要在此回调中提供自己的推送 token
+suggestedPushType – 登录推荐的推送类型，不需要严格遵循 @see <a href="../nim_core_v2/MixPushTypeEnum.html">MixPushTypeEnum</a>
+返回值为自行提供的推送类型&amp; <a href="../nim_core_v2/TokenDetail-class.html">TokenDetail</a>
+  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
@@ -452,6 +564,19 @@ Android 5.0 后废弃
 <dd class="inherited">
   SDK nos 场景配置
   <div class="features"><span class="feature">final</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="notificationChannelProvider" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/notificationChannelProvider.html">notificationChannelProvider</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMNotificationChannelProvider.html">NIMNotificationChannelProvider</a>?</span>
+  
+
+</dt>
+<dd>
+  配置通知要走的通道（ChannelId），若不配置，则根据响铃振动走对应的默认通道。
+<a href="../nim_core_v2/NIMAndroidSDKOptions/enableNotificationChannelProvider.html">enableNotificationChannelProvider</a> 设置为true 方能生效
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
@@ -512,6 +637,19 @@ Android 5.0 后废弃
 <dd class="inherited">
   sdk 根目录
   <div class="features"><span class="feature">final</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="searchAccountIdEnabled" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMAndroidSDKOptions/searchAccountIdEnabled.html">searchAccountIdEnabled</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  是否开启搜索账号ID，默认为 false，即不开启。
+true：开启；false：不开启
+  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
@@ -603,6 +741,7 @@ Android 5.0 后废弃
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -675,9 +814,7 @@ Android 5.0 后废弃
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -685,40 +822,30 @@ Android 5.0 后废弃
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
     <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
     <li class="self-crumb">NIMAndroidSDKOptions class</li>
 </ol>
 
-
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

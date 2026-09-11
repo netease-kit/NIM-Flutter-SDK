@@ -56,7 +56,12 @@ class FLTFriendService: FLTBaseService, FLTService,
       getAddApplicationUnreadCount(arguments, resultCallback)
     case "setAddApplicationRead":
       setAddApplicationRead(arguments, resultCallback)
-
+    case "clearAllAddApplication":
+      clearAllAddApplication(arguments, resultCallback)
+    case "clearAllAddApplicationEx":
+      clearAllAddApplicationEx(arguments, resultCallback)
+    case "deleteAddApplication":
+      deleteAddApplication(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -68,7 +73,7 @@ class FLTFriendService: FLTBaseService, FLTService,
   }
 
   func onFriendAdded(_ friendInfo: V2NIMFriend) {
-    notifyEvent(serviceName(), "onFriendAdded", friendInfo.toDict() as [String: Any])
+    notifyEvent(serviceName(), "onFriendAdded", friendInfo.toDic() as [String: Any])
   }
 
   func onFriendDeleted(_ accountId: String, deletionType: V2NIMFriendDeletionType) {
@@ -76,15 +81,25 @@ class FLTFriendService: FLTBaseService, FLTService,
   }
 
   func onFriendAddApplication(_ application: V2NIMFriendAddApplication) {
-    notifyEvent(serviceName(), "onFriendAddApplication", application.toDict())
+    notifyEvent(serviceName(), "onFriendAddApplication", application.toDic())
   }
 
   func onFriendAddRejected(_ rejectionInfo: V2NIMFriendAddApplication) {
-    notifyEvent(serviceName(), "onFriendAddRejected", rejectionInfo.toDict())
+    notifyEvent(serviceName(), "onFriendAddRejected", rejectionInfo.toDic())
   }
 
   func onFriendInfoChanged(_ friendInfo: V2NIMFriend) {
-    notifyEvent(serviceName(), "onFriendInfoChanged", friendInfo.toDict())
+    if let user = friendInfo.userProfile {
+      notifyEvent(serviceName(), "onFriendInfoChanged", friendInfo.toDic())
+    } else {
+      weak var weakSelf = self
+      NIMSDK.shared().v2UserService.getUserList([friendInfo.accountId!]) { users in
+        if !users.isEmpty {
+          friendInfo.setValue(users[0], forKeyPath: #keyPath(V2NIMFriend.userProfile))
+        }
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "FriendService", "onFriendInfoChanged", friendInfo.toDic())
+      }
+    }
   }
 
   private func addFriend(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
@@ -94,8 +109,8 @@ class FLTFriendService: FLTBaseService, FLTService,
     }
 
     var params = V2NIMFriendAddParams()
-    if let paramsMap = arguments["params"] as? [String: Any?] {
-      params = V2NIMFriendAddParams.fromDict(paramsMap)
+    if let paramsMap = arguments["params"] as? [String: Any] {
+      params = V2NIMFriendAddParams.fromDic(paramsMap)
     }
 
     weak var weakSelf = self
@@ -113,8 +128,8 @@ class FLTFriendService: FLTBaseService, FLTService,
     }
 
     var params = V2NIMFriendDeleteParams()
-    if let paramsMap = arguments["params"] as? [String: Any?] {
-      params = V2NIMFriendDeleteParams.fromDict(paramsMap)
+    if let paramsMap = arguments["params"] as? [String: Any] {
+      params = V2NIMFriendDeleteParams.fromDic(paramsMap)
     }
 
     weak var weakSelf = self
@@ -132,8 +147,8 @@ class FLTFriendService: FLTBaseService, FLTService,
     }
 
     var params = V2NIMFriendSetParams()
-    if let paramsMap = arguments["params"] as? [String: Any?] {
-      params = V2NIMFriendSetParams.fromDict(paramsMap)
+    if let paramsMap = arguments["params"] as? [String: Any] {
+      params = V2NIMFriendSetParams.fromDic(paramsMap)
     }
 
     weak var weakSelf = self
@@ -146,8 +161,8 @@ class FLTFriendService: FLTBaseService, FLTService,
 
   private func acceptAddApplication(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     var application = V2NIMFriendAddApplication()
-    if let paramsMap = arguments["application"] as? [String: Any?] {
-      application = V2NIMFriendAddApplication.fromDict(paramsMap)
+    if let paramsMap = arguments["application"] as? [String: Any] {
+      application = V2NIMFriendAddApplication.fromDic(paramsMap)
     }
 
     weak var weakSelf = self
@@ -160,8 +175,8 @@ class FLTFriendService: FLTBaseService, FLTService,
 
   private func rejectAddApplication(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     var application = V2NIMFriendAddApplication()
-    if let paramsMap = arguments["application"] as? [String: Any?] {
-      application = V2NIMFriendAddApplication.fromDict(paramsMap)
+    if let paramsMap = arguments["application"] as? [String: Any] {
+      application = V2NIMFriendAddApplication.fromDic(paramsMap)
     }
 
     let postscript = arguments["postscript"] as? String ?? ""
@@ -178,7 +193,7 @@ class FLTFriendService: FLTBaseService, FLTService,
     weak var weakSelf = self
     NIMSDK.shared().v2FriendService.getFriendList { friends in
       weakSelf?.friendCallback(nil,
-                               ["friendList": friends.map { $0.toDict() }],
+                               ["friendList": friends.map { $0.toDic() }],
                                resultCallback)
     } failure: { error in
       weakSelf?.friendCallback(error.nserror, nil, resultCallback)
@@ -194,7 +209,7 @@ class FLTFriendService: FLTBaseService, FLTService,
     weak var weakSelf = self
     NIMSDK.shared().v2FriendService.getFriendByIds(accountIds) { friends in
       weakSelf?.friendCallback(nil,
-                               ["friendList": friends.map { $0.toDict() }],
+                               ["friendList": friends.map { $0.toDic() }],
                                resultCallback)
     } failure: { error in
       weakSelf?.friendCallback(error.nserror, nil, resultCallback)
@@ -202,17 +217,17 @@ class FLTFriendService: FLTBaseService, FLTService,
   }
 
   private func searchFriendByOption(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    guard let optionMap = arguments["friendSearchOption"] as? [String: Any?] else {
+    guard let optionMap = arguments["friendSearchOption"] as? [String: Any] else {
       errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
       return
     }
 
-    let option = V2NIMFriendSearchOption.fromDict(optionMap)
+    let option = V2NIMFriendSearchOption.fromDic(optionMap)
 
     weak var weakSelf = self
     NIMSDK.shared().v2FriendService.searchFriend(by: option) { friends in
       weakSelf?.friendCallback(nil,
-                               ["friendList": friends.map { $0.toDict() }],
+                               ["friendList": friends.map { $0.toDic() }],
                                resultCallback)
     } failure: { error in
       weakSelf?.friendCallback(error.nserror, nil, resultCallback)
@@ -235,14 +250,14 @@ class FLTFriendService: FLTBaseService, FLTService,
 
   private func getAddApplicationList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     var option = V2NIMFriendAddApplicationQueryOption()
-    if let optionMap = arguments["option"] as? [String: Any?] {
-      option = V2NIMFriendAddApplicationQueryOption.fromDict(optionMap)
+    if let optionMap = arguments["option"] as? [String: Any] {
+      option = V2NIMFriendAddApplicationQueryOption.fromDic(optionMap)
     }
 
     weak var weakSelf = self
     NIMSDK.shared().v2FriendService.getAddApplicationList(option) { result in
       weakSelf?.friendCallback(nil,
-                               result.toDict(),
+                               result.toDic(),
                                resultCallback)
     } failure: { error in
       weakSelf?.friendCallback(error.nserror, nil, resultCallback)
@@ -261,6 +276,49 @@ class FLTFriendService: FLTBaseService, FLTService,
   private func setAddApplicationRead(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     weak var weakSelf = self
     NIMSDK.shared().v2FriendService.setAddApplicationRead { _ in
+      weakSelf?.friendCallback(nil, nil, resultCallback)
+    } failure: { error in
+      weakSelf?.friendCallback(error.nserror, nil, resultCallback)
+    }
+  }
+
+  private func clearAllAddApplication(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    weak var weakSelf = self
+    NIMSDK.shared().v2FriendService.clearAllAddApplication {
+      weakSelf?.friendCallback(nil, nil, resultCallback)
+    } failure: { error in
+      weakSelf?.friendCallback(error.nserror, nil, resultCallback)
+    }
+  }
+
+  private func clearAllAddApplicationEx(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let option = V2NIMFriendClearAddApplicationOption()
+    if let optionMap = arguments["option"] as? [String: Any] {
+      if let timestamp = optionMap["timestamp"] as? NSNumber {
+        option.timestamp = timestamp.doubleValue / 1000.0 // Dart uses milliseconds, iOS uses seconds
+      }
+      if let typeRaw = optionMap["type"] as? Int,
+         let type = V2NIMFriendAddApplicationType(rawValue: typeRaw) {
+        // Dart: 0=legacy, 1=fromSelf, 2=toSelf, 3=all → iOS rawValue 与 Android 对齐
+        option.type = type
+      }
+    }
+    weak var weakSelf = self
+    NIMSDK.shared().v2FriendService.clearAllAddApplicationEx(option) {
+      weakSelf?.friendCallback(nil, nil, resultCallback)
+    } failure: { error in
+      weakSelf?.friendCallback(error.nserror, nil, resultCallback)
+    }
+  }
+
+  private func deleteAddApplication(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    var application = V2NIMFriendAddApplication()
+    if let paramsMap = arguments["application"] as? [String: Any] {
+      application = V2NIMFriendAddApplication.fromDic(paramsMap)
+    }
+
+    weak var weakSelf = self
+    NIMSDK.shared().v2FriendService.delete(application) {
       weakSelf?.friendCallback(nil, nil, resultCallback)
     } failure: { error in
       weakSelf?.friendCallback(error.nserror, nil, resultCallback)

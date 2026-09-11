@@ -1,0 +1,22 @@
+{
+  "modelVersion": "5.1.0",
+  "name": "nim_core_v2_example",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@nimsdk/conversation": "10.9.90",
+    "@nimsdk/localconversation": "10.9.90",
+    "@nimsdk/message": "10.9.90",
+    "@nimsdk/team": "10.9.90",
+    "@nimsdk/user": "10.9.90",
+    "@nimsdk/friend": "10.9.90",
+    "@nimsdk/signalling": "10.9.90",
+    "@nimsdk/nim": "10.9.90",
+    "@nimsdk/base": "10.9.90",
+    "@nimsdk/chatroom": "10.9.90",
+    "@nimsdk/search": "10.9.90"
+  }
+}

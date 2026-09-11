@@ -11,11 +11,12 @@ import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.LocalError.createMessageFailed
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.toMap
-import com.netease.nimflutter.toMessage
+import com.netease.nimflutter.extension.toMap
+import com.netease.nimflutter.extension.toMessage
 import com.netease.nimlib.sdk.v2.message.V2NIMMessage
 import com.netease.nimlib.sdk.v2.message.V2NIMMessageCreator
 import com.netease.nimlib.sdk.v2.message.model.V2NIMMessageCallDuration
+import com.netease.nimlib.sdk.v2.storage.V2NIMStorageSceneConfig
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
@@ -63,7 +64,7 @@ class FLTMessageCreatorService(
         return suspendCancellableCoroutine { cont ->
             val imagePath = arguments["imagePath"] as? String
             val name = arguments["name"] as? String
-            val sceneName = arguments["sceneName"] as? String
+            val sceneName = arguments["sceneName"] as? String ?: V2NIMStorageSceneConfig.DEFAULT_IM.sceneName
             val height = arguments["height"] as? Int
             val width = arguments["width"] as? Int
             val message: V2NIMMessage? = V2NIMMessageCreator.createImageMessage(
@@ -90,7 +91,7 @@ class FLTMessageCreatorService(
         return suspendCancellableCoroutine { cont ->
             val audioPath = arguments["audioPath"] as? String
             val name = arguments["name"] as? String
-            val sceneName = arguments["sceneName"] as? String
+            val sceneName = arguments["sceneName"] as? String ?: V2NIMStorageSceneConfig.DEFAULT_IM.sceneName
             val duration = arguments["duration"] as? Int ?: 0
             val message: V2NIMMessage? = V2NIMMessageCreator.createAudioMessage(
                 audioPath,
@@ -115,7 +116,7 @@ class FLTMessageCreatorService(
         return suspendCancellableCoroutine { cont ->
             val videoPath = arguments["videoPath"] as? String
             val name = arguments["name"] as? String
-            val sceneName = arguments["sceneName"] as? String
+            val sceneName = arguments["sceneName"] as? String ?: V2NIMStorageSceneConfig.DEFAULT_IM.sceneName
             val duration = arguments["duration"] as? Int ?: 0
             val height = arguments["height"] as? Int
             val width = arguments["width"] as? Int
@@ -144,7 +145,7 @@ class FLTMessageCreatorService(
         return suspendCancellableCoroutine { cont ->
             val filePath = arguments["filePath"] as? String
             val name = arguments["name"] as? String
-            val sceneName = arguments["sceneName"] as? String
+            val sceneName = arguments["sceneName"] as? String ?: V2NIMStorageSceneConfig.DEFAULT_IM.sceneName
             val message: V2NIMMessage? = V2NIMMessageCreator.createFileMessage(filePath, name, sceneName)
             if (message == null) {
                 cont.resume(

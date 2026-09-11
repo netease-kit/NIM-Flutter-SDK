@@ -20,10 +20,10 @@ void FLTService::notifyEvent(const std::string& eventName,
   std::list<std::string> logList;
   Convert::getInstance()->getLogList(strLog, logList);
   for (auto& it : logList) {
-    YXLOG_API(Info) << it << YXLOGEnd;
+    //    YXLOG_API(Info) << it << YXLOGEnd;
   }
   NimCore::getInstance()->invokeMethod(eventName, arguments);
-  YXLOG_API(Info) << "notifyEvent invoke completation." << YXLOGEnd;
+  //  YXLOG_API(Info) << "notifyEvent invoke completation." << YXLOGEnd;
 }
 
 void FLTService::notifyEvent(const std::string& eventName,
@@ -39,10 +39,10 @@ void FLTService::notifyEvent(const std::string& eventName,
   std::list<std::string> logList;
   Convert::getInstance()->getLogList(strLog, logList);
   for (auto& it : logList) {
-    YXLOG_API(Info) << it << YXLOGEnd;
+    //    YXLOG_API(Info) << it << YXLOGEnd;
   }
   NimCore::getInstance()->invokeMethod(eventName, arguments, callback);
-  YXLOG_API(Info) << "notifyEvent invoke completation." << YXLOGEnd;
+  //  YXLOG_API(Info) << "notifyEvent invoke completation." << YXLOGEnd;
 }
 
 void FLTService::notifyEventEx(const std::string& serviceName,
@@ -58,8 +58,8 @@ void FLTService::notifyEventEx(const std::string& serviceName,
   std::list<std::string> logList;
   Convert::getInstance()->getLogList(strLog, logList);
   for (auto& it : logList) {
-    YXLOG_API(Info) << it << YXLOGEnd;
+    //    YXLOG_API(Info) << it << YXLOGEnd;
   }
   NimCore::getInstance()->invokeMethod(eventName, arguments);
-  YXLOG_API(Info) << "notifyEventEx invoke completation." << YXLOGEnd;
+  //  YXLOG_API(Info) << "notifyEventEx invoke completation." << YXLOGEnd;
 }

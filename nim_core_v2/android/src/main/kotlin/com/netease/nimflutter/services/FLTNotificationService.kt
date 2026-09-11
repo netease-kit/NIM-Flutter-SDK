@@ -10,8 +10,8 @@ import android.content.Context
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.convertV2NIMSendCustomNotificationParams
-import com.netease.nimflutter.toMap
+import com.netease.nimflutter.extension.convertV2NIMSendCustomNotificationParams
+import com.netease.nimflutter.extension.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.notification.V2NIMBroadcastNotification
 import com.netease.nimlib.sdk.v2.notification.V2NIMCustomNotification

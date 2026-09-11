@@ -8,4 +8,6 @@ package com.netease.nimflutter
 
 object FLTConstant {
     const val paramErrorCode = 199414
+    const val chatRoomInstanceErrorCode = 199414
+    const val chatRoomNotificationType = 105
 }

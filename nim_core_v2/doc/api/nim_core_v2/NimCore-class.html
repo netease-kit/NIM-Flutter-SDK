@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">NimCore class</li>
   </ol>
   <div class="self-name">NimCore</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -83,26 +75,38 @@
 
 </dd>
 
-        <dt id="audioService" class="property">
-  <span class="name"><a href="../nim_core_v2/NimCore/audioService.html">audioService</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/AudioService-class.html">AudioService</a></span>
+        <dt id="apnsService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/apnsService.html">apnsService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/APNSService-class.html">APNSService</a></span>
   
 
 </dt>
 <dd>
-  云信音频服务接口
+  推送
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
-        <dt id="avSignallingService" class="property">
-  <span class="name"><a href="../nim_core_v2/NimCore/avSignallingService.html">avSignallingService</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/AvSignallingService-class.html">AvSignallingService</a></span>
+        <dt id="clientAntispamUtil" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/clientAntispamUtil.html">clientAntispamUtil</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/V2NIMClientAntispamUtil-class.html">V2NIMClientAntispamUtil</a></span>
   
 
 </dt>
 <dd>
-  信令服务
+  客户端本地反垃圾工具
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="conversationGroupService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/conversationGroupService.html">conversationGroupService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/V2NIMConversationGroupService-class.html">V2NIMConversationGroupService</a></span>
+  
+
+</dt>
+<dd>
+  会话分组服务
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -127,18 +131,6 @@
 </dt>
 <dd>
   会话列表
-  <div class="features"><span class="feature">final</span></div>
-
-</dd>
-
-        <dt id="eventSubscribeService" class="property">
-  <span class="name"><a href="../nim_core_v2/NimCore/eventSubscribeService.html">eventSubscribeService</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/EventSubscribeService-class.html">EventSubscribeService</a></span>
-  
-
-</dt>
-<dd>
-  云信事件订阅服务接口，用户可以通过事件发布及订阅，来实现"发布-订阅"的设计模式编程方法。可应用于订阅指定用户在线状态、用户个性化信息订阅等场景
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -179,6 +171,18 @@
 
 </dd>
 
+        <dt id="localConversationService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/localConversationService.html">localConversationService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/V2NIMLocalConversationService-class.html">V2NIMLocalConversationService</a></span>
+  
+
+</dt>
+<dd>
+  本地会话服务
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="loginService" class="property">
   <span class="name"><a href="../nim_core_v2/NimCore/loginService.html">loginService</a></span>
   <span class="signature">&#8594; <a href="../nim_core_v2/LoginService-class.html">LoginService</a></span>
@@ -203,14 +207,14 @@
 
 </dd>
 
-        <dt id="nosService" class="property">
-  <span class="name"><a href="../nim_core_v2/NimCore/nosService.html">nosService</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/NOSService-class.html">NOSService</a></span>
+        <dt id="mixPushService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/mixPushService.html">mixPushService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/MixPushService-class.html">MixPushService</a></span>
   
 
 </dt>
 <dd>
-  
+  混合推送服务 (仅 Android 平台)
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -227,14 +231,14 @@
 
 </dd>
 
-        <dt id="passThroughService" class="property">
-  <span class="name"><a href="../nim_core_v2/NimCore/passThroughService.html">passThroughService</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/PassThroughService-class.html">PassThroughService</a></span>
+        <dt id="ohosPushService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/ohosPushService.html">ohosPushService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/OhosPushService-class.html">OhosPushService</a></span>
   
 
 </dt>
 <dd>
-  
+  鸿蒙第三方推送服务
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -246,7 +250,7 @@
 
 </dt>
 <dd>
-  圈组频道服务
+  圈组Channel
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -258,7 +262,7 @@
 
 </dt>
 <dd>
-  圈组消息服务
+  圈组Message
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -270,7 +274,7 @@
 
 </dt>
 <dd>
-  圈组回调
+  圈组Observer
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -282,7 +286,7 @@
 
 </dt>
 <dd>
-  圈组推送相关
+  圈组Push
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -294,7 +298,7 @@
 
 </dt>
 <dd>
-  圈组身份组服务
+  圈组Role
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -306,7 +310,7 @@
 
 </dt>
 <dd>
-  圈组服务器服务
+  圈组Server
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -318,7 +322,7 @@
 
 </dt>
 <dd>
-  圈组服务
+  圈组
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -337,7 +341,7 @@
 
         <dt id="sdkOptions" class="property">
   <span class="name"><a href="../nim_core_v2/NimCore/sdkOptions.html">sdkOptions</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/NIMSDKOptions-class.html">NIMSDKOptions</a>?</span>
+  <span class="signature">&#8594; <a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSDKOptions-class.html">NIMSDKOptions</a>?</span>
   
 
 </dt>
@@ -355,6 +359,30 @@
 </dt>
 <dd>
   设置服务
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="signallingService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/signallingService.html">signallingService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/SignallingService-class.html">SignallingService</a></span>
+  
+
+</dt>
+<dd>
+  信令服务
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="statisticsService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/statisticsService.html">statisticsService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/StatisticsService-class.html">StatisticsService</a></span>
+  
+
+</dt>
+<dd>
+  统计服务
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -378,7 +406,19 @@
 
 </dt>
 <dd>
-  存储工具
+  存储通用工具
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="subscriptionService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/subscriptionService.html">subscriptionService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/SubscriptionService-class.html">SubscriptionService</a></span>
+  
+
+</dt>
+<dd>
+  在线状态
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -395,6 +435,18 @@
 
 </dd>
 
+        <dt id="topicService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/topicService.html">topicService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/V2NIMTopicService-class.html">V2NIMTopicService</a></span>
+  
+
+</dt>
+<dd>
+  话题服务
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="userService" class="property">
   <span class="name"><a href="../nim_core_v2/NimCore/userService.html">userService</a></span>
   <span class="signature">&#8594; <a href="../nim_core_v2/UserService-class.html">UserService</a></span>
@@ -407,8 +459,21 @@
 
 </dd>
 
+        <dt id="utilityService" class="property">
+  <span class="name"><a href="../nim_core_v2/NimCore/utilityService.html">utilityService</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/V2NIMUtilityService-class.html">V2NIMUtilityService</a></span>
+  
+
+</dt>
+<dd>
+  工具类服务（消息迁移）
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -416,8 +481,8 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="initialize" class="callable">
-  <span class="name"><a href="../nim_core_v2/NimCore/initialize.html">initialize</a></span><span class="signature">(<wbr><span class="parameter" id="initialize-param-options"><span class="type-annotation"><a href="../nim_core_v2/NIMSDKOptions-class.html">NIMSDKOptions</a></span> <span class="parameter-name">options</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/NimCore/initialize.html">initialize</a></span><span class="signature">(<wbr><span class="parameter" id="initialize-param-options"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSDKOptions-class.html">NIMSDKOptions</a></span> <span class="parameter-name">options</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -443,7 +508,7 @@
 
         <dt id="releaseDesktop" class="callable">
   <span class="name"><a href="../nim_core_v2/NimCore/releaseDesktop.html">releaseDesktop</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -494,7 +559,6 @@
     
   <section class="summary offset-anchor" id="static-properties">
     <h2>Static Properties</h2>
-
     <dl class="properties">
         <dt id="instance" class="property">
   <span class="name"><a href="../nim_core_v2/NimCore/instance.html">instance</a></span>
@@ -515,7 +579,6 @@
 
   <section class="summary offset-anchor" id="constants">
     <h2>Constants</h2>
-
     <dl class="properties">
         <dt id="tag" class="constant">
     <span class="name "><a href="../nim_core_v2/NimCore/tag-constant.html">tag</a></span>
@@ -543,9 +606,7 @@
 
     </dl>
   </section>
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -553,40 +614,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">NimCore class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

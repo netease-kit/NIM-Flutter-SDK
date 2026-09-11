@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">UserService class</li>
   </ol>
   <div class="self-name">UserService</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -74,7 +66,7 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
@@ -90,10 +82,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="UserService" class="callable">
-          <span class="name"><a href="../nim_core_v2/UserService/UserService.html">UserService</a></span><span class="signature">()</span>
+        <dt id="UserService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/UserService/UserService.html">UserService.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -121,7 +112,7 @@
 
         <dt id="onBlockListAdded" class="property">
   <span class="name"><a href="../nim_core_v2/UserService/onBlockListAdded.html">onBlockListAdded</a></span>
-  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>
   
 
 </dt>
@@ -133,7 +124,7 @@
 
         <dt id="onBlockListRemoved" class="property">
   <span class="name"><a href="../nim_core_v2/UserService/onBlockListRemoved.html">onBlockListRemoved</a></span>
-  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>
   
 
 </dt>
@@ -145,7 +136,7 @@
 
         <dt id="onUserProfileChanged" class="property">
   <span class="name"><a href="../nim_core_v2/UserService/onUserProfileChanged.html">onUserProfileChanged</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>
   
 
 </dt>
@@ -169,6 +160,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -176,21 +168,37 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="addUserToBlockList" class="callable">
-  <span class="name"><a href="../nim_core_v2/UserService/addUserToBlockList.html">addUserToBlockList</a></span><span class="signature">(<wbr><span class="parameter" id="addUserToBlockList-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">userId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/UserService/addUserToBlockList.html">addUserToBlockList</a></span><span class="signature">(<wbr><span class="parameter" id="addUserToBlockList-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   添加用户到黑名单中
+<code>accountId</code> 要添加的用户账号
+  
+
+</dd>
+
+        <dt id="checkBlock" class="callable">
+  <span class="name"><a href="../nim_core_v2/UserService/checkBlock.html">checkBlock</a></span><span class="signature">(<wbr><span class="parameter" id="checkBlock-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查看是否在黑名单
+<code>accountIds</code> 检查黑名单状态的账号ID列表
+在黑名单列表的check返回为true，其它的账号不存在，不在黑名单， 账号格式错误均统一返回false
   
 
 </dd>
 
         <dt id="getBlockList" class="callable">
   <span class="name"><a href="../nim_core_v2/UserService/getBlockList.html">getBlockList</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -202,27 +210,32 @@
 </dd>
 
         <dt id="getUserList" class="callable">
-  <span class="name"><a href="../nim_core_v2/UserService/getUserList.html">getUserList</a></span><span class="signature">(<wbr><span class="parameter" id="getUserList-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">userId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/UserService/getUserList.html">getUserList</a></span><span class="signature">(<wbr><span class="parameter" id="getUserList-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   根据用户账号列表获取用户资料 单次最大值150 只返回ID存在的用户，
+错误ID不返回 返回顺序以传入序为准（可以不做强制校验）
+先查询本地缓存，本地缺失或不足，再查询云端
   
 
 </dd>
 
         <dt id="getUserListFromCloud" class="callable">
-  <span class="name"><a href="../nim_core_v2/UserService/getUserListFromCloud.html">getUserListFromCloud</a></span><span class="signature">(<wbr><span class="parameter" id="getUserListFromCloud-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">userId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/UserService/getUserListFromCloud.html">getUserListFromCloud</a></span><span class="signature">(<wbr><span class="parameter" id="getUserListFromCloud-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   根据用户账号列表从服务器获取用户资料 单次最大值150 只返回ID存在的用户，
+错误ID不返回 返回顺序以传入序为准（可以不做强制校验） 直接查询云端
+如果是协议错， 则整体返回错， 否则返回部分成功
+如果查询数据后，本地成员数据有更新， 则触发用户信息更新回调
   
 
 </dd>
@@ -241,8 +254,8 @@
 </dd>
 
         <dt id="removeUserFromBlockList" class="callable">
-  <span class="name"><a href="../nim_core_v2/UserService/removeUserFromBlockList.html">removeUserFromBlockList</a></span><span class="signature">(<wbr><span class="parameter" id="removeUserFromBlockList-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">userId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/UserService/removeUserFromBlockList.html">removeUserFromBlockList</a></span><span class="signature">(<wbr><span class="parameter" id="removeUserFromBlockList-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -254,8 +267,8 @@
 </dd>
 
         <dt id="searchUserByOption" class="callable">
-  <span class="name"><a href="../nim_core_v2/UserService/searchUserByOption.html">searchUserByOption</a></span><span class="signature">(<wbr><span class="parameter" id="searchUserByOption-param-userSearchOption"><span class="type-annotation"><a href="../nim_core_v2/NIMUserSearchOption-class.html">NIMUserSearchOption</a></span> <span class="parameter-name">userSearchOption</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/UserService/searchUserByOption.html">searchUserByOption</a></span><span class="signature">(<wbr><span class="parameter" id="searchUserByOption-param-userSearchOption"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserSearchOption-class.html">NIMUserSearchOption</a></span> <span class="parameter-name">userSearchOption</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserInfo-class.html">NIMUserInfo</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -280,14 +293,15 @@
 </dd>
 
         <dt id="updateSelfUserProfile" class="callable">
-  <span class="name"><a href="../nim_core_v2/UserService/updateSelfUserProfile.html">updateSelfUserProfile</a></span><span class="signature">(<wbr><span class="parameter" id="updateSelfUserProfile-param-param"><span class="type-annotation"><a href="../nim_core_v2/NIMUserUpdateParam-class.html">NIMUserUpdateParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/UserService/updateSelfUserProfile.html">updateSelfUserProfile</a></span><span class="signature">(<wbr><span class="parameter" id="updateSelfUserProfile-param-updateParams"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUserUpdateParam-class.html">NIMUserUpdateParam</a></span> <span class="parameter-name">updateParams</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   更新自己的用户资料
+调用该Api后， SDK会抛出： onUserProfileChanged
   
 
 </dd>
@@ -319,9 +333,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -329,40 +341,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">UserService class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

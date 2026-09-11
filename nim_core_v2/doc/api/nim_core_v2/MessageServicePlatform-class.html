@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -49,7 +45,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -71,7 +66,7 @@
   <dd>
     <ul class="gt-separated dark clazz-relationships">
       <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
-        <li><a href="https://pub.dev/documentation/plugin_platform_interface/2.1.8/plugin_platform_interface/PlatformInterface-class.html">PlatformInterface</a></li>
+        <li>PlatformInterface</li>
       <li>MessageServicePlatform</li>
     </ul>
   </dd>
@@ -80,7 +75,7 @@
         
 
 
-
+        
         
 
 
@@ -90,7 +85,6 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
         <dt id="MessageServicePlatform" class="callable">
           <span class="name"><a href="../nim_core_v2/MessageServicePlatform/MessageServicePlatform.html">MessageServicePlatform</a></span><span class="signature">()</span>
@@ -190,6 +184,18 @@
 
 </dd>
 
+        <dt id="onReceiveMessagesModified" class="property">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/onReceiveMessagesModified.html">onReceiveMessagesModified</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamController-class.html">StreamController</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  消息更新监听
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="onReceiveP2PMessageReadReceipts" class="property">
   <span class="name"><a href="../nim_core_v2/MessageServicePlatform/onReceiveP2PMessageReadReceipts.html">onReceiveP2PMessageReadReceipts</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamController-class.html">StreamController</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMP2PMessageReadReceipt-class.html">NIMP2PMessageReadReceipt</a></span>&gt;</span></span>&gt;</span></span>
@@ -262,8 +268,21 @@
 
 </dd>
 
+        <dt id="shouldIgnore" class="property">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/shouldIgnore.html">shouldIgnore</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMMessageFilter.html">NIMMessageFilter</a>?</span>
+  
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -271,8 +290,8 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="addCollection" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/addCollection.html">addCollection</a></span><span class="signature">(<wbr><span class="parameter" id="addCollection-param-params">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMAddCollectionParams-class.html">NIMAddCollectionParams</a></span> <span class="parameter-name">params</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/addCollection.html">addCollection</a></span><span class="signature">(<wbr>{<span class="parameter" id="addCollection-param-params"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMAddCollectionParams-class.html">NIMAddCollectionParams</a></span> <span class="parameter-name">params</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -284,8 +303,8 @@
 </dd>
 
         <dt id="addQuickComment" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/addQuickComment.html">addQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="addQuickComment-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="addQuickComment-param-index"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">index</span>, </span><span class="parameter" id="addQuickComment-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="addQuickComment-param-pushConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageQuickCommentPushConfig-class.html">NIMMessageQuickCommentPushConfig</a>?</span> <span class="parameter-name">pushConfig</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/addQuickComment.html">addQuickComment</a></span><span class="signature">(<wbr>{<span class="parameter" id="addQuickComment-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="addQuickComment-param-index"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">index</span>, </span><span class="parameter" id="addQuickComment-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="addQuickComment-param-pushConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageQuickCommentPushConfig-class.html">NIMMessageQuickCommentPushConfig</a>?</span> <span class="parameter-name">pushConfig</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -297,8 +316,8 @@
 </dd>
 
         <dt id="cancelMessageAttachmentUpload" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/cancelMessageAttachmentUpload.html">cancelMessageAttachmentUpload</a></span><span class="signature">(<wbr><span class="parameter" id="cancelMessageAttachmentUpload-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/cancelMessageAttachmentUpload.html">cancelMessageAttachmentUpload</a></span><span class="signature">(<wbr>{<span class="parameter" id="cancelMessageAttachmentUpload-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -310,8 +329,8 @@
 </dd>
 
         <dt id="clearHistoryMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/clearHistoryMessage.html">clearHistoryMessage</a></span><span class="signature">(<wbr><span class="parameter" id="clearHistoryMessage-param-option">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMClearHistoryMessageOption-class.html">NIMClearHistoryMessageOption</a></span> <span class="parameter-name">option</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/clearHistoryMessage.html">clearHistoryMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="clearHistoryMessage-param-option"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMClearHistoryMessageOption-class.html">NIMClearHistoryMessageOption</a></span> <span class="parameter-name">option</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -324,9 +343,37 @@
 
 </dd>
 
+        <dt id="clearLocalMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/clearLocalMessage.html">clearLocalMessage</a></span><span class="signature">(<wbr><span class="parameter" id="clearLocalMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMClearLocalMessageParams-class.html">NIMClearLocalMessageParams</a>?</span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清理本地消息
+<code>params</code> 清理参数，包含时间戳锚点和是否同时删除会话
+  
+
+</dd>
+
+        <dt id="clearRoamingMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/clearRoamingMessage.html">clearRoamingMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="clearRoamingMessage-param-conversationIds"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">conversationIds</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  仅清空会话漫游消息， 单次传递最多50个会话ID
+<code>conversationIds</code> 需要清理的会话ID
+  
+
+</dd>
+
         <dt id="deleteMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/deleteMessage.html">deleteMessage</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="deleteMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="deleteMessage-param-onlyDeleteLocal"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">onlyDeleteLocal</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/deleteMessage.html">deleteMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="deleteMessage-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="deleteMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="deleteMessage-param-onlyDeleteLocal"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">onlyDeleteLocal</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -339,8 +386,8 @@
 </dd>
 
         <dt id="deleteMessages" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/deleteMessages.html">deleteMessages</a></span><span class="signature">(<wbr><span class="parameter" id="deleteMessages-param-messages">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span>, </span><span class="parameter" id="deleteMessages-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="deleteMessages-param-onlyDeleteLocal"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">onlyDeleteLocal</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/deleteMessages.html">deleteMessages</a></span><span class="signature">(<wbr>{<span class="parameter" id="deleteMessages-param-messages"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span>, </span><span class="parameter" id="deleteMessages-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="deleteMessages-param-onlyDeleteLocal"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">onlyDeleteLocal</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -355,8 +402,8 @@
 </dd>
 
         <dt id="getCollectionListByOption" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getCollectionListByOption.html">getCollectionListByOption</a></span><span class="signature">(<wbr><span class="parameter" id="getCollectionListByOption-param-option">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMCollectionOption-class.html">NIMCollectionOption</a></span> <span class="parameter-name">option</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getCollectionListByOption.html">getCollectionListByOption</a></span><span class="signature">(<wbr>{<span class="parameter" id="getCollectionListByOption-param-option"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMCollectionOption-class.html">NIMCollectionOption</a></span> <span class="parameter-name">option</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -367,9 +414,23 @@
 
 </dd>
 
+        <dt id="getCollectionListExByOption" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getCollectionListExByOption.html">getCollectionListExByOption</a></span><span class="signature">(<wbr><span class="parameter" id="getCollectionListExByOption-param-option"><span class="type-annotation"><a href="../nim_core_v2/NIMCollectionOption-class.html">NIMCollectionOption</a></span> <span class="parameter-name">option</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollectionListResult-class.html">NIMCollectionListResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  按条件分页获取收藏信息。回调结果包含总条数
+<code>option</code> 查询参数
+  
+
+</dd>
+
         <dt id="getLocalThreadMessageList" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getLocalThreadMessageList.html">getLocalThreadMessageList</a></span><span class="signature">(<wbr><span class="parameter" id="getLocalThreadMessageList-param-messageRefer">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span> <span class="parameter-name">messageRefer</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMThreadMessageListResult-class.html">NIMThreadMessageListResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getLocalThreadMessageList.html">getLocalThreadMessageList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getLocalThreadMessageList-param-messageRefer"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span> <span class="parameter-name">messageRefer</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMThreadMessageListResult-class.html">NIMThreadMessageListResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -382,8 +443,8 @@
 </dd>
 
         <dt id="getMessageList" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageList.html">getMessageList</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageList-param-option">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageListOption-class.html">NIMMessageListOption</a></span> <span class="parameter-name">option</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageList.html">getMessageList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getMessageList-param-option"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageListOption-class.html">NIMMessageListOption</a></span> <span class="parameter-name">option</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -395,8 +456,8 @@
 </dd>
 
         <dt id="getMessageListByIds" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageListByIds.html">getMessageListByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageListByIds-param-messageClientIds">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">messageClientIds</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageListByIds.html">getMessageListByIds</a></span><span class="signature">(<wbr>{<span class="parameter" id="getMessageListByIds-param-messageClientIds"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">messageClientIds</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -408,8 +469,8 @@
 </dd>
 
         <dt id="getMessageListByRefers" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageListByRefers.html">getMessageListByRefers</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageListByRefers-param-messageRefers">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span>&gt;</span></span> <span class="parameter-name">messageRefers</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageListByRefers.html">getMessageListByRefers</a></span><span class="signature">(<wbr>{<span class="parameter" id="getMessageListByRefers-param-messageRefers"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span>&gt;</span></span> <span class="parameter-name">messageRefers</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -420,9 +481,24 @@
 
 </dd>
 
+        <dt id="getMessageListEx" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getMessageListEx.html">getMessageListEx</a></span><span class="signature">(<wbr><span class="parameter" id="getMessageListEx-param-option"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageListOption-class.html">NIMMessageListOption</a></span> <span class="parameter-name">option</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageListResult-class.html">NIMMessageListResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询历史消息
+分页接口，每次默认50条，可以根据参数组合查询各种类型
+<code>option</code> 查询消息配置选项
+  
+
+</dd>
+
         <dt id="getP2PMessageReceipt" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getP2PMessageReceipt.html">getP2PMessageReceipt</a></span><span class="signature">(<wbr><span class="parameter" id="getP2PMessageReceipt-param-conversationId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMP2PMessageReadReceipt-class.html">NIMP2PMessageReadReceipt</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getP2PMessageReceipt.html">getP2PMessageReceipt</a></span><span class="signature">(<wbr>{<span class="parameter" id="getP2PMessageReceipt-param-conversationId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMP2PMessageReadReceipt-class.html">NIMP2PMessageReadReceipt</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -434,8 +510,8 @@
 </dd>
 
         <dt id="getPinnedMessageList" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getPinnedMessageList.html">getPinnedMessageList</a></span><span class="signature">(<wbr><span class="parameter" id="getPinnedMessageList-param-conversationId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessagePin-class.html">NIMMessagePin</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getPinnedMessageList.html">getPinnedMessageList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getPinnedMessageList-param-conversationId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessagePin-class.html">NIMMessagePin</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -447,8 +523,8 @@
 </dd>
 
         <dt id="getQuickCommentList" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getQuickCommentList.html">getQuickCommentList</a></span><span class="signature">(<wbr><span class="parameter" id="getQuickCommentList-param-messages">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageQuickComment-class.html">NIMMessageQuickComment</a></span>&gt;</span>?</span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getQuickCommentList.html">getQuickCommentList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getQuickCommentList-param-messages"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageQuickComment-class.html">NIMMessageQuickComment</a></span>&gt;</span>?</span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -460,8 +536,8 @@
 </dd>
 
         <dt id="getTeamMessageReceiptDetail" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getTeamMessageReceiptDetail.html">getTeamMessageReceiptDetail</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamMessageReceiptDetail-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="getTeamMessageReceiptDetail-param-memberAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">memberAccountIds</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMessageReadReceiptDetail-class.html">NIMTeamMessageReadReceiptDetail</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getTeamMessageReceiptDetail.html">getTeamMessageReceiptDetail</a></span><span class="signature">(<wbr>{<span class="parameter" id="getTeamMessageReceiptDetail-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="getTeamMessageReceiptDetail-param-memberAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">memberAccountIds</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMessageReadReceiptDetail-class.html">NIMTeamMessageReadReceiptDetail</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -473,8 +549,8 @@
 </dd>
 
         <dt id="getTeamMessageReceipts" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getTeamMessageReceipts.html">getTeamMessageReceipts</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamMessageReceipts-param-messages">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMessageReadReceipt-class.html">NIMTeamMessageReadReceipt</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getTeamMessageReceipts.html">getTeamMessageReceipts</a></span><span class="signature">(<wbr>{<span class="parameter" id="getTeamMessageReceipts-param-messages"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMessageReadReceipt-class.html">NIMTeamMessageReadReceipt</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -486,8 +562,8 @@
 </dd>
 
         <dt id="getThreadMessageList" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getThreadMessageList.html">getThreadMessageList</a></span><span class="signature">(<wbr><span class="parameter" id="getThreadMessageList-param-threadMessageListOption">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMThreadMessageListOption-class.html">NIMThreadMessageListOption</a></span> <span class="parameter-name">threadMessageListOption</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMThreadMessageListResult-class.html">NIMThreadMessageListResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/getThreadMessageList.html">getThreadMessageList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getThreadMessageList-param-threadMessageListOption"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMThreadMessageListOption-class.html">NIMThreadMessageListOption</a></span> <span class="parameter-name">threadMessageListOption</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMThreadMessageListResult-class.html">NIMThreadMessageListResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -501,7 +577,7 @@
 
         <dt id="handleMethodCall" class="callable inherited">
   <span class="name"><a href="../nim_core_v2/MessageServicePlatform/handleMethodCall.html">handleMethodCall</a></span><span class="signature">(<wbr><span class="parameter" id="handleMethodCall-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="handleMethodCall-param-arguments"><span class="type-annotation">dynamic</span> <span class="parameter-name">arguments</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a></span>
   </span>
   
 
@@ -513,8 +589,8 @@
 </dd>
 
         <dt id="insertMessageToLocal" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/insertMessageToLocal.html">insertMessageToLocal</a></span><span class="signature">(<wbr><span class="parameter" id="insertMessageToLocal-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="insertMessageToLocal-param-conversationId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span>, </span><span class="parameter" id="insertMessageToLocal-param-senderId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">senderId</span>, </span><span class="parameter" id="insertMessageToLocal-param-createTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">createTime</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/insertMessageToLocal.html">insertMessageToLocal</a></span><span class="signature">(<wbr>{<span class="parameter" id="insertMessageToLocal-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="insertMessageToLocal-param-conversationId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span>, </span><span class="parameter" id="insertMessageToLocal-param-senderId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">senderId</span>, </span><span class="parameter" id="insertMessageToLocal-param-createTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">createTime</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -527,9 +603,22 @@
 
 </dd>
 
+        <dt id="insertMessageToLocalEx" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/insertMessageToLocalEx.html">insertMessageToLocalEx</a></span><span class="signature">(<wbr>{<span class="parameter" id="insertMessageToLocalEx-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="insertMessageToLocalEx-param-params"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/V2NIMMessageInsertParams-class.html">V2NIMMessageInsertParams</a></span> <span class="parameter-name">params</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  插入一条本地消息（扩展版），该消息不会发送，不会多端同步，仅本端显示
+  
+
+</dd>
+
         <dt id="invokeMethod" class="callable inherited">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/invokeMethod.html">invokeMethod</a></span><span class="signature">(<wbr><span class="parameter" id="invokeMethod-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="invokeMethod-param-arguments">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">arguments</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/invokeMethod.html">invokeMethod</a></span><span class="signature">(<wbr><span class="parameter" id="invokeMethod-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, {</span><span class="parameter" id="invokeMethod-param-arguments"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">arguments</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -541,14 +630,59 @@
 </dd>
 
         <dt id="isPeerRead" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/isPeerRead.html">isPeerRead</a></span><span class="signature">(<wbr><span class="parameter" id="isPeerRead-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/isPeerRead.html">isPeerRead</a></span><span class="signature">(<wbr>{<span class="parameter" id="isPeerRead-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   查询点对点消息是否对方已读 内部判断逻辑为： 消息时间小于对方已读回执时间都为true
+  
+
+</dd>
+
+        <dt id="messageDeserialization" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/messageDeserialization.html">messageDeserialization</a></span><span class="signature">(<wbr><span class="parameter" id="messageDeserialization-param-msg"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">msg</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  字符串反序列化为消息对象
+<code>msg</code>  messageSerialization方法序列化后的字符串
+反序列化后的消息对象
+  
+
+</dd>
+
+        <dt id="messageSerialization" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/messageSerialization.html">messageSerialization</a></span><span class="signature">(<wbr><span class="parameter" id="messageSerialization-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  消息序列化为字符串
+<code>message</code> 消对象
+返回序列化后的字符串
+  
+
+</dd>
+
+        <dt id="modifyMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/modifyMessage.html">modifyMessage</a></span><span class="signature">(<wbr><span class="parameter" id="modifyMessage-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="modifyMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMModifyMessageParams-class.html">NIMModifyMessageParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMModifyMessageResult-class.html">NIMModifyMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新消息
+<code>message</code> 需要更新的消息
+ <code>params</code> 更新参数
   
 
 </dd>
@@ -568,7 +702,7 @@
 
         <dt id="onEvent" class="callable inherited">
   <span class="name"><a href="../nim_core_v2/MessageServicePlatform/onEvent.html">onEvent</a></span><span class="signature">(<wbr><span class="parameter" id="onEvent-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="onEvent-param-arguments"><span class="type-annotation">dynamic</span> <span class="parameter-name">arguments</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a></span>
   </span>
   
 
@@ -580,14 +714,29 @@
 </dd>
 
         <dt id="pinMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/pinMessage.html">pinMessage</a></span><span class="signature">(<wbr><span class="parameter" id="pinMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="pinMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/pinMessage.html">pinMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="pinMessage-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="pinMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   Pin一条消息
+  
+
+</dd>
+
+        <dt id="regenAIMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/regenAIMessage.html">regenAIMessage</a></span><span class="signature">(<wbr><span class="parameter" id="regenAIMessage-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="regenAIMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAIRegenParams-class.html">NIMMessageAIRegenParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  重新输出数字人消息
+<code>message</code> 需要重新输出的消息体
+ <code>params</code> 重新输出的配置参数，确定重新输出的操作类型
   
 
 </dd>
@@ -606,8 +755,8 @@
 </dd>
 
         <dt id="removeCollections" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/removeCollections.html">removeCollections</a></span><span class="signature">(<wbr><span class="parameter" id="removeCollections-param-collections">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span> <span class="parameter-name">collections</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/removeCollections.html">removeCollections</a></span><span class="signature">(<wbr>{<span class="parameter" id="removeCollections-param-collections"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span> <span class="parameter-name">collections</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -619,8 +768,8 @@
 </dd>
 
         <dt id="removeQuickComment" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/removeQuickComment.html">removeQuickComment</a></span><span class="signature">(<wbr><span class="parameter" id="removeQuickComment-param-messageRefer">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span> <span class="parameter-name">messageRefer</span>, </span><span class="parameter" id="removeQuickComment-param-index"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">index</span>, </span><span class="parameter" id="removeQuickComment-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/removeQuickComment.html">removeQuickComment</a></span><span class="signature">(<wbr>{<span class="parameter" id="removeQuickComment-param-messageRefer"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span> <span class="parameter-name">messageRefer</span>, </span><span class="parameter" id="removeQuickComment-param-index"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">index</span>, </span><span class="parameter" id="removeQuickComment-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -632,8 +781,8 @@
 </dd>
 
         <dt id="replyMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/replyMessage.html">replyMessage</a></span><span class="signature">(<wbr><span class="parameter" id="replyMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="replyMessage-param-replyMessage"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">replyMessage</span>, </span><span class="parameter" id="replyMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMSendMessageParams-class.html">NIMSendMessageParams</a>?</span> <span class="parameter-name">params</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMSendMessageResult-class.html">NIMSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/replyMessage.html">replyMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="replyMessage-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="replyMessage-param-replyMessage"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">replyMessage</span>, </span><span class="parameter" id="replyMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMSendMessageParams-class.html">NIMSendMessageParams</a>?</span> <span class="parameter-name">params</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMSendMessageResult-class.html">NIMSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -645,8 +794,8 @@
 </dd>
 
         <dt id="revokeMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/revokeMessage.html">revokeMessage</a></span><span class="signature">(<wbr><span class="parameter" id="revokeMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="revokeMessage-param-revokeParams"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageRevokeParams-class.html">NIMMessageRevokeParams</a>?</span> <span class="parameter-name">revokeParams</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/revokeMessage.html">revokeMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="revokeMessage-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="revokeMessage-param-revokeParams"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageRevokeParams-class.html">NIMMessageRevokeParams</a>?</span> <span class="parameter-name">revokeParams</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -659,8 +808,8 @@
 </dd>
 
         <dt id="searchCloudMessages" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/searchCloudMessages.html">searchCloudMessages</a></span><span class="signature">(<wbr><span class="parameter" id="searchCloudMessages-param-params">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageSearchParams-class.html">NIMMessageSearchParams</a></span> <span class="parameter-name">params</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/searchCloudMessages.html">searchCloudMessages</a></span><span class="signature">(<wbr>{<span class="parameter" id="searchCloudMessages-param-params"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageSearchParams-class.html">NIMMessageSearchParams</a></span> <span class="parameter-name">params</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -671,9 +820,37 @@
 
 </dd>
 
+        <dt id="searchCloudMessagesEx" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/searchCloudMessagesEx.html">searchCloudMessagesEx</a></span><span class="signature">(<wbr><span class="parameter" id="searchCloudMessagesEx-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageSearchExParams-class.html">NIMMessageSearchExParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageSearchResult-class.html">NIMMessageSearchResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  搜索云端消息
+<code>params</code>  消息检索参数
+  
+
+</dd>
+
+        <dt id="searchLocalMessages" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/searchLocalMessages.html">searchLocalMessages</a></span><span class="signature">(<wbr><span class="parameter" id="searchLocalMessages-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageSearchExParams-class.html">NIMMessageSearchExParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessageSearchResult-class.html">NIMMessageSearchResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  检索本地消息
+<code>params</code>  消息检索参数
+  
+
+</dd>
+
         <dt id="sendMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/sendMessage.html">sendMessage</a></span><span class="signature">(<wbr><span class="parameter" id="sendMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="sendMessage-param-conversationId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span>, </span><span class="parameter" id="sendMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMSendMessageParams-class.html">NIMSendMessageParams</a>?</span> <span class="parameter-name">params</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMSendMessageResult-class.html">NIMSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/sendMessage.html">sendMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="sendMessage-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="sendMessage-param-conversationId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span>, </span><span class="parameter" id="sendMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMSendMessageParams-class.html">NIMSendMessageParams</a>?</span> <span class="parameter-name">params</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMSendMessageResult-class.html">NIMSendMessageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -687,8 +864,8 @@
 </dd>
 
         <dt id="sendP2PMessageReceipt" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/sendP2PMessageReceipt.html">sendP2PMessageReceipt</a></span><span class="signature">(<wbr><span class="parameter" id="sendP2PMessageReceipt-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/sendP2PMessageReceipt.html">sendP2PMessageReceipt</a></span><span class="signature">(<wbr>{<span class="parameter" id="sendP2PMessageReceipt-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -700,8 +877,8 @@
 </dd>
 
         <dt id="sendTeamMessageReceipts" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/sendTeamMessageReceipts.html">sendTeamMessageReceipts</a></span><span class="signature">(<wbr><span class="parameter" id="sendTeamMessageReceipts-param-messages">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/sendTeamMessageReceipts.html">sendTeamMessageReceipts</a></span><span class="signature">(<wbr>{<span class="parameter" id="sendTeamMessageReceipts-param-messages"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span> <span class="parameter-name">messages</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -709,6 +886,36 @@
 <dd>
   发送群消息已读回执
 所有消息必须属于同一个会话
+  
+
+</dd>
+
+        <dt id="setMessageFilter" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/setMessageFilter.html">setMessageFilter</a></span><span class="signature">(<wbr><span class="parameter" id="setMessageFilter-param-filter"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageFilter.html">NIMMessageFilter</a>?</span> <span class="parameter-name">filter</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  安装消息过滤器
+云端会话的最后一条消息不受该过滤器控制
+<a href="https://api.flutter.dev/flutter/dart-js_util/add.html">add</a> 是否添加，false 则表示删除
+  
+
+</dd>
+
+        <dt id="stopAIStreamMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/stopAIStreamMessage.html">stopAIStreamMessage</a></span><span class="signature">(<wbr><span class="parameter" id="stopAIStreamMessage-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="stopAIStreamMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAIStreamStopParams-class.html">NIMMessageAIStreamStopParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  停止流式消息输出
+<code>message</code> 需要停止的消息体
+ <code>params</code> 停止AI流式消息相关参数
   
 
 </dd>
@@ -726,9 +933,22 @@
 
 </dd>
 
+        <dt id="translateText" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/translateText.html">translateText</a></span><span class="signature">(<wbr>{<span class="parameter" id="translateText-param-params"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMTextTranslateParams-class.html">NIMTextTranslateParams</a></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="translateText-param-config"><span class="type-annotation"><a href="../nim_core_v2/NIMTranslatorConfig-class.html">NIMTranslatorConfig</a>?</span> <span class="parameter-name">config</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTextTranslationResult-class.html">NIMTextTranslationResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  翻译文本 @since v10.9.75
+  
+
+</dd>
+
         <dt id="unpinMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/unpinMessage.html">unpinMessage</a></span><span class="signature">(<wbr><span class="parameter" id="unpinMessage-param-messageRefer">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span> <span class="parameter-name">messageRefer</span>, </span><span class="parameter" id="unpinMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/unpinMessage.html">unpinMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="unpinMessage-param-messageRefer"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a></span> <span class="parameter-name">messageRefer</span>, </span><span class="parameter" id="unpinMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -740,8 +960,8 @@
 </dd>
 
         <dt id="updateCollectionExtension" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updateCollectionExtension.html">updateCollectionExtension</a></span><span class="signature">(<wbr><span class="parameter" id="updateCollectionExtension-param-collection">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span> <span class="parameter-name">collection</span>, </span><span class="parameter" id="updateCollectionExtension-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updateCollectionExtension.html">updateCollectionExtension</a></span><span class="signature">(<wbr>{<span class="parameter" id="updateCollectionExtension-param-collection"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span> <span class="parameter-name">collection</span>, </span><span class="parameter" id="updateCollectionExtension-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCollection-class.html">NIMCollection</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -752,9 +972,26 @@
 
 </dd>
 
+        <dt id="updateLocalMessage" class="callable">
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updateLocalMessage.html">updateLocalMessage</a></span><span class="signature">(<wbr><span class="parameter" id="updateLocalMessage-param-message"><span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updateLocalMessage-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMUpdateLocalMessageParams-class.html">NIMUpdateLocalMessageParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新本地插入的消息
+serverid为0的消息
+云端消息请调用modifyMessage接口
+<code>message</code> 需要被更新的消息体
+<code>params</code> 需要更新的数据字段
+  
+
+</dd>
+
         <dt id="updateMessageLocalExtension" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updateMessageLocalExtension.html">updateMessageLocalExtension</a></span><span class="signature">(<wbr><span class="parameter" id="updateMessageLocalExtension-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updateMessageLocalExtension-param-localExtension"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">localExtension</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updateMessageLocalExtension.html">updateMessageLocalExtension</a></span><span class="signature">(<wbr>{<span class="parameter" id="updateMessageLocalExtension-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updateMessageLocalExtension-param-localExtension"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">localExtension</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -766,8 +1003,8 @@
 </dd>
 
         <dt id="updatePinMessage" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updatePinMessage.html">updatePinMessage</a></span><span class="signature">(<wbr><span class="parameter" id="updatePinMessage-param-message">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updatePinMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/updatePinMessage.html">updatePinMessage</a></span><span class="signature">(<wbr>{<span class="parameter" id="updatePinMessage-param-message"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessage-class.html">NIMMessage</a></span> <span class="parameter-name">message</span>, </span><span class="parameter" id="updatePinMessage-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -779,8 +1016,8 @@
 </dd>
 
         <dt id="voiceToText" class="callable">
-  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/voiceToText.html">voiceToText</a></span><span class="signature">(<wbr><span class="parameter" id="voiceToText-param-params">{<span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMVoiceToTextParams-class.html">NIMVoiceToTextParams</a></span> <span class="parameter-name">params</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/MessageServicePlatform/voiceToText.html">voiceToText</a></span><span class="signature">(<wbr>{<span class="parameter" id="voiceToText-param-params"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMVoiceToTextParams-class.html">NIMVoiceToTextParams</a></span> <span class="parameter-name">params</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -817,7 +1054,6 @@
     
   <section class="summary offset-anchor" id="static-properties">
     <h2>Static Properties</h2>
-
     <dl class="properties">
         <dt id="instance" class="property">
   <span class="name"><a href="../nim_core_v2/MessageServicePlatform/instance.html">instance</a></span>
@@ -836,9 +1072,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -846,40 +1080,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
     <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
     <li class="self-crumb">MessageServicePlatform class</li>
 </ol>
 
-
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

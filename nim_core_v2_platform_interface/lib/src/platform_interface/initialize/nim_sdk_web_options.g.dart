@@ -19,6 +19,8 @@ NIMInitializeOptions _$NIMInitializeOptionsFromJson(
       tokenProviderDelay: (json['tokenProviderDelay'] as num?)?.toInt(),
       reconnectDelayProviderDelay:
           (json['reconnectDelayProviderDelay'] as num?)?.toInt(),
+      enableV2CloudConversation: json['enableV2CloudConversation'] as bool?,
+      flutterSdkVersion: json['flutterSdkVersion'] as String?,
     );
 
 Map<String, dynamic> _$NIMInitializeOptionsToJson(
@@ -32,25 +34,40 @@ Map<String, dynamic> _$NIMInitializeOptionsToJson(
       'loginExtensionProviderDelay': instance.loginExtensionProviderDelay,
       'tokenProviderDelay': instance.tokenProviderDelay,
       'reconnectDelayProviderDelay': instance.reconnectDelayProviderDelay,
+      'enableV2CloudConversation': instance.enableV2CloudConversation,
+      'flutterSdkVersion': instance.flutterSdkVersion,
     };
 
 NIMOtherOptions _$NIMOtherOptionsFromJson(Map<String, dynamic> json) =>
     NIMOtherOptions(
-      loginServiceConfig:
-          _nimLoginServiceConfigFromJson(json['loginServiceConfig'] as Map?),
+      V2NIMLoginServiceConfig: _nimLoginServiceConfigFromJson(
+          json['V2NIMLoginServiceConfig'] as Map?),
+      V2NIMClientAntispamUtilConfig: _nimClientAntispamUtilConfigFromJson(
+          json['V2NIMClientAntispamUtilConfig'] as Map?),
+      V2NIMFriendServiceConfig: _nimFriendServiceConfigFromJson(
+          json['V2NIMFriendServiceConfig'] as Map?),
+      V2NIMTeamServiceConfig:
+          _nimTeamServiceConfigFromJson(json['V2NIMTeamServiceConfig'] as Map?),
       abtestConfig: _nimAbtestConfigFromJson(json['abtestConfig'] as Map?),
       cloudStorageConfig:
           _nimCloudStorageConfigJson(json['cloudStorageConfig'] as Map?),
       reporterConfig:
           _nimReporterConfigFromJson(json['reporterConfig'] as Map?),
+      qchatChannelConfig:
+          _nimQChatChannelConfigFromJson(json['qchatChannelConfig'] as Map?),
     );
 
 Map<String, dynamic> _$NIMOtherOptionsToJson(NIMOtherOptions instance) =>
     <String, dynamic>{
-      'loginServiceConfig': instance.loginServiceConfig?.toJson(),
+      'V2NIMLoginServiceConfig': instance.V2NIMLoginServiceConfig?.toJson(),
+      'V2NIMClientAntispamUtilConfig':
+          instance.V2NIMClientAntispamUtilConfig?.toJson(),
+      'V2NIMFriendServiceConfig': instance.V2NIMFriendServiceConfig?.toJson(),
+      'V2NIMTeamServiceConfig': instance.V2NIMTeamServiceConfig?.toJson(),
       'abtestConfig': instance.abtestConfig?.toJson(),
       'cloudStorageConfig': instance.cloudStorageConfig?.toJson(),
       'reporterConfig': instance.reporterConfig?.toJson(),
+      'qchatChannelConfig': instance.qchatChannelConfig?.toJson(),
     };
 
 NIMLoginServiceConfig _$NIMLoginServiceConfigFromJson(
@@ -74,12 +91,50 @@ Map<String, dynamic> _$NIMLoginServiceConfigToJson(
       'linkUrl': instance.linkUrl,
     };
 
+NIMClientAntispamUtilConfig _$NIMClientAntispamUtilConfigFromJson(
+        Map<String, dynamic> json) =>
+    NIMClientAntispamUtilConfig(
+      enable: json['enable'] as bool?,
+    );
+
+Map<String, dynamic> _$NIMClientAntispamUtilConfigToJson(
+        NIMClientAntispamUtilConfig instance) =>
+    <String, dynamic>{
+      'enable': instance.enable,
+    };
+
+V2WebNIMFriendServiceConfig _$NIMFriendServiceConfigFromJson(
+        Map<String, dynamic> json) =>
+    V2WebNIMFriendServiceConfig(
+      enableServerV2FriendAddApplication:
+          json['enableServerV2FriendAddApplication'] as bool?,
+    );
+
+Map<String, dynamic> _$NIMFriendServiceConfigToJson(
+        V2WebNIMFriendServiceConfig instance) =>
+    <String, dynamic>{
+      'enableServerV2FriendAddApplication':
+          instance.enableServerV2FriendAddApplication,
+    };
+
+NIMTeamServiceConfig _$NIMTeamServiceConfigFromJson(
+        Map<String, dynamic> json) =>
+    NIMTeamServiceConfig(
+      enableServerV2TeamJoinActionInfo:
+          json['enableServerV2TeamJoinActionInfo'] as bool?,
+    );
+
+Map<String, dynamic> _$NIMTeamServiceConfigToJson(
+        NIMTeamServiceConfig instance) =>
+    <String, dynamic>{
+      'enableServerV2TeamJoinActionInfo':
+          instance.enableServerV2TeamJoinActionInfo,
+    };
+
 NIMCloudStorageConfig _$NIMCloudStorageConfigFromJson(
         Map<String, dynamic> json) =>
     NIMCloudStorageConfig(
-      cdn: json['cdn'] == null
-          ? null
-          : NIMCdnConfig.fromJson(json['cdn'] as Map<String, dynamic>),
+      cdn: _nimCdnConfigFromJson(json['cdn'] as Map?),
       chunkUploadHost: json['chunkUploadHost'] as String?,
       commonUploadHost: json['commonUploadHost'] as String?,
       downloadHostList: (json['downloadHostList'] as List<dynamic>?)
@@ -137,6 +192,18 @@ Map<String, dynamic> _$NIMReporterConfigToJson(NIMReporterConfig instance) =>
       'isDataReportEnable': instance.isDataReportEnable,
       'reportConfigUrl': instance.reportConfigUrl,
       'reportUrl': instance.reportUrl,
+    };
+
+NIMQChatChannelConfig _$NIMQChatChannelConfigFromJson(
+        Map<String, dynamic> json) =>
+    NIMQChatChannelConfig(
+      autoSubscribe: json['autoSubscribe'] as bool?,
+    );
+
+Map<String, dynamic> _$NIMQChatChannelConfigToJson(
+        NIMQChatChannelConfig instance) =>
+    <String, dynamic>{
+      'autoSubscribe': instance.autoSubscribe,
     };
 
 NIMAbtestConfig _$NIMAbtestConfigFromJson(Map<String, dynamic> json) =>

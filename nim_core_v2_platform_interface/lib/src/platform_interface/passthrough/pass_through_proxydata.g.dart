@@ -11,15 +11,14 @@ part of 'pass_through_proxydata.dart';
 // **************************************************************************
 
 NIMPassThroughProxyData _$NIMPassThroughProxyDataFromJson(
-    Map<String, dynamic> json) {
-  return NIMPassThroughProxyData(
-    zone: json['zone'] as String?,
-    path: json['path'] as String?,
-    method: json['method'] as int? ?? 2,
-    header: json['header'] as String?,
-    body: json['body'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    NIMPassThroughProxyData(
+      zone: json['zone'] as String?,
+      path: json['path'] as String?,
+      method: (json['method'] as num?)?.toInt() ?? 2,
+      header: json['header'] as String?,
+      body: json['body'] as String?,
+    );
 
 Map<String, dynamic> _$NIMPassThroughProxyDataToJson(
         NIMPassThroughProxyData instance) =>

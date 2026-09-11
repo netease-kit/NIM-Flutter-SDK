@@ -59,6 +59,7 @@ class LoginService {
   get tokenProvider => _platform.tokenProvider;
 
   /// 设置动态登录token提供者
+  /// [login] 调用前设置有效
   @HawkApi(ignore: true)
   set tokenProvider(tokenProvider) => _platform.tokenProvider = tokenProvider;
 
@@ -67,6 +68,7 @@ class LoginService {
   get loginExtensionProvider => _platform.loginExtensionProvider;
 
   /// 设置登录扩展信息
+  /// [login] 调用前设置有效
   @HawkApi(ignore: true)
   set loginExtensionProvider(loginExtensionProvider) =>
       _platform.loginExtensionProvider = loginExtensionProvider;
@@ -106,6 +108,11 @@ class LoginService {
   /// 返回当前登录客户端列表
   Future<NIMResult<List<NIMLoginClient>>> getLoginClients() {
     return _platform.getLoginClients();
+  }
+
+  /// 获取当前登录终端相关信息， 在登录成功后才能获取，否则内容为空
+  Future<NIMResult<NIMLoginClient>> getCurrentLoginClient() {
+    return _platform.getCurrentLoginClient();
   }
 
   /// 踢掉登录客户端下线

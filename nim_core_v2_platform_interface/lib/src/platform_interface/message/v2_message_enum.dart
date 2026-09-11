@@ -136,6 +136,10 @@ enum NIMMessageType {
   ///< 自定义
   @JsonValue(100)
   custom,
+
+  ///聊天室的通知，序列化使用，外部依然是[notification]
+  @JsonValue(105)
+  chatroomNotification,
 }
 
 /// 通知类型
@@ -337,4 +341,132 @@ enum NIMAIModelRoleType {
 
   @JsonValue(2)
   assistant
+}
+
+///停止流式输出操作的类型。
+enum V2NIMMessageAIStreamStopOpType {
+  ///停止输出保持现状
+  @JsonValue(0)
+  V2NIM_MESSAGE_AI_STREAM_STOP_OP_DEFAULT,
+
+  ///停止并撤回消息
+  @JsonValue(1)
+  V2NIM_MESSAGE_AI_STREAM_STOP_OP_REVOKE,
+
+  ///停止并更新消息内容
+  @JsonValue(2)
+  V2NIM_MESSAGE_AI_STREAM_STOP_OP_UPDATE;
+}
+
+///重新输出数字人消息操作的类型。
+enum V2NIMMessageAIRegenOpType {
+  /// 更新消息
+  /// 不会生成新消息，而是更新现有的消息内容
+  @JsonValue(1)
+  V2NIM_MESSAGE_AI_REGEN_OP_UPDATE,
+
+  /// 生成新消息
+  ///  生成一条新的消息
+  @JsonValue(2)
+  V2NIM_MESSAGE_AI_REGEN_OP_NEW;
+}
+
+enum V2NIMMessageAIStreamStatus {
+  /// 流式过程中 (本地状态，其他为服务器状态)
+  @JsonValue(-1)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_STREAMING,
+
+  /// 非流式状态
+  @JsonValue(0)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_NONE,
+
+  /// 占位
+  @JsonValue(1)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_PLACEHOLDER,
+
+  /// 停止输出
+  @JsonValue(2)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_STOPPED,
+
+  /// 停止并更新
+  @JsonValue(3)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_UPDATED,
+
+  /// 输出完成
+  @JsonValue(4)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_GENERATED,
+
+  /// 服务器异常终止
+  @JsonValue(5)
+  V2NIM_MESSAGE_AI_STREAM_STATUS_ABORTED,
+}
+
+/// 流式消息状态枚举
+/// 该枚举表示流式消息的状态
+enum V2NIMMessageStreamStatus {
+  /// 流式过程中 (本地状态，其他为服务器状态)
+  @JsonValue(-1)
+  V2NIM_MESSAGE_STREAM_STATUS_STREAMING,
+
+  /// 非流式状态
+  @JsonValue(0)
+  V2NIM_MESSAGE_STREAM_STATUS_NONE,
+
+  /// 占位
+  @JsonValue(1)
+  V2NIM_MESSAGE_STREAM_STATUS_PLACEHOLDER,
+
+  /// 停止输出
+  @JsonValue(2)
+  V2NIM_MESSAGE_STREAM_STATUS_STOPPED,
+
+  /// 停止并更新
+  @JsonValue(3)
+  V2NIM_MESSAGE_STREAM_STATUS_UPDATED,
+
+  /// 输出完成
+  @JsonValue(4)
+  V2NIM_MESSAGE_STREAM_STATUS_GENERATED,
+
+  /// 服务器异常终止
+  @JsonValue(5)
+  V2NIM_MESSAGE_STREAM_STATUS_ABORTED,
+}
+
+///数字人代理请求流式响应状态。
+enum V2NIMAIModelStreamCallStatus {
+  /// 非流式状态
+  /// 值为0
+  @JsonValue(0)
+  V2NIM_AI_MODEL_STREAM_CALL_STATUS_NONE,
+
+  /// 停止输出
+  /// 值为2
+  @JsonValue(2)
+  V2NIM_AI_MODEL_STREAM_CALL_STATUS_STOPPED,
+
+  /// 输出完成
+  /// 值为4
+  @JsonValue(4)
+  V2NIM_AI_MODEL_STREAM_CALL_STATUS_GENERATED,
+
+  /// 服务器异常终止
+  /// 值为5
+  @JsonValue(5)
+  V2NIM_AI_MODEL_STREAM_CALL_STATUS_ABORTED,
+}
+
+///清理历史消息模式
+enum NIMClearHistoryMode {
+  /// 同时删除云端和本地
+  @JsonValue(0)
+  V2NIM_CLEAR_HISTORY_MODE_ALL,
+
+  /// 仅删除本地, 云端拉取可以恢复
+  @JsonValue(1)
+  V2NIM_CLEAR_HISTORY_MODE_LOCAL,
+
+  ///仅删除本地, 云端拉取也不可能恢复， 状态记录在本地， 卸载重装后， 数据会重新出现
+  @JsonValue(2)
+  V2NIM_CLEAR_HISTORY_MODE_LOCAL_IRREPARABLY
 }

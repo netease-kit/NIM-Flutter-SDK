@@ -14,7 +14,7 @@ enum NIMTeamMessageMuteMode {
   @JsonValue(1)
   teamMessageMuteModeOn,
 
-  /// 只群主，管理员消息免打扰关闭
+  /// 普通成员群消息免打扰开启
   @JsonValue(2)
   teamMessageMuteModeManagerOff,
 }

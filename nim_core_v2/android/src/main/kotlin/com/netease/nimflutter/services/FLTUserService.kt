@@ -11,7 +11,7 @@ import com.netease.nimflutter.FLTConstant
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.toMap
+import com.netease.nimflutter.extension.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.user.V2NIMUser
 import com.netease.nimlib.sdk.v2.user.V2NIMUserListener
@@ -59,6 +59,39 @@ class FLTUserService(
                             NimResult(code = error.code, errorDetails = error.desc)
                         } else {
                             NimResult(code = -1, errorDetails = "getUserInfoList failed!")
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun checkBlock(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, Any?>?> {
+        return suspendCancellableCoroutine { cont ->
+            val accountIds = arguments["accountIds"] as? List<String>
+            if (accountIds == null) {
+                cont.resume(
+                    NimResult(code = FLTConstant.paramErrorCode, errorDetails = "checkBlock but the userIds is empty!")
+                )
+            } else {
+                NIMClient.getService(V2NIMUserService::class.java).checkBlock(
+                    accountIds,
+                    { result ->
+                        cont.resume(
+                            NimResult(
+                                code = 0,
+                                data = result
+                            )
+                        )
+                    }
+                ) { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "checkBlock failed!")
                         }
                     )
                 }
@@ -336,7 +369,8 @@ class FLTUserService(
             "addUserToBlockList" to ::addUserToBlockList,
             "removeUserFromBlockList" to ::removeUserFromBlockList,
             "getBlockList" to ::getBlockList,
-            "searchUserByOption" to ::searchUserByOption
+            "searchUserByOption" to ::searchUserByOption,
+            "checkBlock" to ::checkBlock
         )
     }
 

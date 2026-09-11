@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -50,7 +46,6 @@
   </div>
 </header>
 <main>
-
   <div
       id="dartdoc-main-content"
       class="main-content"
@@ -62,7 +57,7 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">NIMIOSSDKOptions</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-apnsCername">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">apnsCername</span>, </span></li>
+      <span class="name ">NIMIOSSDKOptions</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-apnsCername"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">apnsCername</span>, </span></li>
 <li><span class="parameter" id="-param-pkCername"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">pkCername</span>, </span></li>
 <li><span class="parameter" id="-param-maxUploadLogSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">maxUploadLogSize</span>, </span></li>
 <li><span class="parameter" id="-param-enableFetchAttachmentAutomaticallyAfterReceivingInChatroom"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableFetchAttachmentAutomaticallyAfterReceivingInChatroom</span>, </span></li>
@@ -77,6 +72,10 @@
 <li><span class="parameter" id="-param-enableAsyncLoadRecentSession"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enableAsyncLoadRecentSession</span>, </span></li>
 <li><span class="parameter" id="-param-linkQuickSwitch"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">linkQuickSwitch</span>, </span></li>
 <li><span class="parameter" id="-param-enabledQChatMessageCache"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">enabledQChatMessageCache</span>, </span></li>
+<li><span class="parameter" id="-param-enableServerV2FriendAddApplication"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableServerV2FriendAddApplication</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-enableServerV2TeamJoinActionInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableServerV2TeamJoinActionInfo</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-enableV2CloudConversation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableV2CloudConversation</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-autoUpdateApnsToken"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autoUpdateApnsToken</span> = <span class="default-value">true</span>, </span></li>
 <li><span class="parameter" id="-param-appKey"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">appKey</span>, </span></li>
 <li><span class="parameter" id="-param-sdkRootDir"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">sdkRootDir</span>, </span></li>
 <li><span class="parameter" id="-param-cndTrackInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">cndTrackInterval</span>, </span></li>
@@ -94,10 +93,9 @@
 <li><span class="parameter" id="-param-useAssetServerAddressConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">useAssetServerAddressConfig</span>, </span></li>
 <li><span class="parameter" id="-param-nosSceneConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">nosSceneConfig</span>, </span></li>
 <li><span class="parameter" id="-param-serverConfig"><span class="type-annotation"><a href="../../nim_core_v2/NIMServerConfig-class.html">NIMServerConfig</a>?</span> <span class="parameter-name">serverConfig</span>, </span></li>
-<li><span class="parameter" id="-param-enableFcs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableFcs</span> = <span class="default-value">true</span>}</span></li>
-</ol>)
+<li><span class="parameter" id="-param-enableFcs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableFcs</span> = <span class="default-value">true</span>, </span></li>
+</ol>})
     </section>
-
     
 
 
@@ -105,7 +103,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">NIMIOSSDKOptions({
-  &#47;&#47;&#47; android configurations
+  &#47;&#47;&#47; iOS configurations
   this.apnsCername,
   this.pkCername,
   this.maxUploadLogSize,
@@ -121,6 +119,10 @@
   this.enableAsyncLoadRecentSession,
   this.linkQuickSwitch,
   this.enabledQChatMessageCache,
+  this.enableServerV2FriendAddApplication = false,
+  this.enableServerV2TeamJoinActionInfo = false,
+  this.enableV2CloudConversation = false,
+  this.autoUpdateApnsToken = true,
 
   &#47;&#47;&#47; common configurations
   required String appKey,
@@ -170,7 +172,6 @@
 
 
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -178,7 +179,6 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nim_core_v2</a></li>
     <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
@@ -186,33 +186,24 @@
     <li class="self-crumb">NIMIOSSDKOptions constructor</li>
 </ol>
 
-
     <h5>NIMIOSSDKOptions class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

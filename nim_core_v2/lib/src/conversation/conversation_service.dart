@@ -8,7 +8,7 @@ part of nim_core_v2;
 
 @HawkEntryPoint()
 class ConversationService {
-// 消息服务
+// 会话服务
   factory ConversationService() {
     if (_singleton == null) {
       _singleton = ConversationService._();
@@ -177,12 +177,12 @@ class ConversationService {
 
   /// 根据会话id清空会话未读数
   /// groupId – 会话分组Id
-  // Future<NIMResult<void>> clearUnreadCountByGroupId(String groupId) async {
-  //   return _platform.clearUnreadCountByGroupId(groupId);
-  // }
+  Future<NIMResult<void>> clearUnreadCountByGroupId(String groupId) async {
+    return _platform.clearUnreadCountByGroupId(groupId);
+  }
 
   /// 根据会话类型清空相应会话的未读数
-  /// [groupId] – 会话分组Id
+  /// [conversationTypes] – 会话类型
   Future<NIMResult<void>> clearUnreadCountByTypes(
       List<NIMConversationType> conversationTypes) async {
     return _platform.clearUnreadCountByTypes(conversationTypes);
@@ -212,5 +212,11 @@ class ConversationService {
   /// [conversationId] – 会话id
   Future<NIMResult<int>> markConversationRead(String conversationId) async {
     return _platform.markConversationRead(conversationId);
+  }
+
+  /// 查询当前全量置顶的会话列表
+  /// 排序方式：倒序
+  Future<NIMResult<List<NIMConversation>>> getStickTopConversationList() async {
+    return _platform.getStickTopConversationList();
   }
 }

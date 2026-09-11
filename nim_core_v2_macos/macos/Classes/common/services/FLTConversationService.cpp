@@ -99,12 +99,34 @@ FLTConversationService::FLTConversationService() {
       };
 
   auto& client = v2::V2NIMClient::get();
-  client.getConversationService().addConversationListener(conversationListener);
+
+  try {
+    client.getConversationService().addConversationListener(
+        conversationListener);
+  } catch (const std::exception& e) {
+    std::cerr << "Failed to add conversation listener. Exception: " << e.what()
+              << std::endl;
+
+  } catch (...) {
+    std::cerr
+        << "Failed to add conversation listener due to an unknown exception."
+        << std::endl;
+  }
 }
 
 FLTConversationService::~FLTConversationService() {
-  v2::V2NIMClient::get().getConversationService().removeConversationListener(
-      conversationListener);
+  try {
+    v2::V2NIMClient::get().getConversationService().removeConversationListener(
+        conversationListener);
+  } catch (const std::exception& e) {
+    std::cerr << "Failed to add conversation listener. Exception: " << e.what()
+              << std::endl;
+
+  } catch (...) {
+    std::cerr
+        << "Failed to add conversation listener due to an unknown exception."
+        << std::endl;
+  }
 }
 
 void FLTConversationService::onMethodCalled(
@@ -152,6 +174,8 @@ void FLTConversationService::onMethodCalled(
     getConversationReadTime(arguments, result);
   } else if (method == "markConversationRead") {
     markConversationRead(arguments, result);
+  } else if (method == "getStickTopConversationList") {
+    getStickTopConversationList(arguments, result);
   } else {
     result->NotImplemented();
   }
@@ -234,7 +258,7 @@ void FLTConversationService::getConversationListByOption(
       }
       conversationOption.conversationTypes = typeIds;
     } else if (optionIter.first ==
-               flutter::EncodableValue("conversationGroupIdList")) {
+               flutter::EncodableValue("conversationGroupIds")) {
       nstd::vector<nstd::string> groupIds;
       auto groupIdsParam = std::get<flutter::EncodableList>(optionIter.second);
       for (auto& groupId : groupIdsParam) {
@@ -755,6 +779,33 @@ void FLTConversationService::markConversationRead(
       });
 }
 
+void FLTConversationService::getStickTopConversationList(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& client = v2::V2NIMClient::get();
+  auto& conversationService = client.getConversationService();
+  conversationService.getStickTopConversationList(
+      [result](const nstd::vector<v2::V2NIMConversation> conversationList) {
+        flutter::EncodableMap resultMapData;
+        flutter::EncodableList conversationListData_;
+        for (auto conversation : conversationList) {
+          flutter::EncodableMap conversationMap =
+              convertNIMConversation2Map(&conversation);
+          conversationListData_.emplace_back(conversationMap);
+        }
+
+        resultMapData.insert(
+            std::make_pair("conversationList",
+                           flutter::EncodableValue(conversationListData_)));
+        result->Success(NimResult::getSuccessResult(resultMapData));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(
+                          error.code, "getStickTopConversationList failed"));
+      });
+}
+
 flutter::EncodableMap convertNIMConversation2Map(
     const nstd::optional<v2::V2NIMConversation> conversation) {
   flutter::EncodableMap resultMap;
@@ -782,6 +833,8 @@ flutter::EncodableMap convertNIMConversation2Map(
   }
   resultMap.insert(std::make_pair(
       "unreadCount", static_cast<int64_t>(conversation->unreadCount)));
+  resultMap.insert(std::make_pair(
+      "lastReadTime", static_cast<int64_t>(conversation->lastReadTime)));
   resultMap.insert(std::make_pair(
       "sortOrder", static_cast<int64_t>(conversation->sortOrder)));
   resultMap.insert(std::make_pair(
@@ -815,11 +868,9 @@ flutter::EncodableMap convertNIMLastMessage2Map(
   }
   resultMap.insert(std::make_pair("text", lastMessage->text));
 
-  if (lastMessage->attachment) {
-    flutter::EncodableMap msgAttachment =
-        convertMessageAttachment(lastMessage->attachment);
-    resultMap.insert(std::make_pair("attachment", msgAttachment));
-  }
+  flutter::EncodableMap msgAttachment =
+      convertMessageAttachment(lastMessage->attachment);
+  resultMap.insert(std::make_pair("attachment", msgAttachment));
 
   resultMap.insert(
       std::make_pair("revokeAccountId", lastMessage->revokeAccountId.value()));
@@ -855,24 +906,26 @@ v2::V2NIMConversationFilter createConversationFilterFromMap(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMConversationFilter filter;
   auto iter = arguments->find(flutter::EncodableValue("conversationGroupId"));
-  if (iter != arguments->end()) {
+  if (iter != arguments->end() && !iter->second.IsNull()) {
     filter.conversationGroupId = std::get<std::string>(iter->second);
   }
 
   nstd::set<v2::V2NIMConversationType> conversationTypes;
   auto iter2 = arguments->find(flutter::EncodableValue("conversationTypes"));
-  if (iter2 != arguments->end()) {
+  if (iter2 != arguments->end() && !iter2->second.IsNull()) {
     auto conversationIdsParam = std::get<flutter::EncodableList>(iter2->second);
-    for (auto& conversationType : conversationIdsParam) {
-      int64_t typeValue = conversationType.LongValue();
-      conversationTypes.insert(
-          static_cast<v2::V2NIMConversationType>(typeValue));
+    if (!conversationIdsParam.empty()) {
+      for (auto& conversationType : conversationIdsParam) {
+        int64_t typeValue = conversationType.LongValue();
+        conversationTypes.insert(
+            static_cast<v2::V2NIMConversationType>(typeValue));
+      }
+      filter.conversationTypes = conversationTypes;
     }
-    filter.conversationTypes = conversationTypes;
   }
 
   auto iter3 = arguments->find(flutter::EncodableValue("ignoreMuted"));
-  if (iter3 != arguments->end()) {
+  if (iter3 != arguments->end() && !iter3->second.IsNull()) {
     filter.ignoreMuted = std::get<bool>(iter3->second);
   }
   return filter;

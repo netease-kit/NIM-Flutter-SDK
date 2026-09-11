@@ -47,6 +47,13 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   final bool checkManifestConfig;
 
   ///
+  /// 是否开启控制台日志，默认为 false，即不开启。
+  /// 开启后，SDK 会在 Logcat 中输出详细的调试日志，便于开发调试。
+  ///
+  @JsonKey(defaultValue: false)
+  final bool consoleLogEnabled;
+
+  ///
   /// 禁止后台进程唤醒ui进程
   ///
   @JsonKey(defaultValue: false)
@@ -90,14 +97,48 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   @JsonKey(defaultValue: false)
   final bool enabledQChatMessageCache;
 
+  /// 是否开启服务端好友申请记录功能，默认为 false，即不开启。
+  @JsonKey(defaultValue: false)
+  final bool enableServerV2FriendAddApplication;
+
+  /// 是否开启服务端群申请记录功能，默认为 false，即不开启。
+  @JsonKey(defaultValue: false)
+  final bool enableServerV2TeamJoinActionInfo;
+
+  /// 是否开启搜索账号ID，默认为 false，即不开启。
+  /// true：开启；false：不开启
+  @JsonKey(defaultValue: false)
+  final bool searchAccountIdEnabled;
+
+  ///启动V2云端会话功能，V2云端会话功能需要在业务平台开启相关功能才可以使用
+  bool enableV2CloudConversation = false;
+
+  /// 开启用户信息提供者，由开发者提供给 NIM SDK 使用，主要用于通知栏显示的用户昵称和头像。
+  bool enableUserInfoProvider = false;
+
+  /// 开启弹出通知前获取通道ID的回调。
+  bool enableNotificationChannelProvider = false;
+
+  /// 开启定制通知栏消息提醒的文案
+  bool enableMessageNotifierCustomization = false;
+
   /// 为通知栏提供消息发送者显示名称（例如：如果是P2P聊天，可以显示备注名、昵称、帐号等；如果是群聊天，可以显示备注名，群昵称，昵称、帐号等）
   /// 如果返回 null，SDK将会使用服务器下发昵称
   /// [account]     消息发送者账号
   /// [sessionId]   会话ID（如果是P2P聊天，那么会话ID即为发送者账号，如果是群聊天，那么会话ID就是群号）
   /// [sessionType] 会话类型
   /// 返回消息发送者对应的显示名称
+  /// [enableUserInfoProvider] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final NIMDisplayNameForMessageNotifierProvider?
       displayNameForMessageNotifierProvider;
+
+  /// 注册用户自主提供的推送token的回调，仅在 MixPushConfig.manualProvidePushToken 为true时有效
+  /// 手动设置推送token的回调，使用者需要在此回调中提供自己的推送 token
+  /// suggestedPushType – 登录推荐的推送类型，不需要严格遵循 @see [MixPushTypeEnum]
+  /// 返回值为自行提供的推送类型& [TokenDetail]
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final NIManualProvidePushTokenProvider? manualProvidePushTokenProvider;
 
   /// 为云信通知栏提醒提供头像（个人、群组）
   /// 一般从本地图片缓存中获取，若未下载或本地不存在，请返回默认本地头像（可以返回默认头像资源路径）
@@ -106,6 +147,8 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   /// [sessionType] 会话类型（个人、群组）
   /// [sessionId]  用户账号或者群ID
   /// 返回头像信息
+  /// [enableUserInfoProvider] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final NIMAvatarForMessageNotifierProvider? avatarForMessageNotifierProvider;
 
   /// 为通知栏提供消息title显示名称（例如：如果是群聊天，可以设置自定义群名称等;如果圈组，可以显示圈组频道名称等）
@@ -113,18 +156,36 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
   /// 不可以做耗时操作
   /// [message] 收到的消息
   /// 返回消息title显示名称
+  /// [enableUserInfoProvider] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final NIMDisplayTitleForMessageNotifierProvider?
       displayTitleForMessageNotifierProvider;
 
   ///定制消息提醒（通知栏提醒）內容文案 主要在通知栏下拉后展现其通知内容：content=[nick:发来一条消息]
+  ///[enableMessageNotifierCustomization] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
   NIMMakeNotifyContentProvider? makeNotifyContentProvider;
 
   ///定制消息提醒（通知栏提醒）Ticker文案 主要在通知栏弹框提醒时的内容：ticker=[nick有新消息]
+  ///[enableMessageNotifierCustomization] 设置为true 方能生效
   ///Android 5.0 后废弃
+  @JsonKey(includeFromJson: false, includeToJson: false)
   NIMMakeTickerProvider? makeTickerProvider;
 
   ///定制消息撤回提醒文案
+  ///[enableMessageNotifierCustomization] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
   NIMMakeRevokeMsgTipProvider? makeRevokeMsgTipProvider;
+
+  ///定制消息提醒（通知栏提醒）本地通知 Category 类型
+  ///[enableMessageNotifierCustomization] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  NIMMakeCategoryProvider? makeCategoryProvider;
+
+  ///配置通知要走的通道（ChannelId），若不配置，则根据响铃振动走对应的默认通道。
+  ///[enableNotificationChannelProvider] 设置为true 方能生效
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  NIMNotificationChannelProvider? notificationChannelProvider;
 
   NIMAndroidSDKOptions({
     /// android configurations
@@ -132,8 +193,12 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.preLoadServers = true,
     this.reducedIM = false,
     this.checkManifestConfig = false,
+    this.consoleLogEnabled = false,
     this.disableAwake = false,
     this.enabledQChatMessageCache = false,
+    this.enableServerV2FriendAddApplication = false,
+    this.enableServerV2TeamJoinActionInfo = false,
+    this.searchAccountIdEnabled = false,
     this.databaseEncryptKey,
     this.thumbnailSize = 350,
     this.fetchServerTimeInterval = 2000,
@@ -146,6 +211,13 @@ class NIMAndroidSDKOptions extends NIMSDKOptions {
     this.makeNotifyContentProvider,
     this.makeTickerProvider,
     this.makeRevokeMsgTipProvider,
+    this.makeCategoryProvider,
+    this.notificationChannelProvider,
+    this.enableV2CloudConversation = false,
+    this.enableMessageNotifierCustomization = false,
+    this.manualProvidePushTokenProvider,
+    this.enableUserInfoProvider = false,
+    this.enableNotificationChannelProvider = false,
 
     /// common configurations
     required String appKey,
@@ -295,6 +367,10 @@ class NIMMixPushConfig {
   @JsonKey(name: 'KEY_HONOR_CERTIFICATE_NAME')
   final String? honorCertificateName;
 
+  ///是否自行传入推送token
+  @JsonKey(name: 'KEY_MANUAL_PROVIDE_PUSH_TOKEN')
+  final bool manualProvidePushToken;
+
   NIMMixPushConfig({
     this.xmAppId,
     this.xmAppKey,
@@ -311,6 +387,7 @@ class NIMMixPushConfig {
     this.oppoAppSecret,
     this.oppoCertificateName,
     this.autoSelectPushType = false,
+    this.manualProvidePushToken = false,
     this.honorCertificateName,
   });
 
@@ -370,7 +447,7 @@ class NIMStatusBarNotificationConfig {
   final int? ledOnMs;
 
   ///
-  /// 呼吸灯熄灭时的持续时间（毫秒）
+  /// 呼呼吸灯熄灭时的持续时间（毫秒）
   ///
   final int? ledOffMs;
 
@@ -405,7 +482,7 @@ class NIMStatusBarNotificationConfig {
   /// 通知栏提醒的响应intent的activity类型。<br>
   /// 可以为null。如果未提供，将使用包的launcher的入口intent的activity。
   ///
-  final String? notificationEntranceClassName;
+  String? notificationEntranceClassName;
 
   ///
   /// 通知栏提醒的标题是否只显示应用名。默认是 false，当有一个会话发来消息时，显示会话名；当有多个会话发来时，显示应用名。
@@ -438,10 +515,22 @@ class NIMStatusBarNotificationConfig {
   final String? customTitleWhenTeamNameEmpty;
 
   ///
+  /// 是否开启高优先级通知NotificationManager.IMPORTANCE_HIGH，仅针对Android 8.0+有效。<br>
+  /// 默认为false
+  ///
+  final bool highImportance;
+
+  ///
+  /// 异步通知栏执行。<br>
+  /// 默认为false
+  ///
+  final bool asyncNotifierExe;
+
+  ///
   /// 点击通知栏传递的extra类型
   ///
   @JsonKey(defaultValue: NIMNotificationExtraType.message)
-  final NIMNotificationExtraType notificationExtraType;
+  NIMNotificationExtraType notificationExtraType;
 
   NIMStatusBarNotificationConfig({
     this.ring = true,
@@ -462,6 +551,8 @@ class NIMStatusBarNotificationConfig {
     this.showBadge = true,
     this.customTitleWhenTeamNameEmpty,
     this.notificationExtraType = NIMNotificationExtraType.message,
+    this.asyncNotifierExe = false,
+    this.highImportance = false,
   });
 
   factory NIMStatusBarNotificationConfig.fromMap(Map<String, dynamic> map) {
@@ -478,6 +569,23 @@ NIMStatusBarNotificationConfig? _notificationConfigFromMap(Map? map) {
   return map != null
       ? NIMStatusBarNotificationConfig.fromMap(map.cast<String, dynamic>())
       : null;
+}
+
+///推送详情
+@JsonSerializable()
+class TokenDetail {
+  ///推送类型
+  MixPushTypeEnum type;
+
+  ///tokne
+  String token;
+
+  TokenDetail({required this.type, required this.token});
+
+  factory TokenDetail.fromJson(Map<String, dynamic> map) =>
+      _$TokenDetailFromJson(map);
+
+  Map<String, dynamic> toJson() => _$TokenDetailToJson(this);
 }
 
 /// 通知折叠方式
@@ -507,9 +615,53 @@ enum NIMNotificationExtraType {
   jsonArrStr,
 }
 
+enum MixPushTypeEnum {
+  /// 未知
+  @JsonValue(0)
+  unknown,
+
+  /// 小米
+  @JsonValue(5)
+  xiaoMi,
+
+  /// 华为
+  @JsonValue(6)
+  huaWei,
+
+  /// 魅族
+  @JsonValue(7)
+  meiZu,
+
+  /// FCM
+  @JsonValue(8)
+  fcm,
+
+  /// VIVO
+  @JsonValue(9)
+  vivo,
+
+  /// OPPO
+  @JsonValue(10)
+  oppo,
+
+  /// 荣耀
+  @JsonValue(11)
+  honor
+}
+
+MixPushTypeEnum getTypeFromMixPushTypeEnum(int type) {
+  return $enumDecode(_$MixPushTypeEnumEnumMap, type);
+}
+
 /// 为通知栏提供消息发送者显示名称（例如：如果是P2P聊天，可以显示备注名、昵称、帐号等；如果是群聊天，可以显示备注名，群昵称，昵称、帐号等） 如果返回 null，SDK将会使用服务器下发昵称
 typedef NIMDisplayNameForMessageNotifierProvider = Future<String?> Function(
     String? account, String? sessionId, NIMSessionType? sessionType);
+
+/// 手动设置推送token的回调，使用者需要在此回调中提供自己的推送 token
+/// suggestedPushType – 登录推荐的推送类型，不需要严格遵循 @see [MixPushTypeEnum]
+/// 返回值为自行提供的推送类型& [TokenDetail]
+typedef NIManualProvidePushTokenProvider = Future<TokenDetail?> Function(
+    MixPushTypeEnum suggestedPushType);
 
 ///为云信通知栏提醒提供头像（个人、群组） 一般从本地图片缓存中获取，若未下载或本地不存在，请返回默认本地头像（可以返回默认头像资源ID对应的Bitmap）
 typedef NIMAvatarForMessageNotifierProvider
@@ -543,3 +695,23 @@ typedef NIMMakeTickerProvider = Future<String?> Function(
 /// 消息撤回提醒文案
 typedef NIMMakeRevokeMsgTipProvider = Future<String?> Function(
     String? revokeAccount, NIMMessage? message);
+
+///定制消息撤回提醒文案
+
+///定制消息提醒（通知栏提醒）本地通知 Category 类型
+///Params:
+/// [message] – 发来的消息
+/// Returns:
+/// 本地通知类型，类型标准请参照 android.app.Notification.CATEGORY_MESSAGE
+typedef NIMMakeCategoryProvider = Future<String?> Function(NIMMessage? message);
+
+///定制消息提醒（通知栏提醒）本地通知 Category 类型
+///Params:
+/// [donNotDisturb] – 免打扰开启，而且收到的不是强推消息
+// [tooFast] – 两次通知间间隔短
+// [ring] – 是否响铃
+// [vibrate] – 是否振动
+/// Returns:
+/// 通道ID，如果返回""或者null，则使用默认通道
+typedef NIMNotificationChannelProvider = Future<String?> Function(
+    bool? donNotDisturb, bool? tooFast, bool? ring, bool? vibrate);

@@ -58,6 +58,10 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
   ///                只有特殊用户场景才需要此设置，无明确原因请勿设置。
   bool? disableReconnectInBackgroundState;
 
+  /// 是否禁用 SDK 后台任务
+  ///  @discusssion 默认为 NO。如果为 YES，则 SDK 不会开启后台任务。需要在 SDK 初始化之前配置。
+  bool? disableBackgroundTask;
+
   /// 是否开启群回执功能
   ///  @discusssion 默认为 NO。
   bool? enableTeamReceipt;
@@ -75,8 +79,22 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
   /// 是否开启圈组消息缓存支持，默认不开启
   bool? enabledQChatMessageCache;
 
+  /// 是否开启服务端好友申请记录功能，默认为 false，即不开启。
+  bool enableServerV2FriendAddApplication = false;
+
+  /// 是否开启服务端群申请记录功能，默认为 false，即不开启。
+  bool enableServerV2TeamJoinActionInfo = false;
+
+  ///启动V2云端会话功能，V2云端会话功能需要在业务平台开启相关功能才可以使用
+  bool enableV2CloudConversation = false;
+
+  /// 是否自动更新 APNs Token，默认为 true
+  /// 当设置为 true 时，SDK 会自动监听系统的 APNs Token 回调并更新到服务器
+  /// 如需手动控制 Token 更新流程，可设置为 false，然后通过 apnsService.updateApnsToken() 手动更新
+  bool autoUpdateApnsToken;
+
   NIMIOSSDKOptions({
-    /// android configurations
+    /// iOS configurations
     this.apnsCername,
     this.pkCername,
     this.maxUploadLogSize,
@@ -87,11 +105,16 @@ class NIMIOSSDKOptions extends NIMSDKOptions {
     this.maxAutoLoginRetryTimes,
     this.maximumLogDays,
     this.disableReconnectInBackgroundState,
+    this.disableBackgroundTask,
     this.enableTeamReceipt,
     this.enableFileQuickTransfer,
     this.enableAsyncLoadRecentSession,
     this.linkQuickSwitch,
     this.enabledQChatMessageCache,
+    this.enableServerV2FriendAddApplication = false,
+    this.enableServerV2TeamJoinActionInfo = false,
+    this.enableV2CloudConversation = false,
+    this.autoUpdateApnsToken = true,
 
     /// common configurations
     required String appKey,

@@ -53,6 +53,9 @@ class V2FLTSettingsService : public FLTService {
   void setTeamMessageMuteMode(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getPushMobileOnDesktopOnline(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
  private:
   v2::V2NIMSettingListener listener;

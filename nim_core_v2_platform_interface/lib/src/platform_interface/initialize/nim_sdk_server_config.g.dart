@@ -13,7 +13,7 @@ part of 'nim_sdk_server_config.dart';
 NIMServerConfig _$NIMServerConfigFromJson(Map<String, dynamic> json) =>
     NIMServerConfig(
       module: json['module'] as String?,
-      publicKeyVersion: json['publicKeyVersion'] as int? ?? 0,
+      publicKeyVersion: (json['publicKeyVersion'] as num?)?.toInt() ?? 0,
       lbs: json['lbs'] as String?,
       defaultLink: json['defaultLink'] as String?,
       nosUploadLbs: json['nosUploadLbs'] as String?,
@@ -26,7 +26,7 @@ NIMServerConfig _$NIMServerConfigFromJson(Map<String, dynamic> json) =>
       negoKeyNeca:
           $enumDecodeNullable(_$AsymmetricTypeEnumMap, json['negoKeyNeca']) ??
               AsymmetricType.rsa,
-      negoKeyEncaKeyVersion: json['negoKeyEncaKeyVersion'] as int?,
+      negoKeyEncaKeyVersion: (json['negoKeyEncaKeyVersion'] as num?)?.toInt(),
       negoKeyEncaKeyParta: json['negoKeyEncaKeyParta'] as String?,
       negoKeyEncaKeyPartb: json['negoKeyEncaKeyPartb'] as String?,
       commEnca: $enumDecodeNullable(_$SymmetryTypeEnumMap, json['commEnca']) ??

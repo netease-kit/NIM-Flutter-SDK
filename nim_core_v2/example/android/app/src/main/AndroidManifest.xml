@@ -40,6 +40,21 @@
 
     <!-- 8.0 系统上需要-->
     <!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>-->
+    
+    <!-- SDK权限申明, 第三方APP接入时，请将com.netease.nim.demo替换为自己的包名 -->
+    <!-- 和下面的uses-permission一起加入到你的AndroidManifest文件中。 -->
+    <permission
+            android:name="${applicationId}.permission.RECEIVE_MSG"
+            android:protectionLevel="signature"/>
+    
+    <!-- 接受SDK消息广播权限， 第三方APP接入时，请将com.netease.nim.demo替换为自己的包名 -->
+    <uses-permission android:name="${applicationId}.permission.RECEIVE_MSG"/>
+    <!-- 小米推送 -->
+    <permission
+            android:name="${applicationId}.permission.MIPUSH_RECEIVE"
+            android:protectionLevel="signature"/>
+    
+    <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE"/>
 
 
     <application
@@ -79,5 +94,15 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        
+        <receiver
+                android:name="com.netease.nimlib.mixpush.mi.MiPushReceiver"
+                android:exported="true">
+            <intent-filter android:priority="0x7fffffff">
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED"/>
+                <action android:name="com.xiaomi.mipush.ERROR"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

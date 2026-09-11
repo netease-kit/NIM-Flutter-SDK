@@ -7,7 +7,6 @@ import 'dart:typed_data';
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
 
 class MethodChannelAPNSService extends APNSServicePlatform {
-  @override
   Future<void> updateAPNSOptions(Map<String, dynamic> options) async {
     return Future.value();
   }
@@ -44,7 +43,7 @@ class MethodChannelAPNSService extends APNSServicePlatform {
   Future<NIMResult<void>> updateApnsSetting(
       NIMPushNotificationSetting setting) async {
     return NIMResult.fromMap(await invokeMethod('updateApnsSetting',
-        arguments: {'setting': setting}));
+        arguments: {'setting': setting.toJson()}));
   }
 
   Future<NIMResult<NIMPushNotificationMultiportConfig>>
@@ -55,7 +54,7 @@ class MethodChannelAPNSService extends APNSServicePlatform {
   Future<NIMResult<void>> updateApnsMultiportConfig(
       NIMPushNotificationMultiportConfig config) async {
     return NIMResult.fromMap(await invokeMethod('updateApnsMultiportConfig',
-        arguments: {'config': config}));
+        arguments: {'config': config.toJson()}));
   }
 
   @override

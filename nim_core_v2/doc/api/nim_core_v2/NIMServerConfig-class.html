@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -49,7 +45,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -71,12 +66,12 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
     <ul class="annotation-list clazz-relationships">
-        <li>@<a href="https://pub.dev/documentation/json_annotation/4.9.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(explicitToJson: true)</li>
+        <li>@JsonSerializable(explicitToJson: true)</li>
     </ul>
   </dd>
 
@@ -87,10 +82,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
         <dt id="NIMServerConfig" class="callable">
-          <span class="name"><a href="../nim_core_v2/NIMServerConfig/NIMServerConfig.html">NIMServerConfig</a></span><span class="signature">(<span class="parameter" id="-param-module">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">module</span>, </span><span class="parameter" id="-param-publicKeyVersion"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">publicKeyVersion</span> = <span class="default-value">0</span>, </span><span class="parameter" id="-param-lbs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">lbs</span>, </span><span class="parameter" id="-param-defaultLink"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">defaultLink</span>, </span><span class="parameter" id="-param-nosUploadLbs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUploadLbs</span>, </span><span class="parameter" id="-param-nosUploadDefaultLink"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUploadDefaultLink</span>, </span><span class="parameter" id="-param-nosUpload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUpload</span>, </span><span class="parameter" id="-param-nosSupportHttps"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">nosSupportHttps</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-nosDownloadUrlFormat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosDownloadUrlFormat</span>, </span><span class="parameter" id="-param-nosDownload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosDownload</span>, </span><span class="parameter" id="-param-nosAccess"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosAccess</span>, </span><span class="parameter" id="-param-negoKeyNeca"><span class="type-annotation"><a href="../nim_core_v2/AsymmetricType.html">AsymmetricType</a></span> <span class="parameter-name">negoKeyNeca</span> = <span class="default-value">AsymmetricType.rsa</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyVersion"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">negoKeyEncaKeyVersion</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyParta"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">negoKeyEncaKeyParta</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyPartb"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">negoKeyEncaKeyPartb</span>, </span><span class="parameter" id="-param-commEnca"><span class="type-annotation"><a href="../nim_core_v2/SymmetryType.html">SymmetryType</a></span> <span class="parameter-name">commEnca</span> = <span class="default-value">SymmetryType.rc4</span>, </span><span class="parameter" id="-param-linkIpv6"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">linkIpv6</span>, </span><span class="parameter" id="-param-ipProtocolVersion"><span class="type-annotation"><a href="../nim_core_v2/IPVersion.html">IPVersion</a></span> <span class="parameter-name">ipProtocolVersion</span> = <span class="default-value">IPVersion.ipv4</span>, </span><span class="parameter" id="-param-probeIpv4Url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">probeIpv4Url</span>, </span><span class="parameter" id="-param-probeIpv6Url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">probeIpv6Url</span>, </span><span class="parameter" id="-param-handshakeType"><span class="type-annotation"><a href="../nim_core_v2/NimHandshakeType.html">NimHandshakeType</a></span> <span class="parameter-name">handshakeType</span> = <span class="default-value">NimHandshakeType.v1</span>, </span><span class="parameter" id="-param-nosCdnEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">nosCdnEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-nosDownloadSet"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">nosDownloadSet</span>}</span>)</span>
+          <span class="name"><a href="../nim_core_v2/NIMServerConfig/NIMServerConfig.html">NIMServerConfig</a></span><span class="signature">({<span class="parameter" id="-param-module"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">module</span>, </span><span class="parameter" id="-param-publicKeyVersion"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">publicKeyVersion</span> = <span class="default-value">0</span>, </span><span class="parameter" id="-param-lbs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">lbs</span>, </span><span class="parameter" id="-param-defaultLink"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">defaultLink</span>, </span><span class="parameter" id="-param-nosUploadLbs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUploadLbs</span>, </span><span class="parameter" id="-param-nosUploadDefaultLink"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUploadDefaultLink</span>, </span><span class="parameter" id="-param-nosUpload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosUpload</span>, </span><span class="parameter" id="-param-nosSupportHttps"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">nosSupportHttps</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-nosDownloadUrlFormat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosDownloadUrlFormat</span>, </span><span class="parameter" id="-param-nosDownload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosDownload</span>, </span><span class="parameter" id="-param-nosAccess"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">nosAccess</span>, </span><span class="parameter" id="-param-negoKeyNeca"><span class="type-annotation"><a href="../nim_core_v2/AsymmetricType.html">AsymmetricType</a></span> <span class="parameter-name">negoKeyNeca</span> = <span class="default-value">AsymmetricType.rsa</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyVersion"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">negoKeyEncaKeyVersion</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyParta"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">negoKeyEncaKeyParta</span>, </span><span class="parameter" id="-param-negoKeyEncaKeyPartb"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">negoKeyEncaKeyPartb</span>, </span><span class="parameter" id="-param-commEnca"><span class="type-annotation"><a href="../nim_core_v2/SymmetryType.html">SymmetryType</a></span> <span class="parameter-name">commEnca</span> = <span class="default-value">SymmetryType.rc4</span>, </span><span class="parameter" id="-param-linkIpv6"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">linkIpv6</span>, </span><span class="parameter" id="-param-ipProtocolVersion"><span class="type-annotation"><a href="../nim_core_v2/IPVersion.html">IPVersion</a></span> <span class="parameter-name">ipProtocolVersion</span> = <span class="default-value">IPVersion.ipv4</span>, </span><span class="parameter" id="-param-probeIpv4Url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">probeIpv4Url</span>, </span><span class="parameter" id="-param-probeIpv6Url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">probeIpv6Url</span>, </span><span class="parameter" id="-param-handshakeType"><span class="type-annotation"><a href="../nim_core_v2/NimHandshakeType.html">NimHandshakeType</a></span> <span class="parameter-name">handshakeType</span> = <span class="default-value">NimHandshakeType.v1</span>, </span><span class="parameter" id="-param-nosCdnEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">nosCdnEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-nosDownloadSet"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Set-class.html">Set</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">nosDownloadSet</span></span>})</span>
         </dt>
         <dd>
           
@@ -118,7 +112,7 @@
 </dt>
 <dd>
   通信加密算法 {1(RC4), 2(AES128), 4(SM4)}
-默认: 1(RC4) 对称加密<a href="../nim_core_v2/SymmetryType.html">SymmetryType.rc4</a>
+默认: 1(RC4) 对称加密<a href="../package-nim_core_v2_platform_interface_src_platform_interface_initialize_nim_sdk_server_config/SymmetryType.html">SymmetryType.rc4</a>
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -143,7 +137,7 @@
 
 </dt>
 <dd>
-  握手协议选择字段，默认<a href="../nim_core_v2/NimHandshakeType.html">NimHandshakeType.v1</a>
+  握手协议选择字段，默认<a href="../package-nim_core_v2_platform_interface_src_platform_interface_initialize_nim_sdk_server_config/NimHandshakeType.html">NimHandshakeType.v1</a>
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -168,7 +162,7 @@
 </dt>
 <dd>
   IP协议版本{0(IPV4), 1(IPV6), 2(Auto, SDK测试后自行选择, 存在性能损耗)}。
-默认: 0(IPV4) 非对称加密<a href="../nim_core_v2/IPVersion.html">IPVersion.ipv4</a>
+默认: 0(IPV4) 非对称加密<a href="../package-nim_core_v2_platform_interface_src_platform_interface_initialize_nim_sdk_server_config/IPVersion.html">IPVersion.ipv4</a>
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -254,7 +248,7 @@
 
 </dt>
 <dd>
-  "交换密钥"协议加密算法 {1(RSA),2(SM2)}, def:1(RSA) 非对称加密，默认 <a href="../nim_core_v2/AsymmetricType.html">AsymmetricType.rsa</a>
+  "交换密钥"协议加密算法 {1(RSA),2(SM2)}, def:1(RSA) 非对称加密，默认 <a href="../package-nim_core_v2_platform_interface_src_platform_interface_initialize_nim_sdk_server_config/AsymmetricType.html">AsymmetricType.rsa</a>
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -381,7 +375,7 @@
 
 </dt>
 <dd>
-  探测ipv4地址类型使用的url,  <a href="../nim_core_v2/IPVersion.html">IPVersion.any</a>时生效
+  探测ipv4地址类型使用的url,  <a href="../package-nim_core_v2_platform_interface_src_platform_interface_initialize_nim_sdk_server_config/IPVersion.html">IPVersion.any</a>时生效
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -393,7 +387,7 @@
 
 </dt>
 <dd>
-  探测ipv6地址类型使用的url,  <a href="../nim_core_v2/IPVersion.html">IPVersion.any</a>时生效
+  探测ipv6地址类型使用的url,  <a href="../package-nim_core_v2_platform_interface_src_platform_interface_initialize_nim_sdk_server_config/IPVersion.html">IPVersion.any</a>时生效
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -424,6 +418,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -496,9 +491,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -506,40 +499,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
     <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
     <li class="self-crumb">NIMServerConfig class</li>
 </ol>
 
-
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

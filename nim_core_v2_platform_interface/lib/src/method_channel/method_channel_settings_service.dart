@@ -6,7 +6,9 @@ import 'package:nim_core_v2_platform_interface/src/platform_interface/nim_base.d
 import 'package:nim_core_v2_platform_interface/src/platform_interface/setting/dnd_config.dart';
 import 'package:nim_core_v2_platform_interface/src/platform_interface/setting/setting_enum.dart';
 import 'package:nim_core_v2_platform_interface/src/platform_interface/team/team_enum.dart';
+import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
 import '../platform_interface/setting/platform_interface_settings_service.dart';
+import 'dart:io';
 
 class MethodChannelSettingsService extends SettingsServicePlatform {
   @override
@@ -22,14 +24,19 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
         break;
       case 'onP2PMessageMuteModeChanged':
         if (arguments != null) {
-          print("onP2PMessageMuteModeChanged flutter 1");
           P2PMuteModeChangedResult result = P2PMuteModeChangedResult.fromJson(
               Map<String, dynamic>.from(arguments as Map));
-          print("onP2PMessageMuteModeChanged flutter 2");
 
           SettingsServicePlatform.instance.onP2PMessageMuteModeChanged
               .add(result);
         }
+        break;
+      case 'onPushMobileOnDesktopOnline':
+        assert(arguments is Map);
+
+        SettingsServicePlatform.instance.onPushMobileOnDesktopOnline
+            .add(arguments['need'] as bool);
+
         break;
       default:
         break;
@@ -47,6 +54,38 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
   Future<NIMResult<NIMDndConfig>> getDndConfig() async {
     return NIMResult.fromMap(await invokeMethod('getDndConfig'),
         convert: (json) => NIMDndConfig.fromJson(json));
+  }
+
+  Future<NIMResult<void>> updateNotificationConfigAndroid(
+      NIMStatusBarNotificationConfig config) async {
+    if (Platform.isAndroid) {
+      return NIMResult.fromMap(
+        await invokeMethod(
+          'updateNotificationConfig',
+          arguments: config.toMap(),
+        ),
+      );
+    }
+    return NIMResult(-1, null, 'Support Android platform only');
+  }
+
+  @override
+  Future<NIMResult<void>> enableNotificationAndroid({
+    required bool enableRegularNotification,
+    required bool enableRevokeMessageNotification,
+  }) async {
+    if (Platform.isAndroid) {
+      return NIMResult.fromMap(
+        await invokeMethod(
+          'enableNotification',
+          arguments: {
+            'enableRegularNotification': enableRegularNotification,
+            'enableRevokeMessageNotification': enableRevokeMessageNotification,
+          },
+        ),
+      );
+    }
+    return NIMResult(-1, null, 'Support Android platform only');
   }
 
   /// 获取会话消息免打扰状态
@@ -132,6 +171,13 @@ class MethodChannelSettingsService extends SettingsServicePlatform {
   Future<NIMResult<void>> setPushMobileOnDesktopOnline(bool need) async {
     return NIMResult.fromMap(await invokeMethod('setPushMobileOnDesktopOnline',
         arguments: {'need': need}));
+  }
+
+  /// 获取当桌面端在线时，移动端是否需要推送配置
+  /// 返回 桌面端在线时，移动端是否需要推送,  true： 需要， false：不需要
+  Future<NIMResult<bool>> getPushMobileOnDesktopOnline() async {
+    return NIMResult.fromMap(
+        await invokeMethod('getPushMobileOnDesktopOnline'));
   }
 
   @override

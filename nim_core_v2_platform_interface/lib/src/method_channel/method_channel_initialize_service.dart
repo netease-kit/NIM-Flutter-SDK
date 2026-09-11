@@ -11,6 +11,8 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
   NIMDisplayTitleForMessageNotifierProvider?
       _displayTitleForMessageNotifierProvider;
 
+  NIManualProvidePushTokenProvider? _manualProvidePushTokenProvider;
+
   ///定制消息提醒（通知栏提醒）內容文案 主要在通知栏下拉后展现其通知内容：content=[nick:发来一条消息]
   NIMMakeNotifyContentProvider? _makeNotifyContentProvider;
 
@@ -19,6 +21,12 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
 
   ///定制消息撤回提醒文案
   NIMMakeRevokeMsgTipProvider? _makeRevokeMsgTipProvider;
+
+  ///定制消息提醒（通知栏提醒）本地通知 Category 类型
+  NIMMakeCategoryProvider? _makeCategoryProvider;
+
+  ///配置通知要走的通道（ChannelId），若不配置，则根据响铃振动走对应的默认通道
+  NIMNotificationChannelProvider? _notificationChannelProvider;
 
   @override
   Future<NIMResult<void>> initialize(NIMSDKOptions options,
@@ -33,6 +41,10 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
       this._makeNotifyContentProvider = options.makeNotifyContentProvider;
       this._makeTickerProvider = options.makeTickerProvider;
       this._makeRevokeMsgTipProvider = options.makeRevokeMsgTipProvider;
+      this._makeCategoryProvider = options.makeCategoryProvider;
+      this._notificationChannelProvider = options.notificationChannelProvider;
+      this._manualProvidePushTokenProvider =
+          options.manualProvidePushTokenProvider;
     }
     return NIMResult.fromMap(
       await invokeMethod(
@@ -66,6 +78,12 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
         return onMakeTicker(arguments);
       case 'onMakeRevokeMsgTip':
         return onMakeRevokeMsgTip(arguments);
+      case 'onMakeCategory':
+        return onMakeCategory(arguments);
+      case 'onGetChannelId':
+        return onGetChannelId(arguments);
+      case 'onManualProvidePushToken':
+        return manualProvidePushTokenNotifier(arguments);
       default:
         throw UnimplementedError('$method has not been implemented');
     }
@@ -110,6 +128,18 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
     return result;
   }
 
+  ///定制消息提醒（通知栏提醒）本地通知 Category 类型
+  Future<String?> onMakeCategory(arguments) async {
+    if (_makeCategoryProvider == null) {
+      return Future.value(null);
+    }
+    final messageMap = arguments['message'] as Map?;
+    final message =
+        messageMap != null ? NIMMessage.fromJson(messageMap.cast()) : null;
+    final result = await _makeCategoryProvider!(message);
+    return result;
+  }
+
   Future<String?> onGetDisplayNameForMessageNotifier(arguments) async {
     if (_displayNameForMessageNotifierProvider == null) {
       return Future.value(null);
@@ -122,6 +152,21 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
     final result = await _displayNameForMessageNotifierProvider!(
         account, sessionId, sessionType);
     return result;
+  }
+
+  Future<Map<String, dynamic>?> manualProvidePushTokenNotifier(
+      arguments) async {
+    if (_manualProvidePushTokenProvider == null) {
+      return Future.value(null);
+    }
+    final pushType = arguments['suggestedPushType'] as int?;
+
+    if (pushType != null) {
+      final type = getTypeFromMixPushTypeEnum(pushType);
+      final result = await _manualProvidePushTokenProvider!(type);
+      return result?.toJson();
+    }
+    return null;
   }
 
   Future<Map<String, dynamic>?> onGetAvatarForMessageNotifier(arguments) async {
@@ -152,6 +197,19 @@ class MethodChannelInitializeService extends InitializeServicePlatform {
     final message =
         messageMap != null ? NIMMessage.fromJson(messageMap.cast()) : null;
     final result = await _displayTitleForMessageNotifierProvider!(message);
+    return result;
+  }
+
+  Future<String?> onGetChannelId(arguments) async {
+    if (_notificationChannelProvider == null) {
+      return Future.value(null);
+    }
+    final donNotDisturb = arguments['donNotDisturb'] as bool?;
+    final tooFast = arguments['tooFast'] as bool?;
+    final ring = arguments['ring'] as bool?;
+    final vibrate = arguments['vibrate'] as bool?;
+    final result = await _notificationChannelProvider!(
+        donNotDisturb, tooFast, ring, vibrate);
     return result;
   }
 

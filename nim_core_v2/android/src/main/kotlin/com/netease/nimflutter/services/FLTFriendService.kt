@@ -11,8 +11,8 @@ import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.LocalError.paramErrorCode
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.toMap
-import com.netease.nimflutter.toV2NIMFriendAddApplication
+import com.netease.nimflutter.extension.toMap
+import com.netease.nimflutter.extension.toV2NIMFriendAddApplication
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.friend.V2NIMFriend
 import com.netease.nimlib.sdk.v2.friend.V2NIMFriendAddApplication
@@ -22,6 +22,7 @@ import com.netease.nimlib.sdk.v2.friend.enums.V2NIMFriendAddApplicationStatus
 import com.netease.nimlib.sdk.v2.friend.enums.V2NIMFriendAddMode
 import com.netease.nimlib.sdk.v2.friend.enums.V2NIMFriendDeletionType
 import com.netease.nimlib.sdk.v2.friend.option.V2NIMFriendAddApplicationQueryOption.V2NIMFriendAddApplicationQueryOptionBuilder
+import com.netease.nimlib.sdk.v2.friend.option.V2NIMFriendClearAddApplicationOption
 import com.netease.nimlib.sdk.v2.friend.option.V2NIMFriendSearchOption
 import com.netease.nimlib.sdk.v2.friend.param.V2NIMFriendAddParams
 import com.netease.nimlib.sdk.v2.friend.param.V2NIMFriendDeleteParams
@@ -61,7 +62,10 @@ class FLTFriendService(
                 "getAddApplicationList" to this::getAddApplicationList,
                 "getAddApplicationUnreadCount" to this::getAddApplicationUnreadCount,
                 "setAddApplicationRead" to this::setAddApplicationRead,
-                "searchFriendByOption" to this::searchFriendByOption
+                "clearAllAddApplication" to this::clearAllAddApplication,
+                "clearAllAddApplicationEx" to this::clearAllAddApplicationEx,
+                "searchFriendByOption" to this::searchFriendByOption,
+                "deleteAddApplication" to this::deleteAddApplication
             )
         }
     }
@@ -206,6 +210,23 @@ class FLTFriendService(
         ALog.d(serviceName, "acceptAddApplication: ${application?.applicantAccountId}")
         return suspendCancellableCoroutine { cont ->
             NIMClient.getService(V2NIMFriendService::class.java).acceptAddApplication(
+                application,
+                {
+                    cont.resume(NimResult(0, data = it))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun deleteAddApplication(arguments: Map<String, *>): NimResult<Void> {
+        val applicationMap = arguments["application"] as? Map<String, *>
+        val application = applicationMap?.toV2NIMFriendAddApplication()
+        ALog.d(serviceName, "deleteAddApplication: ${application?.applicantAccountId}")
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMFriendService::class.java).deleteAddApplication(
                 application,
                 {
                     cont.resume(NimResult(0, data = it))
@@ -380,6 +401,41 @@ class FLTFriendService(
     private suspend fun setAddApplicationRead(arguments: Map<String, *>): NimResult<Void> {
         return suspendCancellableCoroutine { cont ->
             NIMClient.getService(V2NIMFriendService::class.java).setAddApplicationRead(
+                {
+                    cont.resume(NimResult(0, data = it))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun clearAllAddApplication(arguments: Map<String, *>): NimResult<Void> {
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMFriendService::class.java).clearAllAddApplication(
+                {
+                    cont.resume(NimResult(0, data = it))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun clearAllAddApplicationEx(arguments: Map<String, *>): NimResult<Void> {
+        val optionMap = arguments["option"] as? Map<String, *>
+        val option = V2NIMFriendClearAddApplicationOption()
+        optionMap?.let {
+            (it["timestamp"] as? Number)?.let { ts -> option.timestamp = ts.toLong() }
+            (it["type"] as? Int)?.let { t ->
+                option.type = com.netease.nimlib.sdk.v2.friend.enums.V2NIMFriendAddApplicationType.typeOfValue(t)
+            }
+        }
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMFriendService::class.java).clearAllAddApplicationEx(
+                option,
                 {
                     cont.resume(NimResult(0, data = it))
                 },

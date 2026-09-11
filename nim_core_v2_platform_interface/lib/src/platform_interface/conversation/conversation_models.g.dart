@@ -19,8 +19,9 @@ NIMConversation _$NIMConversationFromJson(Map<String, dynamic> json) =>
           .toList(),
       localExtension: json['localExtension'] as String?,
       serverExtension: json['serverExtension'] as String?,
-      lastMessage: _nimLastMessageFromJson(json['lastMessage'] as Map?),
+      lastMessage: nimLastMessageFromJson(json['lastMessage'] as Map?),
       unreadCount: (json['unreadCount'] as num?)?.toInt(),
+      lastReadTime: (json['lastReadTime'] as num?)?.toInt(),
       sortOrder: (json['sortOrder'] as num?)?.toInt(),
       createTime: (json['createTime'] as num).toInt(),
       updateTime: (json['updateTime'] as num).toInt(),
@@ -39,6 +40,7 @@ Map<String, dynamic> _$NIMConversationToJson(NIMConversation instance) =>
       'serverExtension': instance.serverExtension,
       'lastMessage': instance.lastMessage?.toJson(),
       'unreadCount': instance.unreadCount,
+      'lastReadTime': instance.lastReadTime,
       'sortOrder': instance.sortOrder,
       'createTime': instance.createTime,
       'updateTime': instance.updateTime,
@@ -55,14 +57,14 @@ NIMLastMessage _$NIMLastMessageFromJson(Map<String, dynamic> json) =>
     NIMLastMessage(
       lastMessageState: $enumDecodeNullable(
           _$NIMLastMessageStateEnumMap, json['lastMessageState']),
-      messageRefer: _nimMessageReferFromJson(json['messageRefer'] as Map?),
+      messageRefer: nimMessageReferFromJson(json['messageRefer'] as Map?),
       messageType:
           $enumDecodeNullable(_$NIMMessageTypeEnumMap, json['messageType']),
       subType: (json['subType'] as num?)?.toInt(),
       sendingState: $enumDecodeNullable(
           _$NIMMessageSendingStateEnumMap, json['sendingState']),
       text: json['text'] as String?,
-      attachment: _nimMessageAttachmentFromJson(json['attachment'] as Map?),
+      attachment: nimMessageAttachmentFromJson(json['attachment'] as Map?),
       revokeAccountId: json['revokeAccountId'] as String?,
       revokeType: $enumDecodeNullable(
           _$NIMMessageRevokeTypeEnumMap, json['revokeType']),
@@ -108,6 +110,7 @@ const _$NIMMessageTypeEnumMap = {
   NIMMessageType.robot: 11,
   NIMMessageType.call: 12,
   NIMMessageType.custom: 100,
+  NIMMessageType.chatroomNotification: 105,
 };
 
 const _$NIMMessageSendingStateEnumMap = {
@@ -228,8 +231,8 @@ NIMConversationOption _$NIMConversationOptionFromJson(
           .map((e) => $enumDecode(_$NIMConversationTypeEnumMap, e))
           .toList(),
       onlyUnread: json['onlyUnread'] as bool,
-      conversationGroupIds: (json['conversationGroupIds'] as List<dynamic>)
-          .map((e) => e as String)
+      conversationGroupIds: (json['conversationGroupIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
     );
 

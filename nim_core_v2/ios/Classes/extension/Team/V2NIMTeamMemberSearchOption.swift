@@ -6,15 +6,17 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamMemberSearchOption {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(keyword): keyword,
-      #keyPath(teamType): teamType.rawValue,
-      #keyPath(teamId): teamId ?? "",
-      #keyPath(nextToken): nextToken,
-      #keyPath(order): order.rawValue,
-      #keyPath(limit): limit,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(keyword)] = keyword
+    keyPaths[#keyPath(teamType)] = teamType.rawValue
+    keyPaths[#keyPath(teamId)] = teamId
+    keyPaths[#keyPath(nextToken)] = nextToken
+    keyPaths[#keyPath(order)] = order.rawValue
+    keyPaths[#keyPath(limit)] = limit
+
+    return keyPaths
   }
 }

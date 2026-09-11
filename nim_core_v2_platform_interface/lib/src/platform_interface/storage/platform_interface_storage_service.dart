@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
 import 'package:nim_core_v2_platform_interface/src/method_channel/method_channel_storage_service.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
@@ -39,7 +40,8 @@ abstract class StorageServicePlatform extends Service {
   ///   0表示永远不过期
   ///   否则以该时间为过期时间 NIMStorageScene
   Future<NIMResult<NIMStorageScene>> addCustomStorageScene(
-      String sceneName, int expireTime) {
+      String sceneName, int expireTime,
+      {int? instanceId}) {
     throw UnimplementedError('addCustomStorageScene() is not implemented');
   }
 
@@ -48,40 +50,40 @@ abstract class StorageServicePlatform extends Service {
   /// [fileParams] 文件上传的相关参数
   /// 返回文件上传任务
   Future<NIMResult<NIMUploadFileTask>> createUploadFileTask(
-    NIMUploadFileParams fileParams, {
-    html.File? fileObj,
-  }) {
+      NIMUploadFileParams fileParams,
+      {html.File? fileObj,
+      int? instanceId}) {
     throw UnimplementedError('createUploadFileTask() is not implemented');
   }
 
   /// 文件上传
   ///
   /// [fileTask] 文件上传任务
-  Future<NIMResult<String>> uploadFile(
-    NIMUploadFileTask fileTask, {
-    html.File? fileObj,
-  }) {
+  Future<NIMResult<String>> uploadFile(NIMUploadFileTask fileTask,
+      {html.File? fileObj, int? instanceId}) {
     throw UnimplementedError('uploadFile() is not implemented');
   }
 
   /// 取消文件上传
   ///
   /// [fileTask] 文件上传任务
-  Future<NIMResult<void>> cancelUploadFile(NIMUploadFileTask fileTask) {
+  Future<NIMResult<void>> cancelUploadFile(NIMUploadFileTask fileTask,
+      {int? instanceId}) {
     throw UnimplementedError('cancelUploadFile() is not implemented');
   }
 
   /// 查询存储场景列表
   ///
   /// 返回存储场景列表
-  Future<NIMResult<List<NIMStorageScene>>> getStorageSceneList() {
+  Future<NIMResult<List<NIMStorageScene>>> getStorageSceneList(
+      {int? instanceId}) {
     throw UnimplementedError('getStorageSceneList() is not implemented');
   }
 
   /// 短连接转长连接
   ///
   /// [url] 短连接url
-  Future<NIMResult<String>> shortUrlToLong(String url) {
+  Future<NIMResult<String>> shortUrlToLong(String url, {int? instanceId}) {
     throw UnimplementedError('shortUrlToLong() is not implemented');
   }
 
@@ -89,7 +91,8 @@ abstract class StorageServicePlatform extends Service {
   ///
   /// [url] 文件url
   /// [filePath] 文件保存路径
-  Future<NIMResult<String>> downloadFile(String url, String filePath) {
+  Future<NIMResult<String>> downloadFile(String url, String filePath,
+      {int? instanceId}) {
     throw UnimplementedError('downloadFile() is not implemented');
   }
 
@@ -97,7 +100,8 @@ abstract class StorageServicePlatform extends Service {
   ///
   /// [downloadParam] 下载参数
   Future<NIMResult<String>> downloadAttachment(
-      NIMDownloadMessageAttachmentParams downloadParam) {
+      NIMDownloadMessageAttachmentParams downloadParam,
+      {int? instanceId}) {
     throw UnimplementedError('downloadAttachment() is not implemented');
   }
 
@@ -110,7 +114,8 @@ abstract class StorageServicePlatform extends Service {
   /// [thumbSize] 缩略图尺寸
   /// 参见 [NIMGetMediaResourceInfoResult]
   Future<NIMResult<NIMGetMediaResourceInfoResult>> getImageThumbUrl(
-      NIMMessageAttachment attachment, NIMSize thumbSize) {
+      NIMMessageAttachment attachment, NIMSize thumbSize,
+      {int? instanceId}) {
     throw UnimplementedError('getImageThumbUrl() is not implemented');
   }
 
@@ -123,7 +128,8 @@ abstract class StorageServicePlatform extends Service {
   /// [thumbSize] 缩略图尺寸
   /// 参见 [NIMGetMediaResourceInfoResult]
   Future<NIMResult<NIMGetMediaResourceInfoResult>> getVideoCoverUrl(
-      NIMMessageAttachment attachment, NIMSize thumbSize) {
+      NIMMessageAttachment attachment, NIMSize thumbSize,
+      {int? instanceId}) {
     throw UnimplementedError('getVideoCoverUrl() is not implemented');
   }
 
@@ -131,15 +137,20 @@ abstract class StorageServicePlatform extends Service {
   /// [url] 图片原始链接
   /// [thumbSize] 缩放的尺寸
   ///  返回图片缩略链接
-  Future<NIMResult<String>> imageThumbUrl(String url, int thumbSize) {
+  Future<NIMResult<String>> imageThumbUrl(String url, int thumbSize,
+      {int? instanceId}) {
     throw UnimplementedError('imageThumbUrl() is not implemented');
   }
 
   /// 生成视频封面图链接
   ///  [url] 视频原始链接
   ///  [offset] 从第几秒开始截
+  ///  [thumbSize] 封面尺寸，单位像素（仅对PC有效）
+  ///  [type] 封面类型，如 png，jpeg（仅对PC有效）
   ///  返回视频封面图链接
-  Future<NIMResult<String>> videoCoverUrl(String url, int offset) {
+  Future<NIMResult<String>> videoCoverUrl(
+      String url, int offset, int? thumbSize, String? type,
+      {int? instanceId}) {
     throw UnimplementedError('videoCoverUrl() is not implemented');
   }
 }

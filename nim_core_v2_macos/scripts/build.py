@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-import os
-import sys
 import glob
+import os
 import platform
 import shutil
+import sys
+
+import downloadSDK
 
 SCRIPT_PATH = os.path.split(os.path.realpath(__file__))[0]
 
 BUILD_OUT = 'output'
-BUILD_CMD = 'cmake -S . -B {BUILD_OUT_PATH} -G {BUILD_GENERATORS} -DINSTALL_CPP_WRAPPER=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_STANDARD=14 -DCMAKE_OSX_ARCHITECTURES=x86_64 && cmake --build {BUILD_OUT_PATH} --config {BUILD_TYPE}'
+BUILD_CMD = 'cmake -S . -B {BUILD_OUT_PATH} -G {BUILD_GENERATORS} -DINSTALL_CPP_WRAPPER=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_STANDARD=14 -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" && cmake --build {BUILD_OUT_PATH} --config {BUILD_TYPE}'
 
 def build_macos(config='Release'):
     BUILD_CMD_TMP = BUILD_CMD.format(BUILD_OUT_PATH=BUILD_OUT, BUILD_GENERATORS="\"Xcode\"", BUILD_TYPE=config)
@@ -54,7 +56,7 @@ def main():
 
     os.chdir(SCRIPT_PATH)
     print('downloadSDK start.')
-    os.system('dart run downloadSDK.dart')
+    downloadSDK.main()
     print('downloadSDK end.')
     
     print('buildSDK start.')

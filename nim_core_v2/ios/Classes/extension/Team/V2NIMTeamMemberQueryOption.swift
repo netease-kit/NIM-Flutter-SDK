@@ -6,36 +6,40 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamMemberQueryOption {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(roleQueryType): roleQueryType.rawValue,
-      #keyPath(onlyChatBanned): onlyChatBanned,
-      #keyPath(direction): direction.rawValue,
-      #keyPath(nextToken): nextToken ?? "",
-      #keyPath(limit): limit,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(roleQueryType)] = roleQueryType.rawValue
+    keyPaths[#keyPath(onlyChatBanned)] = onlyChatBanned
+    keyPaths[#keyPath(direction)] = direction.rawValue
+    keyPaths[#keyPath(nextToken)] = nextToken
+    keyPaths[#keyPath(limit)] = limit
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMTeamMemberQueryOption {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamMemberQueryOption {
     let option = V2NIMTeamMemberQueryOption()
-    if let roleQueryType = dict[#keyPath(V2NIMTeamMemberQueryOption.roleQueryType)] as? Int, let roleQueryTypeValue = V2NIMTeamMemberRoleQueryType(rawValue: roleQueryType) {
+    if let roleQueryType = arguments[#keyPath(V2NIMTeamMemberQueryOption.roleQueryType)] as? Int, let roleQueryTypeValue = V2NIMTeamMemberRoleQueryType(rawValue: roleQueryType) {
       option.roleQueryType = roleQueryTypeValue
     }
 
-    if let onlyChatBanned = dict[#keyPath(V2NIMTeamMemberQueryOption.onlyChatBanned)] as? Bool {
+    if let onlyChatBanned = arguments[#keyPath(V2NIMTeamMemberQueryOption.onlyChatBanned)] as? Bool {
       option.onlyChatBanned = onlyChatBanned
     }
 
-    if let direction = dict[#keyPath(V2NIMTeamMemberQueryOption.direction)] as? Int, let directionValue = V2NIMQueryDirection(rawValue: direction) {
+    if let direction = arguments[#keyPath(V2NIMTeamMemberQueryOption.direction)] as? Int, let directionValue = V2NIMQueryDirection(rawValue: direction) {
       option.direction = directionValue
     }
 
-    if let nextToken = dict[#keyPath(V2NIMTeamMemberQueryOption.nextToken)] as? String {
+    if let nextToken = arguments[#keyPath(V2NIMTeamMemberQueryOption.nextToken)] as? String {
       option.nextToken = nextToken
     }
 
-    if let limit = dict[#keyPath(V2NIMTeamMemberQueryOption.limit)] as? Int {
+    if let limit = arguments[#keyPath(V2NIMTeamMemberQueryOption.limit)] as? Int {
       option.limit = limit
     }
     return option

@@ -1,6 +1,6 @@
 name: nim_core_v2
 description: A Flutter plugin for NetEase IM SDK on Android, iOS and Windows.
-version: 10.3.1
+version: 10.9.90
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 # remove before publish
 #publish_to: none
@@ -13,25 +13,27 @@ dependencies:
   flutter:
     sdk: flutter
   nim_core_v2_platform_interface:
-#     '>=10.3.1 <10.4.0'
+#    '>=10.9.90 <10.10.0'
     path: ../nim_core_v2_platform_interface
   nim_core_v2_windows:
-#    '>=10.3.1 <10.4.0'
+#    '>=10.9.90 <10.10.0'
     path: ../nim_core_v2_windows
   nim_core_v2_macos:
-#    '>=10.3.1 <10.4.0'
+#    '>=10.9.90 <10.10.0'
     path: ../nim_core_v2_macos
   nim_core_v2_web:
-#    '>=10.3.1 <10.4.0'
+#    '>=10.9.90 <10.10.0'
      path: ../nim_core_v2_web
   path_provider: ^2.0.2
   # yunxin_base: ^0.1.0-rc.0
   universal_io: ^2.0.4
-  yunxin_alog: ^2.0.0
+  yunxin_alog: ^2.0.10
   hawk_meta: ^0.0.1
   universal_html: ^2.2.4
-#    path: ../../auto_test/hawk_meta
-
+#dependency_overrides:
+#  path_provider:
+#    git:
+#      url: "https://gitee.com/flutter-assembly/path_provider.git"
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -55,6 +57,9 @@ flutter:
         pluginClass: NimCorePlugin
       ios:
         pluginClass: NimCorePlugin
+      ohos:
+        package: com.netease.nimflutter
+        pluginClass: NimCoreV2Plugin
       windows:
         default_package: nim_core_v2_windows
       macos:

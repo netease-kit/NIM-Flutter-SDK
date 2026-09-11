@@ -38,6 +38,13 @@ class NIMInitializeOptions {
   /// reconnectDelayProvider 延迟加载时间，单位毫秒，默认 500 ms
   final int? reconnectDelayProviderDelay;
 
+  /// 是否开启云端会话. 默认 false
+  bool? enableV2CloudConversation;
+
+  /// flutter 的版本号
+  /// 当是 flutter 开发环境时可以传这个字段, 用来向服务器标识 flutter SDK 的版本
+  String? flutterSdkVersion;
+
   NIMInitializeOptions({
     required this.appkey,
     this.apiVersion,
@@ -47,6 +54,8 @@ class NIMInitializeOptions {
     this.loginExtensionProviderDelay,
     this.tokenProviderDelay,
     this.reconnectDelayProviderDelay,
+    this.enableV2CloudConversation,
+    this.flutterSdkVersion,
   });
 
   factory NIMInitializeOptions.fromJson(Map<String, dynamic> json) =>
@@ -58,6 +67,27 @@ class NIMInitializeOptions {
 NIMLoginServiceConfig? _nimLoginServiceConfigFromJson(Map? map) {
   if (map != null) {
     return NIMLoginServiceConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+NIMClientAntispamUtilConfig? _nimClientAntispamUtilConfigFromJson(Map? map) {
+  if (map != null) {
+    return NIMClientAntispamUtilConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+V2WebNIMFriendServiceConfig? _nimFriendServiceConfigFromJson(Map? map) {
+  if (map != null) {
+    return V2WebNIMFriendServiceConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+NIMTeamServiceConfig? _nimTeamServiceConfigFromJson(Map? map) {
+  if (map != null) {
+    return NIMTeamServiceConfig.fromJson(map.cast<String, dynamic>());
   }
   return null;
 }
@@ -83,11 +113,48 @@ NIMReporterConfig? _nimReporterConfigFromJson(Map? map) {
   return null;
 }
 
+NIMQChatChannelConfig? _nimQChatChannelConfigFromJson(Map? map) {
+  if (map != null) {
+    return NIMQChatChannelConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+NIMCdnConfig? _nimCdnConfigFromJson(Map? map) {
+  if (map != null) {
+    return NIMCdnConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+NIMInitializeOptions _nimInitializeOptionsFromJson(Map map) {
+  return NIMInitializeOptions.fromJson(map.cast<String, dynamic>());
+}
+
+NIMOtherOptions? _nimOtherOptionsFromJson(Map? map) {
+  if (map != null) {
+    return NIMOtherOptions.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
 @JsonSerializable(explicitToJson: true)
 class NIMOtherOptions {
   /// v2 登录模块的特殊配置
   @JsonKey(fromJson: _nimLoginServiceConfigFromJson)
-  final NIMLoginServiceConfig? loginServiceConfig;
+  final NIMLoginServiceConfig? V2NIMLoginServiceConfig;
+
+  /// 本地反垃圾词库的配置
+  @JsonKey(fromJson: _nimClientAntispamUtilConfigFromJson)
+  final NIMClientAntispamUtilConfig? V2NIMClientAntispamUtilConfig;
+
+  /// v10 好友相关配置
+  @JsonKey(fromJson: _nimFriendServiceConfigFromJson)
+  final V2WebNIMFriendServiceConfig? V2NIMFriendServiceConfig;
+
+  /// v10 群相关配置
+  @JsonKey(fromJson: _nimTeamServiceConfigFromJson)
+  final NIMTeamServiceConfig? V2NIMTeamServiceConfig;
 
   /// ABtest 配置
   @JsonKey(fromJson: _nimAbtestConfigFromJson)
@@ -101,15 +168,19 @@ class NIMOtherOptions {
   @JsonKey(fromJson: _nimReporterConfigFromJson)
   final NIMReporterConfig? reporterConfig;
 
-  /// session 模块配置
-  // final NIMSessionConfig? sessionConfig;
+  /// qchatChannel 的模块配置
+  @JsonKey(fromJson: _nimQChatChannelConfigFromJson)
+  final NIMQChatChannelConfig? qchatChannelConfig;
 
   NIMOtherOptions({
-    this.loginServiceConfig,
+    this.V2NIMLoginServiceConfig,
+    this.V2NIMClientAntispamUtilConfig,
+    this.V2NIMFriendServiceConfig,
+    this.V2NIMTeamServiceConfig,
     this.abtestConfig,
     this.cloudStorageConfig,
     this.reporterConfig,
-    // this.sessionConfig,
+    this.qchatChannelConfig,
   });
 
   factory NIMOtherOptions.fromJson(Map<String, dynamic> json) =>
@@ -155,8 +226,55 @@ class NIMLoginServiceConfig {
 }
 
 @JsonSerializable(explicitToJson: true)
+class NIMClientAntispamUtilConfig {
+  /// 是否打开本地反垃圾，默认 false
+  /// 注: 需要在 IM 控制台配置本地反垃圾词库，打开后会在登录完成后下载反垃圾词库。
+  final bool? enable;
+
+  NIMClientAntispamUtilConfig({
+    this.enable,
+  });
+
+  factory NIMClientAntispamUtilConfig.fromJson(Map<String, dynamic> json) =>
+      _$NIMClientAntispamUtilConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NIMClientAntispamUtilConfigToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class V2WebNIMFriendServiceConfig {
+  /// 是否开启服务端好友申请记录功能，默认 false
+  final bool? enableServerV2FriendAddApplication;
+
+  V2WebNIMFriendServiceConfig({
+    this.enableServerV2FriendAddApplication,
+  });
+
+  factory V2WebNIMFriendServiceConfig.fromJson(Map<String, dynamic> json) =>
+      _$NIMFriendServiceConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NIMFriendServiceConfigToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMTeamServiceConfig {
+  /// 是否开启服务端群申请记录功能，默认 false
+  final bool? enableServerV2TeamJoinActionInfo;
+
+  NIMTeamServiceConfig({
+    this.enableServerV2TeamJoinActionInfo,
+  });
+
+  factory NIMTeamServiceConfig.fromJson(Map<String, dynamic> json) =>
+      _$NIMTeamServiceConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NIMTeamServiceConfigToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class NIMCloudStorageConfig {
   /// NOS 上传专用的 cdn 配置
+  @JsonKey(fromJson: _nimCdnConfigFromJson)
   final NIMCdnConfig? cdn;
 
   /// NOS上传地址（分片）
@@ -257,11 +375,20 @@ class NIMReporterConfig {
   Map<String, dynamic> toJson() => _$NIMReporterConfigToJson(this);
 }
 
-// class NIMSessionConfig {
-//   /// TODO lastMessageFilterFn
+@JsonSerializable(explicitToJson: true)
+class NIMQChatChannelConfig {
+  /// 是否开启自动订阅，默认 false 关闭
+  final bool? autoSubscribe;
 
-//   /// TODO unreadCountFilterFn
-// }
+  NIMQChatChannelConfig({
+    this.autoSubscribe,
+  });
+
+  factory NIMQChatChannelConfig.fromJson(Map<String, dynamic> json) =>
+      _$NIMQChatChannelConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NIMQChatChannelConfigToJson(this);
+}
 
 @JsonSerializable(explicitToJson: true)
 class NIMAbtestConfig {
@@ -281,17 +408,6 @@ class NIMAbtestConfig {
       _$NIMAbtestConfigFromJson(json);
 
   Map<String, dynamic> toJson() => _$NIMAbtestConfigToJson(this);
-}
-
-NIMInitializeOptions _nimInitializeOptionsFromJson(Map map) {
-  return NIMInitializeOptions.fromJson(map.cast<String, dynamic>());
-}
-
-NIMOtherOptions? _nimOtherOptionsFromJson(Map? map) {
-  if (map != null) {
-    return NIMOtherOptions.fromJson(map.cast<String, dynamic>());
-  }
-  return null;
 }
 
 @JsonSerializable(explicitToJson: true)

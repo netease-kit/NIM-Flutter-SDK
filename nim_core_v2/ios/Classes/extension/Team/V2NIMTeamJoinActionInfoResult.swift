@@ -6,31 +6,31 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamJoinActionInfoResult {
-  func toDictionary() -> [String: Any] {
-    var dict: [String: Any] = [
-      #keyPath(offset): offset,
-      #keyPath(finished): finished,
-    ]
-    var infosJsonObect = [[String: Any]]()
-    infos?.forEach { info in
-      infosJsonObect.append(info.toDictionary())
-    }
-    dict[#keyPath(infos)] = infosJsonObect
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(offset)] = offset
+    keyPaths[#keyPath(finished)] = finished
+    keyPaths[#keyPath(infos)] = infos?.map { $0.toDic() }
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMTeamJoinActionInfoResult {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamJoinActionInfoResult {
     let result = V2NIMTeamJoinActionInfoResult()
-    if let offset = dict[#keyPath(offset)] as? Int {
+    if let offset = arguments[#keyPath(offset)] as? Int {
       result.setValue(offset, forKey: #keyPath(V2NIMTeamJoinActionInfoResult.offset))
     }
-    if let finished = dict[#keyPath(finished)] as? Bool {
+    if let finished = arguments[#keyPath(finished)] as? Bool {
       result.setValue(finished, forKey: #keyPath(V2NIMTeamJoinActionInfoResult.finished))
     }
-    if let infosJsonObect = dict[#keyPath(infos)] as? [[String: Any]] {
+    if let infosJsonObect = arguments[#keyPath(infos)] as? [[String: Any]] {
       var infos = [V2NIMTeamJoinActionInfo]()
       for info in infosJsonObect {
-        infos.append(V2NIMTeamJoinActionInfo.fromDictionary(info))
+        infos.append(V2NIMTeamJoinActionInfo.fromDic(info))
       }
       result.setValue(infos, forKey: #keyPath(V2NIMTeamJoinActionInfoResult.infos))
     }

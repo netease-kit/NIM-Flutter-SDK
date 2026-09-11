@@ -23,8 +23,8 @@
   }
   filePathApp = filePath;
   filePathApp.append("/app");
-  ALog::CreateInstance(filePathApp, "nim_core_plugin", Info);
-  ALog::GetInstance()->setShortFileName(true);
+  // ALog::CreateInstance(filePathApp, "nim_core_plugin", Info);
+  // ALog::GetInstance()->setShortFileName(true);
 
   NimCore::getInstance()->setLogDir(filePath);
   FlutterMethodChannel *channel =

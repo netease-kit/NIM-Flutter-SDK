@@ -18,6 +18,7 @@ enum MessageType: String {
   case clearHistoryMessage
   case updateMessageLocalExtension
   case insertMessageToLocal
+  case insertMessageToLocalEx
   case pinMessage
   case unpinMessage
   case updatePinMessage
@@ -40,9 +41,25 @@ enum MessageType: String {
   case searchCloudMessages
   case getLocalThreadMessageList
   case getThreadMessageList
+  case messageSerialization
+  case messageDeserialization
+  case modifyMessage
+  case stopAIStreamMessage
+  case regenAIMessage
+  case searchLocalMessages
+  case searchCloudMessagesEx
+  case getMessageListEx
+  case getCollectionListExByOption
+  case updateLocalMessage
+  case setMessageFilter
+  case clearRoamingMessage
+  case clearLocalMessage
+  case translateText
 }
 
 class FLTMessageService: FLTBaseService, FLTService {
+  private static let className = "FLTMessageService"
+
   override func onInitialized() {
     NIMSDK.shared().v2MessageService.add(self)
   }
@@ -82,6 +99,8 @@ class FLTMessageService: FLTBaseService, FLTService {
       updateMessageLocalExtension(arguments, resultCallback)
     case MessageType.insertMessageToLocal.rawValue:
       insertMessageToLocal(arguments, resultCallback)
+    case MessageType.insertMessageToLocalEx.rawValue:
+      insertMessageToLocalEx(arguments, resultCallback)
     case MessageType.pinMessage.rawValue:
       pinMessage(arguments, resultCallback)
     case MessageType.unpinMessage.rawValue:
@@ -126,6 +145,34 @@ class FLTMessageService: FLTBaseService, FLTService {
       getLocalThreadMessageList(arguments, resultCallback)
     case MessageType.getThreadMessageList.rawValue:
       getThreadMessageList(arguments, resultCallback)
+    case MessageType.messageSerialization.rawValue:
+      messageSerialization(arguments, resultCallback)
+    case MessageType.messageDeserialization.rawValue:
+      messageDeserialization(arguments, resultCallback)
+    case MessageType.modifyMessage.rawValue:
+      modifyMessage(arguments, resultCallback)
+    case MessageType.regenAIMessage.rawValue:
+      regenAIMessage(arguments, resultCallback)
+    case MessageType.stopAIStreamMessage.rawValue:
+      stopAIStreamMessage(arguments, resultCallback)
+    case MessageType.searchCloudMessagesEx.rawValue:
+      searchCloudMessagesEx(arguments, resultCallback)
+    case MessageType.searchLocalMessages.rawValue:
+      searchLocalMessages(arguments, resultCallback)
+    case MessageType.getMessageListEx.rawValue:
+      getMessageListEx(arguments, resultCallback)
+    case MessageType.getCollectionListExByOption.rawValue:
+      getCollectionListExByOption(arguments, resultCallback)
+    case MessageType.updateLocalMessage.rawValue:
+      updateLocalMessage(arguments, resultCallback)
+    case MessageType.setMessageFilter.rawValue:
+      setMessageFilter(arguments, resultCallback)
+    case MessageType.clearRoamingMessage.rawValue:
+      clearRoamingMessage(arguments, resultCallback)
+    case MessageType.clearLocalMessage.rawValue:
+      clearLocalMessage(arguments, resultCallback)
+    case MessageType.translateText.rawValue:
+      translateText(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -134,7 +181,6 @@ class FLTMessageService: FLTBaseService, FLTService {
   func register(_ nimCore: NimCore) {
     self.nimCore = nimCore
     nimCore.addService(self)
-    self.nimCore = nimCore
   }
 
   // MARK: - SDK API
@@ -146,22 +192,37 @@ class FLTMessageService: FLTBaseService, FLTService {
       return
     }
 
-    weak var weakSelf = self
     let message = V2NIMMessage.fromDict(messageDic)
+    let params = (arguments["params"] as? [String: Any]).flatMap(V2NIMSendMessageParams.fromDic)
 
-    var params: V2NIMSendMessageParams?
-    if let paramsDic = arguments["params"] as? [String: Any] {
-      params = V2NIMSendMessageParams.fromDic(paramsDic)
+    if message.sendingState == .MESSAGE_SENDING_STATE_FAILED, let clientId = message.messageClientId {
+      NIMSDK.shared().v2MessageService.getMessageList(byIds: [clientId]) { [weak self] messages in
+        guard let self = self else { return }
+        let targetMessage = messages.first ?? message
+        self.sendMessage(targetMessage, conversationId: conversationId, params: params, resultCallback: resultCallback)
+      }
+    } else {
+      sendMessage(message, conversationId: conversationId, params: params, resultCallback: resultCallback)
     }
+  }
 
-    NIMSDK.shared().v2MessageService.send(message, conversationId: conversationId, params: params) { result in
-      weakSelf?.successCallBack(resultCallback, result.toDic())
-    } failure: { error in
+  private func sendMessage(_ message: V2NIMMessage,
+                           conversationId: String,
+                           params: V2NIMSendMessageParams?,
+                           resultCallback: ResultCallback) {
+    NIMSDK.shared().v2MessageService.send(message,
+                                          conversationId: conversationId,
+                                          params: params) { [weak self] result in
+      self?.successCallBack(resultCallback, result.toDic())
+    } failure: { [weak self] error in
       let err = error.nserror as NSError
-      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
-    } progress: { progress in
-      weakSelf?.notifyEvent("MessageService", "onSendMessageProgress", ["messageClientId": message.messageClientId as Any,
-                                                                        "progress": progress as Any])
+      self?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "sendMessage error \(error.nserror.localizedDescription)")
+    } progress: { [weak self] progress in
+      self?.notifyEvent(ServiceType.MessageService.rawValue,
+                        "onSendMessageProgress",
+                        ["messageClientId": message.messageClientId as Any,
+                         "progress": progress])
     }
   }
 
@@ -186,9 +247,12 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "replyMessage error \(error.nserror.localizedDescription)")
     } progress: { progress in
-      weakSelf?.notifyEvent("MessageService", "onSendMessageProgress", ["messageClientId": message.messageClientId as Any,
-                                                                        "progress": progress as Any])
+      weakSelf?.notifyEvent(ServiceType.MessageService.rawValue,
+                            "onSendMessageProgress",
+                            ["messageClientId": message.messageClientId as Any,
+                             "progress": progress as Any])
     }
   }
 
@@ -211,6 +275,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "revokeMessage error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -229,7 +294,44 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getMessageList error \(error.nserror.localizedDescription)")
     }
+  }
+
+  func getMessageListEx(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let optionDic = arguments["option"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let option = V2NIMMessageListOption.fromDic(optionDic)
+
+    NIMSDK.shared().v2MessageService.getMessageListEx(option) { result in
+      weakSelf?.successCallBack(resultCallback, result.toDic())
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getMessageListEx error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func getCollectionListExByOption(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let optionDic = arguments["option"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let option = V2NIMCollectionOption.fromDic(optionDic)
+
+    NIMSDK.shared().v2MessageService.getCollectionListEx(by: option, success: { result in
+      weakSelf?.successCallBack(resultCallback, result.toDic())
+    }, failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getMessageList error \(error.nserror.localizedDescription)")
+    })
   }
 
   func getMessageListByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
@@ -245,6 +347,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getMessageListByIds error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -263,6 +366,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getMessageListByRefers error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -282,6 +386,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "deleteMessage error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -301,6 +406,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "deleteMessages error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -318,6 +424,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "clearHistoryMessage error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -336,6 +443,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "updateMessageLocalExtension error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -360,6 +468,38 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "insertMessageToLocal error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func insertMessageToLocalEx(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let messageDic = arguments["message"] as? [String: Any],
+          let paramsDic = arguments["params"] as? [String: Any],
+          let conversationId = paramsDic["conversationId"] as? String else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let message = V2NIMMessage.fromDict(messageDic)
+    let senderId = paramsDic["senderId"] as? String ?? ""
+    let createTime = paramsDic["createTime"] as? Int ?? 0
+    let time = TimeInterval(createTime / 1000)
+    let lastMessageUpdateEnabled = paramsDic["lastMessageUpdateEnabled"] as? Bool ?? true
+
+    let params = V2NIMMessageInsertParams()
+    params.conversationId = conversationId
+    params.createTime = time
+    params.lastMessageUpdateEnabled = lastMessageUpdateEnabled
+    params.senderId = senderId
+
+    NIMSDK.shared().v2MessageService.insertMessage(toLocalEx: message,
+                                                   params: params) { message in
+      weakSelf?.successCallBack(resultCallback, message.toDict())
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "insertMessageToLocalEx error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -380,11 +520,13 @@ class FLTMessageService: FLTBaseService, FLTService {
         } failure: { error in
           let err = error.nserror as NSError
           weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+          FLTALog.errorLog(FLTMessageService.className, desc: "pinMessage error \(error.nserror.localizedDescription)")
         }
       }
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getMessageList error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -403,6 +545,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "unpinMessage error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -421,6 +564,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "updatePinMessage error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -437,6 +581,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getPinnedMessageList error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -464,6 +609,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "addQuickComment error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -485,6 +631,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "removeQuickComment error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -510,6 +657,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getQuickCommentList error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -527,6 +675,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "addCollection error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -544,6 +693,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "removeCollections error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -562,6 +712,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "updateCollectionExtension error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -580,6 +731,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getCollectionListByOption error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -597,6 +749,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "sendP2PMessageReceipt error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -612,6 +765,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getP2PMessageReceipt error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -621,9 +775,18 @@ class FLTMessageService: FLTBaseService, FLTService {
       return
     }
 
+    weak var weakSelf = self
     let message = V2NIMMessage.fromDict(messageDic)
-    let isPeerRead = NIMSDK.shared().v2MessageService.isPeerRead(message)
-    successCallBack(resultCallback, isPeerRead)
+
+    // SDK isPeerRead 方法存在序列化问题，先自行实现
+    NIMSDK.shared().v2MessageService.getP2PMessageReceipt(message.conversationId ?? "") { readReceipt in
+      let isPeerRead = message.createTime <= readReceipt.timestamp
+      weakSelf?.successCallBack(resultCallback, isPeerRead)
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "isPeerRead(getP2PMessageReceipt) error \(error.nserror.localizedDescription)")
+    }
   }
 
   func sendTeamMessageReceipts(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
@@ -640,6 +803,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "sendTeamMessageReceipts error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -658,6 +822,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getTeamMessageReceipts error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -680,6 +845,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getTeamMessageReceiptDetail error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -697,6 +863,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "voiceToText error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -714,6 +881,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "cancelMessageAttachmentUpload error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -732,6 +900,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "searchCloudMessages error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -749,6 +918,7 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getLocalThreadMessageList error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -766,7 +936,247 @@ class FLTMessageService: FLTBaseService, FLTService {
     } failure: { error in
       let err = error.nserror as NSError
       weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "getThreadMessageList error \(error.nserror.localizedDescription)")
     }
+  }
+
+  func messageSerialization(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let messageDic = arguments["message"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    let message = V2NIMMessage.fromDict(messageDic)
+
+    let msg = V2NIMMessageConverter.messageSerialization(message)
+
+    successCallBack(resultCallback, msg)
+  }
+
+  func messageDeserialization(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let msgStr = arguments["msg"] as? String else {
+      parameterError(resultCallback)
+      return
+    }
+    let message = V2NIMMessageConverter.messageDeserialization(msgStr)
+
+    successCallBack(resultCallback, message?.toDict())
+  }
+
+  func modifyMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let messageDic = arguments["message"] as? [String: Any],
+          let _ = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let message = V2NIMMessage.fromDict(messageDic)
+    let params = V2NIMModifyMessageParams.fromDic(arguments)
+    NIMSDK.shared().v2MessageService.modifyMessage(message, params: params) { result in
+      weakSelf?.successCallBack(resultCallback, result.toDic())
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "modifyMessage error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func regenAIMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let messageDic = arguments["message"] as? [String: Any],
+          let paramsDic = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let message = V2NIMMessage.fromDict(messageDic)
+    let params = V2NIMMessageAIRegenParams.fromDic(paramsDic)
+    NIMSDK.shared().v2MessageService.regenAIMessage(message, params: params) {
+      weakSelf?.successCallBack(resultCallback, nil)
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "regenAIMessage error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func stopAIStreamMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let messageDic = arguments["message"] as? [String: Any],
+          let paramsDic = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let message = V2NIMMessage.fromDict(messageDic)
+    let params = V2NIMMessageAIStreamStopParams.fromDic(paramsDic)
+    NIMSDK.shared().v2MessageService.stopAIStreamMessage(message, params: params) {
+      weakSelf?.successCallBack(resultCallback, nil)
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "stopAIStreamMessage error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func searchCloudMessagesEx(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let paramsDic = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let params = V2NIMMessageSearchExParams.fromDic(paramsDic)
+    NIMSDK.shared().v2MessageService.searchCloudMessagesEx(params) { result in
+      weakSelf?.successCallBack(resultCallback, result.toDic())
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "searchCloudMessagesEx error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func searchLocalMessages(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let paramsDic = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let params = V2NIMMessageSearchExParams.fromDic(paramsDic)
+    NIMSDK.shared().v2MessageService.searchLocalMessages(params) { result in
+      weakSelf?.successCallBack(resultCallback, result.toDic())
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "searchLocalMessages error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func setMessageFilter(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let filter = arguments["filter"] as? Bool ?? false
+    if filter {
+      NIMSDK.shared().v2MessageService.setMessageFilter(self)
+    } else {
+      NIMSDK.shared().v2MessageService.setMessageFilter(nil)
+    }
+    successCallBack(resultCallback, nil)
+  }
+
+  func updateLocalMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let messageDic = arguments["message"] as? [String: Any],
+          let _ = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let message = V2NIMMessage.fromDict(messageDic)
+    let params = V2NIMUpdateLocalMessageParams.fromDic(arguments)
+    NIMSDK.shared().v2MessageService.updateLocalMessage(message, params: params) { result in
+      weakSelf?.successCallBack(resultCallback, result.toDict())
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "updateLocalMessage error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  func clearRoamingMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let conversationIds = arguments["conversationIds"] as? [String] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    NIMSDK.shared().v2MessageService.clearRoamingMessage(conversationIds) {
+      // 成功回调
+      weakSelf?.successCallBack(resultCallback, ["success": true])
+    } failure: { error in
+      // 失败回调
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "clearRoamingMessage error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  /// 清除指定时间点之前的本地消息（10.9.7）
+  func clearLocalMessage(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    weak var weakSelf = self
+    guard let paramsMap = arguments["params"] as? [String: Any] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    let params = V2NIMClearLocalMessageParams()
+
+    if let anchorTime = paramsMap["anchorTime"] as? Int64 {
+      params.anchorTime = anchorTime
+    }
+    if let deleteConversation = paramsMap["deleteConversation"] as? Bool {
+      params.deleteConversation = deleteConversation
+    }
+
+    NIMSDK.shared().v2MessageService.clearLocalMessage(params) {
+      weakSelf?.successCallBack(resultCallback, nil)
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "clearLocalMessage error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  /// 文本翻译（10.9.75）
+  func translateText(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let paramsDic = arguments["params"] as? [String: Any],
+          let text = paramsDic["text"] as? String,
+          let targetLanguage = paramsDic["targetLanguage"] as? String else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    let translateParams = V2NIMTextTranslateParams()
+    translateParams.text = text
+    translateParams.targetLanguage = targetLanguage
+    if let sourceLanguage = paramsDic["sourceLanguage"] as? String {
+      translateParams.sourceLanguage = sourceLanguage
+    }
+
+    NIMSDK.shared().v2MessageService.translateText(translateParams) { result in
+      var resultDic = [String: Any?]()
+      resultDic["translatedText"] = result.translatedText
+      resultDic["sourceLanguage"] = result.sourceLanguage
+      resultDic["targetLanguage"] = result.targetLanguage
+      weakSelf?.successCallBack(resultCallback, resultDic as [String: Any])
+    } failure: { error in
+      let err = error.nserror as NSError
+      weakSelf?.errorCallBack(resultCallback, err.description, err.code)
+      FLTALog.errorLog(FLTMessageService.className, desc: "translateText error \(error.nserror.localizedDescription)")
+    }
+  }
+}
+
+extension FLTMessageService: V2NIMMessageFilter {
+  func shouldIgnore(_ message: V2NIMMessage) -> Bool {
+    if Thread.isMainThread {
+      return false
+    }
+    let semaphore = DispatchSemaphore(value: 0)
+    nimCore?.addSemaphore(semaphore)
+    var ignore = false
+    notifyEvent(
+      serviceName(),
+      "shouldIgnore",
+      ["message": message.toDict()],
+      result: { r in
+        ignore = r as? Bool ?? false
+        semaphore.signal()
+      }
+    )
+    semaphore.wait()
+    return ignore
   }
 }
 

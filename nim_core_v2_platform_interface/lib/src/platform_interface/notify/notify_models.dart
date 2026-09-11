@@ -110,9 +110,20 @@ class NIMCustomNotification {
       _$NIMCustomNotificationFromJson(map);
 }
 
+int _getId(dynamic id) {
+  if (id is num) {
+    return id.toInt();
+  }
+  if (id is String) {
+    return int.parse(id);
+  }
+  return 0;
+}
+
 ///全员广播通知
 @JsonSerializable(explicitToJson: true)
 class NIMBroadcastNotification {
+  @JsonKey(fromJson: _getId)
   int id;
 
   String? senderId;

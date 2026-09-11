@@ -69,8 +69,16 @@ class FLTStorageService: FLTBaseService, FLTService {
       parameterError(resultCallback)
       return
     }
-    NIMSDK.shared().v2StorageService.addCustomStorageScene(sceneName, expireTime: expireTime)
-    successCallBack(resultCallback, nil)
+
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().addCustomStorageScene(sceneName, expireTime: expireTime)
+      successCallBack(resultCallback, nil)
+      return
+    } else {
+      NIMSDK.shared().v2StorageService.addCustomStorageScene(sceneName, expireTime: expireTime)
+      successCallBack(resultCallback, nil)
+    }
   }
 
   /// 取消上传文件
@@ -97,10 +105,19 @@ class FLTStorageService: FLTBaseService, FLTService {
     }
 
     weak var weakSelf = self
-    NIMSDK.shared().v2StorageService.cancelUploadFile(fileTask) {
-      weakSelf?.successCallBack(resultCallback, nil)
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().cancelUploadFile(fileTask) {
+        weakSelf?.successCallBack(resultCallback, nil)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.cancelUploadFile(fileTask) {
+        weakSelf?.successCallBack(resultCallback, nil)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
     }
   }
 
@@ -119,8 +136,14 @@ class FLTStorageService: FLTBaseService, FLTService {
       uploadParams.sceneName = sceneName
     }
 
-    let task = NIMSDK.shared().v2StorageService.createUploadFileTask(uploadParams)
-    successCallBack(resultCallback, task.toDictionary())
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      let task = instance.getStorageService().createUploadFileTask(uploadParams)
+      successCallBack(resultCallback, task.toDictionary())
+    } else {
+      let task = NIMSDK.shared().v2StorageService.createUploadFileTask(uploadParams)
+      successCallBack(resultCallback, task.toDictionary())
+    }
   }
 
   /// downloadAttachment
@@ -135,15 +158,30 @@ class FLTStorageService: FLTBaseService, FLTService {
     }
     weak var weakSelf = self
 
-    NIMSDK.shared().v2StorageService.downloadAttachment(params) { url in
-      weakSelf?.successCallBack(resultCallback, url)
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-    } progress: { progress in
-      let progressModel = NIMDownloadMessageAttachmentProgress()
-      progressModel.progress = Int(progress)
-      progressModel.downloadParam = params
-      weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onMessageAttachmentDownloadProgress", progressModel.toDictionary())
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().downloadAttachment(params) { url in
+        weakSelf?.successCallBack(resultCallback, url)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      } progress: { progress in
+        let progressModel = NIMDownloadMessageAttachmentProgress()
+        progressModel.instanceId = instanceId
+        progressModel.progress = Int(progress)
+        progressModel.downloadParam = params
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onMessageAttachmentDownloadProgress", progressModel.toDictionary())
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.downloadAttachment(params) { url in
+        weakSelf?.successCallBack(resultCallback, url)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      } progress: { progress in
+        let progressModel = NIMDownloadMessageAttachmentProgress()
+        progressModel.progress = Int(progress)
+        progressModel.downloadParam = params
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onMessageAttachmentDownloadProgress", progressModel.toDictionary())
+      }
     }
   }
 
@@ -163,15 +201,29 @@ class FLTStorageService: FLTBaseService, FLTService {
     }
 
     weak var weakSelf = self
-    NIMSDK.shared().v2StorageService.getImageThumbUrl(attachment, thumbSize: size) { result in
-      weakSelf?.successCallBack(resultCallback, result.toDictionary())
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().getImageThumbUrl(attachment, thumbSize: size) { result in
+        weakSelf?.successCallBack(resultCallback, result.toDictionary())
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.getImageThumbUrl(attachment, thumbSize: size) { result in
+        weakSelf?.successCallBack(resultCallback, result.toDictionary())
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
     }
   }
 
   func getStorageSceneList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    let list = NIMSDK.shared().v2StorageService.getStorageSceneList()
+    var list = NIMSDK.shared().v2StorageService.getStorageSceneList()
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().getStorageSceneList()
+    }
+
     var sceneList = [[String: Any]]()
     for scene in list {
       sceneList.append(scene.toDictionary())
@@ -194,10 +246,19 @@ class FLTStorageService: FLTBaseService, FLTService {
     }
 
     weak var weakSelf = self
-    NIMSDK.shared().v2StorageService.getVideoCoverUrl(attachment, thumbSize: size) { result in
-      weakSelf?.successCallBack(resultCallback, result.toDictionary())
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().getVideoCoverUrl(attachment, thumbSize: size) { result in
+        weakSelf?.successCallBack(resultCallback, result.toDictionary())
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.getVideoCoverUrl(attachment, thumbSize: size) { result in
+        weakSelf?.successCallBack(resultCallback, result.toDictionary())
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
     }
   }
 
@@ -207,10 +268,19 @@ class FLTStorageService: FLTBaseService, FLTService {
       return
     }
     weak var weakSelf = self
-    NIMSDK.shared().v2StorageService.shortUrl(toLong: url) { retUrl in
-      weakSelf?.successCallBack(resultCallback, retUrl)
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().shortUrl(toLong: url) { retUrl in
+        weakSelf?.successCallBack(resultCallback, retUrl)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.shortUrl(toLong: url) { retUrl in
+        weakSelf?.successCallBack(resultCallback, retUrl)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      }
     }
   }
 
@@ -223,16 +293,32 @@ class FLTStorageService: FLTBaseService, FLTService {
     let fileTask = V2NIMUploadFileTask.fromDictionary(fileTaskArguments)
 
     weak var weakSelf = self
-    NIMSDK.shared().v2StorageService.uploadFile(fileTask) { url in
-      weakSelf?.successCallBack(resultCallback, url)
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-    } progress: { progress in
-      let progressModel = NIMUploadFileProgress()
-      progressModel.taskId = fileTask.taskId
-      progressModel.progress = Int(progress * 100)
-      print("uploadFile progress: \(progress)")
-      weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onFileUploadProgress", progressModel.toDictionary())
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().uploadFile(fileTask) { url in
+        weakSelf?.successCallBack(resultCallback, url)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      } progress: { progress in
+        let progressModel = NIMUploadFileProgress()
+        progressModel.instanceId = instanceId
+        progressModel.taskId = fileTask.taskId
+        progressModel.progress = Int(progress * 100)
+        print("uploadFile progress: \(progress)")
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onFileUploadProgress", progressModel.toDictionary())
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.uploadFile(fileTask) { url in
+        weakSelf?.successCallBack(resultCallback, url)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      } progress: { progress in
+        let progressModel = NIMUploadFileProgress()
+        progressModel.taskId = fileTask.taskId
+        progressModel.progress = Int(progress * 100)
+        print("uploadFile progress: \(progress)")
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onFileUploadProgress", progressModel.toDictionary())
+      }
     }
   }
 
@@ -243,16 +329,32 @@ class FLTStorageService: FLTBaseService, FLTService {
     }
 
     weak var weakSelf = self
-    NIMSDK.shared().v2StorageService.downloadFile(url, filePath: filePath) { path in
-      weakSelf?.successCallBack(resultCallback, path)
-    } failure: { error in
-      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-    } progress: { progress in
-      let progressModel = NIMDownloadFileProgress()
-      progressModel.url = url
-      progressModel.progress = Int(progress)
-      weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onFileDownloadProgress", progressModel.toDictionary())
-      print("downloadFile progress: \(progress)")
+    if let instanceId = arguments["instanceId"] as? Int {
+      let instance = V2NIMChatroomClient.getInstance(instanceId)
+      instance.getStorageService().downloadFile(url, filePath: filePath) { path in
+        weakSelf?.successCallBack(resultCallback, path)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      } progress: { progress in
+        let progressModel = NIMDownloadFileProgress()
+        progressModel.instanceId = instanceId
+        progressModel.url = url
+        progressModel.progress = Int(progress)
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onFileDownloadProgress", progressModel.toDictionary())
+        print("downloadFile progress: \(progress)")
+      }
+    } else {
+      NIMSDK.shared().v2StorageService.downloadFile(url, filePath: filePath) { path in
+        weakSelf?.successCallBack(resultCallback, path)
+      } failure: { error in
+        weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      } progress: { progress in
+        let progressModel = NIMDownloadFileProgress()
+        progressModel.url = url
+        progressModel.progress = Int(progress)
+        weakSelf?.notifyEvent(weakSelf?.serviceName() ?? "", "onFileDownloadProgress", progressModel.toDictionary())
+        print("downloadFile progress: \(progress)")
+      }
     }
   }
 
@@ -451,11 +553,13 @@ extension V2NIMStorageScene {
 
 @objcMembers
 class NIMDownloadMessageAttachmentProgress {
+  var instanceId: Int?
   var progress: Int = 0
   var downloadParam: V2NIMDownloadMessageAttachmentParams?
 
   func toDictionary() -> [String: Any] {
     var dic = [String: Any]()
+    dic["instanceId"] = instanceId
     dic[#keyPath(progress)] = progress
     dic[#keyPath(downloadParam)] = downloadParam?.toDictionary()
     return dic
@@ -464,10 +568,12 @@ class NIMDownloadMessageAttachmentProgress {
 
 @objcMembers
 class NIMUploadFileProgress {
+  var instanceId: Int?
   var taskId: String?
   var progress: Int = 0
   func toDictionary() -> [String: Any] {
     var dic = [String: Any]()
+    dic["instanceId"] = instanceId
     dic[#keyPath(taskId)] = taskId
     dic[#keyPath(progress)] = progress
     return dic
@@ -476,10 +582,12 @@ class NIMUploadFileProgress {
 
 @objcMembers
 class NIMDownloadFileProgress {
+  var instanceId: Int?
   var url: String?
   var progress: Int = 0
   func toDictionary() -> [String: Any] {
     var dic = [String: Any]()
+    dic["instanceId"] = instanceId
     dic[#keyPath(url)] = url
     dic[#keyPath(progress)] = progress
     return dic

@@ -331,14 +331,14 @@ class MethodChannelConversationService extends ConversationServicePlatform {
 
   /// 根据会话id清空会话未读数
   /// groupId – 会话分组Id
-  // Future<NIMResult<void>> clearUnreadCountByGroupId(String groupId) async {
-  //   return NIMResult.fromMap(await invokeMethod(
-  //     'clearUnreadCountByGroupId',
-  //     arguments: {
-  //       'groupId': groupId,
-  //     },
-  //   ));
-  // }
+  Future<NIMResult<void>> clearUnreadCountByGroupId(String groupId) async {
+    return NIMResult.fromMap(await invokeMethod(
+      'clearUnreadCountByGroupId',
+      arguments: {
+        'groupId': groupId,
+      },
+    ));
+  }
 
   /// 根据会话类型清空相应会话的未读数
   /// groupId – 会话分组Id
@@ -392,5 +392,14 @@ class MethodChannelConversationService extends ConversationServicePlatform {
         'conversationId': conversationId,
       },
     ));
+  }
+
+  /// 查询当前全量置顶的会话列表
+  /// 排序方式：倒序
+  Future<NIMResult<List<NIMConversation>>> getStickTopConversationList() async {
+    return NIMResult.fromMap(await invokeMethod('getStickTopConversationList'),
+        convert: (json) => (json['conversationList'] as List<dynamic>?)
+            ?.map((e) => NIMConversation.fromJson(Map<String, dynamic>.from(e)))
+            .toList());
   }
 }

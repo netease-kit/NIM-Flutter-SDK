@@ -34,6 +34,12 @@ V2FLTSettingsService::V2FLTSettingsService() {
         notifyEvent("onP2PMessageMuteModeChanged", result_map);
       };
 
+  listener.onPushMobileOnDesktopOnline = [=](bool need) {
+    flutter::EncodableMap result_map;
+    result_map.insert(std::make_pair("need", need));
+    notifyEvent("onPushMobileOnDesktopOnline", result_map);
+  };
+
   auto& client = v2::V2NIMClient::get();
   auto& settingService = client.getSettingService();
   settingService.addSettingListener(listener);
@@ -252,6 +258,19 @@ void V2FLTSettingsService::setTeamMessageMuteMode(
       });
 }
 
+void V2FLTSettingsService::getPushMobileOnDesktopOnline(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& client = v2::V2NIMClient::get();
+  auto& settingService = client.getSettingService();
+  settingService.getPushMobileOnDesktopOnline(
+      [=](bool need) { result->Success(NimResult::getSuccessResult(need)); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
 void V2FLTSettingsService::onMethodCalled(
     const std::string& method, const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
@@ -273,6 +292,8 @@ void V2FLTSettingsService::onMethodCalled(
     setDndConfig(arguments, result);
   } else if (method == "getDndConfig") {
     getDndConfig(arguments, result);
+  } else if (method == "getPushMobileOnDesktopOnline") {
+    getPushMobileOnDesktopOnline(arguments, result);
   } else {
     result->NotImplemented();
   }

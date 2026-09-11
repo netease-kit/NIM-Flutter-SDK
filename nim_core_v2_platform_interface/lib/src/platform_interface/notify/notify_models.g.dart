@@ -68,7 +68,7 @@ const _$NIMConversationTypeEnumMap = {
 NIMBroadcastNotification _$NIMBroadcastNotificationFromJson(
         Map<String, dynamic> json) =>
     NIMBroadcastNotification(
-      id: (json['id'] as num).toInt(),
+      id: _getId(json['id']),
       senderId: json['senderId'] as String?,
       timestamp: (json['timestamp'] as num).toInt(),
       content: json['content'] as String?,

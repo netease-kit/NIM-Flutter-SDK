@@ -6,27 +6,35 @@ import Foundation
 import NIMSDK
 
 extension V2NIMUserSearchOption {
-  func toDictionary() -> [String: Any] {
-    var dict = [String: Any]()
-    dict[#keyPath(V2NIMUserSearchOption.keyword)] = keyword
-    dict[#keyPath(V2NIMUserSearchOption.searchName)] = searchName
-    dict[#keyPath(V2NIMUserSearchOption.searchAccountId)] = searchAccountId
-    dict[#keyPath(V2NIMUserSearchOption.searchMobile)] = searchMobile
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(V2NIMUserSearchOption.keyword)] = keyword
+    keyPaths[#keyPath(V2NIMUserSearchOption.searchName)] = searchName
+    keyPaths[#keyPath(V2NIMUserSearchOption.searchAccountId)] = searchAccountId
+    keyPaths[#keyPath(V2NIMUserSearchOption.searchMobile)] = searchMobile
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMUserSearchOption {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMUserSearchOption {
     let option = V2NIMUserSearchOption()
-    if let keyword = dict[#keyPath(V2NIMUserSearchOption.keyword)] as? String {
+
+    if let keyword = arguments[#keyPath(V2NIMUserSearchOption.keyword)] as? String {
       option.keyword = keyword
     }
-    if let searchName = dict[#keyPath(V2NIMUserSearchOption.searchName)] as? Bool {
+
+    if let searchName = arguments[#keyPath(V2NIMUserSearchOption.searchName)] as? Bool {
       option.searchName = searchName
     }
-    if let searchAccountId = dict[#keyPath(V2NIMUserSearchOption.searchAccountId)] as? Bool {
+
+    if let searchAccountId = arguments[#keyPath(V2NIMUserSearchOption.searchAccountId)] as? Bool {
       option.searchAccountId = searchAccountId
     }
-    if let searchMobile = dict[#keyPath(V2NIMUserSearchOption.searchMobile)] as? Bool {
+
+    if let searchMobile = arguments[#keyPath(V2NIMUserSearchOption.searchMobile)] as? Bool {
       option.searchMobile = searchMobile
     }
     return option

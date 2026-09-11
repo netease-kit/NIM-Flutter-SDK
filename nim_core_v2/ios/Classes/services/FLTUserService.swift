@@ -13,6 +13,7 @@ enum V2UserAPITypeEnums: String {
   case addUserToBlockList
   case removeUserFromBlockList
   case getBlockList
+  case checkBlock
 }
 
 let userClassName = "FLTUserService"
@@ -40,7 +41,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
    * - Parameter users: 收到内容
    */
   func onUserProfileChanged(_ users: [V2NIMUser]) {
-    notifyEvent(serviceName(), "onUserProfileChanged", ["userInfoList": users.map { $0.toDictionary() }])
+    notifyEvent(serviceName(), "onUserProfileChanged", ["userInfoList": users.map { $0.toDic() }])
   }
 
   /**
@@ -49,9 +50,9 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
    * - Parameter user: 加入黑名单用户
    */
   func onBlockListAdded(_ user: V2NIMUser) {
-    let userInfo = user.toDictionary()
+    let userInfo = user.toDic()
     print("onBlockListAdded -> \(userInfo)")
-    notifyEvent(serviceName(), "onBlockListAdded", user.toDictionary())
+    notifyEvent(serviceName(), "onBlockListAdded", user.toDic())
   }
 
   /**
@@ -63,9 +64,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 获取用户列表
-  public func getUserList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "getUserList argument \(arguments)")
-
+  func getUserList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let accountIds = arguments["userIdList"] as? [String] else {
       parameterError(resultCallback)
       return
@@ -74,7 +73,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
     NIMSDK.shared().v2UserService.getUserList(accountIds) { users in
       var userList = [[String: Any]]()
       for user in users {
-        userList.append(user.toDictionary())
+        userList.append(user.toDic())
       }
       weakSelf?.successCallBack(resultCallback, ["userInfoList": userList])
     } failure: { error in
@@ -84,9 +83,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 从云端获取用户列表
-  public func getUserListFromCloud(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "getUserListFromCloud argument \(arguments)")
-
+  func getUserListFromCloud(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let accountIds = arguments["userIdList"] as? [String] else {
       parameterError(resultCallback)
       return
@@ -95,7 +92,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
     NIMSDK.shared().v2UserService.getUserList(fromCloud: accountIds, success: { users in
       var userList: [[String: Any]] = []
       for user in users {
-        userList.append(user.toDictionary())
+        userList.append(user.toDic())
       }
       weakSelf?.successCallBack(resultCallback, ["userInfoList": userList])
     }, failure: { error in
@@ -105,19 +102,17 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 根据搜索条件搜索用户
-  public func searchUserByOption(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "searchUserByOption argument \(arguments)")
-
+  func searchUserByOption(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let userSearchOptionArguments = arguments["userSearchOption"] as? [String: Any] else {
       parameterError(resultCallback)
       return
     }
     weak var weakSelf = self
-    let searchOption = V2NIMUserSearchOption.fromDictionary(userSearchOptionArguments)
+    let searchOption = V2NIMUserSearchOption.fromDic(userSearchOptionArguments)
     NIMSDK.shared().v2UserService.searchUser(by: searchOption) { users in
       var userList: [[String: Any]] = []
       for user in users {
-        userList.append(user.toDictionary())
+        userList.append(user.toDic())
       }
       weakSelf?.successCallBack(resultCallback, ["userInfoList": userList])
     } failure: { error in
@@ -127,14 +122,12 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 更新自己的用户信息
-  public func updateSelfUserProfile(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "updateSelfUserProfile argument \(arguments)")
-
+  func updateSelfUserProfile(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let updateParamArguments = arguments["updateParam"] as? [String: Any] else {
       parameterError(resultCallback)
       return
     }
-    let updateParams = V2NIMUserUpdateParams.fromDictionary(updateParamArguments)
+    let updateParams = V2NIMUserUpdateParams.fromDic(updateParamArguments)
     weak var weakSelf = self
     NIMSDK.shared().v2UserService.updateSelfUserProfile(updateParams) {
       weakSelf?.successCallBack(resultCallback, nil)
@@ -145,9 +138,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 添加用户到黑名单
-  public func addUserToBlockList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "addUserToBlockList argument \(arguments)")
-
+  func addUserToBlockList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let accountId = arguments["userId"] as? String else {
       parameterError(resultCallback)
       return
@@ -163,9 +154,7 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 从黑名单移除用户
-  public func removeUserFromBlockList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "removeUserFromBlockList argument \(arguments)")
-
+  func removeUserFromBlockList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let accountId = arguments["userId"] as? String else {
       parameterError(resultCallback)
       return
@@ -180,15 +169,29 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
   }
 
   /// 获取黑名单列表
-  public func getBlockList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(userClassName, desc: "getBlockList argument \(arguments)")
-
+  func getBlockList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     weak var weakSelf = self
     NIMSDK.shared().v2UserService.getBlockList { blackList in
       weakSelf?.successCallBack(resultCallback, ["userIdList": blackList])
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
       FLTALog.errorLog(userClassName, desc: "getBlockList error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  /// 获取黑名单列表
+  public func checkBlock(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    guard let accountIds = arguments["accountIds"] as? [String] else {
+      parameterError(resultCallback)
+      return
+    }
+
+    weak var weakSelf = self
+    NIMSDK.shared().v2UserService.checkBlock(accountIds) { result in
+      weakSelf?.successCallBack(resultCallback, result)
+    } failure: { error in
+      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(userClassName, desc: "checkBlock error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -209,6 +212,8 @@ class FLTUserService: FLTBaseService, FLTService, V2NIMUserListener {
       removeUserFromBlockList(arguments, resultCallback)
     case V2UserAPITypeEnums.getBlockList.rawValue:
       getBlockList(arguments, resultCallback)
+    case V2UserAPITypeEnums.checkBlock.rawValue:
+      checkBlock(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }

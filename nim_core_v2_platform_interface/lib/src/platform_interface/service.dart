@@ -10,12 +10,20 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 final Map<String, Service> services = {};
 
 abstract class Service extends PlatformInterface {
-  final _methodCallHandler = kIsWeb
-      ? PlatformMethodCallHandler.instance
-      : _MethodChannelHandler.instance;
+  PlatformMethodCallHandler? _methodCallHandler;
 
   Service({required Object token}) : super(token: token) {
-    _methodCallHandler._register(this);
+    if (kIsWeb) {
+      // Web 端：如果 PlatformMethodCallHandler 已被设置（旧模式），使用它；
+      // 否则（新的 JS interop 模式），不注册到 handler。
+      if (PlatformMethodCallHandler._instance != null) {
+        _methodCallHandler = PlatformMethodCallHandler.instance;
+        _methodCallHandler!._register(this);
+      }
+    } else {
+      _methodCallHandler = _MethodChannelHandler.instance;
+      _methodCallHandler!._register(this);
+    }
     registerWebAPI();
   }
 
@@ -28,9 +36,17 @@ abstract class Service extends PlatformInterface {
   Future<Map<String, dynamic>> invokeMethod(String method,
       {Map<String, dynamic>? arguments}) async {
     Log.i(serviceName, 'invoke method: ==$method==');
+    if (_methodCallHandler == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message:
+            'invokeMethod is not available in direct JS interop mode on Web.',
+        details: null,
+      );
+    }
     if (arguments == null) arguments = {};
     arguments['serviceName'] = serviceName;
-    final Map<String, dynamic>? replyMap = await _methodCallHandler
+    final Map<String, dynamic>? replyMap = await _methodCallHandler!
         .invokePlatformMethod(serviceName, method, arguments: arguments);
     if (replyMap == null) {
       Log.i(serviceName, 'invoke method ==$method== return null');

@@ -1,7 +1,3 @@
-// Copyright (c) 2022 NetEase, Inc. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'team_param.dart';
@@ -58,35 +54,41 @@ const _$NIMTeamTypeEnumMap = {
 };
 
 const _$NIMTeamJoinModeEnumMap = {
+  NIMTeamJoinMode.unknown: -1,
   NIMTeamJoinMode.joinModeFree: 0,
   NIMTeamJoinMode.joinModeApply: 1,
   NIMTeamJoinMode.joinModeInvite: 2,
 };
 
 const _$NIMTeamAgreeModeEnumMap = {
+  NIMTeamAgreeMode.unknown: -1,
   NIMTeamAgreeMode.agreeModeAuth: 0,
   NIMTeamAgreeMode.agreeModeNoAuth: 1,
 };
 
 const _$NIMTeamInviteModeEnumMap = {
+  NIMTeamInviteMode.unknown: -1,
   NIMTeamInviteMode.inviteModeManager: 0,
   NIMTeamInviteMode.inviteModeAll: 1,
 };
 
 const _$NIMTeamUpdateInfoModeEnumMap = {
+  NIMTeamUpdateInfoMode.unknown: -1,
   NIMTeamUpdateInfoMode.updateInfoModeManager: 0,
   NIMTeamUpdateInfoMode.updateInfoModeAll: 1,
 };
 
 const _$NIMTeamUpdateExtensionModeEnumMap = {
+  NIMTeamUpdateExtensionMode.unknown: -1,
   NIMTeamUpdateExtensionMode.updateExtensionModeManager: 0,
   NIMTeamUpdateExtensionMode.updateExtensionModeAll: 1,
 };
 
 const _$NIMTeamChatBannedModeEnumMap = {
+  NIMTeamChatBannedMode.unknown: -1,
   NIMTeamChatBannedMode.chatBannedModeNone: 0,
   NIMTeamChatBannedMode.chatBannedModeBannedNormal: 1,
-  NIMTeamChatBannedMode.chatBannedModeBannedAll: 2,
+  NIMTeamChatBannedMode.chatBannedModeBannedAll: 3,
 };
 
 NIMUpdateTeamInfoParams _$NIMUpdateTeamInfoParamsFromJson(
@@ -144,6 +146,7 @@ NIMUpdatedTeamInfo _$NIMUpdatedTeamInfoFromJson(Map<String, dynamic> json) =>
       updateExtensionMode: $enumDecodeNullable(
           _$NIMTeamUpdateExtensionModeEnumMap, json['updateExtensionMode']),
       chatBannedMode: (json['chatBannedMode'] as num?)?.toInt(),
+      customerExtension: json['customerExtension'] as String?,
     );
 
 Map<String, dynamic> _$NIMUpdatedTeamInfoToJson(NIMUpdatedTeamInfo instance) =>
@@ -161,6 +164,7 @@ Map<String, dynamic> _$NIMUpdatedTeamInfoToJson(NIMUpdatedTeamInfo instance) =>
       'updateExtensionMode':
           _$NIMTeamUpdateExtensionModeEnumMap[instance.updateExtensionMode],
       'chatBannedMode': instance.chatBannedMode,
+      'customerExtension': instance.customerExtension,
     };
 
 NIMUpdateSelfMemberInfoParams _$NIMUpdateSelfMemberInfoParamsFromJson(
@@ -186,7 +190,7 @@ NIMTeamMemberQueryOption _$NIMTeamMemberQueryOptionFromJson(
       direction:
           $enumDecodeNullable(_$NIMQueryDirectionEnumMap, json['direction']),
       nextToken: json['nextToken'] as String?,
-      limit: (json['limit'] as num?)?.toInt(),
+      limit: (json['limit'] as num?)?.toInt() ?? 100,
     );
 
 Map<String, dynamic> _$NIMTeamMemberQueryOptionToJson(
@@ -211,6 +215,39 @@ const _$NIMQueryDirectionEnumMap = {
   NIMQueryDirection.asc: 1,
 };
 
+NIMPostscript _$NIMPostscriptFromJson(Map<String, dynamic> json) =>
+    NIMPostscript(
+      postscript: json['postscript'] as String?,
+      timestamp: (json['timestamp'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$NIMPostscriptToJson(NIMPostscript instance) =>
+    <String, dynamic>{
+      'postscript': instance.postscript,
+      'timestamp': instance.timestamp,
+    };
+
+NIMTeamClearJoinActionInfoOption _$NIMTeamClearJoinActionInfoOptionFromJson(
+        Map<String, dynamic> json) =>
+    NIMTeamClearJoinActionInfoOption(
+      timestamp: (json['timestamp'] as num?)?.toInt(),
+      type:
+          $enumDecodeNullable(_$NIMTeamJoinActionTeamTypeEnumMap, json['type']),
+    );
+
+Map<String, dynamic> _$NIMTeamClearJoinActionInfoOptionToJson(
+        NIMTeamClearJoinActionInfoOption instance) =>
+    <String, dynamic>{
+      'timestamp': instance.timestamp,
+      'type': _$NIMTeamJoinActionTeamTypeEnumMap[instance.type],
+    };
+
+const _$NIMTeamJoinActionTeamTypeEnumMap = {
+  NIMTeamJoinActionTeamType.team: 1,
+  NIMTeamJoinActionTeamType.superTeam: 2,
+  NIMTeamJoinActionTeamType.all: 3,
+};
+
 NIMTeamJoinActionInfo _$NIMTeamJoinActionInfoFromJson(
         Map<String, dynamic> json) =>
     NIMTeamJoinActionInfo(
@@ -223,6 +260,15 @@ NIMTeamJoinActionInfo _$NIMTeamJoinActionInfoFromJson(
       timestamp: (json['timestamp'] as num?)?.toInt(),
       actionStatus:
           $enumDecode(_$NIMTeamJoinActionStatusEnumMap, json['actionStatus']),
+      serverExtension: json['serverExtension'] as String?,
+      read: json['read'] as bool?,
+      fromAccountId: json['fromAccountId'] as String?,
+      targetAccountId: json['targetAccountId'] as String?,
+      serverId: (json['serverId'] as num?)?.toInt(),
+      updateTimestamp: (json['updateTimestamp'] as num?)?.toInt(),
+      postscriptHistory: (json['postscriptHistory'] as List<dynamic>?)
+          ?.map((e) => NIMPostscript.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$NIMTeamJoinActionInfoToJson(
@@ -235,6 +281,13 @@ Map<String, dynamic> _$NIMTeamJoinActionInfoToJson(
       'postscript': instance.postscript,
       'timestamp': instance.timestamp,
       'actionStatus': _$NIMTeamJoinActionStatusEnumMap[instance.actionStatus]!,
+      'serverExtension': instance.serverExtension,
+      'read': instance.read,
+      'fromAccountId': instance.fromAccountId,
+      'targetAccountId': instance.targetAccountId,
+      'serverId': instance.serverId,
+      'updateTimestamp': instance.updateTimestamp,
+      'postscriptHistory': instance.postscriptHistory,
     };
 
 const _$NIMTeamJoinActionTypeEnumMap = {
@@ -299,3 +352,20 @@ const _$NIMSortOrderEnumMap = {
   NIMSortOrder.sortOrderDesc: 0,
   NIMSortOrder.sortOrderAsc: 1,
 };
+
+NIMTeamInviteParams _$NIMTeamInviteParamsFromJson(Map<String, dynamic> json) =>
+    NIMTeamInviteParams(
+      inviteeAccountIds: (json['inviteeAccountIds'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      postscript: json['postscript'] as String?,
+      serverExtension: json['serverExtension'] as String?,
+    );
+
+Map<String, dynamic> _$NIMTeamInviteParamsToJson(
+        NIMTeamInviteParams instance) =>
+    <String, dynamic>{
+      'inviteeAccountIds': instance.inviteeAccountIds,
+      'postscript': instance.postscript,
+      'serverExtension': instance.serverExtension,
+    };

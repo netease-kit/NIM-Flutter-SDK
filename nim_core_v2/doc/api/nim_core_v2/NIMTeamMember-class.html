@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -49,7 +45,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -74,12 +69,12 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
     <ul class="annotation-list clazz-relationships">
-        <li>@<a href="https://pub.dev/documentation/json_annotation/4.9.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>()</li>
+        <li>@JsonSerializable()</li>
     </ul>
   </dd>
 
@@ -90,10 +85,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
         <dt id="NIMTeamMember" class="callable">
-          <span class="name"><a href="../nim_core_v2/NIMTeamMember/NIMTeamMember.html">NIMTeamMember</a></span><span class="signature">(<span class="parameter" id="-param-teamId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="-param-teamType"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="-param-accountId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="-param-memberRole"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMTeamMemberRole.html">NIMTeamMemberRole</a></span> <span class="parameter-name">memberRole</span>, </span><span class="parameter" id="-param-teamNick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">teamNick</span>, </span><span class="parameter" id="-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="-param-joinTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">joinTime</span>, </span><span class="parameter" id="-param-updateTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">updateTime</span>, </span><span class="parameter" id="-param-inTeam"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inTeam</span>, </span><span class="parameter" id="-param-chatBanned"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">chatBanned</span>}</span>)</span>
+          <span class="name"><a href="../nim_core_v2/NIMTeamMember/NIMTeamMember.html">NIMTeamMember</a></span><span class="signature">({<span class="parameter" id="-param-teamId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="-param-teamType"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="-param-accountId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="-param-memberRole"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMTeamMemberRole.html">NIMTeamMemberRole</a></span> <span class="parameter-name">memberRole</span>, </span><span class="parameter" id="-param-teamNick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">teamNick</span>, </span><span class="parameter" id="-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span><span class="parameter" id="-param-joinTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">joinTime</span>, </span><span class="parameter" id="-param-updateTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">updateTime</span>, </span><span class="parameter" id="-param-inTeam"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inTeam</span>, </span><span class="parameter" id="-param-chatBanned"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">chatBanned</span>, </span><span class="parameter" id="-param-invitorAccountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">invitorAccountId</span>, </span><span class="parameter" id="-param-followAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">followAccountIds</span></span>})</span>
         </dt>
         <dd>
           构造函数
@@ -115,25 +109,37 @@
     <dl class="properties">
         <dt id="accountId" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/accountId.html">accountId</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
   
 
 </dt>
 <dd>
   群组成员账号id
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="chatBanned" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/chatBanned.html">chatBanned</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
   
 
 </dt>
 <dd>
   聊天是否被禁言，YES 被禁言，NO 未禁言
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="followAccountIds" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMTeamMember/followAccountIds.html">followAccountIds</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  特别关注成员列表
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
@@ -151,37 +157,49 @@
 
         <dt id="inTeam" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/inTeam.html">inTeam</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
   
 
 </dt>
 <dd>
   是否在群中，YES 在群组中，NO 不在群组中
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="invitorAccountId" class="property">
+  <span class="name"><a href="../nim_core_v2/NIMTeamMember/invitorAccountId.html">invitorAccountId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  入群邀请人，入群邀请人，主动入群该字段为空
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="joinTime" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/joinTime.html">joinTime</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
   
 
 </dt>
 <dd>
   入群时间
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="memberRole" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/memberRole.html">memberRole</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/NIMTeamMemberRole.html">NIMTeamMemberRole</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMTeamMemberRole.html">NIMTeamMemberRole</a></span>
   
 
 </dt>
 <dd>
   群组成员类型
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
@@ -199,66 +217,67 @@
 
         <dt id="serverExtension" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/serverExtension.html">serverExtension</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
   
 
 </dt>
 <dd>
   服务端扩展字段
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="teamId" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/teamId.html">teamId</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
   
 
 </dt>
 <dd>
   群组id
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="teamNick" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/teamNick.html">teamNick</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
   
 
 </dt>
 <dd>
   群组昵称
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="teamType" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/teamType.html">teamType</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span>
+  <span class="signature">&#8596; <a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span>
   
 
 </dt>
 <dd>
   群组类型
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
         <dt id="updateTime" class="property">
   <span class="name"><a href="../nim_core_v2/NIMTeamMember/updateTime.html">updateTime</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
   
 
 </dt>
 <dd>
   成员信息更新时间
-  <div class="features"><span class="feature">final</span></div>
+  <div class="features"><span class="feature">getter/setter pair</span></div>
 
 </dd>
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -331,9 +350,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -341,40 +358,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
     <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
     <li class="self-crumb">NIMTeamMember class</li>
 </ol>
 
-
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

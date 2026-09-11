@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -50,7 +46,6 @@
   </div>
 </header>
 <main>
-
   <div
       id="dartdoc-main-content"
       class="main-content"
@@ -62,11 +57,12 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">NIMMessage</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-isSelf">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">isSelf</span>, </span></li>
+      <span class="name ">NIMMessage</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-isSelf"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">isSelf</span>, </span></li>
 <li><span class="parameter" id="-param-attachmentUploadState"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageAttachmentUploadState.html">NIMMessageAttachmentUploadState</a>?</span> <span class="parameter-name">attachmentUploadState</span>, </span></li>
 <li><span class="parameter" id="-param-sendingState"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageSendingState.html">NIMMessageSendingState</a>?</span> <span class="parameter-name">sendingState</span>, </span></li>
 <li><span class="parameter" id="-param-messageType"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageType.html">NIMMessageType</a>?</span> <span class="parameter-name">messageType</span>, </span></li>
 <li><span class="parameter" id="-param-subType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">subType</span>, </span></li>
+<li><span class="parameter" id="-param-subStatus"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">subStatus</span>, </span></li>
 <li><span class="parameter" id="-param-text"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">text</span>, </span></li>
 <li><span class="parameter" id="-param-attachment"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageAttachment-class.html">NIMMessageAttachment</a>?</span> <span class="parameter-name">attachment</span>, </span></li>
 <li><span class="parameter" id="-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span>, </span></li>
@@ -80,10 +76,14 @@
 <li><span class="parameter" id="-param-threadRoot"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a>?</span> <span class="parameter-name">threadRoot</span>, </span></li>
 <li><span class="parameter" id="-param-threadReply"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageRefer-class.html">NIMMessageRefer</a>?</span> <span class="parameter-name">threadReply</span>, </span></li>
 <li><span class="parameter" id="-param-aiConfig"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageAIConfig-class.html">NIMMessageAIConfig</a>?</span> <span class="parameter-name">aiConfig</span>, </span></li>
-<li><span class="parameter" id="-param-messageStatus"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageStatus-class.html">NIMMessageStatus</a>?</span> <span class="parameter-name">messageStatus</span>}</span></li>
-</ol>)
+<li><span class="parameter" id="-param-messageStatus"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageStatus-class.html">NIMMessageStatus</a>?</span> <span class="parameter-name">messageStatus</span>, </span></li>
+<li><span class="parameter" id="-param-serialId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">serialId</span>, </span></li>
+<li><span class="parameter" id="-param-modifyTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">modifyTime</span>, </span></li>
+<li><span class="parameter" id="-param-modifyAccountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">modifyAccountId</span>, </span></li>
+<li><span class="parameter" id="-param-streamConfig"><span class="type-annotation"><a href="../../nim_core_v2/V2NIMMessageStreamConfig-class.html">V2NIMMessageStreamConfig</a>?</span> <span class="parameter-name">streamConfig</span>, </span></li>
+<li><span class="parameter" id="-param-messageSource"><span class="type-annotation"><a href="../../nim_core_v2/NIMMessageSource.html">NIMMessageSource</a>?</span> <span class="parameter-name">messageSource</span>, </span></li>
+</ol>})
     </section>
-
     
 
 
@@ -96,6 +96,7 @@
     this.sendingState,
     this.messageType,
     this.subType,
+    this.subStatus,
     this.text,
     this.attachment,
     this.serverExtension,
@@ -109,12 +110,16 @@
     this.threadRoot,
     this.threadReply,
     this.aiConfig,
-    this.messageStatus});</code></pre>
+    this.messageStatus,
+    this.serialId,
+    this.modifyTime,
+    this.modifyAccountId,
+    this.streamConfig,
+    this.messageSource});</code></pre>
 </section>
 
 
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -122,7 +127,6 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nim_core_v2</a></li>
     <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
@@ -130,33 +134,24 @@
     <li class="self-crumb">NIMMessage constructor</li>
 </ol>
 
-
     <h5>NIMMessage class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

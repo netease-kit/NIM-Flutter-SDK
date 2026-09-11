@@ -19,6 +19,12 @@ enum APNSMethod: String {
 class FLTAPNSService: FLTBaseService, FLTService {
   var badgeCount = -1
 
+  /// 缓存的 APNs Token，用于处理 SDK 初始化前收到的 Token
+  private static var pendingApnsToken: Data?
+
+  /// 是否自动更新 APNs Token，默认为 true
+  var autoUpdateApnsToken: Bool = true
+
   func serviceName() -> String {
     ServiceType.APNSService.rawValue
   }
@@ -53,6 +59,38 @@ class FLTAPNSService: FLTBaseService, FLTService {
 
   override func onInitialized() {
     registerBadgeCount()
+    // 处理缓存的 APNs Token
+    processPendingApnsToken()
+  }
+
+  /// 处理系统回调的 APNs Token
+  /// 由 SwiftNimCorePlugin 在收到 didRegisterForRemoteNotificationsWithDeviceToken 时调用
+  func handleDeviceToken(_ deviceToken: Data) {
+    guard autoUpdateApnsToken else {
+      print("FLTAPNSService: autoUpdateApnsToken is disabled, skip auto update")
+      return
+    }
+
+    // 检查 SDK 是否已初始化
+    if let nimCore = nimCore, nimCore.isInitialized() {
+      // SDK 已初始化，直接更新 Token
+      print("FLTAPNSService: SDK initialized, updating APNs token directly")
+      NIMSDK.shared().updateApnsToken(deviceToken)
+    } else {
+      // SDK 未初始化，缓存 Token，等待 onInitialized 时处理
+      print("FLTAPNSService: SDK not initialized, caching APNs token")
+      FLTAPNSService.pendingApnsToken = deviceToken
+    }
+  }
+
+  /// 处理缓存的 APNs Token
+  private func processPendingApnsToken() {
+    guard autoUpdateApnsToken else { return }
+    guard let token = FLTAPNSService.pendingApnsToken else { return }
+
+    print("FLTAPNSService: Processing pending APNs token")
+    NIMSDK.shared().updateApnsToken(token)
+    FLTAPNSService.pendingApnsToken = nil
   }
 
   private func registerBadgeCount() {
@@ -62,7 +100,12 @@ class FLTAPNSService: FLTBaseService, FLTService {
          count >= 0 {
         return UInt(count)
       } else {
-        return UInt(NIMSDK.shared().conversationManager.allUnreadCount())
+        let isCloud = NIMSDK.shared().v2Option?.enableV2CloudConversation
+        if isCloud == true {
+          return UInt(NIMSDK.shared().v2ConversationService.getTotalUnreadCount())
+        } else {
+          return UInt(NIMSDK.shared().v2LocalConversationService.getTotalUnreadCount())
+        }
       }
     }
   }
@@ -81,7 +124,7 @@ class FLTAPNSService: FLTBaseService, FLTService {
       parameterError(resultCallback)
       return
     }
-    if let customKey = arguments["customKey"] as? String {
+    if let customKey = arguments["key"] as? String {
       NIMSDK.shared().updateApnsToken(token.data, customContentKey: customKey)
     } else {
       NIMSDK.shared().updateApnsToken(token.data, customContentKey: nil)

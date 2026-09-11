@@ -122,3 +122,73 @@ class QChatKickOtherClientsResult {
     return 'QChatKickOtherClientsResult{_clientIds: $_clientIds}';
   }
 }
+
+/// 消息内容类型
+enum QChatNIMMessageType {
+  /// 未定义
+  undef,
+
+  /// 文本类型消息
+  text,
+
+  /// 图片类型消息
+  image,
+
+  /// 声音类型消息
+  audio,
+
+  /// 视频类型消息
+  video,
+
+  /// 位置类型消息
+  location,
+
+  /// 文件类型消息
+  file,
+
+  /// 音视频通话
+  avchat,
+
+  /// 通知类型消息
+  notification,
+
+  /// 提醒类型消息
+  tip,
+
+  /// Robot
+  robot,
+
+  /// G2话单消息
+  netcall,
+
+  /// Custom
+  custom,
+
+  /// 七鱼接入方自定义的消息
+  appCustom,
+
+  /// 七鱼类型的 custom 消息
+  qiyuCustom,
+}
+
+enum QChatNIMMessageStatus {
+  /// 草稿
+  draft,
+
+  /// 正在发送中
+  sending,
+
+  /// 发送成功
+  success,
+
+  /// 发送失败
+  fail,
+
+  /// 消息已读
+  /// 发送消息时表示对方已看过该消息
+  /// 接收消息时表示自己已读过，一般仅用于音频消息
+  read,
+
+  /// 未读状态
+  unread
+}

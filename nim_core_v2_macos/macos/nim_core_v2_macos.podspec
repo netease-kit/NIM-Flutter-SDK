@@ -14,14 +14,14 @@ Pod::Spec.new do |s|
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'NetEase, Inc.' => 'wangjianzhong@corp.netease.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*', 'log/**/*.h', 'nim_sdk/**/*.h'
+  s.source_files = 'Classes/**/*', 'nim_sdk/**/*.h'
   s.public_header_files = "Classes/nim_core_macos_plugin.h"
   s.dependency 'FlutterMacOS'
   s.platform = :osx, '10.14'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', "HEADER_SEARCH_PATHS" => "${PODS_TARGET_SRCROOT}/Classes/ ${PODS_TARGET_SRCROOT}/nim_sdk/wrapper ${PODS_TARGET_SRCROOT}/nim_sdk/include" }
   s.swift_version = '5.0'
   s.vendored_libraries = 'nim_sdk/**/*.a', 'nim_sdk/**/*.dylib'
-  s.vendored_frameworks = 'log/**/*.framework', 'nim_sdk/**/*.framework'
+  s.vendored_frameworks = 'nim_sdk/**/*.framework'
   s.static_framework = true
   s.library = 'c++'
   s.xcconfig = {
@@ -30,7 +30,6 @@ Pod::Spec.new do |s|
   }
   s.prepare_command = <<-CMD
     cd ../
-    flutter pub get
     python3 ./scripts/build.py
                       CMD
 end

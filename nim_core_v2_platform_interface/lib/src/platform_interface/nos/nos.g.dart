@@ -11,13 +11,12 @@ part of 'nos.dart';
 // **************************************************************************
 
 NIMNOSTransferProgress _$NIMNOSTransferProgressFromJson(
-    Map<String, dynamic> json) {
-  return NIMNOSTransferProgress(
-    key: json['key'] as String,
-    transferred: json['transferred'] as int?,
-    total: json['total'] as int?,
-  );
-}
+        Map<String, dynamic> json) =>
+    NIMNOSTransferProgress(
+      key: json['key'] as String,
+      transferred: (json['transferred'] as num?)?.toInt(),
+      total: (json['total'] as num?)?.toInt(),
+    );
 
 Map<String, dynamic> _$NIMNOSTransferProgressToJson(
         NIMNOSTransferProgress instance) =>
@@ -27,18 +26,19 @@ Map<String, dynamic> _$NIMNOSTransferProgressToJson(
       'total': instance.total,
     };
 
-NIMNOSTransferStatus _$NIMNOSTransferStatusFromJson(Map<String, dynamic> json) {
-  return NIMNOSTransferStatus(
-    transferType:
-        _$enumDecodeNullable(_$NIMNOSTransferTypeEnumMap, json['transferType']),
-    path: json['path'] as String?,
-    md5: json['md5'] as String?,
-    url: json['url'] as String?,
-    size: json['size'] as int?,
-    status: _$enumDecodeNullable(_$NIMNosTransferStatusEnumMap, json['status']),
-    extension: json['extension'] as String?,
-  );
-}
+NIMNOSTransferStatus _$NIMNOSTransferStatusFromJson(
+        Map<String, dynamic> json) =>
+    NIMNOSTransferStatus(
+      transferType: $enumDecodeNullable(
+          _$NIMNOSTransferTypeEnumMap, json['transferType']),
+      path: json['path'] as String?,
+      md5: json['md5'] as String?,
+      url: json['url'] as String?,
+      size: (json['size'] as num?)?.toInt(),
+      status:
+          $enumDecodeNullable(_$NIMNosTransferStatusEnumMap, json['status']),
+      extension: json['extension'] as String?,
+    );
 
 Map<String, dynamic> _$NIMNOSTransferStatusToJson(
         NIMNOSTransferStatus instance) =>

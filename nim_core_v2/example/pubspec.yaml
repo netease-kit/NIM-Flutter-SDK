@@ -1,6 +1,6 @@
 name: nim_core_v2_example
 description: Demonstrates how to use the nim_core_v2 plugin.
-
+version: 10.9.4
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -28,11 +28,20 @@ dependencies:
   crypto: ^3.0.0
   universal_io: ^2.0.4
 
-  device_info_plus: ^9.0.0
+  device_info_plus: ^10.1.0
 
+dependency_overrides:
+  win32: 5.10.1
+#  path_provider:
+#    git:
+#      url: "https://gitee.com/flutter-assembly/path_provider.git"
 dev_dependencies:
 #  yunxin_integration_test: ^0.0.1-rc.15
-  hawk: ^0.0.2-rc.15
+  hawk: ^0.0.2-rc.21
+#    git:
+#      url: ssh://git@g.hz.netease.com:22222/yunxin-app/xkit-flutter.git
+#      ref: lcd/release/hawk_ohos
+#      path: ./auto_test/hawk
   hawk_source_gen:
     path: ../../../auto_test/hawk_source_gen
   build_runner:

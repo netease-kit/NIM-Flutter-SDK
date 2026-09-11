@@ -87,6 +87,11 @@ abstract class LoginServicePlatform extends Service {
     throw UnimplementedError('getLoginClients() is not implemented');
   }
 
+  /// 获取当前登录终端相关信息， 在登录成功后才能获取，否则内容为空
+  Future<NIMResult<NIMLoginClient>> getCurrentLoginClient() {
+    throw UnimplementedError('getCurrentLoginClient() is not implemented');
+  }
+
   /// 踢掉登录客户端下线
   Future<NIMResult<void>> kickOffline(NIMLoginClient client) {
     throw UnimplementedError('kickOffline() is not implemented');

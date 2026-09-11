@@ -6,20 +6,24 @@ import Foundation
 import NIMSDK
 
 extension V2NIMUpdateSelfMemberInfoParams {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(teamNick): teamNick ?? "",
-      #keyPath(serverExtension): serverExtension ?? "",
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(teamNick)] = teamNick
+    keyPaths[#keyPath(serverExtension)] = serverExtension
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMUpdateSelfMemberInfoParams {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMUpdateSelfMemberInfoParams {
     let params = V2NIMUpdateSelfMemberInfoParams()
-    if let teamNick = dict[#keyPath(teamNick)] as? String {
+    if let teamNick = arguments[#keyPath(teamNick)] as? String {
       params.teamNick = teamNick
     }
-    if let serverExtension = dict[#keyPath(serverExtension)] as? String {
+    if let serverExtension = arguments[#keyPath(serverExtension)] as? String {
       params.serverExtension = serverExtension
     }
     return params

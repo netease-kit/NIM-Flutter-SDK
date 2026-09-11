@@ -11,15 +11,27 @@
 #include "FLTConvert.h"
 #include "FLTService.h"
 #include "common/services/FLTAIService.h"
+#include "common/services/FLTChatRoomService.h"
+#include "common/services/FLTChatroomClient.h"
+#include "common/services/FLTChatroomMessageCreator.h"
+#include "common/services/FLTChatroomQueueService.h"
+#include "common/services/FLTClientAntispamUtil.h"
+#include "common/services/FLTConversationGroupService.h"
 #include "common/services/FLTConversationIdUtil.h"
 #include "common/services/FLTConversationService.h"
 #include "common/services/FLTFriendService.h"
 #include "common/services/FLTInitializeService.h"
+#include "common/services/FLTLocalConversationService.h"
 #include "common/services/FLTLoginService.h"
 #include "common/services/FLTMessageCreator.h"
 #include "common/services/FLTMessageService.h"
 #include "common/services/FLTNotificationService.h"
+#include "common/services/FLTSignallingService.h"
+#include "common/services/FLTStatisticsService.h"
 #include "common/services/FLTStorageService.h"
+#include "common/services/FLTSubscriptionService.h"
+#include "common/services/FLTTopicService.h"
+#include "common/services/FLTUtilityService.h"
 #include "common/services/V2FLTSettingsService.h"
 #include "common/services/V2FLTTeamService.h"
 #include "common/services/V2FLTUserService.h"
@@ -84,10 +96,50 @@ class NimMethodChannel {
                            }
                          } else {
                            if (result != nil && ![result isKindOfClass:[NSNull class]]) {
-                             NSString* returnValueStr = (NSString*)result;
-                             std::string cppStr = std::string([returnValueStr UTF8String]);
-                             auto value = flutter::EncodableValue(cppStr);
-                             cb(value);
+                             if ([result isKindOfClass:[NSArray class]]) {
+                               NSArray<NSString*>* returnValueStr = (NSArray<NSString*>*)result;
+                               // 显式转换为 EncodableList
+                               flutter::EncodableList encodableList;
+                               std::vector<std::string> resultVector;
+                               for (NSString* valueStr : returnValueStr) {
+                                 std::string cppStr = std::string([valueStr UTF8String]);
+                                 resultVector.push_back(cppStr);
+                               }
+
+                               for (const auto& str : resultVector) {
+                                 encodableList.push_back(flutter::EncodableValue(str));
+                               }
+
+                               auto value = flutter::EncodableValue(encodableList);
+                               cb(value);
+                             } else if ([result isKindOfClass:[FlutterError class]]) {
+                               flutter::EncodableMap encodableMap;
+                               auto value = flutter::EncodableValue(encodableMap);
+                               cb(value);
+                             } else if ([result isKindOfClass:[NSNumber class]]) {
+                               NSNumber* returnValue = (NSNumber*)result;
+                               const char* objCType = [returnValue objCType];
+                               if (strcmp(objCType, @encode(BOOL)) == 0 ||
+                                   strcmp(objCType, @encode(char)) == 0) {
+                                 auto value =
+                                     flutter::EncodableValue((bool)[returnValue boolValue]);
+                                 cb(value);
+                               } else if (strcmp(objCType, @encode(float)) == 0 ||
+                                          strcmp(objCType, @encode(double)) == 0) {
+                                 auto value = flutter::EncodableValue([returnValue doubleValue]);
+                                 cb(value);
+                               } else {
+                                 auto value =
+                                     flutter::EncodableValue((int64_t)[returnValue longLongValue]);
+                                 cb(value);
+                               }
+                             } else {
+                               NSString* returnValueStr = (NSString*)result;
+                               std::string cppStr = std::string([returnValueStr UTF8String]);
+                               auto value = flutter::EncodableValue(cppStr);
+                               cb(value);
+                             }
+
                            } else {
                              //  auto emptyValue = flutter::EncodableValue("");
                              cb(std::nullopt);
@@ -108,12 +160,16 @@ NimCore::NimCore() {
 
 NimCore::~NimCore() {}
 
-void NimCore::regService() {
+void NimCore::regService(bool enableCloudConversation) {
   addService(new FLTLoginService());
   addService(new FLTAIService());
   addService(new FLTNotificationService());
   addService(new FLTStorageService());
   addService(new FLTMessageService());
+  addService(new FLTTopicService());
+  addService(new FLTClientAntispamUtil());
+  addService(new FLTChatRoomService());
+  addService(new FLTConversationGroupService(enableCloudConversation));
   addService(new FLTConversationService());
   addService(new FLTConversationIdUtil());
   addService(new V2FLTUserService());
@@ -121,6 +177,14 @@ void NimCore::regService() {
   addService(new FLTMessageCreator());
   addService(new V2FLTSettingsService());
   addService(new V2FLTTeamService());
+  addService(new FLTSubscriptionService());
+  addService(new FLTSignallingService());
+  addService(new FLTLocalConversationService());
+  addService(new FLTChatroomMessageCreator());
+  addService(new FLTChatroomClient());
+  addService(new FLTChatroomQueueService());
+  addService(new FLTStatisticsService());
+  addService(new FLTUtilityService());
 }
 
 void NimCore::cleanService() {
@@ -181,14 +245,15 @@ void NimCore::onMethodCall(const std::string& methodName, const flutter::Encodab
     if (service) {
       std::shared_ptr<MockMethodResult> mockResult =
           std::make_shared<MockMethodResult>(serviceName, methodName, resultCallback);
-      YXLOG_API(Info) << "mn: " << methodName
-                      << ", args: " << Convert::getInstance()->getStringFormMapForLog(&arguments)
-                      << YXLOGEnd;
+      //      YXLOG_API(Info) << "mn: " << methodName
+      //                      << ", args: " <<
+      //                      Convert::getInstance()->getStringFormMapForLog(&arguments)
+      //                      << YXLOGEnd;
       service->onMethodCalled(methodName, &arguments, mockResult);
       return;
     }
   } else {
-    YXLOG_API(Warn) << "sn not found, mn: " << methodName << YXLOGEnd;
+    //    YXLOG_API(Warn) << "sn not found, mn: " << methodName << YXLOGEnd;
   }
 }
 
@@ -200,15 +265,15 @@ MockMethodResult::MockMethodResult(const std::string serviceName, const std::str
 void MockMethodResult::ErrorInternal(const std::string& error_code,
                                      const std::string& error_message,
                                      const flutter::EncodableValue* details) {
-  YXLOG_API(Warn) << "cb error, sn: " << m_serviceName << ", mn: " << m_methodName
-                  << ", error_code: " << error_code << ", error_msg: " << error_message
-                  << ", details: " << getStringFormEncodableValue(details) << YXLOGEnd;
+  //  YXLOG_API(Warn) << "cb error, sn: " << m_serviceName << ", mn: " << m_methodName
+  //                  << ", error_code: " << error_code << ", error_msg: " << error_message
+  //                  << ", details: " << getStringFormEncodableValue(details) << YXLOGEnd;
   if (m_resultCallback) m_resultCallback(details, false);
 }
 
 void MockMethodResult::NotImplementedInternal() {
-  YXLOG_API(Warn) << "cb notImplemented, sn: " << m_serviceName << ", mn: " << m_methodName
-                  << YXLOGEnd;
+  //  YXLOG_API(Warn) << "cb notImplemented, sn: " << m_serviceName << ", mn: " << m_methodName
+  //                  << YXLOGEnd;
   if (m_resultCallback) m_resultCallback(nullptr, true);
 }
 
@@ -223,7 +288,7 @@ void MockMethodResult::SuccessInternal(const flutter::EncodableValue* result) {
   std::list<std::string> logList;
   Convert::getInstance()->getLogList(strLog, logList);
   for (auto& it : logList) {
-    YXLOG_API(Info) << it << YXLOGEnd;
+    //    YXLOG_API(Info) << it << YXLOGEnd;
   }
 
   if (m_resultCallback) m_resultCallback(result, false);

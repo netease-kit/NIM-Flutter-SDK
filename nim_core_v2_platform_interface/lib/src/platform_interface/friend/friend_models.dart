@@ -121,6 +121,16 @@ class NIMFriendAddApplication {
   /// 是否已读
   bool? read;
 
+  ///附言历史记录
+  @JsonKey(fromJson: _v2NIMPostscriptListFromJson)
+  List<V2NIMPostscript>? postscriptHistory;
+
+  ///申请记录id
+  String? serverId;
+
+  ///更新时间
+  int? updateTimestamp;
+
   NIMFriendAddApplication(
       {this.applicantAccountId,
       this.recipientAccountId,
@@ -128,12 +138,42 @@ class NIMFriendAddApplication {
       this.postscript,
       this.status,
       this.timestamp,
+      this.postscriptHistory,
+      this.serverId,
+      this.updateTimestamp,
       this.read});
 
   Map<String, dynamic> toJson() => _$NIMFriendAddApplicationToJson(this);
 
   factory NIMFriendAddApplication.fromJson(Map<String, dynamic> map) =>
       _$NIMFriendAddApplicationFromJson(map);
+}
+
+List<V2NIMPostscript>? _v2NIMPostscriptListFromJson(
+    List<dynamic>? postscriptList) {
+  return postscriptList
+      ?.map((e) => V2NIMPostscript.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+///附言类
+@JsonSerializable(explicitToJson: true)
+class V2NIMPostscript {
+  ///附言的发送者
+  String? fromAccount;
+
+  ///附言的内容
+  String? content;
+
+  ///附言产生的时间
+  int? time;
+
+  V2NIMPostscript({this.fromAccount, this.content, this.time});
+
+  Map<String, dynamic> toJson() => _$V2NIMPostscriptToJson(this);
+
+  factory V2NIMPostscript.fromJson(Map<String, dynamic> map) =>
+      _$V2NIMPostscriptFromJson(map);
 }
 
 enum NIMFriendAddApplicationStatus {
@@ -266,6 +306,47 @@ enum NIMFriendDeletionType {
   /// 对方删除你
   @JsonValue(2)
   nimFriendDeletionTypeByFriend,
+}
+
+/// 清空好友申请类型
+enum NIMFriendAddApplicationType {
+  /// 兼容老版本模式
+  @JsonValue(0)
+  nimFriendAddApplicationTypeLegacy,
+
+  /// 我发起的好友申请
+  @JsonValue(1)
+  nimFriendAddApplicationTypeFromSelf,
+
+  /// 我收到的好友申请
+  @JsonValue(2)
+  nimFriendAddApplicationTypeToSelf,
+
+  /// 所有好友申请
+  @JsonValue(3)
+  nimFriendAddApplicationTypeAll,
+}
+
+/// 清空好友申请的过滤选项（SDK 10.9.76+）
+@JsonSerializable(explicitToJson: true)
+class NIMFriendClearAddApplicationOption {
+  /// 清空该时间戳（ms）之前的申请记录；为 null 时不按时间过滤
+  int? timestamp;
+
+  /// 申请类型：收到 / 发出；为 null 时清空全部类型
+  NIMFriendAddApplicationType? type;
+
+  NIMFriendClearAddApplicationOption({
+    this.timestamp,
+    this.type,
+  });
+
+  Map<String, dynamic> toJson() =>
+      _$NIMFriendClearAddApplicationOptionToJson(this);
+
+  factory NIMFriendClearAddApplicationOption.fromJson(
+          Map<String, dynamic> map) =>
+      _$NIMFriendClearAddApplicationOptionFromJson(map);
 }
 
 /// 删除好友事件

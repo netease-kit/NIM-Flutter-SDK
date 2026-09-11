@@ -10,6 +10,8 @@ let kFLTNimCoreService = "serviceName"
 class NimCore {
   private var services = [String: FLTService]()
 
+  private var semaphores = [DispatchSemaphore]()
+
   private var safeMethodChannel: SafeMethodChannel?
 
   private var controller: UIViewController?
@@ -50,6 +52,14 @@ class NimCore {
     services[name]
   }
 
+  func addSemaphore(_ semaphore: DispatchSemaphore) {
+    semaphores.append(semaphore)
+  }
+
+  func signalSemaphores() {
+    semaphores.forEach { $0.signal() }
+  }
+
   func setController(_ controller: UIViewController?) {
     self.controller = controller
   }
@@ -64,9 +74,6 @@ class NimCore {
 
   func onMethodCall(_ method: String, _ arguments: [String: Any],
                     resultCallback: ResultCallback) {
-    print("========================== \(method) ==========================")
-    dump(arguments)
-    print("========================== \(method) ==========================")
     if let serviceName = arguments[kFLTNimCoreService] as? String {
       if let service = getService(serviceName) {
         if !isInitialized(), serviceName != ServiceType.LifeCycleService.rawValue {

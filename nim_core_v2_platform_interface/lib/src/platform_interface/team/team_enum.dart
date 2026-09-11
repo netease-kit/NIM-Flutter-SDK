@@ -21,6 +21,10 @@ enum NIMTeamType {
 
 /// 申请入群模式
 enum NIMTeamJoinMode {
+  ///< 未更新
+  @JsonValue(-1)
+  unknown,
+
   ///< 自由加入，无须验证
   @JsonValue(0)
   joinModeFree,
@@ -36,6 +40,10 @@ enum NIMTeamJoinMode {
 
 /// 被邀请人同意入群模式
 enum NIMTeamAgreeMode {
+  ///< 未更新
+  @JsonValue(-1)
+  unknown,
+
   ///< 需要被邀请方同意（默认值）
   @JsonValue(0)
   agreeModeAuth,
@@ -47,6 +55,10 @@ enum NIMTeamAgreeMode {
 
 /// 邀请入群模式
 enum NIMTeamInviteMode {
+  ///< 未更新
+  @JsonValue(-1)
+  unknown,
+
   ///< 群主，管理员可以邀请其他人入群
   @JsonValue(0)
   inviteModeManager,
@@ -58,6 +70,10 @@ enum NIMTeamInviteMode {
 
 /// 群组资料修改模式
 enum NIMTeamUpdateInfoMode {
+  ///< 未更新
+  @JsonValue(-1)
+  unknown,
+
   ///< 群主/管理员可以修改群组资料
   @JsonValue(0)
   updateInfoModeManager,
@@ -69,6 +85,10 @@ enum NIMTeamUpdateInfoMode {
 
 /// 群组禁言模式
 enum NIMTeamChatBannedMode {
+  ///< 未更新
+  @JsonValue(-1)
+  unknown,
+
   ///< 不禁言，群组成员可以自由发言
   @JsonValue(0)
   chatBannedModeNone,
@@ -78,7 +98,7 @@ enum NIMTeamChatBannedMode {
   chatBannedModeBannedNormal,
 
   ///< 全员禁言，群组所有成员都被禁言， 该状态只能OpenApi发起
-  @JsonValue(2)
+  @JsonValue(3)
   chatBannedModeBannedAll,
 }
 
@@ -161,8 +181,27 @@ enum NIMSortOrder {
   sortOrderAsc,
 }
 
+/// 群申请/邀请操作所涉及的群组类型（用于 clearAllTeamJoinActionInfoEx 过滤）
+enum NIMTeamJoinActionTeamType {
+  /// 高级群
+  @JsonValue(1)
+  team,
+
+  /// 超大群
+  @JsonValue(2)
+  superTeam,
+
+  /// 全部类型
+  @JsonValue(3)
+  all,
+}
+
 /// 群组扩展字段修改模式
 enum NIMTeamUpdateExtensionMode {
+  ///< 未更新
+  @JsonValue(-1)
+  unknown,
+
   ///< 群主/管理员可以修改群组扩展字段
   @JsonValue(0)
   updateExtensionModeManager,

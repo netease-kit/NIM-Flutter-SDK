@@ -16,7 +16,6 @@
   },
   "source_files": [
     "Classes/**/*",
-    "log/**/*.h",
     "nim_sdk/**/*.h"
   ],
   "public_header_files": "Classes/nim_core_macos_plugin.h",
@@ -37,16 +36,13 @@
     "nim_sdk/**/*.a",
     "nim_sdk/**/*.dylib"
   ],
-  "vendored_frameworks": [
-    "log/**/*.framework",
-    "nim_sdk/**/*.framework"
-  ],
+  "vendored_frameworks": "nim_sdk/**/*.framework",
   "static_framework": true,
   "libraries": "c++",
   "xcconfig": {
     "CLANG_CXX_LANGUAGE_STANDARD": "c++17",
     "CLANG_CXX_LIBRARY": "libc++"
   },
-  "prepare_command": "cd ../\ndart pub get\npython3 ./scripts/build.py",
+  "prepare_command": "cd ../\npython3 ./scripts/build.py",
   "swift_version": "5.0"
 }

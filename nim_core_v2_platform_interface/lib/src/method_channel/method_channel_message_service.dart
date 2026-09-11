@@ -101,6 +101,16 @@ class MethodChannelMessageService extends MessageServicePlatform {
         if (list != null)
           MessageServicePlatform.instance.onClearHistoryNotifications.add(list);
         break;
+      case 'onReceiveMessagesModified':
+        var messageList = arguments['messages'] as List<dynamic>?;
+        List<NIMMessage>? list = messageList
+            ?.map((e) => NIMMessage.fromJson(Map<String, dynamic>.from(e)))
+            .toList();
+        if (list != null)
+          MessageServicePlatform.instance.onReceiveMessagesModified.add(list);
+        break;
+      case 'shouldIgnore':
+        return shouldIgnoreMessage(arguments);
       default:
         throw UnimplementedError('$method has not been implemented');
     }
@@ -241,6 +251,24 @@ class MethodChannelMessageService extends MessageServicePlatform {
           'conversationId': conversationId,
           'senderId': senderId,
           'createTime': createTime
+        },
+      ),
+      convert: (map) {
+        return NIMMessage.fromJson(map);
+      },
+    );
+  }
+
+  @override
+  Future<NIMResult<NIMMessage>> insertMessageToLocalEx(
+      {required NIMMessage message,
+      required V2NIMMessageInsertParams params}) async {
+    return NIMResult<NIMMessage>.fromMap(
+      await invokeMethod(
+        'insertMessageToLocalEx',
+        arguments: {
+          'message': message.toJson(),
+          'params': params.toJson(),
         },
       ),
       convert: (map) {
@@ -729,5 +757,197 @@ class MethodChannelMessageService extends MessageServicePlatform {
         arguments: {'message': arguments},
       ),
     );
+  }
+
+  /// 消息序列化为字符串
+  /// [message] 消对象
+  /// 返回序列化后的字符串
+  Future<NIMResult<String>> messageSerialization(NIMMessage message) async {
+    Map<String, dynamic> arguments = message.toJson();
+    return NIMResult<String>.fromMap(
+      await invokeMethod(
+        'messageSerialization',
+        arguments: {'message': arguments},
+      ),
+    );
+  }
+
+  /// 字符串反序列化为消息对象
+  /// [msg]  messageSerialization方法序列化后的字符串
+  /// 反序列化后的消息对象
+  Future<NIMResult<NIMMessage>> messageDeserialization(String msg) async {
+    return NIMResult<NIMMessage>.fromMap(
+      await invokeMethod(
+        'messageDeserialization',
+        arguments: {'msg': msg},
+      ),
+      convert: (map) {
+        return NIMMessage.fromJson(map);
+      },
+    );
+  }
+
+  ///更新消息
+  /// [message] 需要更新的消息
+  ///  [params] 更新参数
+  Future<NIMResult<NIMModifyMessageResult>> modifyMessage(
+      NIMMessage message, NIMModifyMessageParams params) async {
+    return NIMResult<NIMModifyMessageResult>.fromMap(
+      await invokeMethod(
+        'modifyMessage',
+        arguments: {'message': message.toJson(), 'params': params.toJson()},
+      ),
+      convert: (map) {
+        return NIMModifyMessageResult.fromJson(map);
+      },
+    );
+  }
+
+  ///重新输出数字人消息
+  /// [message] 需要重新输出的消息体
+  ///  [params] 重新输出的配置参数，确定重新输出的操作类型
+  Future<NIMResult<void>> regenAIMessage(
+      NIMMessage message, NIMMessageAIRegenParams params) async {
+    return NIMResult<NIMModifyMessageResult>.fromMap(
+      await invokeMethod(
+        'regenAIMessage',
+        arguments: {'message': message.toJson(), 'params': params.toJson()},
+      ),
+    );
+  }
+
+  ///停止流式消息输出
+  /// [message] 需要停止的消息体
+  ///  [params] 停止AI流式消息相关参数
+  Future<NIMResult<void>> stopAIStreamMessage(
+      NIMMessage message, NIMMessageAIStreamStopParams params) async {
+    return NIMResult<NIMModifyMessageResult>.fromMap(
+      await invokeMethod(
+        'stopAIStreamMessage',
+        arguments: {'message': message.toJson(), 'params': params.toJson()},
+      ),
+    );
+  }
+
+  ///安装消息过滤器
+  ///云端会话的最后一条消息不受该过滤器控制
+  ///[add] 是否添加，false 则表示删除
+  Future<NIMResult<void>> setMessageFilter(NIMMessageFilter? filter) async {
+    shouldIgnore = filter;
+    return NIMResult<void>.fromMap(await invokeMethod(
+      'setMessageFilter',
+      arguments: {'filter': filter != null},
+    ));
+  }
+
+  /// 搜索云端消息
+  /// [params]  消息检索参数
+  Future<NIMResult<NIMMessageSearchResult>> searchCloudMessagesEx(
+      NIMMessageSearchExParams params) async {
+    return NIMResult<NIMMessageSearchResult>.fromMap(
+        await invokeMethod(
+          'searchCloudMessagesEx',
+          arguments: {'params': params.toJson()},
+        ), convert: (map) {
+      return NIMMessageSearchResult.fromJson(map);
+    });
+  }
+
+  /// 检索本地消息
+  /// [params]  消息检索参数
+  Future<NIMResult<NIMMessageSearchResult>> searchLocalMessages(
+      NIMMessageSearchExParams params) async {
+    return NIMResult<NIMMessageSearchResult>.fromMap(
+        await invokeMethod(
+          'searchLocalMessages',
+          arguments: {'params': params.toJson()},
+        ), convert: (map) {
+      return NIMMessageSearchResult.fromJson(map);
+    });
+  }
+
+  ///查询历史消息
+  /// 分页接口，每次默认50条，可以根据参数组合查询各种类型
+  /// [option] 查询消息配置选项
+  Future<NIMResult<NIMMessageListResult>> getMessageListEx(
+      NIMMessageListOption option) async {
+    return NIMResult<NIMMessageListResult>.fromMap(
+        await invokeMethod(
+          'getMessageListEx',
+          arguments: {'option': option.toJson()},
+        ),
+        convert: (map) => NIMMessageListResult.fromJson(map));
+  }
+
+  ///按条件分页获取收藏信息。回调结果包含总条数
+  /// [option] 查询参数
+  Future<NIMResult<NIMCollectionListResult>> getCollectionListExByOption(
+      NIMCollectionOption option) async {
+    return NIMResult<NIMCollectionListResult>.fromMap(
+        await invokeMethod(
+          'getCollectionListExByOption',
+          arguments: {'option': option.toJson()},
+        ),
+        convert: (map) => NIMCollectionListResult.fromJson(map));
+  }
+
+  ///更新本地插入的消息
+  ///  serverid为0的消息
+  /// 云端消息请调用modifyMessage接口
+  /// [message] 需要被更新的消息体
+  /// [params] 需要更新的数据字段
+  Future<NIMResult<NIMMessage>> updateLocalMessage(
+      NIMMessage message, NIMUpdateLocalMessageParams params) async {
+    return NIMResult<NIMMessage>.fromMap(
+        await invokeMethod(
+          'updateLocalMessage',
+          arguments: {'message': message.toJson(), 'params': params.toJson()},
+        ),
+        convert: (map) => NIMMessage.fromJson(map));
+  }
+
+  /// 仅清空会话漫游消息， 单次传递最多50个会话ID
+  /// [conversationIds] 需要清理的会话ID
+  Future<NIMResult<void>> clearRoamingMessage(
+      {required List<String> conversationIds}) async {
+    return NIMResult<void>.fromMap(await invokeMethod(
+      'clearRoamingMessage',
+      arguments: {'conversationIds': conversationIds},
+    ));
+  }
+
+  /// 清理本地消息
+  /// [params] 清理参数，包含时间戳锚点和是否同时删除会话
+  Future<NIMResult<void>> clearLocalMessage(
+      NIMClearLocalMessageParams? params) async {
+    return NIMResult<void>.fromMap(await invokeMethod(
+      'clearLocalMessage',
+      arguments: params != null ? {'params': params.toJson()} : null,
+    ));
+  }
+
+  @override
+  Future<NIMResult<NIMTextTranslationResult>> translateText({
+    required NIMTextTranslateParams params,
+    NIMTranslatorConfig? config,
+  }) async {
+    return NIMResult<NIMTextTranslationResult>.fromMap(
+        await invokeMethod(
+          'translateText',
+          arguments: {
+            'params': params.toJson(),
+            if (config != null) 'config': config.toJson(),
+          },
+        ),
+        convert: (map) => NIMTextTranslationResult.fromJson(map));
+  }
+
+  Future<bool> shouldIgnoreMessage(arguments) async {
+    assert(arguments is Map);
+    final messageMap = arguments['message'] as Map?;
+    assert(messageMap != null);
+    final message = NIMMessage.fromJson(messageMap!.cast<String, dynamic>());
+    if (shouldIgnore == null) return false;
+    return await shouldIgnore!.call(message);
   }
 }

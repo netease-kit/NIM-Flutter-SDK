@@ -688,6 +688,8 @@ fun convertToStatusBarNotificationConfig(param: Map<String, Any?>?): StatusBarNo
             notificationExtraType = EnumTypeMappingRegistry.enumFromValue(
                 it["notificationExtraType"] as String
             )
+            asyncNotifierExe = it["asyncNotifierExe"] as Boolean? == true
+            highImportance = it["highImportance"] as Boolean? == true
         }
     }
 }
