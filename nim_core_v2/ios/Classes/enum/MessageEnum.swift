@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import Foundation
-import NIMQChat
 import NIMSDK
 
 enum FLT_NIMMessageType: String {
@@ -220,19 +219,6 @@ enum FLT_NIMMessageStatus: String {
       }
     } else {
       return .success
-    }
-  }
-
-  static func convertFLTStatus(qchatMessage: NIMQChatMessage) -> FLT_NIMMessageStatus {
-    switch qchatMessage.deliveryState {
-    case 0:
-      return .fail
-    case 1:
-      return .sending
-    case 2:
-      return .success
-    default:
-      return .draft
     }
   }
 

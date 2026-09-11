@@ -66,10 +66,6 @@ class FLTInitializeService: FLTService {
       NIMSDKConfig.shared().sessionDatabaseBackupEnabled = enableDatabaseBackup
     }
 
-    if let enableQChatMessageCache = arguments["enabledQChatMessageCache"] as? Bool {
-      NIMQChatConfig.shared().enabledMessageCache = enableQChatMessageCache
-    }
-
     if let serverConfig = arguments["serverConfig"] as? [String: Any] {
       if let serverSetting = NIMServerSetting.fromDic(serverConfig) {
         NIMSDK.shared().serverSetting = serverSetting

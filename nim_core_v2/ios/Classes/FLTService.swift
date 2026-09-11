@@ -26,13 +26,6 @@ enum ServiceType: String {
   case SettingService = "SettingsService"
   case SuperTeamService
   case SignallingService
-  case QChatObserver
-  case QChatService
-  case QChatServerService
-  case QChatChannelService
-  case QChatMessageService
-  case QChatRoleService
-  case QChatPushService
   case LoginService
   case FriendService
   case MessageCreatorService
