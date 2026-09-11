@@ -61,4 +61,11 @@ abstract class UserServicePlatform extends Service {
       NIMUserSearchOption userSearchOption) async {
     throw UnimplementedError('searchUserByOption() is not implemented');
   }
+
+  /// 查看是否在黑名单
+  /// [accountIds] 检查黑名单状态的账号ID列表
+  /// 在黑名单列表的check返回为true，其它的账号不存在，不在黑名单， 账号格式错误均统一返回false
+  Future<NIMResult<Map<String, bool>>> checkBlock(List<String> accountIds) {
+    throw UnimplementedError('checkBlock() is not implemented');
+  }
 }

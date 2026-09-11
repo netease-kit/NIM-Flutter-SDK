@@ -28,18 +28,43 @@ enum V2ConversationAPIType: String {
   case unsubscribeUnreadCountByFilter
   case getConversationReadTime
   case markConversationRead
+  case getStickTopConversationList
 }
-
-let conversationClassName = "FLTConversationService"
 
 @objcMembers
 class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListener {
+  private static let className = "FLTConversationService"
+  private var isConversationListenerRegistered = false
+  private var unreadCountFilters = [String: V2NIMConversationFilter]()
+
   override func onInitialized() {
-    NIMSDK.shared().v2ConversationService.add(self)
+    ensureConversationListenerRegistered()
   }
 
   deinit {
-    NIMSDK.shared().v2ConversationService.remove(self)
+    if isConversationListenerRegistered {
+      NIMSDK.shared().v2ConversationService.remove(self)
+    }
+  }
+
+  private func ensureConversationListenerRegistered() {
+    guard !isConversationListenerRegistered else {
+      return
+    }
+    guard NIMSDK.shared().v2Option?.enableV2CloudConversation == true else {
+      return
+    }
+    NIMSDK.shared().v2ConversationService.add(self)
+    isConversationListenerRegistered = true
+  }
+
+  private func unreadCountFilterKey(_ filter: V2NIMConversationFilter) -> String {
+    let conversationTypes = (filter.conversationTypes ?? [])
+      .map(\.intValue)
+      .sorted()
+      .map(String.init)
+      .joined(separator: ",")
+    return "\(conversationTypes)|\(filter.conversationGroupId ?? "")|\(filter.ignoreMuted)"
   }
 
   func serviceName() -> String {
@@ -48,8 +73,6 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
 
   /// 获取会话列表
   func getConversationList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getConversationList argument \(arguments)")
-
     guard let offset = arguments["offset"] as? Int64, let limit = arguments["limit"] as? Int else {
       parameterError(resultCallback)
       return
@@ -62,14 +85,23 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, result.toDictionary())
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getConversationList error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getConversationList error \(error.nserror.localizedDescription)")
+    }
+  }
+
+  /// 获取置顶会话列表
+  func getStickTopConversationList(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    weak var weakSelf = self
+    NIMSDK.shared().v2ConversationService.getStickTopConversationList { conversations in
+      weakSelf?.successCallBack(resultCallback, ["conversationList": conversations.map { $0.toDictionary() }])
+    } failure: { error in
+      weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
+      FLTALog.errorLog(FLTConversationService.className, desc: "getConversationList error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 根据查询参数获取会话列表
   func getConversationListByOption(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getConversationListByOption argument \(arguments)")
-
     guard let optionArgument = arguments["option"] as? [String: Any], let offset = arguments["offset"] as? Int64, let limit = arguments["limit"] as? Int else {
       parameterError(resultCallback)
       return
@@ -80,14 +112,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, result.toDictionary())
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getConversationListByOption error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getConversationListByOption error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取会话列表，通过会话id列表
   func getConversationListByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getConversationListByIds argument \(arguments)")
-
     guard let conversationIds = arguments["conversationIdList"] as? [String] else {
       parameterError(resultCallback)
       return
@@ -97,14 +127,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, ["conversationList": conversations.map { $0.toDictionary() }])
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getConversationListByIds error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getConversationListByIds error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取会话
   func getConversation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getConversation argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -114,14 +142,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, conversation.toDictionary())
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getConversation error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getConversation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 创建会话
   func createConversation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "createConversation argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -133,14 +159,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, conversationDic)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "createConversation error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "createConversation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 删除会话
   func deleteConversation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "deleteConversation argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String, let clearMessage = arguments["clearMessage"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -150,14 +174,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "deleteConversation error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "deleteConversation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 批量删除会话
   func deleteConversationListByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "deleteConversationListByIds argument \(arguments)")
-
     guard let conversationIds = arguments["conversationIdList"] as? [String], let clearMessage = arguments["clearMessage"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -167,19 +189,17 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
     NIMSDK.shared().v2ConversationService.deleteConversationList(byIds: conversationIds, clearMessage: clearMessage) { result in
       var resultList = [[String: Any]]()
       for result in result {
-        resultList.append(result.toDictionary())
+        resultList.append(result.toDic())
       }
       weakSelf?.successCallBack(resultCallback, ["conversationOperationResult": resultList])
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "deleteConversationListByIds error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "deleteConversationListByIds error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 置顶会话
   func stickTopConversation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "stickTopConversation argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String, let stickTop = arguments["stickTop"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -189,14 +209,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     }) { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "stickTopConversation error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "stickTopConversation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 静音会话
   func muteConversation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "muteConversation argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String, let isMute = arguments["isMute"] as? Bool else {
       parameterError(resultCallback)
       return
@@ -206,14 +224,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     }) { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "muteConversation error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "muteConversation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 更新会话
   func updateConversation(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "updateConversation argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String, let updateArgument = arguments["updateInfo"] as? [String: Any] else {
       parameterError(resultCallback)
       return
@@ -224,14 +240,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "updateConversation error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "updateConversation error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 更新会话本地扩展字段
   func updateConversationLocalExtension(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "updateConversationLocalExtension argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -242,22 +256,18 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "updateConversationLocalExtension error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "updateConversationLocalExtension error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 获取全部会话的总的未读数
   func getTotalUnreadCount(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getTotalUnreadCount argument \(arguments)")
-
     let count = NIMSDK.shared().v2ConversationService.getTotalUnreadCount()
     successCallBack(resultCallback, count)
   }
 
   /// 根据会话id列表获取相应的未读数
   func getUnreadCountByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getUnreadCountByIds argument \(arguments)")
-
     guard let conversationIds = arguments["conversationIdList"] as? [String] else {
       parameterError(resultCallback)
       return
@@ -267,62 +277,51 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, unreadCount)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getUnreadCountByIds error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getUnreadCountByIds error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 根据过滤条件获取相应的未读数
   func getUnreadCountByFilter(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getUnreadCountByFilter argument \(arguments)")
-
     let filter = V2NIMConversationFilter.fromDictionary(arguments)
     weak var weakSelf = self
     NIMSDK.shared().v2ConversationService.getUnreadCount(by: filter) { unreadCount in
       weakSelf?.successCallBack(resultCallback, unreadCount)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getUnreadCountByFilter error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getUnreadCountByFilter error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 清空所有会话的总未读数
   func clearTotalUnreadCount(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "clearTotalUnreadCount argument \(arguments)")
-
     weak var weakSelf = self
     NIMSDK.shared().v2ConversationService.clearTotalUnreadCount {
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "clearTotalUnreadCount error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "clearTotalUnreadCount error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 根据会话id列表清空相应会话的未读数
   func clearUnreadCountByIds(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "clearUnreadCountByIds argument \(arguments)")
-
     guard let conversationIds = arguments["conversationIdList"] as? [String] else {
       parameterError(resultCallback)
       return
     }
     weak var weakSelf = self
     NIMSDK.shared().v2ConversationService.clearUnreadCount(byIds: conversationIds) { resultList in
-      var list = [[String: Any]]()
-      for result in resultList {
-        list.append(result.toDictionary())
-      }
-      weakSelf?.successCallBack(resultCallback, ["conversationOperationResult": list])
+      let resultListDic = resultList.map { $0.toDic() }
+      weakSelf?.successCallBack(resultCallback, ["conversationOperationResult": resultListDic])
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "clearUnreadCountByIds error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "clearUnreadCountByIds error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 根据会话类型列表清空相应会话的未读数
   func clearUnreadCountByTypes(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "clearUnreadCountByTypes argument \(arguments)")
-
     guard let types = arguments["conversationTypeList"] as? [NSNumber] else {
       parameterError(resultCallback)
       return
@@ -332,14 +331,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "clearUnreadCountByTypes error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "clearUnreadCountByTypes error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 根据会话分组清空相应会话的未读数
   func clearUnreadCountByGroupId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "clearUnreadCountByGroupId argument \(arguments)")
-
     guard let groupId = arguments["groupId"] as? String else {
       parameterError(resultCallback)
       return
@@ -349,21 +346,22 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, nil)
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "clearUnreadCountByGroupId error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "clearUnreadCountByGroupId error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 订阅指定过滤条件的会话未读数
   func subscribeUnreadCountByFilter(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "subscribeUnreadCountByFilter argument \(arguments)")
-
     guard let filterArgument = arguments["filter"] as? [String: Any] else {
       parameterError(resultCallback)
       return
     }
     let filter = V2NIMConversationFilter.fromDictionary(filterArgument)
+    ensureConversationListenerRegistered()
     let error = NIMSDK.shared().v2ConversationService.subscribeUnreadCount(by: filter)
     if error == nil {
+      let filterKey = unreadCountFilterKey(filter)
+      unreadCountFilters[filterKey] = filter
       successCallBack(resultCallback, nil)
     } else {
       errorCallBack(resultCallback, error!.nserror.localizedDescription, Int(error!.code))
@@ -372,15 +370,16 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
 
   /// 取消订阅指定过滤条件的会话未读数
   func unsubscribeUnreadCountByFilter(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "unsubscribeUnreadCountByFilter argument \(arguments)")
-
     guard let filterArgument = arguments["filter"] as? [String: Any] else {
       parameterError(resultCallback)
       return
     }
     let filter = V2NIMConversationFilter.fromDictionary(filterArgument)
-    let error = NIMSDK.shared().v2ConversationService.unsubscribeUnreadCount(by: filter)
+    let filterKey = unreadCountFilterKey(filter)
+    let subscribedFilter = unreadCountFilters[filterKey] ?? filter
+    let error = NIMSDK.shared().v2ConversationService.unsubscribeUnreadCount(by: subscribedFilter)
     if error == nil {
+      unreadCountFilters.removeValue(forKey: filterKey)
       successCallBack(resultCallback, nil)
     } else {
       errorCallBack(resultCallback, error!.nserror.localizedDescription, Int(error!.code))
@@ -389,8 +388,6 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
 
   /// 获取会话已读时间戳
   func getConversationReadTime(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "getConversationReadTime argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -400,14 +397,12 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, Int64(time * 1000))
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "getConversationReadTime error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "getConversationReadTime error \(error.nserror.localizedDescription)")
     }
   }
 
   /// 标记会话已读时间戳
   func markConversationRead(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
-    FLTALog.infoLog(conversationClassName, desc: "markConversationRead argument \(arguments)")
-
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -417,7 +412,7 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       weakSelf?.successCallBack(resultCallback, Int(time * 1000))
     } failure: { error in
       weakSelf?.errorCallBack(resultCallback, error.nserror.localizedDescription, Int(error.code))
-      FLTALog.errorLog(conversationClassName, desc: "markConversationRead error \(error.nserror.localizedDescription)")
+      FLTALog.errorLog(FLTConversationService.className, desc: "markConversationRead error \(error.nserror.localizedDescription)")
     }
   }
 
@@ -467,6 +462,8 @@ class FLTConversationService: FLTBaseService, FLTService, V2NIMConversationListe
       getConversationReadTime(arguments, resultCallback)
     case V2ConversationAPIType.markConversationRead.rawValue:
       markConversationRead(arguments, resultCallback)
+    case V2ConversationAPIType.getStickTopConversationList.rawValue:
+      getStickTopConversationList(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -499,7 +496,7 @@ extension FLTConversationService {
    *  @param error 错误
    */
   func onSyncFailed(_ error: V2NIMError) {
-    notifyEvent(serviceName(), "onSyncFailed", ["error": [#keyPath(V2NIMError.code): error.code, #keyPath(V2NIMError.desc): error.desc]])
+    notifyEvent(serviceName(), "onSyncFailed", ["error": error.toDic()])
   }
 
   /**

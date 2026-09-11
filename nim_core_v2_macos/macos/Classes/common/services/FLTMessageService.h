@@ -11,6 +11,8 @@
 #include "v2_nim_message_service.hpp"
 #include "v2_nim_notification_service.hpp"
 
+flutter::EncodableMap convertModifyMessageResult(
+    const v2::V2NIMModifyMessageResult* object);
 flutter::EncodableMap convertMessageRefer(
     const nstd::optional<v2::V2NIMMessageRefer> object);
 flutter::EncodableMap convertMessage(
@@ -18,6 +20,13 @@ flutter::EncodableMap convertMessage(
 flutter::EncodableMap convertMessageStatus(const v2::V2NIMMessageStatus object);
 flutter::EncodableMap convertMessageAIConfig(
     const nstd::optional<v2::V2NIMMessageAIConfig> object);
+flutter::EncodableMap convertAIRAGInfo(const v2::V2NIMAIRAGInfo object);
+flutter::EncodableMap convertMessageAIStreamChunk(
+    const v2::V2NIMMessageAIStreamChunk object);
+flutter::EncodableMap convertMessageStreamChunk(
+    const v2::V2NIMMessageStreamChunk object);
+flutter::EncodableMap convertMessageStreamConfig(
+    const v2::V2NIMMessageStreamConfig object);
 flutter::EncodableMap convertMessageRobotConfig(
     const v2::V2NIMMessageRobotConfig object);
 flutter::EncodableMap convertMessageAntispamConfig(
@@ -41,12 +50,47 @@ flutter::EncodableMap convertMessageLocationAttachment(
     const nstd::shared_ptr<v2::V2NIMMessageLocationAttachment> object);
 flutter::EncodableMap convertMessageNotificationAttachment(
     const nstd::shared_ptr<v2::V2NIMMessageTeamNotificationAttachment> object);
+flutter::EncodableMap convertChatroomNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomNotificationAttachment> object);
+flutter::EncodableMap convertChatroomMessageRevokeNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomMessageRevokeNotificationAttachment>
+        object);
+flutter::EncodableMap convertSendChatroomMessageResult(
+    const v2::V2NIMSendChatroomMessageResult object);
+
+flutter::EncodableMap convertChatroomInfo(const v2::V2NIMChatroomInfo object);
+flutter::EncodableMap convertChatroomMessage(
+    const nstd::optional<v2::V2NIMChatroomMessage> object);
+flutter::EncodableMap convertChatroomMessageConfig(
+    const v2::V2NIMChatroomMessageConfig object);
+flutter::EncodableMap convertChatroomUpdateParams(
+    const v2::V2NIMChatroomUpdateParams object);
+flutter::EncodableMap convertChatroomQueueElement(
+    const nstd::shared_ptr<v2::V2NIMChatroomQueueElement> object);
+flutter::EncodableMap convertChatroomMember(
+    const nstd::optional<v2::V2NIMChatroomMember> object);
+flutter::EncodableMap convertChatroomQueueNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomQueueNotificationAttachment>
+        object);
+flutter::EncodableMap convertChatroomChatBannedNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomChatBannedNotificationAttachment>
+        object);
+flutter::EncodableMap convertChatroomMemberEnterNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomMemberEnterNotificationAttachment>
+        object);
+flutter::EncodableMap convertChatroomMemberRoleUpdateAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomMemberRoleUpdateAttachment> object);
+flutter::EncodableMap convertMessageCallDuration(
+    const v2::V2NIMMessageCallDuration object);
+
 flutter::EncodableMap convertMessageCallDuration(
     const v2::V2NIMMessageCallDuration object);
 flutter::EncodableMap convertMessageCallAttachment(
     const nstd::shared_ptr<v2::V2NIMMessageCallAttachment> object);
 flutter::EncodableMap convertMessageAIConfigParams(
     const nstd::optional<v2::V2NIMMessageAIConfigParams> object);
+flutter::EncodableMap convertMessageTargetConfig(
+    const v2::V2NIMMessageTargetConfig object);
 flutter::EncodableMap convertAIModelCallContent(
     const v2::V2NIMAIModelCallContent object);
 flutter::EncodableMap convertAIModelCallMessage(
@@ -110,11 +154,24 @@ flutter::EncodableMap convertClearHistoryNotification(
     const v2::V2NIMClearHistoryNotification object);
 flutter::EncodableMap convertUpdatedTeamInfo(
     const nstd::optional<v2::V2NIMUpdatedTeamInfo> object);
+flutter::EncodableMap convertMessageSearchResult(
+    const v2::V2NIMMessageSearchResult object);
+flutter::EncodableMap convertMessageSearchItem(
+    const v2::V2NIMMessageSearchItem object);
 
 v2::V2NIMMessageRefer getMessageRefer(const flutter::EncodableMap* arguments);
 v2::V2NIMMessage getMessage(const flutter::EncodableMap* arguments);
+v2::V2NIMModifyMessageParams getModifyMessageParams(
+    const flutter::EncodableMap* arguments);
 v2::V2NIMMessageStatus getMessageStatus(const flutter::EncodableMap* arguments);
 v2::V2NIMMessageAIConfig getMessageAIConfig(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMAIRAGInfo getAIRAGInfo(const flutter::EncodableMap* arguments);
+v2::V2NIMMessageAIStreamChunk getMessageAIStreamChunk(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMMessageStreamChunk getMessageStreamChunk(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMMessageStreamConfig getMessageStreamConfig(
     const flutter::EncodableMap* arguments);
 v2::V2NIMMessageRobotConfig getMessageRobotConfig(
     const flutter::EncodableMap* arguments);
@@ -144,6 +201,8 @@ v2::V2NIMMessageCallDuration getMessageCallDuration(
 nstd::shared_ptr<v2::V2NIMMessageCallAttachment> getMessageCallAttachment(
     const flutter::EncodableMap* arguments);
 v2::V2NIMMessageAIConfigParams getMessageAIConfigParams(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMMessageTargetConfig getMessageTargetConfig(
     const flutter::EncodableMap* arguments);
 v2::V2NIMAIModelCallContent getAIModelCallContent(
     const flutter::EncodableMap* arguments);
@@ -207,6 +266,14 @@ v2::V2NIMClearHistoryNotification getClearHistoryNotification(
     const flutter::EncodableMap* arguments);
 v2::V2NIMUpdatedTeamInfo getUpdatedTeamInfo(
     const flutter::EncodableMap* arguments);
+v2::V2NIMMessageSearchExParams getMessageSearchExParams(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMMessageAIRegenParams getMessageAIRegenParams(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMUpdateLocalMessageParams getUpdateLocalMessageParams(
+    const flutter::EncodableMap* arguments);
+v2::V2NIMChatroomMessage getChatroomMessage(
+    const flutter::EncodableMap* arguments);
 
 class FLTMessageService : public FLTService {
  public:
@@ -259,6 +326,10 @@ class FLTMessageService : public FLTService {
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
   void insertMessageToLocal(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void insertMessageToLocalEx(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
@@ -350,8 +421,52 @@ class FLTMessageService : public FLTService {
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
+  void searchCloudMessagesEx(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getMessageListEx(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void searchLocalMessages(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void updateLocalMessage(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getCollectionListExByOption(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void messageSerialization(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void messageDeserialization(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void setMessageFilter(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void modifyMessage(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void regenAIMessage(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void clearRoamingMessage(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void stopAIStreamMessage(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void clearLocalMessage(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void translateText(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
  private:
   v2::V2NIMMessageListener listener;
+  v2::V2NIMMessageFilter messageFilter;
 };
 
 #endif  // FLTMessageService_H

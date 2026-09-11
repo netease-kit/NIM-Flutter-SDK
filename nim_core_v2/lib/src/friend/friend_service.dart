@@ -128,6 +128,26 @@ class FriendService {
     return _platform.setAddApplicationRead();
   }
 
+  /// 清空所有好友申请
+  Future<NIMResult<void>> clearAllAddApplication() async {
+    return _platform.clearAllAddApplication();
+  }
+
+  /// 清空好友申请（扩展版）
+  /// 清空所有好友申请，并同步到其他端。
+  /// [option] 清空申请选项，包含时间戳和类型过滤
+  Future<NIMResult<void>> clearAllAddApplicationEx(
+      NIMFriendClearAddApplicationOption option) async {
+    return _platform.clearAllAddApplicationEx(option);
+  }
+
+  /// 删除好友申请
+  /// [application] 待删除的申请
+  Future<NIMResult<void>> deleteAddApplication(
+      NIMFriendAddApplication application) async {
+    return _platform.deleteAddApplication(application);
+  }
+
   /// 根据关键字搜索好友信息
   Future<NIMResult<List<NIMFriend>>> searchFriendByOption(
       NIMFriendSearchOption friendSearchOption) async {

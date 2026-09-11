@@ -10,13 +10,14 @@ import android.content.Context
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.convertV2NIMDownloadMessageAttachmentParams
-import com.netease.nimflutter.convertV2NIMSize
-import com.netease.nimflutter.convertV2NIMUploadFileParams
-import com.netease.nimflutter.convertV2NIMUploadFileTask
-import com.netease.nimflutter.toMap
-import com.netease.nimflutter.toMessageAttachment
+import com.netease.nimflutter.extension.convertV2NIMDownloadMessageAttachmentParams
+import com.netease.nimflutter.extension.convertV2NIMSize
+import com.netease.nimflutter.extension.convertV2NIMUploadFileParams
+import com.netease.nimflutter.extension.convertV2NIMUploadFileTask
+import com.netease.nimflutter.extension.toMap
+import com.netease.nimflutter.extension.toMessageAttachment
 import com.netease.nimlib.sdk.NIMClient
+import com.netease.nimlib.sdk.v2.chatroom.V2NIMChatroomClient
 import com.netease.nimlib.sdk.v2.storage.V2NIMStorageService
 import com.netease.nimlib.sdk.v2.storage.V2NIMStorageUtil
 import kotlin.coroutines.resume
@@ -53,7 +54,6 @@ class FLTStorageService(
         return suspendCancellableCoroutine { cont ->
             val sceneName = arguments["sceneName"] as String?
             val expireTime = (arguments["expireTime"] as Number?)?.toLong()
-
             if (sceneName == null || expireTime == null) {
                 cont.resume(
                     NimResult(
@@ -62,8 +62,14 @@ class FLTStorageService(
                     )
                 )
             } else {
+                val instanceId = arguments["instanceId"] as? Int
+                val useStorageService = (
+                    instanceId?.let {
+                        V2NIMChatroomClient.getInstance(instanceId).storageService
+                    }
+                    ) ?: storageService
                 val storageScene =
-                    storageService.addCustomStorageScene(
+                    useStorageService.addCustomStorageScene(
                         sceneName,
                         expireTime
                     )
@@ -80,7 +86,7 @@ class FLTStorageService(
     private suspend fun createUploadFileTask(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
         return suspendCancellableCoroutine { cont ->
             val fileParams = arguments["fileParams"] as Map<String, *>?
-
+            val instanceId = arguments["instanceId"] as? Int
             if (fileParams == null) {
                 cont.resume(
                     NimResult(
@@ -90,8 +96,15 @@ class FLTStorageService(
                 )
             } else {
                 val fileParams = convertV2NIMUploadFileParams(fileParams)
+                val instanceId = arguments["instanceId"] as? Int
+                val useStorageService = (
+                    instanceId?.let {
+                        V2NIMChatroomClient.getInstance(instanceId).storageService
+                    }
+                    ) ?: storageService
+
                 val fileTask =
-                    storageService.createUploadFileTask(fileParams)
+                    useStorageService.createUploadFileTask(fileParams)
                 cont.resume(
                     NimResult(
                         code = 0,
@@ -105,7 +118,7 @@ class FLTStorageService(
     private suspend fun cancelUploadFile(arguments: Map<String, *>): NimResult<Nothing> {
         return suspendCancellableCoroutine { cont ->
             val taskParams = arguments["fileTask"] as Map<String, *>?
-
+            val instanceId = arguments["instanceId"] as? Int
             if (taskParams == null) {
                 cont.resume(
                     NimResult(
@@ -115,7 +128,13 @@ class FLTStorageService(
                 )
             } else {
                 val task = convertV2NIMUploadFileTask(taskParams)
-                storageService.cancelUploadFile(
+                val instanceId = arguments["instanceId"] as? Int
+                val useStorageService = (
+                    instanceId?.let {
+                        V2NIMChatroomClient.getInstance(instanceId).storageService
+                    }
+                    ) ?: storageService
+                useStorageService.cancelUploadFile(
                     task,
                     {
                         cont.resume(
@@ -138,7 +157,13 @@ class FLTStorageService(
 
     private suspend fun getStorageSceneList(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
         return suspendCancellableCoroutine { cont ->
-            val fileTask = storageService.storageSceneList
+            val instanceId = arguments["instanceId"] as? Int
+            val useStorageService = (
+                instanceId?.let {
+                    V2NIMChatroomClient.getInstance(instanceId).storageService
+                }
+                ) ?: storageService
+            val fileTask = useStorageService.storageSceneList
             cont.resume(
                 NimResult(
                     code = 0,
@@ -154,7 +179,7 @@ class FLTStorageService(
     private suspend fun shortUrlToLong(arguments: Map<String, *>): NimResult<String> {
         return suspendCancellableCoroutine { cont ->
             val url = arguments["url"] as String?
-
+            val instanceId = arguments["instanceId"] as? Int
             if (url == null) {
                 cont.resume(
                     NimResult(
@@ -163,7 +188,13 @@ class FLTStorageService(
                     )
                 )
             } else {
-                storageService.shortUrlToLong(
+                val instanceId = arguments["instanceId"] as? Int
+                val useStorageService = (
+                    instanceId?.let {
+                        V2NIMChatroomClient.getInstance(instanceId).storageService
+                    }
+                    ) ?: storageService
+                useStorageService.shortUrlToLong(
                     url,
                     {
                         cont.resume(
@@ -188,7 +219,13 @@ class FLTStorageService(
         return suspendCancellableCoroutine { cont ->
             val url = arguments["url"] as String?
             val filePath = arguments["filePath"] as String?
-            storageService.downloadFile(
+            val instanceId = arguments["instanceId"] as? Int
+            val useStorageService = (
+                instanceId?.let {
+                    V2NIMChatroomClient.getInstance(instanceId).storageService
+                }
+                ) ?: storageService
+            useStorageService.downloadFile(
                 url,
                 filePath,
                 {
@@ -210,7 +247,8 @@ class FLTStorageService(
                         "onFileDownloadProgress",
                         mapOf(
                             "progress" to it,
-                            "url" to url
+                            "url" to url,
+                            "instanceId" to instanceId
                         )
                     )
                 }
@@ -222,7 +260,13 @@ class FLTStorageService(
         return suspendCancellableCoroutine { cont ->
             val downloadParam = arguments["downloadParam"] as Map<String, *>?
             val attachment = convertV2NIMDownloadMessageAttachmentParams(downloadParam!!)
-            storageService.downloadAttachment(
+            val instanceId = arguments["instanceId"] as? Int
+            val useStorageService = (
+                instanceId?.let {
+                    V2NIMChatroomClient.getInstance(instanceId).storageService
+                }
+                ) ?: storageService
+            useStorageService.downloadAttachment(
                 attachment,
                 {
                     cont.resume(
@@ -243,7 +287,8 @@ class FLTStorageService(
                         "onMessageAttachmentDownloadProgress",
                         mapOf(
                             "progress" to it,
-                            "downloadParam" to downloadParam
+                            "downloadParam" to downloadParam,
+                            "instanceId" to instanceId
                         )
                     )
                 }
@@ -254,7 +299,12 @@ class FLTStorageService(
     private suspend fun uploadFile(arguments: Map<String, *>): NimResult<String> {
         return suspendCancellableCoroutine { cont ->
             val taskParams = arguments["fileTask"] as Map<String, *>?
-
+            val instanceId = arguments["instanceId"] as? Int
+            val useStorageService = (
+                instanceId?.let {
+                    V2NIMChatroomClient.getInstance(instanceId).storageService
+                }
+                ) ?: storageService
             if (taskParams == null) {
                 cont.resume(
                     NimResult(
@@ -264,7 +314,7 @@ class FLTStorageService(
                 )
             } else {
                 val task = convertV2NIMUploadFileTask(taskParams)
-                storageService.uploadFile(
+                useStorageService.uploadFile(
                     task,
                     {
                         cont.resume(
@@ -298,7 +348,13 @@ class FLTStorageService(
         return suspendCancellableCoroutine { cont ->
             val thumbSize = (arguments["thumbSize"] as Map<String, *>?)?.let { convertV2NIMSize(it) }
             val attachment = (arguments["attachment"] as Map<String, *>?)?.toMessageAttachment()
-            storageService.getImageThumbUrl(
+            val instanceId = arguments["instanceId"] as? Int
+            val useStorageService = (
+                instanceId?.let {
+                    V2NIMChatroomClient.getInstance(instanceId).storageService
+                }
+                ) ?: storageService
+            useStorageService.getImageThumbUrl(
                 attachment,
                 thumbSize,
                 {
@@ -323,7 +379,13 @@ class FLTStorageService(
         return suspendCancellableCoroutine { cont ->
             val thumbSize = (arguments["thumbSize"] as Map<String, *>?)?.let { convertV2NIMSize(it) }
             val attachment = (arguments["attachment"] as Map<String, *>?)?.toMessageAttachment()
-            storageService.getVideoCoverUrl(
+            val instanceId = arguments["instanceId"] as? Int
+            val useStorageService = (
+                instanceId?.let {
+                    V2NIMChatroomClient.getInstance(instanceId).storageService
+                }
+                ) ?: storageService
+            useStorageService.getVideoCoverUrl(
                 attachment,
                 thumbSize,
                 {

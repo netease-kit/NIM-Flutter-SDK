@@ -7,16 +7,10 @@ part of nim_core_v2;
 /// 存储服务
 @HawkEntryPoint()
 class StorageService {
-  factory StorageService() {
-    if (_singleton == null) {
-      _singleton = StorageService._();
-    }
-    return _singleton!;
-  }
+  ///聊天室Id
+  int? instanceId;
 
-  StorageService._();
-
-  static StorageService? _singleton;
+  StorageService({this.instanceId});
 
   StorageServicePlatform get _platform => StorageServicePlatform.instance;
 
@@ -44,7 +38,8 @@ class StorageService {
   ///   否则以该时间为过期时间 NIMStorageScene
   Future<NIMResult<NIMStorageScene>> addCustomStorageScene(
       String sceneName, int expireTime) {
-    return _platform.addCustomStorageScene(sceneName, expireTime);
+    return _platform.addCustomStorageScene(sceneName, expireTime,
+        instanceId: instanceId);
   }
 
   /// 创建文件上传任务
@@ -56,7 +51,8 @@ class StorageService {
     NIMUploadFileParams fileParams, {
     html.File? fileObj,
   }) {
-    return _platform.createUploadFileTask(fileParams, fileObj: fileObj);
+    return _platform.createUploadFileTask(fileParams,
+        fileObj: fileObj, instanceId: instanceId);
   }
 
   /// 文件上传
@@ -68,28 +64,29 @@ class StorageService {
     NIMUploadFileTask fileTask, {
     html.File? fileObj,
   }) {
-    return _platform.uploadFile(fileTask, fileObj: fileObj);
+    return _platform.uploadFile(fileTask,
+        fileObj: fileObj, instanceId: instanceId);
   }
 
   /// 取消文件上传
   ///
   /// [fileTask] 文件上传任务
   Future<NIMResult<void>> cancelUploadFile(NIMUploadFileTask fileTask) {
-    return _platform.cancelUploadFile(fileTask);
+    return _platform.cancelUploadFile(fileTask, instanceId: instanceId);
   }
 
   /// 查询存储场景列表
   ///
   /// 返回存储场景列表
   Future<NIMResult<List<NIMStorageScene>>> getStorageSceneList() {
-    return _platform.getStorageSceneList();
+    return _platform.getStorageSceneList(instanceId: instanceId);
   }
 
   /// 短连接转长连接
   ///
   /// [url] 短连接url
   Future<NIMResult<String>> shortUrlToLong(String url) {
-    return _platform.shortUrlToLong(url);
+    return _platform.shortUrlToLong(url, instanceId: instanceId);
   }
 
   /// 下载文件
@@ -97,17 +94,19 @@ class StorageService {
   /// [url] 文件url
   /// [filePath] 文件保存路径
   /// 调用后再[onFileDownloadProgress] 中监控进度
+  /// Web 端不支持
   Future<NIMResult<String>> downloadFile(String url, String filePath) {
-    return _platform.downloadFile(url, filePath);
+    return _platform.downloadFile(url, filePath, instanceId: instanceId);
   }
 
   /// 下载消息附件
   ///
   /// [downloadParam] 下载参数
   /// 调用后再[onMessageAttachmentDownloadProgress] 中监控进度
+  /// Web 端不支持
   Future<NIMResult<String>> downloadAttachment(
       NIMDownloadMessageAttachmentParams downloadParam) {
-    return _platform.downloadAttachment(downloadParam);
+    return _platform.downloadAttachment(downloadParam, instanceId: instanceId);
   }
 
   /// 获取图片消息中的图片缩略图
@@ -120,7 +119,8 @@ class StorageService {
   /// 参见 [NIMGetMediaResourceInfoResult]
   Future<NIMResult<NIMGetMediaResourceInfoResult>> getImageThumbUrl(
       NIMMessageAttachment attachment, NIMSize thumbSize) {
-    return _platform.getImageThumbUrl(attachment, thumbSize);
+    return _platform.getImageThumbUrl(attachment, thumbSize,
+        instanceId: instanceId);
   }
 
   /// 获取视频消息中的视频封面
@@ -133,6 +133,7 @@ class StorageService {
   /// 参见 [NIMGetMediaResourceInfoResult]
   Future<NIMResult<NIMGetMediaResourceInfoResult>> getVideoCoverUrl(
       NIMMessageAttachment attachment, NIMSize thumbSize) {
-    return _platform.getVideoCoverUrl(attachment, thumbSize);
+    return _platform.getVideoCoverUrl(attachment, thumbSize,
+        instanceId: instanceId);
   }
 }

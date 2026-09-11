@@ -11,15 +11,27 @@
 
 #include "FLTConvert.h"
 #include "common/services/FLTAIService.h"
+#include "common/services/FLTChatRoomService.h"
+#include "common/services/FLTChatroomClient.h"
+#include "common/services/FLTChatroomMessageCreator.h"
+#include "common/services/FLTChatroomQueueService.h"
+#include "common/services/FLTClientAntispamUtil.h"
 #include "common/services/FLTConversationIdUtil.h"
+#include "common/services/FLTConversationGroupService.h"
 #include "common/services/FLTConversationService.h"
 #include "common/services/FLTFriendService.h"
 #include "common/services/FLTInitializeService.h"
+#include "common/services/FLTLocalConversationService.h"
 #include "common/services/FLTLoginService.h"
 #include "common/services/FLTMessageCreator.h"
 #include "common/services/FLTMessageService.h"
 #include "common/services/FLTNotificationService.h"
+#include "common/services/FLTSignallingService.h"
+#include "common/services/FLTStatisticsService.h"
+#include "common/services/FLTUtilityService.h"
 #include "common/services/FLTStorageService.h"
+#include "common/services/FLTSubscriptionService.h"
+#include "common/services/FLTTopicService.h"
 #include "common/services/V2FLTSettingsService.h"
 #include "common/services/V2FLTTeamService.h"
 #include "common/services/V2FLTUserService.h"
@@ -30,19 +42,31 @@ NimCore::NimCore() { addService(new FLTInitializeService()); }
 
 NimCore::~NimCore() {}
 
-void NimCore::regService() {
+void NimCore::regService(bool enableCloudConversation) {
   addService(new FLTLoginService());
   addService(new FLTAIService());
   addService(new FLTNotificationService());
   addService(new FLTStorageService());
   addService(new FLTMessageService());
+  addService(new FLTTopicService());
+  addService(new FLTClientAntispamUtil());
+  addService(new FLTChatRoomService());
+  addService(new FLTConversationGroupService(enableCloudConversation));
   addService(new FLTConversationService());
   addService(new FLTConversationIdUtil());
+  addService(new FLTSubscriptionService());
+  addService(new FLTSignallingService());
   addService(new V2FLTUserService());
   addService(new FLTFriendService());
   addService(new FLTMessageCreator());
   addService(new V2FLTSettingsService());
   addService(new V2FLTTeamService());
+  addService(new FLTLocalConversationService());
+  addService(new FLTChatroomMessageCreator());
+  addService(new FLTChatroomClient());
+  addService(new FLTChatroomQueueService());
+  addService(new FLTStatisticsService());
+  addService(new FLTUtilityService());
 }
 
 void NimCore::cleanService() {

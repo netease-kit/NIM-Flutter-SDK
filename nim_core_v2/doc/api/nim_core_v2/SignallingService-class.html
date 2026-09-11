@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the SignallingService class from the nim_core_v2 library, for the Dart programming language.">
+  <title>SignallingService class - nim_core_v2 library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
+    <li class="self-crumb">SignallingService class</li>
+  </ol>
+  <div class="self-name">SignallingService</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="nim_core_v2&#47;nim_core_v2-library-sidebar.html"
+    data-below-sidebar="nim_core_v2&#47;SignallingService-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">SignallingService</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>信令服务</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+        
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/hawk_meta/0.0.1/hawk_meta/HawkEntryPoint-class.html">HawkEntryPoint</a>()</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="SignallingService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/SignallingService/SignallingService.html">SignallingService.new</a></span><span class="signature">()</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="onMultiClientEvent" class="property">
+  <span class="name"><a href="../nim_core_v2/SignallingService/onMultiClientEvent.html">onMultiClientEvent</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingEvent-class.html">NIMSignallingEvent</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  多端事件回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onOfflineEvent" class="property">
+  <span class="name"><a href="../nim_core_v2/SignallingService/onOfflineEvent.html">onOfflineEvent</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingEvent-class.html">NIMSignallingEvent</a></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  离线事件回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onOnlineEvent" class="property">
+  <span class="name"><a href="../nim_core_v2/SignallingService/onOnlineEvent.html">onOnlineEvent</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingEvent-class.html">NIMSignallingEvent</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  在线事件回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onSyncRoomInfoList" class="property">
+  <span class="name"><a href="../nim_core_v2/SignallingService/onSyncRoomInfoList.html">onSyncRoomInfoList</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingRoomInfo-class.html">NIMSignallingRoomInfo</a></span>&gt;</span></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  同步还在的信令频道房间列表
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="acceptInvite" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/acceptInvite.html">acceptInvite</a></span><span class="signature">(<wbr><span class="parameter" id="acceptInvite-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingAcceptInviteParams-class.html">NIMSignallingAcceptInviteParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  接受别人的邀请加入信令房间请求
+该接口调用后会触发接受邀请通知给对方
+  
+
+</dd>
+
+        <dt id="call" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/call.html">call</a></span><span class="signature">(<wbr><span class="parameter" id="call-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingCallParams-class.html">NIMSignallingCallParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingCallResult-class.html">NIMSignallingCallResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  直接呼叫对方加入房间
+信令正常流程：
+创建房间（createRoom），房间创建默认有效时间2个小时，
+自己加入房间（join）
+邀请对方加入房间（invite）
+上述的房间是信令的房间，不是音视频的房间，因此需要三次向服务器交互才能建立相关流程
+call接口同时由服务器实现了上述三个接口的功能， 可以加速呼叫流程， 如果你需要精确控制每一步，则需要调用上述每一个接口
+  
+
+</dd>
+
+        <dt id="callSetup" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/callSetup.html">callSetup</a></span><span class="signature">(<wbr><span class="parameter" id="callSetup-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingCallSetupParams-class.html">NIMSignallingCallSetupParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingCallSetupResult-class.html">NIMSignallingCallSetupResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  呼叫建立， 包括加入信令频道房间， 同时接受对方呼叫
+组合接口（join+accept）
+如果需要详细处理每一步骤， 则可以单独调用join接口，之后再调用accept接口
+  
+
+</dd>
+
+        <dt id="cancelInvite" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/cancelInvite.html">cancelInvite</a></span><span class="signature">(<wbr><span class="parameter" id="cancelInvite-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingCancelInviteParams-class.html">NIMSignallingCancelInviteParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  取消邀请
+  
+
+</dd>
+
+        <dt id="closeRoom" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/closeRoom.html">closeRoom</a></span><span class="signature">(<wbr><span class="parameter" id="closeRoom-param-channelId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="closeRoom-param-offlineEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">offlineEnabled</span>, </span><span class="parameter" id="closeRoom-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  关闭信令房间
+该接口调用后会触发关闭通知给房间内所有人
+房间内的所有人均可以调用该接口
+信令房间如果没有主动调用接口关闭，会等待2个小时，2个小时没有新的用户加入，则服务器自行销毁对应的信令房间
+  
+
+</dd>
+
+        <dt id="createRoom" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/createRoom.html">createRoom</a></span><span class="signature">(<wbr><span class="parameter" id="createRoom-param-channelType"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingChannelType.html">NIMSignallingChannelType</a></span> <span class="parameter-name">channelType</span>, </span><span class="parameter" id="createRoom-param-channelName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">channelName</span>, </span><span class="parameter" id="createRoom-param-channelExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">channelExtension</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingChannelInfo-class.html">NIMSignallingChannelInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  创建信令房间
+频道与房间一一对应， 可以理解为同一个东西
+相同的频道名，在服务器同时只能存在一个
+房间创建默认有效时间2个小时
+  
+
+</dd>
+
+        <dt id="getRoomInfoByChannelName" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/getRoomInfoByChannelName.html">getRoomInfoByChannelName</a></span><span class="signature">(<wbr><span class="parameter" id="getRoomInfoByChannelName-param-channelName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelName</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingRoomInfo-class.html">NIMSignallingRoomInfo</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  根据频道名称查询频道房间信息
+相同的频道名，在服务器同时只能存在一个
+  
+
+</dd>
+
+        <dt id="invite" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/invite.html">invite</a></span><span class="signature">(<wbr><span class="parameter" id="invite-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingInviteParams-class.html">NIMSignallingInviteParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  邀请他人加入信令房间
+该接口调用后会触发邀请通知给对方， 发送方可以配置是否需要发送推送
+默认不推送
+如果不配置推送相关信息， 则服务器回填默认内容
+音频： xx邀请你进行语音通话
+视频：xx邀请你进行视频通话
+其它： xx邀请你进行音视频通话
+房间内的人均可以发送邀请
+  
+
+</dd>
+
+        <dt id="joinRoom" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/joinRoom.html">joinRoom</a></span><span class="signature">(<wbr><span class="parameter" id="joinRoom-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingJoinParams-class.html">NIMSignallingJoinParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMSignallingJoinResult-class.html">V2NIMSignallingJoinResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  加入信令房间
+该接口调用后会触发加入通知给房间内所有人
+默认有效期为5分钟
+  
+
+</dd>
+
+        <dt id="leaveRoom" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/leaveRoom.html">leaveRoom</a></span><span class="signature">(<wbr><span class="parameter" id="leaveRoom-param-channelId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="leaveRoom-param-offlineEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">offlineEnabled</span>, </span><span class="parameter" id="leaveRoom-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  离开信令房间
+该接口调用后会触发离开通知给房间内所有人
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="rejectInvite" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/rejectInvite.html">rejectInvite</a></span><span class="signature">(<wbr><span class="parameter" id="rejectInvite-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSignallingRejectInviteParams-class.html">NIMSignallingRejectInviteParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  拒绝别人的邀请加入信令房间请求
+该接口调用后会触发拒绝邀请通知给对方
+  
+
+</dd>
+
+        <dt id="sendControl" class="callable">
+  <span class="name"><a href="../nim_core_v2/SignallingService/sendControl.html">sendControl</a></span><span class="signature">(<wbr><span class="parameter" id="sendControl-param-channelId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="sendControl-param-receiverAccountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">receiverAccountId</span>, </span><span class="parameter" id="sendControl-param-serverExtension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">serverExtension</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  发送控制消息
+发送自定义控制指令，可以实现自定义相关的业务逻辑
+可以发送给指定用户， 如果不指定， 则发送给信令房间内的所有人
+该接口不做成员校验， 允许非频道房间内的成员调用， 但是接受者必须在频道房间内或者是创建者
+接口调用后会发送一个控制通知
+如果指定了接受者： 则通知发送给接受者
+如果未指定接受者：则发送给房间内的所有人
+通知仅发在线
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
+    <li class="self-crumb">SignallingService class</li>
+</ol>
+
+    <h5>nim_core_v2 library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    nim_core_v2
+      10.9.8
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

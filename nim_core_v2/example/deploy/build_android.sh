@@ -13,9 +13,9 @@ archive_director_name=$3
 archive_name=$4
 build_type=$5
 
-flutter clean
-flutter pub upgrade
-flutter build apk --release
+fvm flutter clean
+fvm flutter pub upgrade
+fvm flutter build apk --target=integration_test/main_test.dart --debug
 
 
 rm -rf "${archive_root_path}/android"
@@ -28,7 +28,7 @@ echo ">>>>>output_path_app:$output_path_app"
 apk_path="${output_path_app}/${archive_name}.apk"
 echo ">>>>>apk_path:$apk_path"
 pwd
-cp build/app/outputs/apk/release/app-release.apk  ${apk_path}
+cp build/app/outputs/apk/debug/app-debug.apk  ${apk_path}
 
 
 echo "Build android done"

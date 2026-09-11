@@ -29,6 +29,9 @@ class Convert {
                         nim_cpp_wrapper_util::Json::Value& value) const;
   bool convertMap2Json(const flutter::EncodableMap* arguments,
                        nim_cpp_wrapper_util::Json::Value& value) const;
+  template <typename T>
+  T GetValueOrDefault(const flutter::EncodableMap* map, const std::string& key,
+                      const T& defaultValue);
 
  private:
   Convert();

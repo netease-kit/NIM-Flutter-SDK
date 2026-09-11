@@ -103,6 +103,12 @@ class MethodChannelLoginService extends LoginServicePlatform {
   /// [option] 设置
   Future<NIMResult<void>> login(
       String accountId, String token, NIMLoginOption option) async {
+    if (loginExtensionProvider != null) {
+      option.extensionProvider = true;
+    }
+    if (tokenProvider != null) {
+      option.tokenProvider = true;
+    }
     return NIMResult.fromMap(
       await invokeMethod(
         'login',
@@ -149,6 +155,13 @@ class MethodChannelLoginService extends LoginServicePlatform {
         convert: (json) => (json['loginClient'] as List<dynamic>?)
             ?.map((e) => NIMLoginClient.fromJson(Map<String, dynamic>.from(e)))
             .toList());
+  }
+
+  /// 获取当前登录终端相关信息， 在登录成功后才能获取，否则内容为空
+  Future<NIMResult<NIMLoginClient>> getCurrentLoginClient() async {
+    return NIMResult.fromMap(await invokeMethod('getCurrentLoginClient'),
+        convert: (json) =>
+            NIMLoginClient.fromJson(Map<String, dynamic>.from(json)));
   }
 
   /// 踢掉登录客户端下线

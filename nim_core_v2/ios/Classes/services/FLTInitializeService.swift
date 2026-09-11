@@ -62,6 +62,10 @@ class FLTInitializeService: FLTService {
       NIMSDKConfig.shared().setupSDKDir(sdkDir)
     }
 
+    if let enableDatabaseBackup = arguments["enableDatabaseBackup"] as? Bool {
+      NIMSDKConfig.shared().sessionDatabaseBackupEnabled = enableDatabaseBackup
+    }
+
     if let enableQChatMessageCache = arguments["enabledQChatMessageCache"] as? Bool {
       NIMQChatConfig.shared().enabledMessageCache = enableQChatMessageCache
     }
@@ -72,11 +76,12 @@ class FLTInitializeService: FLTService {
       }
     }
 
-    if let option = NIMSDKOption.yx_model(with: arguments) {
-      // 开启V2
-      option.v2 = true
-      NIMSDK.shared().register(with: option)
+    let option = NIMSDKOption.fromDic(arguments)
+    let v2Option = V2NIMSDKOption.fromDic(arguments)
+    if let enableServerV2FriendAddApplication = arguments["enableServerV2FriendAddApplication"] as? Bool {
+      v2Option.enableServerV2FriendAddApplication = enableServerV2FriendAddApplication
     }
+    NIMSDK.shared().register(withOptionV2: option, v2Option: v2Option)
 
     if let nosSceneConfig = arguments["nosSceneConfig"] as? [String: Any] {
       let sceneDict = NSMutableDictionary()
@@ -91,6 +96,17 @@ class FLTInitializeService: FLTService {
     // 开启群回执功能
     if let teamReceiptEnabled = arguments["enableTeamMessageReadReceipt"] as? Bool {
       NIMSDKConfig.shared().teamReceiptEnabled = teamReceiptEnabled
+    }
+
+    if let enableServerV2TeamJoinActionInfo = arguments["enableServerV2TeamJoinActionInfo"] as? Bool {
+      v2Option.enableServerV2TeamJoinActionInfo = enableServerV2TeamJoinActionInfo
+    }
+
+    // 配置 APNs Token 自动更新选项
+    if let autoUpdateApnsToken = arguments["autoUpdateApnsToken"] as? Bool {
+      if let apnsService = nimCore?.getService(ServiceType.APNSService.rawValue) as? FLTAPNSService {
+        apnsService.autoUpdateApnsToken = autoUpdateApnsToken
+      }
     }
 
     resultCallback.result(NimResult.success().toDic())

@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">AiService class</li>
   </ol>
   <div class="self-name">AiService</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -71,7 +63,7 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
@@ -87,10 +79,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="AiService" class="callable">
-          <span class="name"><a href="../nim_core_v2/AiService/AiService.html">AiService</a></span><span class="signature">()</span>
+        <dt id="AiService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/AiService/AiService.html">AiService.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -118,12 +109,25 @@
 
         <dt id="onProxyAIModelCall" class="property">
   <span class="name"><a href="../nim_core_v2/AiService/onProxyAIModelCall.html">onProxyAIModelCall</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMAIModelCallResult-class.html">NIMAIModelCallResult</a></span>&gt;</span></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMAIModelCallResult-class.html">NIMAIModelCallResult</a></span>&gt;</span></span>
   
 
 </dt>
 <dd>
   AI 消息的响应的回调
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onProxyAIModelStreamCall" class="property">
+  <span class="name"><a href="../nim_core_v2/AiService/onProxyAIModelStreamCall.html">onProxyAIModelStreamCall</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMAIModelStreamCallResult-class.html">NIMAIModelStreamCallResult</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  AI 消息的流式响应的回调
+注意：流式过程中回调此方法，流式结束后还是会统一调用onProxyAIModelCall方法
   <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
@@ -142,21 +146,87 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
       id="instance-methods">
     <h2>Methods</h2>
     <dl class="callables">
+        <dt id="bindUserAIBotToQrCode" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/bindUserAIBotToQrCode.html">bindUserAIBotToQrCode</a></span><span class="signature">(<wbr><span class="parameter" id="bindUserAIBotToQrCode-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMBindUserAIBotToQrCodeParams-class.html">V2NIMBindUserAIBotToQrCodeParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  绑定用户级 AI Bot 到二维码
+  
+
+</dd>
+
+        <dt id="createUserAIBot" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/createUserAIBot.html">createUserAIBot</a></span><span class="signature">(<wbr><span class="parameter" id="createUserAIBot-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMCreateUserAIBotParams-class.html">V2NIMCreateUserAIBotParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMCreateUserAIBotResult-class.html">V2NIMCreateUserAIBotResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  创建用户级 AI Bot
+  
+
+</dd>
+
+        <dt id="deleteUserAIBot" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/deleteUserAIBot.html">deleteUserAIBot</a></span><span class="signature">(<wbr><span class="parameter" id="deleteUserAIBot-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMDeleteUserAIBotParams-class.html">V2NIMDeleteUserAIBotParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除用户级 AI Bot
+  
+
+</dd>
+
         <dt id="getAIUserList" class="callable">
   <span class="name"><a href="../nim_core_v2/AiService/getAIUserList.html">getAIUserList</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter">NIMAIUser</span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMAIUser-class.html">NIMAIUser</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   数字人拉取接口
+  
+
+</dd>
+
+        <dt id="getUserAIBot" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/getUserAIBot.html">getUserAIBot</a></span><span class="signature">(<wbr><span class="parameter" id="getUserAIBot-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMGetUserAIBotParams-class.html">V2NIMGetUserAIBotParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMUserAIBot-class.html">V2NIMUserAIBot</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  查询单个用户级 AI Bot
+  
+
+</dd>
+
+        <dt id="getUserAIBotList" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/getUserAIBotList.html">getUserAIBotList</a></span><span class="signature">(<wbr>[<span class="parameter" id="getUserAIBotList-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMGetUserAIBotListParams-class.html">V2NIMGetUserAIBotListParams</a>?</span> <span class="parameter-name">params</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMGetUserAIBotListResult-class.html">V2NIMGetUserAIBotListResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  分页查询用户级 AI Bot 列表
   
 
 </dd>
@@ -175,14 +245,40 @@
 </dd>
 
         <dt id="proxyAIModelCall" class="callable">
-  <span class="name"><a href="../nim_core_v2/AiService/proxyAIModelCall.html">proxyAIModelCall</a></span><span class="signature">(<wbr><span class="parameter" id="proxyAIModelCall-param-params"><span class="type-annotation"><a href="../nim_core_v2/NIMProxyAIModelCallParams-class.html">NIMProxyAIModelCallParams</a></span> <span class="parameter-name">params</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/AiService/proxyAIModelCall.html">proxyAIModelCall</a></span><span class="signature">(<wbr><span class="parameter" id="proxyAIModelCall-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMProxyAIModelCallParams-class.html">NIMProxyAIModelCallParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
   AI 数字人请求代理接口
+  
+
+</dd>
+
+        <dt id="refreshUserAIBotToken" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/refreshUserAIBotToken.html">refreshUserAIBotToken</a></span><span class="signature">(<wbr><span class="parameter" id="refreshUserAIBotToken-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMRefreshUserAIBotTokenParams-class.html">V2NIMRefreshUserAIBotTokenParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMRefreshUserAIBotTokenResult-class.html">V2NIMRefreshUserAIBotTokenResult</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  刷新用户级 AI Bot 登录密钥
+  
+
+</dd>
+
+        <dt id="stopAIModelStreamCall" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/stopAIModelStreamCall.html">stopAIModelStreamCall</a></span><span class="signature">(<wbr><span class="parameter" id="stopAIModelStreamCall-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMAIModelStreamCallStopParams-class.html">NIMAIModelStreamCallStopParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  停止流式输出接口
   
 
 </dd>
@@ -197,6 +293,19 @@
 <dd class="inherited">
   A string representation of this object.
   <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="updateUserAIBot" class="callable">
+  <span class="name"><a href="../nim_core_v2/AiService/updateUserAIBot.html">updateUserAIBot</a></span><span class="signature">(<wbr><span class="parameter" id="updateUserAIBot-param-params"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/V2NIMUpdateUserAIBotParams-class.html">V2NIMUpdateUserAIBotParams</a></span> <span class="parameter-name">params</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  更新用户级 AI Bot
+  
 
 </dd>
 
@@ -227,9 +336,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -237,40 +344,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">AiService class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

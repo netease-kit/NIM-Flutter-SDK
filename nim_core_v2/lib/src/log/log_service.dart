@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yunxin_alog/yunxin_alog.dart';
@@ -134,8 +135,7 @@ class ALogService {
     } else if (Platform.isMacOS) {
       directory = await getApplicationDocumentsDirectory();
     } else {
-      throw UnsupportedError(
-          'Unsupported platform: ${Platform.operatingSystem}');
+      return '';
     }
     return '${directory.path}/log/';
   }

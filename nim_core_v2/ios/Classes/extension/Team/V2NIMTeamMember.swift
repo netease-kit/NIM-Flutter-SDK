@@ -6,53 +6,67 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamMember {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(teamId): teamId,
-      #keyPath(teamType): teamType.rawValue,
-      #keyPath(accountId): accountId,
-      #keyPath(memberRole): memberRole.rawValue,
-      #keyPath(teamNick): teamNick ?? "",
-      #keyPath(serverExtension): serverExtension ?? "",
-      #keyPath(joinTime): joinTime * 1000,
-      #keyPath(updateTime): updateTime * 1000,
-      #keyPath(inTeam): inTeam,
-      #keyPath(chatBanned): chatBanned,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(V2NIMTeamMember.teamId)] = teamId
+    keyPaths[#keyPath(V2NIMTeamMember.teamType)] = teamType.rawValue
+    keyPaths[#keyPath(V2NIMTeamMember.accountId)] = accountId
+    keyPaths[#keyPath(V2NIMTeamMember.memberRole)] = memberRole.rawValue
+    keyPaths[#keyPath(V2NIMTeamMember.teamNick)] = teamNick
+    keyPaths[#keyPath(V2NIMTeamMember.serverExtension)] = serverExtension
+    keyPaths[#keyPath(V2NIMTeamMember.joinTime)] = joinTime * 1000
+    keyPaths[#keyPath(V2NIMTeamMember.updateTime)] = updateTime * 1000
+    keyPaths[#keyPath(V2NIMTeamMember.inTeam)] = inTeam
+    keyPaths[#keyPath(V2NIMTeamMember.chatBanned)] = chatBanned
+    keyPaths[#keyPath(V2NIMTeamMember.invitorAccountId)] = invitorAccountId
+    keyPaths[#keyPath(V2NIMTeamMember.followAccountIds)] = followAccountIds
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMTeamMember {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamMember {
     let teamMember = V2NIMTeamMember()
-    if let teamId = dict[#keyPath(teamId)] as? String {
+    if let teamId = arguments[#keyPath(teamId)] as? String {
       teamMember.setValue(teamId, forKey: #keyPath(V2NIMTeamMember.teamId))
     }
-    if let teamType = dict[#keyPath(teamType)] as? Int, let teamType = NIMTeamType(rawValue: teamType) {
-      teamMember.setValue(teamType, forKey: #keyPath(V2NIMTeamMember.teamType))
+    if let teamType = arguments[#keyPath(teamType)] as? Int,
+       let teamType = NIMTeamType(rawValue: teamType) {
+      teamMember.setValue(teamType.rawValue, forKey: #keyPath(V2NIMTeamMember.teamType))
     }
-    if let accountId = dict[#keyPath(accountId)] as? String {
+    if let accountId = arguments[#keyPath(accountId)] as? String {
       teamMember.setValue(accountId, forKey: #keyPath(V2NIMTeamMember.accountId))
     }
-    if let memberRole = dict[#keyPath(memberRole)] as? Int, let memberRole = NIMTeamMemberType(rawValue: memberRole) {
-      teamMember.setValue(memberRole, forKey: #keyPath(V2NIMTeamMember.memberRole))
+    if let memberRole = arguments[#keyPath(memberRole)] as? Int,
+       let memberRole = NIMTeamMemberType(rawValue: memberRole) {
+      teamMember.setValue(memberRole.rawValue, forKey: #keyPath(V2NIMTeamMember.memberRole))
     }
-    if let teamNick = dict[#keyPath(teamNick)] as? String {
+    if let teamNick = arguments[#keyPath(teamNick)] as? String {
       teamMember.setValue(teamNick, forKey: #keyPath(V2NIMTeamMember.teamNick))
     }
-    if let serverExtension = dict[#keyPath(serverExtension)] as? String {
+    if let serverExtension = arguments[#keyPath(serverExtension)] as? String {
       teamMember.setValue(serverExtension, forKey: #keyPath(V2NIMTeamMember.serverExtension))
     }
-    if let joinTime = dict[#keyPath(joinTime)] as? Double {
+    if let joinTime = arguments[#keyPath(joinTime)] as? Double {
       teamMember.setValue(joinTime / 1000, forKey: #keyPath(V2NIMTeamMember.joinTime))
     }
-    if let updateTime = dict[#keyPath(updateTime)] as? Double {
+    if let updateTime = arguments[#keyPath(updateTime)] as? Double {
       teamMember.setValue(updateTime / 1000, forKey: #keyPath(V2NIMTeamMember.updateTime))
     }
-    if let inTeam = dict[#keyPath(inTeam)] as? Bool {
+    if let inTeam = arguments[#keyPath(inTeam)] as? Bool {
       teamMember.setValue(inTeam, forKey: #keyPath(V2NIMTeamMember.inTeam))
     }
-    if let chatBanned = dict[#keyPath(chatBanned)] as? Bool {
+    if let chatBanned = arguments[#keyPath(chatBanned)] as? Bool {
       teamMember.setValue(chatBanned, forKey: #keyPath(V2NIMTeamMember.chatBanned))
+    }
+    if let invitorAccountId = arguments[#keyPath(invitorAccountId)] as? String {
+      teamMember.setValue(invitorAccountId, forKey: #keyPath(V2NIMTeamMember.invitorAccountId))
+    }
+    if let followAccountIds = arguments[#keyPath(followAccountIds)] as? [String] {
+      teamMember.setValue(followAccountIds, forKey: #keyPath(V2NIMTeamMember.followAccountIds))
     }
     return teamMember
   }

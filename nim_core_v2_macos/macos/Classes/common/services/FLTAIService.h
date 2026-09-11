@@ -6,6 +6,7 @@
 #define FLTAIService_H
 
 #include "../FLTService.h"
+#include "v2_nim_ai_service.hpp"
 #include "v2_nim_api.hpp"
 #include "v2_nim_def_struct.hpp"
 #include "v2_nim_message_service.hpp"
@@ -26,6 +27,38 @@ class FLTAIService : public FLTService {
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
   void proxyAIModelCall(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void stopAIModelStreamCall(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void createUserAIBot(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void deleteUserAIBot(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void updateUserAIBot(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void getUserAIBot(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void getUserAIBotList(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void bindUserAIBotToQrCode(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  void refreshUserAIBotToken(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 

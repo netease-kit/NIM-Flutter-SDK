@@ -73,3 +73,19 @@ Map<String, dynamic> _$NIMAddCollectionParamsToJson(
       'serverExtension': instance.serverExtension,
       'uniqueId': instance.uniqueId,
     };
+
+NIMCollectionListResult _$NIMCollectionListResultFromJson(
+        Map<String, dynamic> json) =>
+    NIMCollectionListResult(
+      totalCount: (json['totalCount'] as num?)?.toInt(),
+      collectionList:
+          nimCollectionListFromJson(json['collectionList'] as List?),
+    );
+
+Map<String, dynamic> _$NIMCollectionListResultToJson(
+        NIMCollectionListResult instance) =>
+    <String, dynamic>{
+      'totalCount': instance.totalCount,
+      'collectionList':
+          instance.collectionList?.map((e) => e.toJson()).toList(),
+    };

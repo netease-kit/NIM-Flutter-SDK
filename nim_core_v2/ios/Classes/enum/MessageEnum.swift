@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import Foundation
+import NIMQChat
 import NIMSDK
 
 enum FLT_NIMMessageType: String {
@@ -61,6 +62,35 @@ enum FLT_NIMMessageType: String {
       return FLT_NIMMessageType.robot
     case NIMMessageType.rtcCallRecord:
       return FLT_NIMMessageType.avchat
+    default:
+      return FLT_NIMMessageType.undef
+    }
+  }
+
+  static func fromInt(_ type: Int) -> FLT_NIMMessageType? {
+    switch type {
+    case 0:
+      return FLT_NIMMessageType.text
+    case 1:
+      return FLT_NIMMessageType.image
+    case 2:
+      return FLT_NIMMessageType.audio
+    case 3:
+      return FLT_NIMMessageType.video
+    case 4:
+      return FLT_NIMMessageType.location
+    case 5:
+      return FLT_NIMMessageType.notification
+    case 6:
+      return FLT_NIMMessageType.file
+    case 10:
+      return FLT_NIMMessageType.tip
+    case 11:
+      return FLT_NIMMessageType.robot
+    case 12:
+      return FLT_NIMMessageType.netcall
+    case 100:
+      return FLT_NIMMessageType.custom
     default:
       return FLT_NIMMessageType.undef
     }
@@ -195,11 +225,11 @@ enum FLT_NIMMessageStatus: String {
 
   static func convertFLTStatus(qchatMessage: NIMQChatMessage) -> FLT_NIMMessageStatus {
     switch qchatMessage.deliveryState {
-    case .failed:
+    case 0:
       return .fail
-    case .delivering:
+    case 1:
       return .sending
-    case .deliveried:
+    case 2:
       return .success
     default:
       return .draft
@@ -265,6 +295,21 @@ enum FLT_NIMMessageAttachmentDownloadState: String {
       break
     }
     return nil
+  }
+
+  static func fromInt(_ type: Int) -> FLT_NIMMessageAttachmentDownloadState? {
+    switch type {
+    case 0:
+      return FLT_NIMMessageAttachmentDownloadState.initial
+    case 1:
+      return FLT_NIMMessageAttachmentDownloadState.failed
+    case 2:
+      return FLT_NIMMessageAttachmentDownloadState.transferring
+    case 3:
+      return FLT_NIMMessageAttachmentDownloadState.transferred
+    default:
+      return nil
+    }
   }
 
   func convertToNIMMessageAttachmentDownloadState() -> NIMMessageAttachmentDownloadState? {

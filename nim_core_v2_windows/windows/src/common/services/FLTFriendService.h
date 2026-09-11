@@ -51,7 +51,16 @@ class FLTFriendService : public FLTService {
   void setAddApplicationRead(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void clearAllAddApplication(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void clearAllAddApplicationEx(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
   void searchFriendByOption(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void deleteAddApplication(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 

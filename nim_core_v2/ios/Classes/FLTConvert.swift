@@ -101,7 +101,6 @@ enum NIMNosScene: String {
     switch scene {
     case NIMNOSSceneTypeAvatar:
       return NIMNosScene.defaultProfile.rawValue
-
     case NIMNOSSceneTypeMessage:
       return NIMNosScene.defaultIm.rawValue
     case "nim_system":

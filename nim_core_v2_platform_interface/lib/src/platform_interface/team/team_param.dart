@@ -2,11 +2,10 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import 'package:json_annotation/json_annotation.dart';
+
 import '../message/v2_message_enum.dart';
 import 'team_enum.dart';
-import 'team_member.dart';
-import 'team.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'team_param.g.dart';
 
@@ -167,22 +166,29 @@ class NIMUpdatedTeamInfo {
   NIMTeamUpdateExtensionMode? updateExtensionMode;
 
   /// 群组禁言状态，-1表示未更新
+  /// 0 不禁言
+  /// 1 普通成员禁言，不包括管理员，群主
+  /// 3 全员禁言，所有人，该状态只能OpenApi发起
   int? chatBannedMode;
 
-  NIMUpdatedTeamInfo({
-    this.name,
-    this.memberLimit,
-    this.intro,
-    this.announcement,
-    this.avatar,
-    this.serverExtension,
-    this.joinMode,
-    this.agreeMode,
-    this.inviteMode,
-    this.updateInfoMode,
-    this.updateExtensionMode,
-    this.chatBannedMode,
-  });
+  ///客户自定义扩展， 由openApi设置
+  /// 仅服务器API可以设置，内容透传，云信不解析内容
+  String? customerExtension;
+
+  NIMUpdatedTeamInfo(
+      {this.name,
+      this.memberLimit,
+      this.intro,
+      this.announcement,
+      this.avatar,
+      this.serverExtension,
+      this.joinMode,
+      this.agreeMode,
+      this.inviteMode,
+      this.updateInfoMode,
+      this.updateExtensionMode,
+      this.chatBannedMode,
+      this.customerExtension});
 
   factory NIMUpdatedTeamInfo.fromJson(Map<String, dynamic> map) =>
       _$NIMUpdatedTeamInfoFromJson(map);
@@ -222,21 +228,62 @@ class NIMTeamMemberQueryOption {
   /// 分页偏移，首次传""，后续拉取采用上一次返回的nextToken
   String? nextToken;
 
-  /// 分页拉取数量，不建议超过100
-  int? limit;
+  /// 分页拉取数量，不建议超过100，默认100
+  int limit = 100;
 
   NIMTeamMemberQueryOption({
     required this.roleQueryType,
     this.onlyChatBanned,
     this.direction,
     this.nextToken,
-    this.limit,
+    this.limit = 100,
   });
 
   factory NIMTeamMemberQueryOption.fromJson(Map<String, dynamic> map) =>
       _$NIMTeamMemberQueryOptionFromJson(map);
 
   Map<String, dynamic> toJson() => _$NIMTeamMemberQueryOptionToJson(this);
+}
+
+/// 附言历史记录条目
+@JsonSerializable()
+class NIMPostscript {
+  /// 附言内容文本
+  String? postscript;
+
+  /// 附言提交时间戳（ms）
+  int? timestamp;
+
+  NIMPostscript({
+    this.postscript,
+    this.timestamp,
+  });
+
+  factory NIMPostscript.fromJson(Map<String, dynamic> map) =>
+      _$NIMPostscriptFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMPostscriptToJson(this);
+}
+
+/// 清空群申请/邀请记录的过滤参数
+@JsonSerializable()
+class NIMTeamClearJoinActionInfoOption {
+  /// 清空此时间戳（ms）之前的记录；为 null 时不按时间过滤
+  int? timestamp;
+
+  /// 清空指定群类型的记录；为 null 时清空全部类型
+  NIMTeamJoinActionTeamType? type;
+
+  NIMTeamClearJoinActionInfoOption({
+    this.timestamp,
+    this.type,
+  });
+
+  factory NIMTeamClearJoinActionInfoOption.fromJson(Map<String, dynamic> map) =>
+      _$NIMTeamClearJoinActionInfoOptionFromJson(map);
+
+  Map<String, dynamic> toJson() =>
+      _$NIMTeamClearJoinActionInfoOptionToJson(this);
 }
 
 /// 入群操作信息
@@ -263,6 +310,27 @@ class NIMTeamJoinActionInfo {
   /// 操作状态
   NIMTeamJoinActionStatus actionStatus;
 
+  ///邀请入群的扩展字段
+  String? serverExtension;
+
+  /// 是否已读
+  bool? read;
+
+  /// 操作发起方账号 ID
+  String? fromAccountId;
+
+  /// 操作目标方账号 ID
+  String? targetAccountId;
+
+  /// 服务端 ID（64-bit）
+  int? serverId;
+
+  /// 记录最后更新时间戳（ms）
+  int? updateTimestamp;
+
+  /// 附言历史记录列表
+  List<NIMPostscript>? postscriptHistory;
+
   NIMTeamJoinActionInfo({
     required this.actionType,
     required this.teamId,
@@ -271,6 +339,13 @@ class NIMTeamJoinActionInfo {
     this.postscript,
     this.timestamp,
     required this.actionStatus,
+    this.serverExtension,
+    this.read,
+    this.fromAccountId,
+    this.targetAccountId,
+    this.serverId,
+    this.updateTimestamp,
+    this.postscriptHistory,
   });
 
   factory NIMTeamJoinActionInfo.fromJson(Map<String, dynamic> map) =>
@@ -345,4 +420,32 @@ class NIMTeamMemberSearchOption {
       _$NIMTeamMemberSearchOptionFromJson(map);
 
   Map<String, dynamic> toJson() => _$NIMTeamMemberSearchOptionToJson(this);
+}
+
+///用于定义邀请成员加入群的参数。
+@JsonSerializable()
+class NIMTeamInviteParams {
+  /// 被邀请加入群的成员账号列表。
+  /// 该字段为必填项，不能为null，且列表大小不能为0，否则会返回参数错误。
+  List<String> inviteeAccountIds;
+
+  /// 邀请入群的附言。
+  /// 该字段为可选项，可以为null。
+  String? postscript;
+
+  /// 邀请入群的扩展字段。
+  /// 目前仅支持高级群，超大群暂不支持。
+  /// 该字段为可选项，可以为null，最大长度为512个字符。
+  String? serverExtension;
+
+  NIMTeamInviteParams({
+    required this.inviteeAccountIds,
+    this.postscript,
+    this.serverExtension,
+  });
+
+  factory NIMTeamInviteParams.fromJson(Map<String, dynamic> map) =>
+      _$NIMTeamInviteParamsFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMTeamInviteParamsToJson(this);
 }

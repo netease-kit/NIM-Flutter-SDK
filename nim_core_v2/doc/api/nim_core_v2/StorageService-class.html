@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">StorageService class</li>
   </ol>
   <div class="self-name">StorageService</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -74,7 +66,7 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
@@ -90,14 +82,12 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="StorageService" class="callable">
-          <span class="name"><a href="../nim_core_v2/StorageService/StorageService.html">StorageService</a></span><span class="signature">()</span>
+        <dt id="StorageService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/StorageService/StorageService.html">StorageService.new</a></span><span class="signature">({<span class="parameter" id="-param-instanceId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">instanceId</span></span>})</span>
         </dt>
         <dd>
           
-            <div class="constructor-modifier features">factory</div>
         </dd>
     </dl>
   </section>
@@ -119,9 +109,21 @@
 
 </dd>
 
+        <dt id="instanceId" class="property">
+  <span class="name"><a href="../nim_core_v2/StorageService/instanceId.html">instanceId</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  聊天室Id
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
         <dt id="onFileDownloadProgress" class="property">
   <span class="name"><a href="../nim_core_v2/StorageService/onFileDownloadProgress.html">onFileDownloadProgress</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMDownloadFileProgress-class.html">NIMDownloadFileProgress</a></span>&gt;</span></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMDownloadFileProgress-class.html">NIMDownloadFileProgress</a></span>&gt;</span></span>
   
 
 </dt>
@@ -133,7 +135,7 @@
 
         <dt id="onFileUploadProgress" class="property">
   <span class="name"><a href="../nim_core_v2/StorageService/onFileUploadProgress.html">onFileUploadProgress</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUploadFileProgress-class.html">NIMUploadFileProgress</a></span>&gt;</span></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUploadFileProgress-class.html">NIMUploadFileProgress</a></span>&gt;</span></span>
   
 
 </dt>
@@ -145,7 +147,7 @@
 
         <dt id="onMessageAttachmentDownloadProgress" class="property">
   <span class="name"><a href="../nim_core_v2/StorageService/onMessageAttachmentDownloadProgress.html">onMessageAttachmentDownloadProgress</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMDownloadMessageAttachmentProgress-class.html">NIMDownloadMessageAttachmentProgress</a></span>&gt;</span></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Stream-class.html">Stream</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMDownloadMessageAttachmentProgress-class.html">NIMDownloadMessageAttachmentProgress</a></span>&gt;</span></span>
   
 
 </dt>
@@ -169,6 +171,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -177,7 +180,7 @@
     <dl class="callables">
         <dt id="addCustomStorageScene" class="callable">
   <span class="name"><a href="../nim_core_v2/StorageService/addCustomStorageScene.html">addCustomStorageScene</a></span><span class="signature">(<wbr><span class="parameter" id="addCustomStorageScene-param-sceneName"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sceneName</span>, </span><span class="parameter" id="addCustomStorageScene-param-expireTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">expireTime</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMStorageScene-class.html">NIMStorageScene</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMStorageScene-class.html">NIMStorageScene</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -189,8 +192,8 @@
 </dd>
 
         <dt id="cancelUploadFile" class="callable">
-  <span class="name"><a href="../nim_core_v2/StorageService/cancelUploadFile.html">cancelUploadFile</a></span><span class="signature">(<wbr><span class="parameter" id="cancelUploadFile-param-fileTask"><span class="type-annotation"><a href="../nim_core_v2/NIMUploadFileTask-class.html">NIMUploadFileTask</a></span> <span class="parameter-name">fileTask</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/StorageService/cancelUploadFile.html">cancelUploadFile</a></span><span class="signature">(<wbr><span class="parameter" id="cancelUploadFile-param-fileTask"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUploadFileTask-class.html">NIMUploadFileTask</a></span> <span class="parameter-name">fileTask</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -202,8 +205,8 @@
 </dd>
 
         <dt id="createUploadFileTask" class="callable">
-  <span class="name"><a href="../nim_core_v2/StorageService/createUploadFileTask.html">createUploadFileTask</a></span><span class="signature">(<wbr><span class="parameter" id="createUploadFileTask-param-fileParams"><span class="type-annotation"><a href="../nim_core_v2/NIMUploadFileParams-class.html">NIMUploadFileParams</a></span> <span class="parameter-name">fileParams</span>, </span><span class="parameter" id="createUploadFileTask-param-fileObj">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-html/File-class.html">File</a>?</span> <span class="parameter-name">fileObj</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMUploadFileTask-class.html">NIMUploadFileTask</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/StorageService/createUploadFileTask.html">createUploadFileTask</a></span><span class="signature">(<wbr><span class="parameter" id="createUploadFileTask-param-fileParams"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUploadFileParams-class.html">NIMUploadFileParams</a></span> <span class="parameter-name">fileParams</span>, {</span><span class="parameter" id="createUploadFileTask-param-fileObj"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/universal_html/File-class.html">File</a>?</span> <span class="parameter-name">fileObj</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUploadFileTask-class.html">NIMUploadFileTask</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -215,8 +218,8 @@
 </dd>
 
         <dt id="downloadAttachment" class="callable">
-  <span class="name"><a href="../nim_core_v2/StorageService/downloadAttachment.html">downloadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="downloadAttachment-param-downloadParam"><span class="type-annotation"><a href="../nim_core_v2/NIMDownloadMessageAttachmentParams-class.html">NIMDownloadMessageAttachmentParams</a></span> <span class="parameter-name">downloadParam</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/StorageService/downloadAttachment.html">downloadAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="downloadAttachment-param-downloadParam"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMDownloadMessageAttachmentParams-class.html">NIMDownloadMessageAttachmentParams</a></span> <span class="parameter-name">downloadParam</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -229,7 +232,7 @@
 
         <dt id="downloadFile" class="callable">
   <span class="name"><a href="../nim_core_v2/StorageService/downloadFile.html">downloadFile</a></span><span class="signature">(<wbr><span class="parameter" id="downloadFile-param-url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">url</span>, </span><span class="parameter" id="downloadFile-param-filePath"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">filePath</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -241,8 +244,8 @@
 </dd>
 
         <dt id="getImageThumbUrl" class="callable">
-  <span class="name"><a href="../nim_core_v2/StorageService/getImageThumbUrl.html">getImageThumbUrl</a></span><span class="signature">(<wbr><span class="parameter" id="getImageThumbUrl-param-attachment"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAttachment-class.html">NIMMessageAttachment</a></span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="getImageThumbUrl-param-thumbSize"><span class="type-annotation"><a href="../nim_core_v2/NIMSize-class.html">NIMSize</a></span> <span class="parameter-name">thumbSize</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMGetMediaResourceInfoResult-class.html">NIMGetMediaResourceInfoResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/StorageService/getImageThumbUrl.html">getImageThumbUrl</a></span><span class="signature">(<wbr><span class="parameter" id="getImageThumbUrl-param-attachment"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMMessageAttachment-class.html">NIMMessageAttachment</a></span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="getImageThumbUrl-param-thumbSize"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSize-class.html">NIMSize</a></span> <span class="parameter-name">thumbSize</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMGetMediaResourceInfoResult-class.html">NIMGetMediaResourceInfoResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -258,7 +261,7 @@
 
         <dt id="getStorageSceneList" class="callable">
   <span class="name"><a href="../nim_core_v2/StorageService/getStorageSceneList.html">getStorageSceneList</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMStorageScene-class.html">NIMStorageScene</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMStorageScene-class.html">NIMStorageScene</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -270,8 +273,8 @@
 </dd>
 
         <dt id="getVideoCoverUrl" class="callable">
-  <span class="name"><a href="../nim_core_v2/StorageService/getVideoCoverUrl.html">getVideoCoverUrl</a></span><span class="signature">(<wbr><span class="parameter" id="getVideoCoverUrl-param-attachment"><span class="type-annotation"><a href="../nim_core_v2/NIMMessageAttachment-class.html">NIMMessageAttachment</a></span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="getVideoCoverUrl-param-thumbSize"><span class="type-annotation"><a href="../nim_core_v2/NIMSize-class.html">NIMSize</a></span> <span class="parameter-name">thumbSize</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMGetMediaResourceInfoResult-class.html">NIMGetMediaResourceInfoResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/StorageService/getVideoCoverUrl.html">getVideoCoverUrl</a></span><span class="signature">(<wbr><span class="parameter" id="getVideoCoverUrl-param-attachment"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMMessageAttachment-class.html">NIMMessageAttachment</a></span> <span class="parameter-name">attachment</span>, </span><span class="parameter" id="getVideoCoverUrl-param-thumbSize"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMSize-class.html">NIMSize</a></span> <span class="parameter-name">thumbSize</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMGetMediaResourceInfoResult-class.html">NIMGetMediaResourceInfoResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -300,7 +303,7 @@
 
         <dt id="shortUrlToLong" class="callable">
   <span class="name"><a href="../nim_core_v2/StorageService/shortUrlToLong.html">shortUrlToLong</a></span><span class="signature">(<wbr><span class="parameter" id="shortUrlToLong-param-url"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">url</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -325,8 +328,8 @@
 </dd>
 
         <dt id="uploadFile" class="callable">
-  <span class="name"><a href="../nim_core_v2/StorageService/uploadFile.html">uploadFile</a></span><span class="signature">(<wbr><span class="parameter" id="uploadFile-param-fileTask"><span class="type-annotation"><a href="../nim_core_v2/NIMUploadFileTask-class.html">NIMUploadFileTask</a></span> <span class="parameter-name">fileTask</span>, </span><span class="parameter" id="uploadFile-param-fileObj">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-html/File-class.html">File</a>?</span> <span class="parameter-name">fileObj</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/StorageService/uploadFile.html">uploadFile</a></span><span class="signature">(<wbr><span class="parameter" id="uploadFile-param-fileTask"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMUploadFileTask-class.html">NIMUploadFileTask</a></span> <span class="parameter-name">fileTask</span>, {</span><span class="parameter" id="uploadFile-param-fileObj"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/universal_html/File-class.html">File</a>?</span> <span class="parameter-name">fileObj</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -364,9 +367,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -374,40 +375,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">StorageService class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

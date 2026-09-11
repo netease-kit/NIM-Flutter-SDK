@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">ConversationIdUtil class</li>
   </ol>
   <div class="self-name">ConversationIdUtil</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -71,7 +63,7 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
@@ -87,10 +79,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="ConversationIdUtil" class="callable">
-          <span class="name"><a href="../nim_core_v2/ConversationIdUtil/ConversationIdUtil.html">ConversationIdUtil</a></span><span class="signature">()</span>
+        <dt id="ConversationIdUtil.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/ConversationIdUtil/ConversationIdUtil.html">ConversationIdUtil.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -130,15 +121,16 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
       id="instance-methods">
     <h2>Methods</h2>
     <dl class="callables">
-        <dt id="conversationId" class="callable">
-  <span class="name"><a href="../nim_core_v2/ConversationIdUtil/conversationId.html">conversationId</a></span><span class="signature">(<wbr><span class="parameter" id="conversationId-param-targetId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">targetId</span>, </span><span class="parameter" id="conversationId-param-conversationType"><span class="type-annotation"><a href="../nim_core_v2/NIMConversationType.html">NIMConversationType</a></span> <span class="parameter-name">conversationType</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+        <dt id="conversationTargetId" class="callable">
+  <span class="name"><a href="../nim_core_v2/ConversationIdUtil/conversationTargetId.html">conversationTargetId</a></span><span class="signature">(<wbr><span class="parameter" id="conversationTargetId-param-conversationId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -149,9 +141,9 @@
 
 </dd>
 
-        <dt id="conversationTargetId" class="callable">
-  <span class="name"><a href="../nim_core_v2/ConversationIdUtil/conversationTargetId.html">conversationTargetId</a></span><span class="signature">(<wbr><span class="parameter" id="conversationTargetId-param-conversationId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+        <dt id="conversationType" class="callable">
+  <span class="name"><a href="../nim_core_v2/ConversationIdUtil/conversationType.html">conversationType</a></span><span class="signature">(<wbr><span class="parameter" id="conversationType-param-conversationId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">conversationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMConversationType.html">NIMConversationType</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -177,7 +169,7 @@
 
         <dt id="p2pConversationId" class="callable">
   <span class="name"><a href="../nim_core_v2/ConversationIdUtil/p2pConversationId.html">p2pConversationId</a></span><span class="signature">(<wbr><span class="parameter" id="p2pConversationId-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -190,7 +182,7 @@
 
         <dt id="superTeamConversationId" class="callable">
   <span class="name"><a href="../nim_core_v2/ConversationIdUtil/superTeamConversationId.html">superTeamConversationId</a></span><span class="signature">(<wbr><span class="parameter" id="superTeamConversationId-param-superTeamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">superTeamId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -203,7 +195,7 @@
 
         <dt id="teamConversationId" class="callable">
   <span class="name"><a href="../nim_core_v2/ConversationIdUtil/teamConversationId.html">teamConversationId</a></span><span class="signature">(<wbr><span class="parameter" id="teamConversationId-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -254,9 +246,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -264,40 +254,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">ConversationIdUtil class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

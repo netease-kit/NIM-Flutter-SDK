@@ -2,9 +2,8 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-import 'dart:ui';
-
 import 'dart:async';
+
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
 
 class MethodChannelTeamService extends TeamServicePlatform {
@@ -555,5 +554,168 @@ class MethodChannelTeamService extends TeamServicePlatform {
         await invokeMethod('searchTeamMembers',
             arguments: {'searchOption': searchOption.toJson()}),
         convert: (json) => NIMTeamMemberListResult.fromJson(json));
+  }
+
+  ///添加群组成员关注
+  ///[teamId] 群组id,群组 ID 为空报错 191004 参数错误
+  ///[teamType] 群组类型,群组类型不是高级群或超级群，报错 191004 参数错误
+  ///[accountIds] 账号id列表, size==0，返回 191004 参数错误
+  Future<NIMResult<void>> addTeamMembersFollow(
+      String teamId, NIMTeamType teamType, List<String> accountIds) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('addTeamMembersFollow', arguments: {
+      'teamId': teamId,
+      'teamType': NIMTeamTypeClass(teamType).toValue(),
+      'accountIds': accountIds
+    }));
+  }
+
+  ///移除群组成员关注
+  ///[teamId] 群组id,群组 ID 为空报错 191004 参数错误
+  ///[teamType] 群组类型,群组类型不是高级群或超级群，报错 191004 参数错误
+  ///[accountIds] 账号id列表, size==0，返回 191004 参数错误
+  Future<NIMResult<void>> removeTeamMembersFollow(
+      String teamId, NIMTeamType teamType, List<String> accountIds) async {
+    return NIMResult<void>.fromMap(
+        await invokeMethod('removeTeamMembersFollow', arguments: {
+      'teamId': teamId,
+      'teamType': NIMTeamTypeClass(teamType).toValue(),
+      'accountIds': accountIds
+    }));
+  }
+
+  ///清空所有群申请
+  Future<NIMResult<void>> clearAllTeamJoinActionInfo() async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod('clearAllTeamJoinActionInfo'),
+    );
+  }
+
+  ///清空所有群申请（扩展版），支持按群类型过滤
+  ///[option] 清理条件，为 null 时清理所有申请
+  Future<NIMResult<void>> clearAllTeamJoinActionInfoEx(
+      NIMTeamClearJoinActionInfoOption? option) async {
+    return NIMResult<void>.fromMap(
+      await invokeMethod('clearAllTeamJoinActionInfoEx',
+          arguments: option != null ? {'option': option.toJson()} : null),
+    );
+  }
+
+  ///删除群申请
+  ///[application]需要删除的群申请
+  Future<NIMResult<void>> deleteTeamJoinActionInfo(
+      NIMTeamJoinActionInfo application) async {
+    return NIMResult<void>.fromMap(await invokeMethod(
+        'deleteTeamJoinActionInfo',
+        arguments: {'application': application.toJson()}));
+  }
+
+  ///邀请成员加入群组
+  ///[teamId] 群组id
+  ///[teamType] 群组类型
+  ///[inviteeParams] 被邀请加入群的参数
+  Future<NIMResult<List<String>>> inviteMemberEx(String teamId,
+      NIMTeamType teamType, NIMTeamInviteParams inviteeParams) async {
+    return NIMResult<List<String>>.fromMap(
+        await invokeMethod('inviteMemberEx', arguments: {
+          'teamId': teamId,
+          'teamType': NIMTeamTypeClass(teamType).toValue(),
+          'inviteeParams': inviteeParams.toJson()
+        }),
+        convert: (json) => List<String>.from(json['failedList']));
+  }
+
+  ///获取当前自己的群组列表
+  ///返回群组按群组创建时间升序排序
+  /// 需要判断群组是否有效且自己在群中
+  /// 只查本地
+  /// [teamTypes] 群组类型列表，如果为null，或者列表为empty， 表示查询所有所有群类型,否则按输入群类型进行查询
+  Future<NIMResult<List<NIMTeam>>> getOwnerTeamList(
+      {List<NIMTeamType>? teamTypes}) async {
+    return NIMResult<List<NIMTeam>>.fromMap(
+        await invokeMethod(
+          'getOwnerTeamList',
+          arguments: {
+            'teamTypes':
+                teamTypes?.map((e) => NIMTeamTypeClass(e).toValue()).toList()
+          },
+        ),
+        convert: (json) => json['teamList']
+            .map<NIMTeam>((e) => NIMTeam.fromJson(Map<String, dynamic>.from(e)))
+            .toList());
+  }
+
+  /// 获取当前自己管理的群组列表（群主 + 管理员）
+  @override
+  Future<NIMResult<List<NIMTeam>>> getManagerTeamList(
+      {List<NIMTeamType>? teamTypes}) async {
+    return NIMResult<List<NIMTeam>>.fromMap(
+        await invokeMethod(
+          'getManagerTeamList',
+          arguments: {
+            'teamTypes':
+                teamTypes?.map((e) => NIMTeamTypeClass(e).toValue()).toList()
+          },
+        ),
+        convert: (json) => json['teamList']
+            .map<NIMTeam>((e) => NIMTeam.fromJson(Map<String, dynamic>.from(e)))
+            .toList());
+  }
+
+  /// 从云端查询群组信息
+  @override
+  Future<NIMResult<NIMTeam>> getTeamInfoFromCloud(
+      {required String teamId, required NIMTeamType teamType}) async {
+    return NIMResult<NIMTeam>.fromMap(
+        await invokeMethod(
+          'getTeamInfoFromCloud',
+          arguments: {
+            'teamId': teamId,
+            'teamType': NIMTeamTypeClass(teamType).toValue(),
+          },
+        ),
+        convert: (json) => NIMTeam.fromJson(Map<String, dynamic>.from(json)));
+  }
+
+  /// 本地全文搜索群信息
+  @override
+  Future<NIMResult<List<NIMTeam>>> searchTeams(
+      NIMTeamSearchParams searchParams) async {
+    return NIMResult<List<NIMTeam>>.fromMap(
+        await invokeMethod('searchTeams',
+            arguments: {'searchParams': searchParams.toJson()}),
+        convert: (json) {
+      // 原生层（Android/iOS）返回 {"teamList": [...]}
+      final map = json as Map;
+      final list = (map['teamList'] as List?) ?? [];
+      return list
+          .map((e) => NIMTeam.fromJson((e as Map).cast<String, dynamic>()))
+          .toList();
+    });
+  }
+
+  /// 本地搜索群成员（扩展，支持跨多个群）
+  @override
+  Future<NIMResult<Map<NIMTeamRefer, List<NIMTeamMember>>>> searchTeamMembersEx(
+      NIMSearchTeamMemberParams searchParams) async {
+    return NIMResult<Map<NIMTeamRefer, List<NIMTeamMember>>>.fromMap(
+        await invokeMethod('searchTeamMembersEx',
+            arguments: {'searchParams': searchParams.toJson()}),
+        convert: (json) {
+      // 原生层（Android/iOS）返回 {"resultList": [{teamRefer, members}]}
+      final map = json as Map;
+      final list = (map['resultList'] as List?) ?? [];
+      return Map.fromEntries(list.map((item) {
+        final itemMap = item as Map;
+        final teamRefer = NIMTeamRefer.fromJson(
+            (itemMap['teamRefer'] as Map).cast<String, dynamic>());
+        final members = (itemMap['members'] as List?)
+                ?.map((e) =>
+                    NIMTeamMember.fromJson((e as Map).cast<String, dynamic>()))
+                .toList() ??
+            [];
+        return MapEntry(teamRefer, members);
+      }));
+    });
   }
 }

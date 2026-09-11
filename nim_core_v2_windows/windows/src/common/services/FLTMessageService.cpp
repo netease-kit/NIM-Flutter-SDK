@@ -4,8 +4,15 @@
 
 #include "FLTMessageService.h"
 
+#include <future>
+
 #include "../NimResult.h"
 #include "nim_cpp_wrapper/nim_cpp_api.h"
+
+flutter::EncodableMap convertTopicRefer(const v2::V2NIMTopicRefer object);
+v2::V2NIMTopicRefer getTopicRefer(const flutter::EncodableMap* arguments);
+
+int MESSAGE_SERIALIZATION_ERROR = 199001;
 
 FLTMessageService::FLTMessageService() {
   m_serviceName = "MessageService";
@@ -120,10 +127,44 @@ FLTMessageService::FLTMessageService() {
         notifyEvent("onClearHistoryNotifications", resultMap);
       };
 
+  listener.onReceiveMessagesModified =
+      [this](nstd::vector<v2::V2NIMMessage> messages) {
+        // receive messages modified
+
+        flutter::EncodableList messagesList;
+        for (auto message : messages) {
+          messagesList.emplace_back(convertMessage(&message));
+        }
+        flutter::EncodableMap resultMap;
+        resultMap.insert(std::make_pair("messages", messagesList));
+        notifyEvent("onReceiveMessagesModified", resultMap);
+      };
+
   auto& client = v2::V2NIMClient::get();
   auto& messageService = client.getMessageService();
 
   messageService.addMessageListener(listener);
+
+  messageFilter.shouldIgnore = [this](v2::V2NIMMessage message) {
+    flutter::EncodableMap arguments;
+    arguments.insert(std::make_pair("message", convertMessage(&message)));
+    std::promise<bool> promise;
+    std::future<bool> future = promise.get_future();
+    notifyEvent(
+        "shouldIgnore", arguments,
+        [this, &promise](const std::optional<flutter::EncodableValue>& result) {
+          if (result.has_value() &&
+              std::holds_alternative<bool>(result.value())) {
+            bool resultBool = std::get<bool>(result.value());
+            promise.set_value(resultBool);
+          } else {
+            promise.set_value(false);
+          }
+        });
+
+    bool result = future.get();
+    return result;
+  };
 }
 
 FLTMessageService::~FLTMessageService() {
@@ -168,6 +209,9 @@ void FLTMessageService::onMethodCalled(
       return;
     case "insertMessageToLocal"_hash:
       insertMessageToLocal(arguments, result);
+      return;
+    case "insertMessageToLocalEx"_hash:
+      insertMessageToLocalEx(arguments, result);
       return;
     case "pinMessage"_hash:
       pinMessage(arguments, result);
@@ -235,7 +279,48 @@ void FLTMessageService::onMethodCalled(
     case "getThreadMessageList"_hash:
       getThreadMessageList(arguments, result);
       return;
-
+    case "searchCloudMessagesEx"_hash:
+      searchCloudMessagesEx(arguments, result);
+      return;
+    case "getMessageListEx"_hash:
+      getMessageListEx(arguments, result);
+      return;
+    case "searchLocalMessages"_hash:
+      searchLocalMessages(arguments, result);
+      return;
+    case "updateLocalMessage"_hash:
+      updateLocalMessage(arguments, result);
+      return;
+    case "getCollectionListExByOption"_hash:
+      getCollectionListExByOption(arguments, result);
+      return;
+    case "setMessageFilter"_hash:
+      setMessageFilter(arguments, result);
+      return;
+    case "modifyMessage"_hash:
+      modifyMessage(arguments, result);
+      return;
+    case "regenAIMessage"_hash:
+      regenAIMessage(arguments, result);
+      return;
+    case "clearRoamingMessage"_hash:
+      clearRoamingMessage(arguments, result);
+      return;
+    case "translateText"_hash:
+      translateText(arguments, result);
+      return;
+    case "messageDeserialization"_hash:
+      messageDeserialization(arguments, result);
+      return;
+    case "messageSerialization"_hash:
+      messageSerialization(arguments, result);
+      return;
+    case "stopAIStreamMessage"_hash:
+      stopAIStreamMessage(arguments, result);
+      return;
+    case "clearLocalMessage"_hash:
+      clearLocalMessage(arguments, result);
+      return;
     default:
       break;
   }
@@ -254,7 +339,7 @@ void FLTMessageService::sendMessage(
   v2::V2NIMSendMessageParams params;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -305,7 +390,7 @@ void FLTMessageService::replyMessage(
   v2::V2NIMSendMessageParams params;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -354,7 +439,7 @@ void FLTMessageService::revokeMessage(
   v2::V2NIMMessageRevokeParams revokeParams;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -389,7 +474,7 @@ void FLTMessageService::getMessageList(
   v2::V2NIMMessageListOption option;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -429,7 +514,7 @@ void FLTMessageService::getMessageListByIds(
   std::vector<nstd::string> messageClientIds;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -472,7 +557,7 @@ void FLTMessageService::getMessageListByRefers(
   std::vector<v2::V2NIMMessageRefer> messageRefers;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -515,10 +600,10 @@ void FLTMessageService::deleteMessage(
 
   v2::V2NIMMessage message;
   nstd::optional<nstd::string> serverExtension;
-  bool onlyDeleteLocal;
+  bool onlyDeleteLocal = true;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -553,10 +638,10 @@ void FLTMessageService::deleteMessages(
 
   std::vector<v2::V2NIMMessage> messages;
   nstd::optional<nstd::string> serverExtension;
-  bool onlyDeleteLocal;
+  bool onlyDeleteLocal = true;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -596,7 +681,7 @@ void FLTMessageService::clearHistoryMessage(
   v2::V2NIMClearHistoryMessageOption option;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -628,7 +713,7 @@ void FLTMessageService::updateMessageLocalExtension(
   nstd::string localExtension;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -665,10 +750,10 @@ void FLTMessageService::insertMessageToLocal(
   v2::V2NIMMessage message;
   nstd::string conversationId;
   nstd::string senderId;
-  uint64_t createTime;
+  uint64_t createTime = 0;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -699,6 +784,57 @@ void FLTMessageService::insertMessageToLocal(
       });
 }
 
+void FLTMessageService::insertMessageToLocalEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessage message;
+  v2::V2NIMMessageInsertParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("message")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      message = getMessage(&paramsMap);
+    } else if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      for (auto& p : paramsMap) {
+        if (p.second.IsNull()) continue;
+        if (p.first == flutter::EncodableValue("conversationId")) {
+          params.conversationId = std::get<std::string>(p.second);
+        } else if (p.first == flutter::EncodableValue("senderId")) {
+          params.senderId = std::get<std::string>(p.second);
+        } else if (p.first == flutter::EncodableValue("createTime")) {
+          params.createTime = static_cast<uint64_t>(p.second.LongValue());
+        } else if (p.first ==
+                   flutter::EncodableValue("lastMessageUpdateEnabled")) {
+          params.lastMessageUpdateEnabled = std::get<bool>(p.second);
+        }
+      }
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.insertMessageToLocalEx(
+      message, params,
+      [result](v2::V2NIMMessage msg) {
+        flutter::EncodableMap resultMap = convertMessage(msg);
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
 void FLTMessageService::pinMessage(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
@@ -710,7 +846,7 @@ void FLTMessageService::pinMessage(
   nstd::optional<nstd::string> serverExtension;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -745,7 +881,7 @@ void FLTMessageService::unpinMessage(
   nstd::optional<nstd::string> serverExtension;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -780,7 +916,7 @@ void FLTMessageService::updatePinMessage(
   nstd::optional<nstd::string> serverExtension;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -814,7 +950,7 @@ void FLTMessageService::getPinnedMessageList(
   std::string conversationId;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -856,7 +992,7 @@ void FLTMessageService::addQuickComment(
   v2::V2NIMMessageQuickCommentPushConfig pushConfig;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -897,7 +1033,7 @@ void FLTMessageService::removeQuickComment(
   nstd::optional<nstd::string> serverExtension;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -933,7 +1069,7 @@ void FLTMessageService::getQuickCommentList(
   std::vector<v2::V2NIMMessage> messages;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -984,7 +1120,7 @@ void FLTMessageService::addCollection(
   v2::V2NIMAddCollectionParams params;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1019,7 +1155,7 @@ void FLTMessageService::removeCollections(
   std::vector<v2::V2NIMCollection> collections;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1059,7 +1195,7 @@ void FLTMessageService::updateCollectionExtension(
   nstd::optional<nstd::string> serverExtension;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1096,7 +1232,7 @@ void FLTMessageService::getCollectionListByOption(
   v2::V2NIMCollectionOption option;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1136,7 +1272,7 @@ void FLTMessageService::sendP2PMessageReceipt(
   v2::V2NIMMessage message;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1167,7 +1303,7 @@ void FLTMessageService::getP2PMessageReceipt(
   nstd::string conversationId;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1202,7 +1338,7 @@ void FLTMessageService::isPeerRead(
   v2::V2NIMMessage message;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1230,7 +1366,7 @@ void FLTMessageService::sendTeamMessageReceipts(
   std::vector<v2::V2NIMMessage> messages;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1265,7 +1401,7 @@ void FLTMessageService::getTeamMessageReceipts(
   std::vector<v2::V2NIMMessage> messages;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1311,7 +1447,7 @@ void FLTMessageService::getTeamMessageReceiptDetail(
   nstd::set<nstd::string> memberAccountIds;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1353,7 +1489,7 @@ void FLTMessageService::voiceToText(
   v2::V2NIMVoiceToTextParams params;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1390,7 +1526,7 @@ void FLTMessageService::cancelMessageAttachmentUpload(
   v2::V2NIMMessage message;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1421,7 +1557,7 @@ void FLTMessageService::searchCloudMessages(
   v2::V2NIMMessageSearchParams params;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1461,7 +1597,7 @@ void FLTMessageService::getLocalThreadMessageList(
   v2::V2NIMMessageRefer messageRefer;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1498,7 +1634,7 @@ void FLTMessageService::getThreadMessageList(
   v2::V2NIMThreadMessageListOption option;
 
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -1525,6 +1661,430 @@ void FLTMessageService::getThreadMessageList(
       });
 }
 
+void FLTMessageService::searchCloudMessagesEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessageSearchExParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      params = getMessageSearchExParams(&paramsMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.searchCloudMessagesEx(
+      params,
+      [result](v2::V2NIMMessageSearchResult searchResult) {
+        result->Success(NimResult::getSuccessResult(
+            convertMessageSearchResult(searchResult)));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::getMessageListEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessageListOption option;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("option")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      option = getMessageListOption(&paramsMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.getMessageListEx(
+      option,
+      [result](v2::V2NIMMessageListResult listResult) {
+        flutter::EncodableList messagesList;
+        for (auto message : listResult.messages) {
+          messagesList.emplace_back(convertMessage(&message));
+        }
+        flutter::EncodableMap resultMap;
+        resultMap.insert(std::make_pair("messages", messagesList));
+        if (listResult.anchorMessage.has_value()) {
+          resultMap.insert(std::make_pair(
+              "anchorMessage",
+              convertMessage(&listResult.anchorMessage.value())));
+        }
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::searchLocalMessages(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessageSearchExParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      params = getMessageSearchExParams(&paramsMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.searchLocalMessages(
+      params,
+      [result](v2::V2NIMMessageSearchResult searchResult) {
+        result->Success(NimResult::getSuccessResult(
+            convertMessageSearchResult(searchResult)));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::updateLocalMessage(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessage message;
+  v2::V2NIMUpdateLocalMessageParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("message")) {
+      auto messageMap = std::get<flutter::EncodableMap>(iter->second);
+      message = getMessage(&messageMap);
+    } else if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      params = getUpdateLocalMessageParams(&paramsMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.updateLocalMessage(
+      message, params,
+      [result](v2::V2NIMMessage updatedMessage) {
+        flutter::EncodableMap resultMap = convertMessage(&updatedMessage);
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::getCollectionListExByOption(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMCollectionOption option;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("option")) {
+      auto optionMap = std::get<flutter::EncodableMap>(iter->second);
+      option = getCollectionOption(&optionMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.getCollectionListExByOption(
+      option,
+      [result](v2::V2NIMCollectionListResult listResult) {
+        flutter::EncodableMap resultMap;
+        flutter::EncodableList collectionsList;
+        for (auto collection : listResult.collectionList) {
+          collectionsList.emplace_back(convertCollection(&collection));
+        }
+        resultMap.insert(std::make_pair("collectionList", collectionsList));
+        resultMap.insert(std::make_pair(
+            "totalCount", static_cast<int32_t>(listResult.totalCount)));
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::messageSerialization(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessage message;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("message")) {
+      auto messageMap = std::get<flutter::EncodableMap>(iter->second);
+      message = getMessage(&messageMap);
+    }
+  }
+
+  auto text = v2::V2NIMMessageConverter::messageSerialization(message);
+  if (!text) {
+    result->Error("", "messageSerialization failed",
+                  NimResult::getErrorResult(MESSAGE_SERIALIZATION_ERROR,
+                                            "messageSerialization failed"));
+    return;
+  }
+
+  if (text.has_value()) {
+    result->Success(NimResult::getSuccessResult(std::string(text.value())));
+  } else {
+    result->Error("", "messageSerialization empty",
+                  NimResult::getErrorResult(MESSAGE_SERIALIZATION_ERROR,
+                                            "messageSerialization empty"));
+  }
+}
+
+void FLTMessageService::messageDeserialization(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  std::string msg;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("msg")) {
+      msg = std::get<std::string>(iter->second);
+    }
+  }
+
+  nstd::optional<v2::V2NIMMessage> message;
+  try {
+    message = v2::V2NIMMessageConverter::messageDeserialization(msg);
+  } catch (const std::exception& e) {
+    result->Error("", e.what(),
+                  NimResult::getErrorResult(MESSAGE_SERIALIZATION_ERROR,
+                                            "messageDeserialization failed"));
+    return;
+  } catch (...) {
+    result->Error("", "messageDeserialization unknown exception",
+                  NimResult::getErrorResult(MESSAGE_SERIALIZATION_ERROR,
+                                            "messageDeserialization failed"));
+    return;
+  }
+  if (!message) {
+    result->Error("", "messageDeserialization failed",
+                  NimResult::getErrorResult(MESSAGE_SERIALIZATION_ERROR,
+                                            "messageDeserialization failed"));
+    return;
+  }
+  flutter::EncodableMap messageMap;
+  messageMap = convertMessage(message);
+  result->Success(NimResult::getSuccessResult(messageMap));
+}
+
+void FLTMessageService::setMessageFilter(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  bool filter;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("filter")) {
+      filter = std::get<bool>(iter->second);
+    }
+  }
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+
+  if (filter == true) {
+    messageService.setMessageFilter(FLTMessageService::messageFilter);
+  } else {
+    messageService.setMessageFilter(nstd::nullopt);
+  }
+
+  result->Success(NimResult::getSuccessResult());
+}
+
+void FLTMessageService::modifyMessage(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessage message;
+
+  v2::V2NIMModifyMessageParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("message")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      message = getMessage(&paramsMap);
+    }
+
+    if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      params = getModifyMessageParams(&paramsMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.modifyMessage(
+      message, params,
+      [result](v2::V2NIMModifyMessageResult messageResult) {
+        flutter::EncodableMap resultMap =
+            convertModifyMessageResult(&messageResult);
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::regenAIMessage(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessage message;
+  v2::V2NIMMessageAIRegenParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("message")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      message = getMessage(&paramsMap);
+    }
+
+    if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      params = getMessageAIRegenParams(&paramsMap);
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.regenAIMessage(
+      message, params,
+      [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::clearRoamingMessage(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  std::vector<nstd::string> conversationIds;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("conversationIds")) {
+      auto idList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : idList) {
+        auto cId = std::get<std::string>(it);
+        conversationIds.emplace_back(cId);
+      }
+    }
+  }
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.clearRoamingMessage(
+      conversationIds,
+      [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
 flutter::EncodableMap convertMessageRefer(
     const nstd::optional<v2::V2NIMMessageRefer> object) {
   flutter::EncodableMap resultMap;
@@ -1537,6 +2097,19 @@ flutter::EncodableMap convertMessageRefer(
   resultMap.insert(std::make_pair("conversationId", object->conversationId));
   resultMap.insert(
       std::make_pair("createTime", static_cast<int64_t>(object->createTime)));
+  return resultMap;
+}
+
+flutter::EncodableMap convertModifyMessageResult(
+    const v2::V2NIMModifyMessageResult* object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("message", convertMessage(&object->message)));
+  resultMap.insert(
+      std::make_pair("errorCode", static_cast<int64_t>(object->errorCode)));
+  resultMap.insert(std::make_pair("antispamResult", object->antispamResult));
+  resultMap.insert(std::make_pair(
+      "clientAntispamResult",
+      convertClientAntispamResult(object->clientAntispamResult)));
   return resultMap;
 }
 
@@ -1555,8 +2128,10 @@ flutter::EncodableMap convertMessage(
   resultMap.insert(std::make_pair("receiverId", object->receiverId));
 
   resultMap.insert(std::make_pair("isSelf", object->isSelf));
-  resultMap.insert(std::make_pair("attachmentUploadState",
-                                  object->attachmentUploadState.value()));
+  if (object->attachmentUploadState.has_value()) {
+    resultMap.insert(std::make_pair("attachmentUploadState",
+                                    object->attachmentUploadState.value()));
+  }
   if (object->sendingState.has_value()) {
     resultMap.insert(
         std::make_pair("sendingState", object->sendingState.value()));
@@ -1564,13 +2139,13 @@ flutter::EncodableMap convertMessage(
   resultMap.insert(std::make_pair("messageType", object->messageType));
   resultMap.insert(
       std::make_pair("subType", static_cast<int32_t>(object->subType)));
+  resultMap.insert(std::make_pair("messageSource",
+                                  static_cast<int32_t>(object->messageSource)));
   resultMap.insert(std::make_pair("text", object->text));
 
-  if (object->attachment) {
-    flutter::EncodableMap attachment =
-        convertMessageAttachment(object->attachment);
-    resultMap.insert(std::make_pair("attachment", attachment));
-  }
+  flutter::EncodableMap attachment =
+      convertMessageAttachment(object->attachment);
+  resultMap.insert(std::make_pair("attachment", attachment));
 
   if (object->serverExtension.has_value()) {
     resultMap.insert(
@@ -1617,10 +2192,32 @@ flutter::EncodableMap convertMessage(
     resultMap.insert(std::make_pair("threadReply", threadReply));
   }
 
+  if (object->topicRefer.has_value()) {
+    flutter::EncodableMap topicRefer =
+        convertTopicRefer(object->topicRefer.value());
+    resultMap.insert(std::make_pair("topicRefer", topicRefer));
+  }
+
   if (object->aiConfig.has_value()) {
     flutter::EncodableMap aiConfig =
         convertMessageAIConfig(object->aiConfig.value());
     resultMap.insert(std::make_pair("aiConfig", aiConfig));
+  }
+
+  if (object->streamConfig.has_value()) {
+    flutter::EncodableMap streamConfig =
+        convertMessageStreamConfig(object->streamConfig.value());
+    resultMap.insert(std::make_pair("streamConfig", streamConfig));
+  }
+
+  if (object->modifyTime.has_value()) {
+    resultMap.insert(std::make_pair(
+        "modifyTime", static_cast<int64_t>(object->modifyTime.value())));
+  }
+
+  if (object->modifyAccountId.has_value()) {
+    resultMap.insert(
+        std::make_pair("modifyAccountId", object->modifyAccountId.value()));
   }
 
   flutter::EncodableMap messageStatus =
@@ -1642,17 +2239,94 @@ flutter::EncodableMap convertMessageAIConfig(
   flutter::EncodableMap resultMap;
   resultMap.insert(std::make_pair("accountId", object->accountId));
   resultMap.insert(std::make_pair("aiStatus", object->aiStatus));
+  resultMap.insert(std::make_pair("aiStream", object->aiStream));
+  resultMap.insert(std::make_pair("aiStreamStatus", object->aiStreamStatus));
+  if (object->aiRAGs.has_value()) {
+    flutter::EncodableList aiRAGsList;
+    for (auto aiRAG : object->aiRAGs.value()) {
+      aiRAGsList.emplace_back(convertAIRAGInfo(aiRAG));
+    }
+    resultMap.insert(std::make_pair("aiRAGs", aiRAGsList));
+  }
+  if (object->aiStreamLastChunk.has_value()) {
+    resultMap.insert(std::make_pair(
+        "aiStreamLastChunk",
+        convertMessageAIStreamChunk(object->aiStreamLastChunk.value())));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertAIRAGInfo(const v2::V2NIMAIRAGInfo object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("name", object.name));
+  resultMap.insert(std::make_pair("description", object.description));
+  resultMap.insert(std::make_pair("icon", object.icon));
+  resultMap.insert(std::make_pair("url", object.url));
+  resultMap.insert(std::make_pair("title", object.title));
+  resultMap.insert(std::make_pair("time", static_cast<int64_t>(object.time)));
+  return resultMap;
+}
+
+flutter::EncodableMap convertMessageAIStreamChunk(
+    const v2::V2NIMMessageAIStreamChunk object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("content", object.content));
+  resultMap.insert(
+      std::make_pair("messageTime", static_cast<int64_t>(object.messageTime)));
+  resultMap.insert(
+      std::make_pair("chunkTime", static_cast<int64_t>(object.chunkTime)));
+  resultMap.insert(std::make_pair("type", object.type));
+  resultMap.insert(std::make_pair("index", static_cast<int64_t>(object.index)));
+  return resultMap;
+}
+
+flutter::EncodableMap convertMessageStreamChunk(
+    const v2::V2NIMMessageStreamChunk object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("content", object.content));
+  resultMap.insert(
+      std::make_pair("messageTime", static_cast<int64_t>(object.messageTime)));
+  resultMap.insert(
+      std::make_pair("chunkTime", static_cast<int64_t>(object.chunkTime)));
+  resultMap.insert(std::make_pair("type", object.type));
+  resultMap.insert(std::make_pair("index", static_cast<int64_t>(object.index)));
+  return resultMap;
+}
+
+flutter::EncodableMap convertMessageStreamConfig(
+    const v2::V2NIMMessageStreamConfig object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("status", object.status));
+  if (object.rags.has_value()) {
+    flutter::EncodableList ragsList;
+    for (auto rag : object.rags.value()) {
+      ragsList.emplace_back(convertAIRAGInfo(rag));
+    }
+    resultMap.insert(std::make_pair("rags", ragsList));
+  }
+  if (object.lastChunk.has_value()) {
+    resultMap.insert(std::make_pair(
+        "lastChunk", convertMessageStreamChunk(object.lastChunk.value())));
+  }
   return resultMap;
 }
 
 flutter::EncodableMap convertMessageRobotConfig(
     const v2::V2NIMMessageRobotConfig object) {
   flutter::EncodableMap resultMap;
-  resultMap.insert(std::make_pair("accountId", object.accountId.value()));
-  resultMap.insert(std::make_pair("topic", object.topic.value()));
-  resultMap.insert(std::make_pair("function", object.function.value()));
-  resultMap.insert(
-      std::make_pair("customContent", object.customContent.value()));
+  if (object.accountId.has_value()) {
+    resultMap.insert(std::make_pair("accountId", object.accountId.value()));
+  }
+  if (object.topic.has_value()) {
+    resultMap.insert(std::make_pair("topic", object.topic.value()));
+  }
+  if (object.function.has_value()) {
+    resultMap.insert(std::make_pair("function", object.function.value()));
+  }
+  if (object.customContent.has_value()) {
+    resultMap.insert(
+        std::make_pair("customContent", object.customContent.value()));
+  }
   return resultMap;
 }
 
@@ -1660,14 +2334,22 @@ flutter::EncodableMap convertMessageAntispamConfig(
     const v2::V2NIMMessageAntispamConfig object) {
   flutter::EncodableMap resultMap;
   resultMap.insert(std::make_pair("antispamEnabled", object.antispamEnabled));
-  resultMap.insert(
-      std::make_pair("antispamBusinessId", object.antispamBusinessId.value()));
-  resultMap.insert(std::make_pair("antispamCustomMessage",
-                                  object.antispamCustomMessage.value()));
-  resultMap.insert(
-      std::make_pair("antispamCheating", object.antispamCheating.value()));
-  resultMap.insert(
-      std::make_pair("antispamExtension", object.antispamExtension.value()));
+  if (object.antispamBusinessId.has_value()) {
+    resultMap.insert(std::make_pair("antispamBusinessId",
+                                    object.antispamBusinessId.value()));
+  }
+  if (object.antispamCustomMessage.has_value()) {
+    resultMap.insert(std::make_pair("antispamCustomMessage",
+                                    object.antispamCustomMessage.value()));
+  }
+  if (object.antispamCheating.has_value()) {
+    resultMap.insert(
+        std::make_pair("antispamCheating", object.antispamCheating.value()));
+  }
+  if (object.antispamExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("antispamExtension", object.antispamExtension.value()));
+  }
   return resultMap;
 }
 
@@ -1719,7 +2401,7 @@ flutter::EncodableMap convertMessageConfig(
 flutter::EncodableMap convertMessageAttachment(
     const nstd::shared_ptr<v2::V2NIMMessageAttachment> object) {
   flutter::EncodableMap resultMap;
-  if (object->attachmentType) {
+  if (object && object->attachmentType) {
     switch (object->attachmentType) {
       case v2::V2NIM_MESSAGE_ATTACHMENT_TYPE_FILE: {
         auto fileAttachment =
@@ -1778,11 +2460,74 @@ flutter::EncodableMap convertMessageAttachment(
         }
         break;
       }
+      case v2::V2NIM_MESSAGE_ATTACHMENT_TYPE_CHATROOM_NOTIFICATION: {
+        auto notificationAttachment =
+            nstd::dynamic_pointer_cast<v2::V2NIMChatroomNotificationAttachment>(
+                object);
+        if (notificationAttachment) {
+          return convertChatroomNotificationAttachment(notificationAttachment);
+        }
+        break;
+      }
+      case v2::
+          V2NIM_MESSAGE_ATTACHMENT_TYPE_CHATROOM_MESSAGE_REVOKE_NOTIFICATION: {
+        auto notificationAttachment = nstd::dynamic_pointer_cast<
+            v2::V2NIMChatroomMessageRevokeNotificationAttachment>(object);
+        if (notificationAttachment) {
+          return convertChatroomMessageRevokeNotificationAttachment(
+              notificationAttachment);
+        }
+        break;
+      }
+      case v2::V2NIM_MESSAGE_ATTACHMENT_TYPE_CHATROOM_QUEUE_NOTIFICATION: {
+        auto notificationAttachment = nstd::dynamic_pointer_cast<
+            v2::V2NIMChatroomQueueNotificationAttachment>(object);
+        if (notificationAttachment) {
+          return convertChatroomQueueNotificationAttachment(
+              notificationAttachment);
+        }
+        break;
+      }
+      case v2::
+          V2NIM_MESSAGE_ATTACHMENT_TYPE_CHATROOM_CHAT_BANNED_NOTIFICATION: {
+        auto notificationAttachment = nstd::dynamic_pointer_cast<
+            v2::V2NIMChatroomChatBannedNotificationAttachment>(object);
+        if (notificationAttachment) {
+          return convertChatroomChatBannedNotificationAttachment(
+              notificationAttachment);
+        }
+        break;
+      }
+      case v2::
+          V2NIM_MESSAGE_ATTACHMENT_TYPE_CHATROOM_MEMBER_ENTER_NOTIFICATION: {
+        auto notificationAttachment = nstd::dynamic_pointer_cast<
+            v2::V2NIMChatroomMemberEnterNotificationAttachment>(object);
+        if (notificationAttachment) {
+          return convertChatroomMemberEnterNotificationAttachment(
+              notificationAttachment);
+        }
+        break;
+      }
+      case v2::
+          V2NIM_MESSAGE_ATTACHMENT_TYPE_CHATROOM_MEMBER_ROLE_UPDATE_NOTIFICATION: {
+        auto notificationAttachment = nstd::dynamic_pointer_cast<
+            v2::V2NIMChatroomMemberRoleUpdateAttachment>(object);
+        if (notificationAttachment) {
+          return convertChatroomMemberRoleUpdateAttachment(
+              notificationAttachment);
+        }
+        break;
+      }
       default:
         break;
     }
   }
-  resultMap.insert(std::make_pair("raw", object->raw));
+
+  if (object == nullptr) {
+    resultMap.insert(std::make_pair("raw", ""));
+  } else {
+    resultMap.insert(std::make_pair("raw", object->raw));
+  }
   return resultMap;
 }
 
@@ -1903,6 +2648,386 @@ flutter::EncodableMap convertMessageNotificationAttachment(
   return resultMap;
 }
 
+flutter::EncodableMap convertUserInfoConfig(
+    const v2::V2NIMUserInfoConfig object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair(
+      "userInfoTimestamp", static_cast<int64_t>(object.userInfoTimestamp)));
+  resultMap.insert(std::make_pair("senderNick", object.senderNick));
+  resultMap.insert(std::make_pair("senderAvatar", object.senderAvatar));
+  resultMap.insert(std::make_pair("senderExtension", object.senderExtension));
+  return resultMap;
+}
+
+flutter::EncodableMap convertLocationInfo(const v2::V2NIMLocationInfo object) {
+  flutter::EncodableMap resultMap;
+  if (object.x.has_value()) {
+    resultMap.insert(std::make_pair("x", object.x.value()));
+  }
+
+  if (object.y.has_value()) {
+    resultMap.insert(std::make_pair("y", object.y.value()));
+  }
+
+  if (object.y.has_value()) {
+    resultMap.insert(std::make_pair("z", object.z.value()));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomMessage(
+    const nstd::optional<v2::V2NIMChatroomMessage> object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("messageClientId", object->messageClientId));
+  resultMap.insert(
+      std::make_pair("senderClientType", object->senderClientType));
+  resultMap.insert(
+      std::make_pair("createTime", static_cast<int64_t>(object->createTime)));
+  resultMap.insert(std::make_pair("senderId", object->senderId));
+  resultMap.insert(std::make_pair("roomId", object->roomId));
+
+  resultMap.insert(std::make_pair("isSelf", object->isSelf));
+  resultMap.insert(
+      std::make_pair("attachmentUploadState", object->attachmentUploadState));
+  resultMap.insert(std::make_pair("sendingState", object->sendingState));
+  resultMap.insert(std::make_pair("messageType", object->messageType));
+  resultMap.insert(
+      std::make_pair("subType", static_cast<int32_t>(object->subType)));
+  resultMap.insert(std::make_pair("text", object->text));
+
+  flutter::EncodableMap attachment =
+      convertMessageAttachment(object->attachment);
+  resultMap.insert(std::make_pair("attachment", attachment));
+
+  if (object->serverExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("serverExtension", object->serverExtension.value()));
+  }
+  if (object->callbackExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("callbackExtension", object->callbackExtension.value()));
+  }
+
+  flutter::EncodableMap routeConfig =
+      convertMessageRouteConfig(object->routeConfig);
+  resultMap.insert(std::make_pair("routeConfig", routeConfig));
+  flutter::EncodableMap antispamConfig =
+      convertMessageAntispamConfig(object->antispamConfig);
+  resultMap.insert(std::make_pair("antispamConfig", antispamConfig));
+  resultMap.insert(
+      std::make_pair("notifyTargetTags", object->notifyTargetTags));
+  flutter::EncodableMap messageConfig =
+      convertChatroomMessageConfig(object->messageConfig);
+  resultMap.insert(std::make_pair("messageConfig", messageConfig));
+
+  flutter::EncodableMap userInfoConfig =
+      convertUserInfoConfig(object->userInfoConfig);
+  resultMap.insert(std::make_pair("userInfoConfig", userInfoConfig));
+
+  if (object->locationInfo.has_value()) {
+    flutter::EncodableMap locationInfo =
+        convertLocationInfo(object->locationInfo.value());
+    resultMap.insert(std::make_pair("locationInfo", locationInfo));
+  }
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertSendChatroomMessageResult(
+    const v2::V2NIMSendChatroomMessageResult object) {
+  flutter::EncodableMap resultMap;
+
+  flutter::EncodableMap message = convertChatroomMessage(object.message);
+  resultMap.insert(std::make_pair("message", message));
+
+  resultMap.insert(std::make_pair("antispamResult", object.antispamResult));
+
+  if (object.clientAntispamResult.has_value()) {
+    flutter::EncodableMap clientAntispamResult =
+        convertClientAntispamResult(object.clientAntispamResult.value());
+    resultMap.insert(
+        std::make_pair("clientAntispamResult", clientAntispamResult));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomEnterInfo(
+    const v2::V2NIMChatroomEnterInfo object) {
+  flutter::EncodableMap resultMap;
+
+  resultMap.insert(std::make_pair("roomNick", object.roomNick));
+  resultMap.insert(std::make_pair("roomAvatar", object.roomAvatar));
+  resultMap.insert(
+      std::make_pair("clientType", static_cast<int64_t>(object.clientType)));
+  resultMap.insert(
+      std::make_pair("enterTime", static_cast<int64_t>(object.enterTime)));
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomMember(
+    const nstd::optional<v2::V2NIMChatroomMember> object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("roomId", object->roomId));
+  resultMap.insert(std::make_pair("accountId", object->accountId));
+  resultMap.insert(std::make_pair("memberRole", object->memberRole));
+
+  if (object->memberLevel.has_value()) {
+    resultMap.insert(std::make_pair(
+        "memberLevel", static_cast<int64_t>(object->memberLevel.value())));
+  } else {
+    resultMap.insert(std::make_pair("memberLevel", 0));
+  }
+
+  if (object->roomNick.has_value()) {
+    resultMap.insert(std::make_pair("roomNick", object->roomNick.value()));
+  }
+
+  if (object->roomAvatar.has_value()) {
+    resultMap.insert(std::make_pair("roomAvatar", object->roomAvatar.value()));
+  }
+
+  if (object->serverExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("serverExtension", object->serverExtension.value()));
+  }
+
+  resultMap.insert(std::make_pair("isOnline", object->isOnline));
+  resultMap.insert(std::make_pair("blocked", object->blocked));
+  resultMap.insert(std::make_pair("chatBanned", object->chatBanned));
+  resultMap.insert(std::make_pair("tempChatBanned", object->tempChatBanned));
+  resultMap.insert(
+      std::make_pair("tempChatBannedDuration",
+                     static_cast<int64_t>(object->tempChatBannedDuration)));
+
+  flutter::EncodableList tags;
+  for (auto tag : object->tags) {
+    tags.emplace_back(tag);
+  }
+  resultMap.insert(std::make_pair("tags", tags));
+
+  resultMap.insert(
+      std::make_pair("notifyTargetTags", object->notifyTargetTags));
+  resultMap.insert(
+      std::make_pair("enterTime", static_cast<int64_t>(object->enterTime)));
+  resultMap.insert(
+      std::make_pair("updateTime", static_cast<int64_t>(object->updateTime)));
+  resultMap.insert(std::make_pair("valid", object->valid));
+
+  flutter::EncodableList multiEnterInfo;
+  for (auto info : object->multiEnterInfo) {
+    multiEnterInfo.emplace_back(convertChatroomEnterInfo(info));
+  }
+  resultMap.insert(std::make_pair("multiEnterInfo", multiEnterInfo));
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomInfo(const v2::V2NIMChatroomInfo object) {
+  flutter::EncodableMap resultMap;
+
+  resultMap.insert(std::make_pair("roomId", object.roomId));
+  resultMap.insert(std::make_pair("roomName", object.roomName));
+  resultMap.insert(std::make_pair("announcement", object.announcement));
+  resultMap.insert(std::make_pair("liveUrl", object.liveUrl));
+  resultMap.insert(std::make_pair("isValidRoom", object.isValidRoom));
+  resultMap.insert(std::make_pair("serverExtension", object.serverExtension));
+  resultMap.insert(std::make_pair("queueLevelMode", object.queueLevelMode));
+  resultMap.insert(std::make_pair("creatorAccountId", object.creatorAccountId));
+  resultMap.insert(std::make_pair(
+      "onlineUserCount", static_cast<int32_t>(object.onlineUserCount)));
+  resultMap.insert(std::make_pair("chatBanned", object.chatBanned));
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomMessageConfig(
+    const v2::V2NIMChatroomMessageConfig object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("historyEnabled", object.historyEnabled));
+  resultMap.insert(std::make_pair("highPriority", object.highPriority));
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomUpdateParams(
+    const v2::V2NIMChatroomUpdateParams object) {
+  flutter::EncodableMap resultMap;
+
+  if (object.roomName.has_value()) {
+    resultMap.insert(std::make_pair("roomName", object.roomName.value()));
+  }
+
+  if (object.announcement.has_value()) {
+    resultMap.insert(
+        std::make_pair("announcement", object.announcement.value()));
+  }
+
+  if (object.liveUrl.has_value()) {
+    resultMap.insert(std::make_pair("liveUrl", object.liveUrl.value()));
+  }
+
+  if (object.serverExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("serverExtension", object.serverExtension.value()));
+  }
+
+  resultMap.insert(
+      std::make_pair("notificationEnabled", object.notificationEnabled));
+  resultMap.insert(
+      std::make_pair("notificationExtension", object.notificationExtension));
+
+  if (object.queueLevelMode.has_value()) {
+    resultMap.insert(
+        std::make_pair("queueLevelMode", object.queueLevelMode.value()));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomQueueElement(
+    const v2::V2NIMChatroomQueueElement object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("key", object.key));
+  resultMap.insert(std::make_pair("value", object.value));
+
+  if (object.accountId.has_value()) {
+    resultMap.insert(std::make_pair("accountId", object.accountId.value()));
+  }
+
+  if (object.nick.has_value()) {
+    resultMap.insert(std::make_pair("nick", object.nick.value()));
+  }
+
+  if (object.extension.has_value()) {
+    resultMap.insert(std::make_pair("extension", object.extension.value()));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomNotificationAttachment> object) {
+  flutter::EncodableMap resultMap;
+  resultMap.insert(std::make_pair("raw", object->raw));
+  resultMap.insert(std::make_pair("nimCoreMessageType", 105));
+  resultMap.insert(std::make_pair("type", object->type));
+
+  flutter::EncodableList targetIds;
+  for (auto targetId : object->targetIds) {
+    targetIds.emplace_back(targetId);
+  }
+  resultMap.insert(std::make_pair("targetIds", targetIds));
+
+  flutter::EncodableList targetNicks;
+  for (auto targetNick : object->targetNicks) {
+    targetNicks.emplace_back(targetNick);
+  }
+  resultMap.insert(std::make_pair("targetNicks", targetNicks));
+
+  if (object->targetTag.has_value()) {
+    resultMap.insert(std::make_pair("targetTag", object->targetTag.value()));
+  }
+
+  resultMap.insert(std::make_pair("operatorId", object->operatorId));
+  resultMap.insert(std::make_pair("operatorNick", object->operatorNick));
+
+  if (object->notificationExtension.has_value()) {
+    resultMap.insert(std::make_pair("notificationExtension",
+                                    object->notificationExtension.value()));
+  }
+
+  flutter::EncodableList tags;
+  for (auto tag : object->tags) {
+    tags.emplace_back(tag);
+  }
+  resultMap.insert(std::make_pair("tags", tags));
+
+  if (object->chatroomUpdateParams.has_value()) {
+    flutter::EncodableMap chatroomUpdateParams =
+        convertChatroomUpdateParams(object->chatroomUpdateParams.value());
+    resultMap.insert(
+        std::make_pair("chatroomUpdateParams", chatroomUpdateParams));
+  }
+
+  if (object->chatroomMember.has_value()) {
+    flutter::EncodableMap chatroomMember =
+        convertChatroomMember(object->chatroomMember.value());
+    resultMap.insert(std::make_pair("chatroomMember", chatroomMember));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomMessageRevokeNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomMessageRevokeNotificationAttachment>
+        object) {
+  flutter::EncodableMap resultMap =
+      convertChatroomNotificationAttachment(object);
+
+  resultMap.insert(std::make_pair("messageClientId", object->messageClientId));
+  resultMap.insert(
+      std::make_pair("messageTime", static_cast<int64_t>(object->messageTime)));
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomQueueNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomQueueNotificationAttachment>
+        object) {
+  flutter::EncodableMap resultMap =
+      convertChatroomNotificationAttachment(object);
+
+  flutter::EncodableList elements;
+  for (auto element : object->elements) {
+    elements.emplace_back(convertChatroomQueueElement(element));
+  }
+  resultMap.insert(std::make_pair("elements", elements));
+
+  resultMap.insert(std::make_pair("queueChangeType", object->queueChangeType));
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomChatBannedNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomChatBannedNotificationAttachment>
+        object) {
+  flutter::EncodableMap resultMap =
+      convertChatroomNotificationAttachment(object);
+
+  resultMap.insert(std::make_pair("chatBanned", object->chatBanned));
+  resultMap.insert(std::make_pair("tempChatBanned", object->tempChatBanned));
+  resultMap.insert(
+      std::make_pair("tempChatBannedDuration",
+                     static_cast<int64_t>(object->tempChatBannedDuration)));
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomMemberEnterNotificationAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomMemberEnterNotificationAttachment>
+        object) {
+  flutter::EncodableMap resultMap =
+      convertChatroomNotificationAttachment(object);
+
+  resultMap.insert(std::make_pair("chatBanned", object->chatBanned));
+  resultMap.insert(std::make_pair("tempChatBanned", object->tempChatBanned));
+  resultMap.insert(
+      std::make_pair("tempChatBannedDuration",
+                     static_cast<int64_t>(object->tempChatBannedDuration)));
+
+  return resultMap;
+}
+
+flutter::EncodableMap convertChatroomMemberRoleUpdateAttachment(
+    const nstd::shared_ptr<v2::V2NIMChatroomMemberRoleUpdateAttachment>
+        object) {
+  flutter::EncodableMap resultMap =
+      convertChatroomNotificationAttachment(object);
+
+  resultMap.insert(std::make_pair("previousRole", object->previousRole));
+  flutter::EncodableMap currentMember =
+      convertChatroomMember(object->currentMember);
+  resultMap.insert(std::make_pair("currentMember", currentMember));
+
+  return resultMap;
+}
+
 flutter::EncodableMap convertMessageCallDuration(
     const v2::V2NIMMessageCallDuration object) {
   flutter::EncodableMap resultMap;
@@ -1935,6 +3060,7 @@ flutter::EncodableMap convertMessageAIConfigParams(
     const nstd::optional<v2::V2NIMMessageAIConfigParams> object) {
   flutter::EncodableMap resultMap;
   resultMap.insert(std::make_pair("accountId", object->accountId));
+  resultMap.insert(std::make_pair("aiStream", object->aiStream));
 
   if (object->content.has_value()) {
     flutter::EncodableMap contentMap =
@@ -1951,8 +3077,10 @@ flutter::EncodableMap convertMessageAIConfigParams(
     resultMap.insert(std::make_pair("messages", messagesList));
   }
 
-  resultMap.insert(
-      std::make_pair("promptVariables", object->promptVariables.value()));
+  if (object->promptVariables.has_value()) {
+    resultMap.insert(
+        std::make_pair("promptVariables", object->promptVariables.value()));
+  }
 
   if (object->modelConfigParams.has_value()) {
     flutter::EncodableMap modelConfigParams =
@@ -1983,10 +3111,31 @@ flutter::EncodableMap convertAIModelCallMessage(
 flutter::EncodableMap convertAIModelConfigParams(
     const v2::V2NIMAIModelConfigParams object) {
   flutter::EncodableMap resultMap;
-  resultMap.insert(std::make_pair("prompt", object.prompt.value()));
-  resultMap.insert(std::make_pair("maxTokens", object.maxTokens.value()));
-  resultMap.insert(std::make_pair("topP", object.topP.value()));
-  resultMap.insert(std::make_pair("temperature", object.temperature.value()));
+  if (object.prompt.has_value()) {
+    resultMap.insert(std::make_pair("prompt", object.prompt.value()));
+  }
+  if (object.maxTokens.has_value()) {
+    resultMap.insert(std::make_pair("maxTokens", object.maxTokens.value()));
+  }
+  if (object.topP.has_value()) {
+    resultMap.insert(std::make_pair("topP", object.topP.value()));
+  }
+  if (object.temperature.has_value()) {
+    resultMap.insert(std::make_pair("temperature", object.temperature.value()));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertMessageTargetConfig(
+    const v2::V2NIMMessageTargetConfig object) {
+  flutter::EncodableMap resultMap;
+  flutter::EncodableList receiverIds;
+  for (auto receiverId : object.receiverIds) {
+    receiverIds.emplace_back(receiverId);
+  }
+  resultMap.insert(std::make_pair("receiverIds", receiverIds));
+  resultMap.insert(std::make_pair("inclusive", object.inclusive));
+  resultMap.insert(std::make_pair("newMemberVisible", object.newMemberVisible));
   return resultMap;
 }
 
@@ -2019,6 +3168,18 @@ flutter::EncodableMap convertSendMessageParams(
         convertMessageAIConfigParams(object.aiConfig.value());
     resultMap.insert(std::make_pair("aiConfig", aiConfig));
   }
+
+  if (object.targetConfig.has_value()) {
+    flutter::EncodableMap targetConfig =
+        convertMessageTargetConfig(object.targetConfig.value());
+    resultMap.insert(std::make_pair("targetConfig", targetConfig));
+  }
+
+  resultMap.insert(
+      std::make_pair("clientAntispamEnabled", object.clientAntispamEnabled));
+  resultMap.insert(
+      std::make_pair("clientAntispamReplace", object.clientAntispamReplace));
+
   return resultMap;
 }
 
@@ -2348,6 +3509,39 @@ flutter::EncodableMap convertThreadMessageListOption(
   return resultMap;
 }
 
+flutter::EncodableMap convertMessageSearchResult(
+    const v2::V2NIMMessageSearchResult object) {
+  flutter::EncodableMap resultMap;
+  flutter::EncodableList itemsList;
+  for (auto iteam : object.items) {
+    itemsList.emplace_back(convertMessageSearchItem(iteam));
+  }
+  resultMap.insert(std::make_pair("items", itemsList));
+  resultMap.insert(std::make_pair("count", static_cast<int32_t>(object.count)));
+  resultMap.insert(std::make_pair("nextPageToken", object.nextPageToken));
+  if (!object.nextPageToken.empty()) {
+    resultMap.insert(std::make_pair("hasMore", true));
+  } else {
+    resultMap.insert(std::make_pair("hasMore", false));
+  }
+  return resultMap;
+}
+
+flutter::EncodableMap convertMessageSearchItem(
+    const v2::V2NIMMessageSearchItem object) {
+  flutter::EncodableMap resultMap;
+  flutter::EncodableList messageList;
+  for (auto message : object.messages) {
+    messageList.emplace_back(convertMessage(message));
+  }
+
+  resultMap.insert(std::make_pair("messages", messageList));
+  resultMap.insert(std::make_pair("conversationId", object.conversationId));
+  resultMap.insert(std::make_pair("count", static_cast<int32_t>(object.count)));
+
+  return resultMap;
+}
+
 flutter::EncodableMap convertThreadMessageListResult(
     const v2::V2NIMThreadMessageListResult object) {
   flutter::EncodableMap resultMap;
@@ -2431,7 +3625,8 @@ flutter::EncodableMap convertClearHistoryNotification(
     const v2::V2NIMClearHistoryNotification object) {
   flutter::EncodableMap resultMap;
   resultMap.insert(std::make_pair("conversationId", object.conversationId));
-  resultMap.insert(std::make_pair("deleteTime", long(object.deleteTime)));
+  resultMap.insert(
+      std::make_pair("deleteTime", static_cast<int64_t>(object.deleteTime)));
   resultMap.insert(
       std::make_pair("serverExtension", object.serverExtension.value()));
   return resultMap;
@@ -2440,33 +3635,59 @@ flutter::EncodableMap convertClearHistoryNotification(
 flutter::EncodableMap convertUpdatedTeamInfo(
     const nstd::optional<v2::V2NIMUpdatedTeamInfo> object) {
   flutter::EncodableMap resultMap;
-  resultMap.insert(std::make_pair("name", object->name.value()));
+  if (object->name.has_value()) {
+    resultMap.insert(std::make_pair("name", object->name.value()));
+  }
   if (object->memberLimit.has_value()) {
     resultMap.insert(std::make_pair(
         "memberLimit", static_cast<int64_t>(object->memberLimit.value())));
   }
-  resultMap.insert(std::make_pair("intro", object->intro.value()));
-  resultMap.insert(
-      std::make_pair("announcement", object->announcement.value()));
-  resultMap.insert(std::make_pair("avatar", object->avatar.value()));
-  resultMap.insert(
-      std::make_pair("serverExtension", object->serverExtension.value()));
-  resultMap.insert(std::make_pair("joinMode", object->joinMode.value()));
-  resultMap.insert(std::make_pair("agreeMode", object->agreeMode.value()));
-  resultMap.insert(std::make_pair("inviteMode", object->inviteMode.value()));
-  resultMap.insert(
-      std::make_pair("updateInfoMode", object->updateInfoMode.value()));
-  resultMap.insert(std::make_pair("updateExtensionMode",
-                                  object->updateExtensionMode.value()));
-  resultMap.insert(
-      std::make_pair("chatBannedMode", object->chatBannedMode.value()));
+  if (object->intro.has_value()) {
+    resultMap.insert(std::make_pair("intro", object->intro.value()));
+  }
+  if (object->announcement.has_value()) {
+    resultMap.insert(
+        std::make_pair("announcement", object->announcement.value()));
+  }
+  if (object->avatar.has_value()) {
+    resultMap.insert(std::make_pair("avatar", object->avatar.value()));
+  }
+  if (object->serverExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("serverExtension", object->serverExtension.value()));
+  }
+  if (object->joinMode.has_value()) {
+    resultMap.insert(std::make_pair("joinMode", object->joinMode.value()));
+  }
+  if (object->agreeMode.has_value()) {
+    resultMap.insert(std::make_pair("agreeMode", object->agreeMode.value()));
+  }
+  if (object->inviteMode.has_value()) {
+    resultMap.insert(std::make_pair("inviteMode", object->inviteMode.value()));
+  }
+  if (object->updateInfoMode.has_value()) {
+    resultMap.insert(
+        std::make_pair("updateInfoMode", object->updateInfoMode.value()));
+  }
+  if (object->updateExtensionMode.has_value()) {
+    resultMap.insert(std::make_pair("updateExtensionMode",
+                                    object->updateExtensionMode.value()));
+  }
+  if (object->chatBannedMode.has_value()) {
+    resultMap.insert(
+        std::make_pair("chatBannedMode", object->chatBannedMode.value()));
+  }
+  if (object->customerExtension.has_value()) {
+    resultMap.insert(
+        std::make_pair("customerExtension", object->customerExtension.value()));
+  }
   return resultMap;
 }
 
 v2::V2NIMMessageRefer getMessageRefer(const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageRefer object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2491,10 +3712,73 @@ v2::V2NIMMessageRefer getMessageRefer(const flutter::EncodableMap* arguments) {
   return object;
 }
 
+v2::V2NIMUpdateLocalMessageParams getUpdateLocalMessageParams(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMUpdateLocalMessageParams object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("text")) {
+      object.text = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("attachment")) {
+      auto attachmentMap = std::get<flutter::EncodableMap>(iter->second);
+      object.attachment = getMessageAttachment(&attachmentMap);
+    } else if (iter->first == flutter::EncodableValue("subType")) {
+      object.subType = static_cast<uint32_t>(std::get<int32_t>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("localExtension")) {
+      object.localExtension = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("sendingState")) {
+      object.sendingState =
+          v2::V2NIMMessageSendingState(std::get<int>(iter->second));
+    }
+  }
+  return object;
+}
+
+v2::V2NIMModifyMessageParams getModifyMessageParams(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMModifyMessageParams object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("subType")) {
+      object.subType = static_cast<uint32_t>(std::get<int32_t>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("text")) {
+      object.text = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("attachment")) {
+      auto attachmentMap = std::get<flutter::EncodableMap>(iter->second);
+      object.attachment = getMessageAttachment(&attachmentMap);
+    } else if (iter->first == flutter::EncodableValue("serverExtension")) {
+      object.serverExtension = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("antispamConfig")) {
+      auto configMap = std::get<flutter::EncodableMap>(iter->second);
+      object.antispamConfig = getMessageAntispamConfig(&configMap);
+    } else if (iter->first == flutter::EncodableValue("routeConfig")) {
+      auto configMap = std::get<flutter::EncodableMap>(iter->second);
+      object.routeConfig = getMessageRouteConfig(&configMap);
+    } else if (iter->first == flutter::EncodableValue("pushConfig")) {
+      auto configMap = std::get<flutter::EncodableMap>(iter->second);
+      object.pushConfig = getMessagePushConfig(&configMap);
+    } else if (iter->first ==
+               flutter::EncodableValue("clientAntispamEnabled")) {
+      object.clientAntispamEnabled = std::get<bool>(iter->second);
+    } else if (iter->first ==
+               flutter::EncodableValue("clientAntispamReplace")) {
+      object.clientAntispamReplace = std::get<std::string>(iter->second);
+    }
+  }
+  return object;
+}
+
 v2::V2NIMMessage getMessage(const flutter::EncodableMap* arguments) {
   v2::V2NIMMessage object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2544,9 +3828,22 @@ v2::V2NIMMessage getMessage(const flutter::EncodableMap* arguments) {
     } else if (iter->first == flutter::EncodableValue("threadReply")) {
       auto threadReplyMap = std::get<flutter::EncodableMap>(iter->second);
       object.threadReply = getMessageRefer(&threadReplyMap);
+    } else if (iter->first == flutter::EncodableValue("topicRefer")) {
+      auto topicReferMap = std::get<flutter::EncodableMap>(iter->second);
+      object.topicRefer = getTopicRefer(&topicReferMap);
     } else if (iter->first == flutter::EncodableValue("aiConfig")) {
       auto aiConfigMap = std::get<flutter::EncodableMap>(iter->second);
       object.aiConfig = getMessageAIConfig(&aiConfigMap);
+    } else if (iter->first == flutter::EncodableValue("streamConfig")) {
+      auto streamConfigMap = std::get<flutter::EncodableMap>(iter->second);
+      object.streamConfig = getMessageStreamConfig(&streamConfigMap);
+    } else if (iter->first == flutter::EncodableValue("modifyTime")) {
+      object.modifyTime = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("modifyAccountId")) {
+      object.modifyAccountId = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("messageSource")) {
+      object.messageSource =
+          v2::V2NIMMessageSource(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("messageStatus")) {
       auto messageStatusMap = std::get<flutter::EncodableMap>(iter->second);
       object.messageStatus = getMessageStatus(&messageStatusMap);
@@ -2577,7 +3874,7 @@ v2::V2NIMMessageStatus getMessageStatus(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageStatus object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2594,7 +3891,7 @@ v2::V2NIMMessageAIConfig getMessageAIConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageAIConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2602,6 +3899,118 @@ v2::V2NIMMessageAIConfig getMessageAIConfig(
       object.aiStatus = v2::V2NIMMessageAIStatus(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("accountId")) {
       object.accountId = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("aiStream")) {
+      object.aiStream = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("aiStreamStatus")) {
+      object.aiStreamStatus =
+          v2::V2NIMMessageAIStreamStatus(std::get<int>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("aiRAGs")) {
+      std::vector<v2::V2NIMAIRAGInfo> aiRAGs;
+      auto aiRAGsList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : aiRAGsList) {
+        auto aiRAGMap = std::get<flutter::EncodableMap>(it);
+        aiRAGs.emplace_back(getAIRAGInfo(&aiRAGMap));
+      }
+      object.aiRAGs = aiRAGs;
+    } else if (iter->first == flutter::EncodableValue("aiStreamLastChunk")) {
+      auto aiStreamLastChunkMap = std::get<flutter::EncodableMap>(iter->second);
+      object.aiStreamLastChunk = getMessageAIStreamChunk(&aiStreamLastChunkMap);
+    }
+  }
+  return object;
+}
+
+v2::V2NIMAIRAGInfo getAIRAGInfo(const flutter::EncodableMap* arguments) {
+  v2::V2NIMAIRAGInfo object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("name")) {
+      object.name = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("description")) {
+      object.description = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("icon")) {
+      object.icon = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("url")) {
+      object.url = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("title")) {
+      object.title = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("time")) {
+      object.time = iter->second.LongValue();
+    }
+  }
+  return object;
+}
+
+v2::V2NIMMessageAIStreamChunk getMessageAIStreamChunk(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMMessageAIStreamChunk object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("content")) {
+      object.content = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("messageTime")) {
+      object.messageTime = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("chunkTime")) {
+      object.chunkTime = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("type")) {
+      object.type = std::get<int>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("index")) {
+      object.index = iter->second.LongValue();
+    }
+  }
+  return object;
+}
+
+v2::V2NIMMessageStreamChunk getMessageStreamChunk(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMMessageStreamChunk object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("content")) {
+      object.content = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("messageTime")) {
+      object.messageTime = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("chunkTime")) {
+      object.chunkTime = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("type")) {
+      object.type = std::get<int>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("index")) {
+      object.index = iter->second.LongValue();
+    }
+  }
+  return object;
+}
+
+v2::V2NIMMessageStreamConfig getMessageStreamConfig(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMMessageStreamConfig object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("status")) {
+      object.status = v2::V2NIMMessageStreamStatus(std::get<int>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("rags")) {
+      std::vector<v2::V2NIMAIRAGInfo> rags;
+      auto ragsList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : ragsList) {
+        auto ragMap = std::get<flutter::EncodableMap>(it);
+        rags.emplace_back(getAIRAGInfo(&ragMap));
+      }
+      object.rags = rags;
+    } else if (iter->first == flutter::EncodableValue("lastChunk")) {
+      auto lastChunkMap = std::get<flutter::EncodableMap>(iter->second);
+      object.lastChunk = getMessageStreamChunk(&lastChunkMap);
     }
   }
   return object;
@@ -2611,7 +4020,7 @@ v2::V2NIMMessageRobotConfig getMessageRobotConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageRobotConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2632,7 +4041,7 @@ v2::V2NIMMessageAntispamConfig getMessageAntispamConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageAntispamConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2656,7 +4065,7 @@ v2::V2NIMMessageRouteConfig getMessageRouteConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageRouteConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2673,7 +4082,7 @@ v2::V2NIMMessagePushConfig getMessagePushConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessagePushConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2706,7 +4115,7 @@ v2::V2NIMMessageConfig getMessageConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2734,7 +4143,7 @@ nstd::shared_ptr<v2::V2NIMMessageAttachment> getMessageAttachment(
     const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2770,7 +4179,7 @@ nstd::shared_ptr<v2::V2NIMMessageFileAttachment> getMessageFileAttachment(
     const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageFileAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2803,7 +4212,7 @@ nstd::shared_ptr<v2::V2NIMMessageImageAttachment> getMessageImageAttachment(
   auto object = nstd::make_shared<v2::V2NIMMessageImageAttachment>();
   object->attachmentType = v2::V2NIM_MESSAGE_ATTACHMENT_TYPE_IMAGE;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2840,7 +4249,7 @@ nstd::shared_ptr<v2::V2NIMMessageAudioAttachment> getMessageAudioAttachment(
     const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageAudioAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2875,7 +4284,7 @@ nstd::shared_ptr<v2::V2NIMMessageVideoAttachment> getMessageVideoAttachment(
     const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageVideoAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2913,7 +4322,7 @@ nstd::shared_ptr<v2::V2NIMMessageLocationAttachment>
 getMessageLocationAttachment(const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageLocationAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2934,7 +4343,7 @@ nstd::shared_ptr<v2::V2NIMMessageTeamNotificationAttachment>
 getMessageNotificationAttachment(const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageTeamNotificationAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2967,7 +4376,7 @@ v2::V2NIMMessageCallDuration getMessageCallDuration(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageCallDuration object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -2984,7 +4393,7 @@ nstd::shared_ptr<v2::V2NIMMessageCallAttachment> getMessageCallAttachment(
     const flutter::EncodableMap* arguments) {
   auto object = nstd::make_shared<v2::V2NIMMessageCallAttachment>();
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3013,12 +4422,14 @@ v2::V2NIMMessageAIConfigParams getMessageAIConfigParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageAIConfigParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
     if (iter->first == flutter::EncodableValue("accountId")) {
       object.accountId = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("aiStream")) {
+      object.aiStream = std::get<bool>(iter->second);
     } else if (iter->first == flutter::EncodableValue("content")) {
       auto contentMap = std::get<flutter::EncodableMap>(iter->second);
       object.content = getAIModelCallContent(&contentMap);
@@ -3031,16 +4442,46 @@ v2::V2NIMMessageAIConfigParams getMessageAIConfigParams(
         messages.emplace_back(message);
       }
       object.messages = messages;
+    } else if (iter->first == flutter::EncodableValue("promptVariables")) {
+      object.promptVariables = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("modelConfigParams")) {
+      auto modelConfigParamsMap = std::get<flutter::EncodableMap>(iter->second);
+      object.modelConfigParams = getAIModelConfigParams(&modelConfigParamsMap);
     }
   }
   return object;
+}
+
+v2::V2NIMMessageTargetConfig getMessageTargetConfig(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMMessageTargetConfig cofing;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("receiverIds")) {
+      std::vector<nstd::string> receiverIds;
+      auto receiverIdList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : receiverIdList) {
+        auto receiverId = std::get<std::string>(it);
+        receiverIds.emplace_back(receiverId);
+      }
+      cofing.receiverIds = receiverIds;
+    } else if (iter->first == flutter::EncodableValue("inclusive")) {
+      cofing.inclusive = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("newMemberVisible")) {
+      cofing.newMemberVisible = std::get<bool>(iter->second);
+    }
+  }
+  return cofing;
 }
 
 v2::V2NIMAIModelCallContent getAIModelCallContent(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMAIModelCallContent object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3057,7 +4498,7 @@ v2::V2NIMAIModelCallMessage getAIModelCallMessage(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMAIModelCallMessage object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3076,14 +4517,14 @@ v2::V2NIMAIModelConfigParams getAIModelConfigParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMAIModelConfigParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
     if (iter->first == flutter::EncodableValue("prompt")) {
       object.prompt = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("maxTokens")) {
-      object.maxTokens = iter->second.LongValue();
+      object.maxTokens = std::get<std::int32_t>(iter->second);
     } else if (iter->first == flutter::EncodableValue("topP")) {
       object.topP = std::get<std::double_t>(iter->second);
     } else if (iter->first == flutter::EncodableValue("temperature")) {
@@ -3093,11 +4534,27 @@ v2::V2NIMAIModelConfigParams getAIModelConfigParams(
   return object;
 }
 
+v2::V2NIMMessageAIRegenParams getMessageAIRegenParams(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMMessageAIRegenParams object;
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("operationType")) {
+      object.operationType =
+          v2::V2NIMMessageAIRegenOpType(std::get<int>(iter->second));
+    }
+  }
+  return object;
+}
+
 v2::V2NIMSendMessageParams getSendMessageParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMSendMessageParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3125,6 +4582,9 @@ v2::V2NIMSendMessageParams getSendMessageParams(
     } else if (iter->first ==
                flutter::EncodableValue("clientAntispamReplace")) {
       object.clientAntispamReplace = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("targetConfig")) {
+      auto targetConfigMap = std::get<flutter::EncodableMap>(iter->second);
+      object.targetConfig = getMessageTargetConfig(&targetConfigMap);
     }
   }
   return object;
@@ -3134,7 +4594,7 @@ v2::V2NIMSendMessageResult getSendMessageResult(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMSendMessageResult object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3157,7 +4617,7 @@ v2::V2NIMClientAntispamResult getClientAntispamResult(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMClientAntispamResult object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3175,7 +4635,7 @@ v2::V2NIMMessageListOption getMessageListOption(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageListOption object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3189,6 +4649,8 @@ v2::V2NIMMessageListOption getMessageListOption(
       object.limit = std::get<int32_t>(iter->second);
     } else if (iter->first == flutter::EncodableValue("reverse")) {
       object.reverse = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("onlyQueryLocal")) {
+      object.onlyQueryLocal = std::get<bool>(iter->second);
     } else if (iter->first == flutter::EncodableValue("direction")) {
       object.direction = v2::V2NIMQueryDirection(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("strictMode")) {
@@ -3213,7 +4675,7 @@ v2::V2NIMClearHistoryMessageOption getClearHistoryMessageOption(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMClearHistoryMessageOption object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3225,6 +4687,8 @@ v2::V2NIMClearHistoryMessageOption getClearHistoryMessageOption(
       object.onlineSync = std::get<bool>(iter->second);
     } else if (iter->first == flutter::EncodableValue("serverExtension")) {
       object.serverExtension = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("clearMode")) {
+      object.clearMode = v2::V2NIMClearHistoryMode(std::get<int>(iter->second));
     }
   }
   return object;
@@ -3234,7 +4698,7 @@ v2::V2NIMMessageDeletedNotification getMessageDeletedNotification(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageDeletedNotification object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3253,7 +4717,7 @@ v2::V2NIMMessageDeletedNotification getMessageDeletedNotification(
 v2::V2NIMMessagePin getMessagePin(const flutter::EncodableMap* arguments) {
   v2::V2NIMMessagePin object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3277,7 +4741,7 @@ v2::V2NIMMessagePinNotification getMessagePinNotification(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessagePinNotification object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3295,7 +4759,7 @@ v2::V2NIMMessageQuickComment getMessageQuickComment(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageQuickComment object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3319,7 +4783,7 @@ v2::V2NIMMessageQuickCommentNotification getMessageQuickCommentNotification(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageQuickCommentNotification object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3338,7 +4802,7 @@ v2::V2NIMMessageQuickCommentPushConfig getMessageQuickCommentPushConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageQuickCommentPushConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3361,7 +4825,7 @@ v2::V2NIMMessageRevokeNotification getMessageRevokeNotification(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageRevokeNotification object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3388,7 +4852,7 @@ v2::V2NIMMessageRevokeParams getMessageRevokeParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageRevokeParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3411,7 +4875,7 @@ v2::V2NIMMessageSearchParams getMessageSearchParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMMessageSearchParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3421,7 +4885,6 @@ v2::V2NIMMessageSearchParams getMessageSearchParams(
       object.beginTime = iter->second.LongValue();
     } else if (iter->first == flutter::EncodableValue("endTime")) {
       object.endTime = iter->second.LongValue();
-      ;
     } else if (iter->first == flutter::EncodableValue("conversationLimit")) {
       object.conversationLimit = iter->second.LongValue();
     } else if (iter->first == flutter::EncodableValue("messageLimit")) {
@@ -3461,10 +4924,10 @@ v2::V2NIMMessageSearchParams getMessageSearchParams(
       }
       object.messageTypes = messageTypes;
     } else if (iter->first == flutter::EncodableValue("messageSubtypes")) {
-      std::vector<int64_t> messageSubtypes;
+      std::vector<uint32_t> messageSubtypes;
       auto messageSubtypeList = std::get<flutter::EncodableList>(iter->second);
       for (auto& it : messageSubtypeList) {
-        auto messageSubtype = it.LongValue();
+        auto messageSubtype = std::get<int32_t>(it);
         messageSubtypes.emplace_back(messageSubtype);
       }
       object.messageSubTypes = messageSubtypes;
@@ -3477,7 +4940,7 @@ v2::V2NIMNotificationAntispamConfig getNotificationAntispamConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMNotificationAntispamConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3495,7 +4958,7 @@ v2::V2NIMNotificationConfig getNotificationConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMNotificationConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3512,7 +4975,7 @@ v2::V2NIMNotificationPushConfig getNotificationPushConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMNotificationPushConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3546,7 +5009,7 @@ v2::V2NIMNotificationRouteConfig getNotificationRouteConfig(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMNotificationRouteConfig object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3563,7 +5026,7 @@ v2::V2NIMP2PMessageReadReceipt getP2PMessageReadReceipt(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMP2PMessageReadReceipt object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3580,7 +5043,7 @@ v2::V2NIMTeamMessageReadReceipt getTeamMessageReadReceipt(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMTeamMessageReadReceipt object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3605,7 +5068,7 @@ v2::V2NIMTeamMessageReadReceiptDetail getTeamMessageReadReceiptDetail(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMTeamMessageReadReceiptDetail object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3638,7 +5101,7 @@ v2::V2NIMThreadMessageListOption getThreadMessageListOption(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMThreadMessageListOption object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3653,7 +5116,7 @@ v2::V2NIMThreadMessageListOption getThreadMessageListOption(
                flutter::EncodableValue("excludeMessageServerId")) {
       object.excludeMessageServerId = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("limit")) {
-      object.limit = iter->second.LongValue();
+      object.limit = static_cast<uint32_t>(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("direction")) {
       object.direction = v2::V2NIMQueryDirection(std::get<int>(iter->second));
     }
@@ -3665,7 +5128,7 @@ v2::V2NIMThreadMessageListResult getThreadMessageListResult(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMThreadMessageListResult object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3693,7 +5156,7 @@ v2::V2NIMVoiceToTextParams getVoiceToTextParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMVoiceToTextParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3717,7 +5180,7 @@ v2::V2NIMVoiceToTextParams getVoiceToTextParams(
 v2::V2NIMCollection getCollection(const flutter::EncodableMap* arguments) {
   v2::V2NIMCollection object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3744,7 +5207,7 @@ v2::V2NIMAddCollectionParams getAddCollectionParams(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMAddCollectionParams object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3755,7 +5218,7 @@ v2::V2NIMAddCollectionParams getAddCollectionParams(
     } else if (iter->first == flutter::EncodableValue("serverExtension")) {
       object.serverExtension = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("uniqueId")) {
-      //   object.uniqueId = std::get<std::string>(iter->second);
+      object.uniqueId = std::get<std::string>(iter->second);
     }
   }
   return object;
@@ -3765,7 +5228,7 @@ v2::V2NIMCollectionOption getCollectionOption(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMCollectionOption object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3779,7 +5242,7 @@ v2::V2NIMCollectionOption getCollectionOption(
       auto anchorCollectionMap = std::get<flutter::EncodableMap>(iter->second);
       object.anchorCollection = getCollection(&anchorCollectionMap);
     } else if (iter->first == flutter::EncodableValue("limit")) {
-      object.limit = iter->second.LongValue();
+      object.limit = static_cast<uint32_t>(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("collectionType")) {
       object.collectionType = iter->second.LongValue();
     }
@@ -3791,7 +5254,7 @@ v2::V2NIMClearHistoryNotification getClearHistoryNotification(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMClearHistoryNotification object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -3810,14 +5273,14 @@ v2::V2NIMUpdatedTeamInfo getUpdatedTeamInfo(
     const flutter::EncodableMap* arguments) {
   v2::V2NIMUpdatedTeamInfo object;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
     if (iter->first == flutter::EncodableValue("name")) {
       object.name = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("memberLimit")) {
-      object.memberLimit = iter->second.LongValue();
+      object.memberLimit = static_cast<uint32_t>(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("intro")) {
       object.intro = std::get<std::string>(iter->second);
     } else if (iter->first == flutter::EncodableValue("announcement")) {
@@ -3841,7 +5304,211 @@ v2::V2NIMUpdatedTeamInfo getUpdatedTeamInfo(
     } else if (iter->first == flutter::EncodableValue("chatBannedMode")) {
       object.chatBannedMode =
           v2::V2NIMTeamChatBannedMode(std::get<int>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("customerExtension")) {
+      object.customerExtension = std::get<std::string>(iter->second);
     }
   }
   return object;
+}
+
+v2::V2NIMMessageSearchExParams getMessageSearchExParams(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMMessageSearchExParams object;
+  if (!arguments) {
+    return object;
+  }
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("conversationId")) {
+      object.conversationId = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("keywordList")) {
+      std::vector<nstd::string> keywordList;
+      auto keywordListList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : keywordListList) {
+        auto senderAccountId = std::get<std::string>(it);
+        keywordList.emplace_back(senderAccountId);
+      }
+      object.keywordList = keywordList;
+    } else if (iter->first == flutter::EncodableValue("keywordMatchType")) {
+      object.keywordMatchType =
+          v2::V2NIMSearchKeywordMathType(std::get<int>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("senderAccountIds")) {
+      std::vector<nstd::string> senderAccountIds;
+      auto senderAccountIdList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : senderAccountIdList) {
+        auto senderAccountId = std::get<std::string>(it);
+        senderAccountIds.emplace_back(senderAccountId);
+      }
+      object.senderAccountIds = senderAccountIds;
+    } else if (iter->first == flutter::EncodableValue("messageTypes")) {
+      std::vector<v2::V2NIMMessageType> messageTypes;
+      auto messageTypesMap = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : messageTypesMap) {
+        auto messageType = std::get<int>(it);
+        messageTypes.emplace_back(v2::V2NIMMessageType(messageType));
+      }
+      object.messageTypes = messageTypes;
+    } else if (iter->first == flutter::EncodableValue("messageSubtypes")) {
+      std::vector<int32_t> messageSubtypes;
+      auto messageSubtypeList = std::get<flutter::EncodableList>(iter->second);
+      for (auto& it : messageSubtypeList) {
+        auto messageSubtype = std::get<int32_t>(it);
+        messageSubtypes.emplace_back(messageSubtype);
+      }
+      object.messageSubtypes = messageSubtypes;
+    } else if (iter->first == flutter::EncodableValue("searchStartTime")) {
+      object.searchStartTime = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("searchTimePeriod")) {
+      object.searchTimePeriod = iter->second.LongValue();
+    } else if (iter->first == flutter::EncodableValue("direction")) {
+      object.direction = v2::V2NIMSearchDirection(std::get<int>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("strategy")) {
+      object.strategy = v2::V2NIMSearchStrategy(std::get<int>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("limit")) {
+      object.limit = static_cast<uint32_t>(std::get<int32_t>(iter->second));
+    } else if (iter->first == flutter::EncodableValue("pageToken")) {
+      object.pageToken = std::get<std::string>(iter->second);
+    }
+  }
+  return object;
+}
+
+void FLTMessageService::translateText(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMTextTranslateParams params;
+
+  auto paramsIter = arguments->find(flutter::EncodableValue("params"));
+  const flutter::EncodableMap* paramsMap = nullptr;
+  if (paramsIter != arguments->end() && !paramsIter->second.IsNull()) {
+    paramsMap = std::get_if<flutter::EncodableMap>(&paramsIter->second);
+  } else {
+    paramsMap = arguments;
+  }
+
+  if (paramsMap) {
+    auto iter = paramsMap->begin();
+    for (; iter != paramsMap->end(); ++iter) {
+      if (iter->second.IsNull()) {
+        continue;
+      }
+      if (iter->first == flutter::EncodableValue("text")) {
+        params.text = std::get<std::string>(iter->second);
+      } else if (iter->first == flutter::EncodableValue("sourceLanguage")) {
+        params.sourceLanguage = std::get<std::string>(iter->second);
+      } else if (iter->first == flutter::EncodableValue("targetLanguage")) {
+        params.targetLanguage = std::get<std::string>(iter->second);
+      }
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.translateText(
+      params,
+      [result](const v2::V2NIMTextTranslationResult& translationResult) {
+        flutter::EncodableMap resultMap;
+        resultMap.insert(
+            std::make_pair("translatedText", translationResult.translatedText));
+        resultMap.insert(
+            std::make_pair("sourceLanguage", translationResult.sourceLanguage));
+        resultMap.insert(
+            std::make_pair("targetLanguage", translationResult.targetLanguage));
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::stopAIStreamMessage(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    return;
+  }
+
+  v2::V2NIMMessage message;
+  v2::V2NIMMessageAIStreamStopParams params;
+
+  auto iter = arguments->begin();
+  for (; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+
+    if (iter->first == flutter::EncodableValue("message")) {
+      auto messageMap = std::get<flutter::EncodableMap>(iter->second);
+      message = getMessage(&messageMap);
+    } else if (iter->first == flutter::EncodableValue("params")) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      auto pIter = paramsMap.begin();
+      for (; pIter != paramsMap.end(); ++pIter) {
+        if (pIter->second.IsNull()) {
+          continue;
+        }
+        if (pIter->first == flutter::EncodableValue("operationType")) {
+          params.operationType =
+              static_cast<v2::V2NIMMessageAIStreamStopOpType>(
+                  std::get<int32_t>(pIter->second));
+        } else if (pIter->first == flutter::EncodableValue("updateContent")) {
+          params.updateContent = std::get<std::string>(pIter->second);
+        }
+      }
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.stopAIStreamMessage(
+      message, params,
+      [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void FLTMessageService::clearLocalMessage(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  v2::V2NIMClearLocalMessageParams params;
+
+  if (arguments) {
+    auto iter = arguments->find(flutter::EncodableValue("params"));
+    if (iter != arguments->end() && !iter->second.IsNull()) {
+      auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+      auto pIter = paramsMap.begin();
+      for (; pIter != paramsMap.end(); ++pIter) {
+        if (pIter->second.IsNull()) {
+          continue;
+        }
+        if (pIter->first == flutter::EncodableValue("anchorTime")) {
+          params.anchorTime =
+              static_cast<uint64_t>(std::get<int64_t>(pIter->second));
+        } else if (pIter->first ==
+                   flutter::EncodableValue("deleteConversation")) {
+          params.deleteConversation = std::get<bool>(pIter->second);
+        }
+      }
+    }
+  }
+
+  auto& instance = v2::V2NIMClient::get();
+  auto& messageService = instance.getMessageService();
+  messageService.clearLocalMessage(
+      params, [result]() { result->Success(NimResult::getSuccessResult()); },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
 }

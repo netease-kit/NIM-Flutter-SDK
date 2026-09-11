@@ -125,6 +125,8 @@ void FLTLoginService::onMethodCalled(
     setReconnectDelayProvider(arguments, result);
   } else if (method == "getLoginClients") {
     getLoginClients(arguments, result);
+  } else if (method == "getCurrentLoginClient") {
+    getCurrentLoginClient(arguments, result);
   } else {
     result->NotImplemented();
   }
@@ -143,6 +145,8 @@ v2::V2NIMLoginOption getLoginOption(const flutter::EncodableMap* arguments) {
       option.timeout = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("forceMode")) {
       option.forceMode = std::get<bool>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("offlineMode")) {
+      //      option.offlineMode = std::get<bool>(iter->second);
     } else if (iter->first == flutter::EncodableValue("authType")) {
       option.authType = v2::V2NIMLoginAuthType(std::get<int>(iter->second));
     } else if (iter->first == flutter::EncodableValue("syncLevel")) {
@@ -173,6 +177,8 @@ v2::V2NIMLoginClient getLoginClient(const flutter::EncodableMap* arguments) {
       client.customClientType = std::get<int>(iter->second);
     } else if (iter->first == flutter::EncodableValue("clientId")) {
       client.clientId = std::get<std::string>(iter->second);
+    } else if (iter->first == flutter::EncodableValue("clientIP")) {
+      client.clientIP = std::get<std::string>(iter->second);
     }
   }
   return client;
@@ -220,6 +226,7 @@ flutter::EncodableMap convertLoginClientToMap(
   resultMap.insert(std::make_pair(
       "customClientType", static_cast<int32_t>(client.customClientType)));
   resultMap.insert(std::make_pair("clientId", client.clientId));
+  resultMap.insert(std::make_pair("clientIP", client.clientIP));
   return resultMap;
 }
 
@@ -303,7 +310,7 @@ void FLTLoginService::login(
         // login succeeded
         result->Success(NimResult::getSuccessResult());
       },
-      [result](v2::V2NIMError error) {
+      [result](const v2::V2NIMError& error) {
         result->Error("", error.desc,
                       NimResult::getErrorResult(error.code, "login failed"));
       });
@@ -414,6 +421,29 @@ void FLTLoginService::getChatroomLinkAddress(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   // todo  result->Success(NimResult::getSuccessResult());
+  auto& instance = v2::V2NIMClient::get();
+  auto& loginService = instance.getLoginService();
+  std::string roomId;
+  auto iter = arguments->find(flutter::EncodableValue("roomId"));
+  if (iter != arguments->end()) {
+    roomId = std::get<std::string>(iter->second);
+  }
+  loginService.getChatroomLinkAddress(
+      roomId,
+      [result](const nstd::vector<nstd::string> linkAddresses) {
+        flutter::EncodableMap resultMapData;
+        flutter::EncodableList ListData_;
+        for (auto linkAddress : linkAddresses) {
+          ListData_.emplace_back(linkAddress);
+        }
+        resultMapData.insert(
+            std::make_pair("linkAddress", flutter::EncodableValue(ListData_)));
+        result->Success(NimResult::getSuccessResult(resultMapData));
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
 }
 
 void FLTLoginService::setReconnectDelayProvider(
@@ -459,4 +489,18 @@ void FLTLoginService::getLoginClients(
   }
   resultMap.insert(std::make_pair("loginClient", dataList));
   result->Success(NimResult::getSuccessResult(resultMap));
+}
+
+void FLTLoginService::getCurrentLoginClient(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& instance = v2::V2NIMClient::get();
+  auto& loginService = instance.getLoginService();
+  auto loginClient = loginService.getCurrentLoginClient();
+  if (loginClient.has_value()) {
+    result->Success(NimResult::getSuccessResult(
+        convertLoginClientToMap(loginClient.value())));
+  } else {
+    result->Success(NimResult::getErrorResult(-1, "no login client"));
+  }
 }

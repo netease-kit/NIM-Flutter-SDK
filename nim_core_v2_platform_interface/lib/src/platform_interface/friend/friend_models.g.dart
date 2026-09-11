@@ -65,6 +65,10 @@ NIMFriendAddApplication _$NIMFriendAddApplicationFromJson(
       status: $enumDecodeNullable(
           _$NIMFriendAddApplicationStatusEnumMap, json['status']),
       timestamp: (json['timestamp'] as num?)?.toInt(),
+      postscriptHistory:
+          _v2NIMPostscriptListFromJson(json['postscriptHistory'] as List?),
+      serverId: json['serverId'] as String?,
+      updateTimestamp: (json['updateTimestamp'] as num?)?.toInt(),
       read: json['read'] as bool?,
     );
 
@@ -78,6 +82,10 @@ Map<String, dynamic> _$NIMFriendAddApplicationToJson(
       'status': _$NIMFriendAddApplicationStatusEnumMap[instance.status],
       'timestamp': instance.timestamp,
       'read': instance.read,
+      'postscriptHistory':
+          instance.postscriptHistory?.map((e) => e.toJson()).toList(),
+      'serverId': instance.serverId,
+      'updateTimestamp': instance.updateTimestamp,
     };
 
 const _$NIMFriendAddApplicationStatusEnumMap = {
@@ -87,6 +95,20 @@ const _$NIMFriendAddApplicationStatusEnumMap = {
   NIMFriendAddApplicationStatus.nimFriendAddApplicationStatusExpired: 3,
   NIMFriendAddApplicationStatus.nimFriendAddApplicationStatusDirectAdd: 4,
 };
+
+V2NIMPostscript _$V2NIMPostscriptFromJson(Map<String, dynamic> json) =>
+    V2NIMPostscript(
+      fromAccount: json['fromAccount'] as String?,
+      content: json['content'] as String?,
+      time: (json['time'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$V2NIMPostscriptToJson(V2NIMPostscript instance) =>
+    <String, dynamic>{
+      'fromAccount': instance.fromAccount,
+      'content': instance.content,
+      'time': instance.time,
+    };
 
 NIMFriendSetParams _$NIMFriendSetParamsFromJson(Map<String, dynamic> json) =>
     NIMFriendSetParams(
@@ -151,6 +173,28 @@ Map<String, dynamic> _$NIMFriendSearchOptionToJson(
       'searchAlias': instance.searchAlias,
       'searchAccountId': instance.searchAccountId,
     };
+
+NIMFriendClearAddApplicationOption _$NIMFriendClearAddApplicationOptionFromJson(
+        Map<String, dynamic> json) =>
+    NIMFriendClearAddApplicationOption(
+      timestamp: (json['timestamp'] as num?)?.toInt(),
+      type: $enumDecodeNullable(
+          _$NIMFriendAddApplicationTypeEnumMap, json['type']),
+    );
+
+Map<String, dynamic> _$NIMFriendClearAddApplicationOptionToJson(
+        NIMFriendClearAddApplicationOption instance) =>
+    <String, dynamic>{
+      'timestamp': instance.timestamp,
+      'type': _$NIMFriendAddApplicationTypeEnumMap[instance.type],
+    };
+
+const _$NIMFriendAddApplicationTypeEnumMap = {
+  NIMFriendAddApplicationType.nimFriendAddApplicationTypeLegacy: 0,
+  NIMFriendAddApplicationType.nimFriendAddApplicationTypeFromSelf: 1,
+  NIMFriendAddApplicationType.nimFriendAddApplicationTypeToSelf: 2,
+  NIMFriendAddApplicationType.nimFriendAddApplicationTypeAll: 3,
+};
 
 NIMFriendDeletion _$NIMFriendDeletionFromJson(Map<String, dynamic> json) =>
     NIMFriendDeletion(

@@ -11,8 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FLTALog : NSObject
 /// 初始化
 + (void)setUp;
-/// info类型 log
-+ (void)infoLog:(NSString *)className desc:(NSString *)desc;
 /// warn类型 log
 + (void)warnLog:(NSString *)className desc:(NSString *)desc;
 /// error类型 log

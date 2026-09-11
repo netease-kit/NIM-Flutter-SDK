@@ -11,13 +11,12 @@ part of 'pass_through_notifydata.dart';
 // **************************************************************************
 
 NIMPassThroughNotifyData _$NIMPassThroughNotifyDataFromJson(
-    Map<String, dynamic> json) {
-  return NIMPassThroughNotifyData(
-    fromAccid: json['fromAccid'] as String?,
-    body: json['body'] as String?,
-    time: json['time'] as int?,
-  );
-}
+        Map<String, dynamic> json) =>
+    NIMPassThroughNotifyData(
+      fromAccid: json['fromAccid'] as String?,
+      body: json['body'] as String?,
+      time: (json['time'] as num?)?.toInt(),
+    );
 
 Map<String, dynamic> _$NIMPassThroughNotifyDataToJson(
         NIMPassThroughNotifyData instance) =>

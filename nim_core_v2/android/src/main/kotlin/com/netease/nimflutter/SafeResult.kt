@@ -9,7 +9,7 @@ package com.netease.nimflutter
 import android.os.Handler
 import android.os.Looper
 import io.flutter.plugin.common.MethodChannel.Result
-import kotlin.coroutines.Continuation
+import kotlinx.coroutines.CancellableContinuation
 
 class SafeResult(private val unsafeResult: Result) : Result {
 
@@ -43,29 +43,35 @@ class MethodChannelError(
 ) : Exception()
 
 class MethodChannelSuspendResult(
-    private val continuation: Continuation<Any?>
+    private val continuation: CancellableContinuation<Any?>
 ) : Result {
 
     override fun success(result: Any?) {
-        continuation.resumeWith(kotlin.Result.success(result))
+        if (continuation.isActive) {
+            continuation.resumeWith(kotlin.Result.success(result))
+        }
     }
 
     override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
-        continuation.resumeWith(
-            kotlin.Result.failure(
-                MethodChannelError(
-                    errorCode,
-                    errorMessage,
-                    errorDetails
+        if (continuation.isActive) {
+            continuation.resumeWith(
+                kotlin.Result.failure(
+                    MethodChannelError(
+                        errorCode,
+                        errorMessage,
+                        errorDetails
+                    )
                 )
             )
-        )
+        }
     }
 
     override fun notImplemented() {
-        continuation.resumeWith(kotlin.Result.failure(NotImplementedError()))
+        if (continuation.isActive) {
+            continuation.resumeWith(kotlin.Result.failure(NotImplementedError()))
+        }
     }
 }
 
-// 原生回调dart层超时限制 500ms
-const val nimProviderTimeout = 500L
+// 原生回调dart层超时限制 30s
+const val nimProviderTimeout = 30 * 1000L

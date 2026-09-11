@@ -5,7 +5,7 @@
 import UIKit
 import Flutter
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
     
     let documentPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,
@@ -26,18 +26,15 @@ import Flutter
           }
       }
       
+    // 注册远程推送通知
+    // NIM SDK 会自动监听 APNs Token 回调并更新到服务器，无需手动处理
     application.registerForRemoteNotifications()
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
     
-    override func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        let flutterData = FlutterStandardTypedData.init(bytes: deviceToken)
-        let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-        let methodChannel = FlutterMethodChannel(name: "com.netease.NIM.demo/settings",
-                                                  binaryMessenger: controller.binaryMessenger)
-        methodChannel.invokeMethod("updateAPNsToken", arguments: flutterData)
-    }
+    // 注意：不再需要手动处理 APNs Token
+    // NIM SDK Plugin 会自动监听 didRegisterForRemoteNotificationsWithDeviceToken 回调
+    // 并将 token 更新到云信服务器
     
     override func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("register APNS fail: " , error)

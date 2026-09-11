@@ -21,7 +21,7 @@ class QChatSendMessageParam {
 
   /// 消息类型, 同TalkMsgTag，必填
 
-  final NIMMessageType type;
+  final QChatNIMMessageType type;
 
   /// 消息body
 
@@ -225,7 +225,7 @@ class QChatMessage {
 
   /// 消息类型
 
-  NIMMessageType? msgType;
+  QChatNIMMessageType? msgType;
 
   /// 消息body
 
@@ -357,7 +357,7 @@ class QChatMessage {
 
   /// 消息接收/发送状态。
 
-  NIMMessageStatus? status;
+  QChatNIMMessageStatus? status;
 
   QChatMessage(
       {required this.qChatChannelId,
@@ -1180,8 +1180,11 @@ class QChatSystemNotification {
       this.msgIdClient,
       this.toAccids});
 
-  factory QChatSystemNotification.fromJson(Map<String, dynamic> json) =>
-      _$QChatSystemNotificationFromJson(json);
+  factory QChatSystemNotification.fromJson(Map<String, dynamic> json) {
+    print("============ QChatSystemNotification fromJson  result "
+        "${json} ==================");
+    return _$QChatSystemNotificationFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$QChatSystemNotificationToJson(this);
 }
@@ -3012,9 +3015,9 @@ class QChatSearchMsgByPageParam {
 
   int? toTime;
 
-  /// 搜索的消息类型列表，目前仅支持[ NIMMessageType.text],[NIMMessageType.image],[NIMMessageType.video],[NIMMessageType.file]
+  /// 搜索的消息类型列表，目前仅支持[ QChatNIMMessageType.text],[QChatNIMMessageType.image],[QChatNIMMessageType.video],[QChatNIMMessageType.file]
 
-  final List<NIMMessageType> msgTypes;
+  final List<QChatNIMMessageType> msgTypes;
 
   /// 搜索的消息子类型列表
 

@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -50,7 +46,6 @@
   </div>
 </header>
 <main>
-
   <div
       id="dartdoc-main-content"
       class="main-content"
@@ -62,14 +57,14 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">NIMTeam</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-teamId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span></li>
+      <span class="name ">NIMTeam</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-teamId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span></li>
 <li><span class="parameter" id="-param-teamType"><span>required</span> <span class="type-annotation"><a href="../../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span></li>
 <li><span class="parameter" id="-param-name"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span></li>
 <li><span class="parameter" id="-param-ownerAccountId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">ownerAccountId</span>, </span></li>
 <li><span class="parameter" id="-param-memberLimit"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">memberLimit</span>, </span></li>
 <li><span class="parameter" id="-param-memberCount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">memberCount</span>, </span></li>
-<li><span class="parameter" id="-param-createTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">createTime</span>, </span></li>
-<li><span class="parameter" id="-param-updateTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">updateTime</span>, </span></li>
+<li><span class="parameter" id="-param-createTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">createTime</span>, </span></li>
+<li><span class="parameter" id="-param-updateTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">updateTime</span>, </span></li>
 <li><span class="parameter" id="-param-intro"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">intro</span>, </span></li>
 <li><span class="parameter" id="-param-announcement"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">announcement</span>, </span></li>
 <li><span class="parameter" id="-param-avatar"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">avatar</span>, </span></li>
@@ -81,43 +76,42 @@
 <li><span class="parameter" id="-param-updateInfoMode"><span>required</span> <span class="type-annotation"><a href="../../nim_core_v2/NIMTeamUpdateInfoMode.html">NIMTeamUpdateInfoMode</a></span> <span class="parameter-name">updateInfoMode</span>, </span></li>
 <li><span class="parameter" id="-param-updateExtensionMode"><span>required</span> <span class="type-annotation"><a href="../../nim_core_v2/NIMTeamUpdateExtensionMode.html">NIMTeamUpdateExtensionMode</a></span> <span class="parameter-name">updateExtensionMode</span>, </span></li>
 <li><span class="parameter" id="-param-chatBannedMode"><span>required</span> <span class="type-annotation"><a href="../../nim_core_v2/NIMTeamChatBannedMode.html">NIMTeamChatBannedMode</a></span> <span class="parameter-name">chatBannedMode</span>, </span></li>
-<li><span class="parameter" id="-param-isValidTeam"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isValidTeam</span>}</span></li>
-</ol>)
+<li><span class="parameter" id="-param-isValidTeam"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isValidTeam</span>, </span></li>
+<li><span class="parameter" id="-param-isTeamEffective"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isTeamEffective</span> = <span class="default-value">true</span>, </span></li>
+</ol>})
     </section>
-
     
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">NIMTeam({
-  required this.teamId,
-  required this.teamType,
-  required this.name,
-  required this.ownerAccountId,
-  required this.memberLimit,
-  required this.memberCount,
-  required this.createTime,
-  required this.updateTime,
-  this.intro,
-  this.announcement,
-  this.avatar,
-  this.serverExtension,
-  this.customerExtension,
-  required this.joinMode,
-  required this.agreeMode,
-  required this.inviteMode,
-  required this.updateInfoMode,
-  required this.updateExtensionMode,
-  required this.chatBannedMode,
-  required this.isValidTeam,
-});</code></pre>
+  <pre class="language-dart"><code class="language-dart">NIMTeam(
+    {required this.teamId,
+    required this.teamType,
+    required this.name,
+    required this.ownerAccountId,
+    required this.memberLimit,
+    required this.memberCount,
+    required this.createTime,
+    required this.updateTime,
+    this.intro,
+    this.announcement,
+    this.avatar,
+    this.serverExtension,
+    this.customerExtension,
+    required this.joinMode,
+    required this.agreeMode,
+    required this.inviteMode,
+    required this.updateInfoMode,
+    required this.updateExtensionMode,
+    required this.chatBannedMode,
+    required this.isValidTeam,
+    this.isTeamEffective = true});</code></pre>
 </section>
 
 
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -125,7 +119,6 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nim_core_v2</a></li>
     <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
@@ -133,33 +126,24 @@
     <li class="self-crumb">NIMTeam constructor</li>
 </ol>
 
-
     <h5>NIMTeam class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

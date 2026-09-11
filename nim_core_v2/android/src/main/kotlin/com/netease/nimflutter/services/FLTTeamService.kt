@@ -11,33 +11,34 @@ import com.netease.nimflutter.FLTConstant
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.convertV2NIMAntispamConfig
-import com.netease.nimflutter.convertV2NIMTeamJoinActionInfoQueryOption
-import com.netease.nimflutter.convertV2NIMTeamMemberQueryOption
-import com.netease.nimflutter.convertV2NIMUpdateSelfMemberInfoParams
-import com.netease.nimflutter.convertV2NIMUpdateTeamInfoParams
-import com.netease.nimflutter.toMap
+import com.netease.nimflutter.extension.convertToCreateTeamParam
+import com.netease.nimflutter.extension.convertToSearchTeamMemberParams
+import com.netease.nimflutter.extension.convertToTeamSearchParams
+import com.netease.nimflutter.extension.convertV2NIMAntispamConfig
+import com.netease.nimflutter.extension.convertV2NIMTeamJoinActionInfoQueryOption
+import com.netease.nimflutter.extension.convertV2NIMTeamMemberQueryOption
+import com.netease.nimflutter.extension.convertV2NIMUpdateSelfMemberInfoParams
+import com.netease.nimflutter.extension.convertV2NIMUpdateTeamInfoParams
+import com.netease.nimflutter.extension.getV2NIMTeamInviteParamsFromMap
+import com.netease.nimflutter.extension.getV2NIMTeamJoinActionInfoFromMap
+import com.netease.nimflutter.extension.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.V2NIMError
 import com.netease.nimlib.sdk.v2.common.V2NIMAntispamConfig
 import com.netease.nimlib.sdk.v2.message.enums.V2NIMSortOrder
 import com.netease.nimlib.sdk.v2.team.V2NIMTeamListener
 import com.netease.nimlib.sdk.v2.team.V2NIMTeamService
-import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamAgreeMode
 import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamChatBannedMode
-import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamInviteMode
 import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamJoinActionStatus
+import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamJoinActionTeamType
 import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamJoinActionType
-import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamJoinMode
 import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamMemberRole
 import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamType
-import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamUpdateExtensionMode
-import com.netease.nimlib.sdk.v2.team.enums.V2NIMTeamUpdateInfoMode
 import com.netease.nimlib.sdk.v2.team.model.V2NIMTeam
 import com.netease.nimlib.sdk.v2.team.model.V2NIMTeamJoinActionInfo
 import com.netease.nimlib.sdk.v2.team.model.V2NIMTeamMember
+import com.netease.nimlib.sdk.v2.team.option.V2NIMTeamClearJoinActionInfoOption
 import com.netease.nimlib.sdk.v2.team.option.V2NIMTeamMemberSearchOption
-import com.netease.nimlib.sdk.v2.team.params.V2NIMCreateTeamParams
 import com.netease.nimlib.sdk.v2.team.params.V2NIMUpdateTeamInfoParams
 import com.netease.nimlib.v2.builder.V2NIMTeamJoinActionInfoBuilder
 import kotlin.coroutines.resume
@@ -47,7 +48,6 @@ class FLTTeamService(
     applicationContext: Context,
     nimCore: NimCore
 ) : FLTService(applicationContext, nimCore) {
-    private val tag = "FLTTeamService"
     private val teamService: V2NIMTeamService by lazy {
         NIMClient.getService(V2NIMTeamService::class.java)
     }
@@ -85,7 +85,18 @@ class FLTTeamService(
             "getTeamMemberInvitor" to this::getTeamMemberInvitor,
             "getTeamJoinActionInfoList" to this::getTeamJoinActionInfoList,
             "searchTeamByKeyword" to this::searchTeamByKeyword,
-            "searchTeamMembers" to this::searchTeamMembers
+            "searchTeamMembers" to this::searchTeamMembers,
+            "addTeamMembersFollow" to this::addTeamMembersFollow,
+            "removeTeamMembersFollow" to this::removeTeamMembersFollow,
+            "clearAllTeamJoinActionInfo" to this::clearAllTeamJoinActionInfo,
+            "clearAllTeamJoinActionInfoEx" to this::clearAllTeamJoinActionInfoEx,
+            "deleteTeamJoinActionInfo" to this::deleteTeamJoinActionInfo,
+            "inviteMemberEx" to this::inviteMemberEx,
+            "getOwnerTeamList" to this::getOwnerTeamList,
+            "getManagerTeamList" to this::getManagerTeamList,
+            "getTeamInfoFromCloud" to this::getTeamInfoFromCloud,
+            "searchTeams" to this::searchTeams,
+            "searchTeamMembersEx" to this::searchTeamMembersEx
         )
     }
 
@@ -1339,50 +1350,366 @@ class FLTTeamService(
         }
     }
 
-    private fun convertToCreateTeamParam(arguments: Map<String, *>?): V2NIMCreateTeamParams {
-        val teamParam = V2NIMCreateTeamParams()
-        if (arguments == null) {
-            return teamParam
+    private suspend fun addTeamMembersFollow(
+        arguments: Map<String, *>
+    ): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            val teamId = arguments["teamId"] as String?
+            val teamType = arguments["teamType"] as Int?
+            val accountIds = arguments["accountIds"] as List<String>?
+            if (teamId == null || teamType == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "addTeamMembersFollow param is invalid"
+                    )
+                )
+            } else {
+                teamService.addTeamMembersFollow(
+                    teamId,
+                    V2NIMTeamType.typeOfValue(teamType),
+                    accountIds,
+                    {
+                        cont.resume(NimResult.SUCCESS)
+                    },
+                    { error ->
+                        cont.resume(
+                            if (error != null) {
+                                NimResult(code = error.code, errorDetails = error.desc)
+                            } else {
+                                NimResult(code = -1, errorDetails = "addTeamMembersFollow failed!")
+                            }
+                        )
+                    }
+                )
+            }
         }
-        teamParam.name = arguments["name"] as String?
-        teamParam.teamType = (arguments["teamType"] as Int?)?.let { V2NIMTeamType.typeOfValue(it) }
-        (arguments["memberLimit"] as Int?).let {
-            teamParam.memberLimit = it
-        }
-        (arguments["intro"] as String?)?.let {
-            teamParam.intro = it
-        }
-        (arguments["announcement"] as String?)?.let {
-            teamParam.announcement = it
-        }
-        (arguments["avatar"] as String?)?.let {
-            teamParam.avatar = it
-        }
-        (arguments["serverExtension"] as String?)?.let {
-            teamParam.serverExtension = it
-        }
-        (arguments["joinMode"] as Int?)?.let {
-            teamParam.joinMode = V2NIMTeamJoinMode.typeOfValue(it)
-        }
-        (arguments["agreeMode"] as Int?)?.let {
-            teamParam.agreeMode = V2NIMTeamAgreeMode.typeOfValue(it)
-        }
-        (arguments["inviteMode"] as Int?)?.let {
-            teamParam.inviteMode = V2NIMTeamInviteMode.typeOfValue(it)
-        }
-        (arguments["updateInfoMode"] as Int?)?.let {
-            teamParam.updateInfoMode =
-                V2NIMTeamUpdateInfoMode.typeOfValue(it)
-        }
-        (arguments["updateExtensionMode"] as Int?)?.let {
-            teamParam.updateExtensionMode = V2NIMTeamUpdateExtensionMode.typeOfValue(it)
-        }
+    }
 
-        (arguments["chatBannedMode"] as Int?)?.let {
-            teamParam.chatBannedMode =
-                V2NIMTeamChatBannedMode.typeOfValue(it)
+    private suspend fun removeTeamMembersFollow(
+        arguments: Map<String, *>
+    ): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            val teamId = arguments["teamId"] as String?
+            val teamType = arguments["teamType"] as Int?
+            val accountIds = arguments["accountIds"] as List<String>?
+            if (teamId == null || teamType == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "removeTeamMembersFollow param is invalid"
+                    )
+                )
+            } else {
+                teamService.removeTeamMembersFollow(
+                    teamId,
+                    V2NIMTeamType.typeOfValue(teamType),
+                    accountIds,
+                    {
+                        cont.resume(NimResult.SUCCESS)
+                    },
+                    { error ->
+                        cont.resume(
+                            if (error != null) {
+                                NimResult(code = error.code, errorDetails = error.desc)
+                            } else {
+                                NimResult(code = -1, errorDetails = "removeTeamMembersFollow failed!")
+                            }
+                        )
+                    }
+                )
+            }
         }
+    }
 
-        return teamParam
+    private suspend fun clearAllTeamJoinActionInfo(
+        arguments: Map<String, *>
+    ): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            teamService.clearAllTeamJoinActionInfo(
+                {
+                    cont.resume(NimResult.SUCCESS)
+                },
+                { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "clearAllTeamJoinActionInfo failed!")
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun clearAllTeamJoinActionInfoEx(
+        arguments: Map<String, *>
+    ): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            val paramsMap = arguments["option"] as? Map<String, *>
+            val option = paramsMap?.let {
+                val teamType = (it["type"] as? Int)?.let { t ->
+                    V2NIMTeamJoinActionTeamType.typeOfValue(t)
+                }
+                val opt = V2NIMTeamClearJoinActionInfoOption()
+                if (teamType != null) opt.type = teamType
+                (it["timestamp"] as? Number)?.let { ts -> opt.timestamp = ts.toLong() }
+                opt
+            }
+            teamService.clearAllTeamJoinActionInfoEx(
+                option,
+                {
+                    cont.resume(NimResult.SUCCESS)
+                },
+                { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "clearAllTeamJoinActionInfoEx failed!")
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun deleteTeamJoinActionInfo(
+        arguments: Map<String, *>
+    ): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            val application = arguments["application"] as? Map<String, *>?
+            if (application == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "deleteTeamJoinActionInfo param is invalid"
+                    )
+                )
+            } else {
+                teamService.deleteTeamJoinActionInfo(
+                    getV2NIMTeamJoinActionInfoFromMap(application),
+                    {
+                        cont.resume(NimResult.SUCCESS)
+                    },
+                    { error ->
+                        cont.resume(
+                            if (error != null) {
+                                NimResult(code = error.code, errorDetails = error.desc)
+                            } else {
+                                NimResult(code = -1, errorDetails = "deleteTeamJoinActionInfo failed!")
+                            }
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    private suspend fun inviteMemberEx(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, *>?> {
+        return suspendCancellableCoroutine { cont ->
+            val teamId = arguments["teamId"] as String?
+            val teamType = arguments["teamType"] as Int?
+            val paramsMap = arguments["inviteeParams"] as Map<String, *>?
+            if (teamId == null || teamType == null || paramsMap == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "inviteMemberEx param is invalid"
+                    )
+                )
+            } else {
+                teamService.inviteMemberEx(
+                    teamId,
+                    V2NIMTeamType.typeOfValue(teamType),
+                    getV2NIMTeamInviteParamsFromMap(paramsMap),
+                    {
+                        cont.resume(NimResult(code = 0, data = mapOf("failedList" to it)))
+                    },
+                    { error ->
+                        cont.resume(
+                            if (error != null) {
+                                NimResult(code = error.code, errorDetails = error.desc)
+                            } else {
+                                NimResult(code = -1, errorDetails = "inviteMemberEx failed!")
+                            }
+                        )
+                    }
+                )
+            }
+        }
+    }
+
+    private suspend fun getOwnerTeamList(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, *>?> {
+        return suspendCancellableCoroutine { cont ->
+            val teamTypesInt = arguments["teamTypes"] as List<Int>?
+            val teamTypes = teamTypesInt?.map { V2NIMTeamType.typeOfValue(it) }?.toList()
+            val result = teamService.getOwnerTeamList(
+                teamTypes
+            )
+            if (result.data != null) {
+                cont.resume(NimResult(code = 0, data = mapOf("teamList" to result.data.map { it.toMap() }.toList())))
+            } else if (result.error != null) {
+                cont.resume(NimResult(code = result.error.code, errorDetails = result.error.desc))
+            } else {
+                cont.resume(NimResult(code = -1, errorDetails = "getOwnerTeamList error"))
+            }
+        }
+    }
+
+    private suspend fun getManagerTeamList(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, *>?> {
+        return suspendCancellableCoroutine { cont ->
+            val teamTypesInt = arguments["teamTypes"] as? List<*>
+            val teamTypes = teamTypesInt?.mapNotNull { (it as? Int)?.let { i -> V2NIMTeamType.typeOfValue(i) } }
+            teamService.getManagerTeamList(
+                teamTypes,
+                { teamList ->
+                    cont.resume(NimResult(code = 0, data = mapOf("teamList" to teamList.map { it.toMap() }.toList())))
+                },
+                { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "getManagerTeamList failed!")
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    private suspend fun getTeamInfoFromCloud(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, *>?> {
+        return suspendCancellableCoroutine { cont ->
+            val teamId = arguments["teamId"] as? String
+            val teamTypeInt = (arguments["teamType"] as? Int)
+            val teamType = teamTypeInt?.let { V2NIMTeamType.typeOfValue(it) }
+            if (teamId == null || teamType == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "getTeamInfoFromCloud param is invalid"
+                    )
+                )
+                return@suspendCancellableCoroutine
+            }
+            teamService.getTeamInfoFromCloud(
+                teamId,
+                teamType,
+                { result ->
+                    cont.resume(NimResult(code = 0, data = result?.toMap()))
+                },
+                { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "getTeamInfoFromCloud failed!")
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    // 搜索群组（本地）
+    // Params:
+    // searchParams – 搜索参数
+    private suspend fun searchTeams(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, Any?>?> {
+        return suspendCancellableCoroutine { cont ->
+            val searchParamsMap = arguments["searchParams"] as? Map<String, *>
+            if (searchParamsMap == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "searchTeams param is invalid"
+                    )
+                )
+                return@suspendCancellableCoroutine
+            }
+            val searchParams = convertToTeamSearchParams(searchParamsMap)
+            teamService.searchTeams(
+                searchParams,
+                { result ->
+                    cont.resume(
+                        NimResult(
+                            code = 0,
+                            data = mapOf("teamList" to result.map { it.toMap() })
+                        )
+                    )
+                },
+                { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "searchTeams failed!")
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    // 搜索群成员（跨多个群，返回扁平化列表）
+    // Params:
+    // searchParams – 搜索参数
+    private suspend fun searchTeamMembersEx(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, Any?>?> {
+        return suspendCancellableCoroutine { cont ->
+            val searchParamsMap = arguments["searchParams"] as? Map<String, *>
+            if (searchParamsMap == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "searchTeamMembersEx param is invalid"
+                    )
+                )
+                return@suspendCancellableCoroutine
+            }
+            val searchParams = convertToSearchTeamMemberParams(searchParamsMap)
+            teamService.searchTeamMembersEx(
+                searchParams,
+                { result ->
+                    // result is Map<V2NIMTeamRefer, List<V2NIMTeamMember>> in SDK 10.9.76+
+                    val resultList = result.entries.map { entry ->
+                        mapOf(
+                            "teamRefer" to mapOf(
+                                "teamId" to entry.key.teamId,
+                                "teamType" to entry.key.teamType?.value
+                            ),
+                            "members" to entry.value.map { it.toMap() }
+                        )
+                    }
+                    cont.resume(
+                        NimResult(
+                            code = 0,
+                            data = mapOf("resultList" to resultList)
+                        )
+                    )
+                },
+                { error ->
+                    cont.resume(
+                        if (error != null) {
+                            NimResult(code = error.code, errorDetails = error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "searchTeamMembersEx failed!")
+                        }
+                    )
+                }
+            )
+        }
     }
 }

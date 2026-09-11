@@ -50,13 +50,15 @@ class MethodChannelStorageService extends StorageServicePlatform {
 
   @override
   Future<NIMResult<NIMStorageScene>> addCustomStorageScene(
-      String sceneName, int expireTime) async {
+      String sceneName, int expireTime,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'addCustomStorageScene',
         arguments: {
           'sceneName': sceneName,
           'expireTime': expireTime,
+          'instanceId': instanceId,
         },
       ),
       convert: (map) => NIMStorageScene.fromJson(map),
@@ -64,24 +66,32 @@ class MethodChannelStorageService extends StorageServicePlatform {
   }
 
   @override
-  Future<NIMResult<void>> cancelUploadFile(NIMUploadFileTask fileTask) async {
+  Future<NIMResult<void>> cancelUploadFile(NIMUploadFileTask fileTask,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'cancelUploadFile',
-        arguments: {'fileTask': fileTask.toJson()},
+        arguments: {
+          'fileTask': fileTask.toJson(),
+          'instanceId': instanceId,
+        },
       ),
     );
   }
 
   @override
   Future<NIMResult<NIMUploadFileTask>> createUploadFileTask(
-    NIMUploadFileParams fileParams, {
-    html.File? fileObj,
-  }) async {
+      NIMUploadFileParams fileParams,
+      {html.File? fileObj,
+      int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'createUploadFileTask',
-        arguments: {'fileParams': fileParams.toJson(), 'fileObj': fileObj},
+        arguments: {
+          'fileParams': fileParams.toJson(),
+          'fileObj': fileObj,
+          'instanceId': instanceId,
+        },
       ),
       convert: (map) => NIMUploadFileTask.fromJson(map),
     );
@@ -89,30 +99,41 @@ class MethodChannelStorageService extends StorageServicePlatform {
 
   @override
   Future<NIMResult<String>> downloadAttachment(
-      NIMDownloadMessageAttachmentParams downloadParam) async {
+      NIMDownloadMessageAttachmentParams downloadParam,
+      {int? instanceId}) async {
     return NIMResult.fromMap(await invokeMethod(
       'downloadAttachment',
-      arguments: {'downloadParam': downloadParam.toJson()},
+      arguments: {
+        'downloadParam': downloadParam.toJson(),
+        'instanceId': instanceId,
+      },
     ));
   }
 
   @override
-  Future<NIMResult<String>> downloadFile(String url, String filePath) async {
+  Future<NIMResult<String>> downloadFile(String url, String filePath,
+      {int? instanceId}) async {
     return NIMResult.fromMap(await invokeMethod(
       'downloadFile',
-      arguments: {'url': url, 'filePath': filePath},
+      arguments: {
+        'url': url,
+        'filePath': filePath,
+        'instanceId': instanceId,
+      },
     ));
   }
 
   @override
   Future<NIMResult<NIMGetMediaResourceInfoResult>> getImageThumbUrl(
-      NIMMessageAttachment attachment, NIMSize thumbSize) async {
+      NIMMessageAttachment attachment, NIMSize thumbSize,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'getImageThumbUrl',
         arguments: {
           'attachment': attachment.toJson(),
-          'thumbSize': thumbSize.toJson()
+          'thumbSize': thumbSize.toJson(),
+          'instanceId': instanceId,
         },
       ),
       convert: (map) => NIMGetMediaResourceInfoResult.fromJson(
@@ -121,11 +142,12 @@ class MethodChannelStorageService extends StorageServicePlatform {
   }
 
   @override
-  Future<NIMResult<List<NIMStorageScene>>> getStorageSceneList() async {
+  Future<NIMResult<List<NIMStorageScene>>> getStorageSceneList(
+      {int? instanceId}) async {
     return NIMResult.fromMap(
-      await invokeMethod(
-        'getStorageSceneList',
-      ),
+      await invokeMethod('getStorageSceneList', arguments: {
+        'instanceId': instanceId,
+      }),
       convert: (map) {
         return (map['sceneList'] as List<dynamic>?)
             ?.map((e) => NIMStorageScene.fromJson(Map<String, dynamic>.from(e)))
@@ -136,13 +158,15 @@ class MethodChannelStorageService extends StorageServicePlatform {
 
   @override
   Future<NIMResult<NIMGetMediaResourceInfoResult>> getVideoCoverUrl(
-      NIMMessageAttachment attachment, NIMSize thumbSize) async {
+      NIMMessageAttachment attachment, NIMSize thumbSize,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'getVideoCoverUrl',
         arguments: {
           'attachment': attachment.toJson(),
-          'thumbSize': thumbSize.toJson()
+          'thumbSize': thumbSize.toJson(),
+          'instanceId': instanceId,
         },
       ),
       convert: (map) => NIMGetMediaResourceInfoResult.fromJson(
@@ -151,24 +175,30 @@ class MethodChannelStorageService extends StorageServicePlatform {
   }
 
   @override
-  Future<NIMResult<String>> shortUrlToLong(String url) async {
+  Future<NIMResult<String>> shortUrlToLong(String url,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'shortUrlToLong',
-        arguments: {'url': url},
+        arguments: {
+          'url': url,
+          'instanceId': instanceId,
+        },
       ),
     );
   }
 
   @override
-  Future<NIMResult<String>> uploadFile(
-    NIMUploadFileTask fileTask, {
-    html.File? fileObj,
-  }) async {
+  Future<NIMResult<String>> uploadFile(NIMUploadFileTask fileTask,
+      {html.File? fileObj, int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'uploadFile',
-        arguments: {'fileTask': fileTask.toJson(), 'fileObj': fileObj},
+        arguments: {
+          'fileTask': fileTask.toJson(),
+          'fileObj': fileObj,
+          'instanceId': instanceId,
+        },
       ),
     );
   }
@@ -178,11 +208,16 @@ class MethodChannelStorageService extends StorageServicePlatform {
   /// [thumbSize] 缩放的尺寸
   ///  返回图片缩略链接
   @override
-  Future<NIMResult<String>> imageThumbUrl(String url, int thumbSize) async {
+  Future<NIMResult<String>> imageThumbUrl(String url, int thumbSize,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'imageThumbUrl',
-        arguments: {'url': url, 'thumbSize': thumbSize},
+        arguments: {
+          'url': url,
+          'thumbSize': thumbSize,
+          'instanceId': instanceId,
+        },
       ),
     );
   }
@@ -190,12 +225,22 @@ class MethodChannelStorageService extends StorageServicePlatform {
   /// 生成视频封面图链接
   ///  [url] 视频原始链接
   ///  [offset] 从第几秒开始截
+  ///  [thumbSize] 封面尺寸，单位像素（仅对PC有效）
+  ///  [type] 封面类型，如 png，jpeg（仅对PC有效）
   ///  返回视频封面图链接
-  Future<NIMResult<String>> videoCoverUrl(String url, int offset) async {
+  Future<NIMResult<String>> videoCoverUrl(
+      String url, int offset, int? thumbSize, String? type,
+      {int? instanceId}) async {
     return NIMResult.fromMap(
       await invokeMethod(
         'videoCoverUrl',
-        arguments: {'url': url, 'offset': offset},
+        arguments: {
+          'url': url,
+          'offset': offset,
+          'thumbSize': thumbSize,
+          'type': type,
+          'instanceId': instanceId,
+        },
       ),
     );
   }

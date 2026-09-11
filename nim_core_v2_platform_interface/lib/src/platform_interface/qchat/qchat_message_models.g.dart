@@ -11,7 +11,7 @@ QChatSendMessageParam _$QChatSendMessageParamFromJson(
     QChatSendMessageParam(
       channelId: (json['channelId'] as num).toInt(),
       serverId: (json['serverId'] as num).toInt(),
-      type: $enumDecode(_$NIMMessageTypeEnumMap, json['type']),
+      type: $enumDecode(_$QChatNIMMessageTypeEnumMap, json['type']),
       extension: castPlatformMapToDartMap(json['extension'] as Map?),
       antiSpamOption:
           _qChatMessageAntiSpamOptionFromJson(json['antiSpamOption'] as Map?),
@@ -40,7 +40,7 @@ Map<String, dynamic> _$QChatSendMessageParamToJson(
     <String, dynamic>{
       'serverId': instance.serverId,
       'channelId': instance.channelId,
-      'type': _$NIMMessageTypeEnumMap[instance.type]!,
+      'type': _$QChatNIMMessageTypeEnumMap[instance.type]!,
       'body': instance.body,
       'attach': instance.attach,
       'extension': instance.extension,
@@ -73,6 +73,32 @@ const _$NIMMessageTypeEnumMap = {
   NIMMessageType.robot: 11,
   NIMMessageType.call: 12,
   NIMMessageType.custom: 100,
+};
+const _$QChatNIMMessageStatusEnumMap = {
+  QChatNIMMessageStatus.draft: 'draft',
+  QChatNIMMessageStatus.sending: 'sending',
+  QChatNIMMessageStatus.success: 'success',
+  QChatNIMMessageStatus.fail: 'fail',
+  QChatNIMMessageStatus.read: 'read',
+  QChatNIMMessageStatus.unread: 'unread',
+};
+
+const _$QChatNIMMessageTypeEnumMap = {
+  QChatNIMMessageType.undef: 'undef',
+  QChatNIMMessageType.text: 'text',
+  QChatNIMMessageType.image: 'image',
+  QChatNIMMessageType.audio: 'audio',
+  QChatNIMMessageType.video: 'video',
+  QChatNIMMessageType.location: 'location',
+  QChatNIMMessageType.file: 'file',
+  QChatNIMMessageType.avchat: 'avchat',
+  QChatNIMMessageType.notification: 'notification',
+  QChatNIMMessageType.tip: 'tip',
+  QChatNIMMessageType.robot: 'robot',
+  QChatNIMMessageType.netcall: 'netcall',
+  QChatNIMMessageType.custom: 'custom',
+  QChatNIMMessageType.appCustom: 'appCustom',
+  QChatNIMMessageType.qiyuCustom: 'qiyuCustom',
 };
 
 QChatMessageAntiSpamOption _$QChatMessageAntiSpamOptionFromJson(
@@ -149,16 +175,16 @@ QChatMessage _$QChatMessageFromJson(Map<String, dynamic> json) => QChatMessage(
       fromNick: json['fromNick'] as String?,
       localExtension: castPlatformMapToDartMap(json['localExtension'] as Map?),
       msgIdServer: (json['msgIdServer'] as num?)?.toInt(),
-      msgType: $enumDecodeNullable(_$NIMMessageTypeEnumMap, json['msgType']),
+      msgType:
+          $enumDecodeNullable(_$QChatNIMMessageTypeEnumMap, json['msgType']),
       pushPayload: castPlatformMapToDartMap(json['pushPayload'] as Map?),
       remoteExtension:
           castPlatformMapToDartMap(json['remoteExtension'] as Map?),
       replyRefer: _qChatMessageReferFromJson(json['replyRefer'] as Map?),
       rootThread: json['rootThread'] as bool?,
       routeEnable: json['routeEnable'] as bool?,
-      status: json['status'] == null
-          ? null
-          : NIMMessageStatus.fromJson(json['status'] as Map<String, dynamic>),
+      status:
+          $enumDecodeNullable(_$QChatNIMMessageStatusEnumMap, json['status']),
       threadRefer: _qChatMessageReferFromJson(json['threadRefer'] as Map?),
       updateContent:
           _qChatMsgUpdateContentFromJson(json['updateContent'] as Map?),
@@ -175,7 +201,7 @@ Map<String, dynamic> _$QChatMessageToJson(QChatMessage instance) =>
       'fromNick': instance.fromNick,
       'time': instance.time,
       'updateTime': instance.updateTime,
-      'msgType': _$NIMMessageTypeEnumMap[instance.msgType],
+      'msgType': _$QChatNIMMessageTypeEnumMap[instance.msgType],
       'content': instance.content,
       'remoteExtension': instance.remoteExtension,
       'uuid': instance.uuid,
@@ -207,7 +233,7 @@ Map<String, dynamic> _$QChatMessageToJson(QChatMessage instance) =>
       'subType': instance.subType,
       'direct': _$NIMMessageDirectionEnumMap[instance.direct],
       'localExtension': instance.localExtension,
-      'status': instance.status?.toJson(),
+      'status': _$QChatNIMMessageStatusEnumMap[instance.status],
     };
 
 const _$NIMMessageAttachmentStatusEnumMap = {
@@ -595,7 +621,8 @@ QChatSystemNotification _$QChatSystemNotificationFromJson(
       fromClientType: (json['fromClientType'] as num?)?.toInt(),
       callbackExtension: json['callbackExtension'] as String?,
       attachment: QChatSystemNotificationAttachment._fromJson(
-          json['attachment'] as Map?),
+          json['attachment'] as Map?,
+          type: json['type'] as String?),
       updateTime: (json['updateTime'] as num?)?.toInt(),
       msgIdClient: json['msgIdClient'] as String?,
       toAccids: (json['toAccids'] as List<dynamic>?)
@@ -1713,7 +1740,7 @@ QChatSearchMsgByPageParam _$QChatSearchMsgByPageParamFromJson(
     QChatSearchMsgByPageParam(
       serverId: (json['serverId'] as num).toInt(),
       msgTypes: (json['msgTypes'] as List<dynamic>)
-          .map((e) => $enumDecode(_$NIMMessageTypeEnumMap, e))
+          .map((e) => $enumDecode(_$QChatNIMMessageTypeEnumMap, e))
           .toList(),
       channelId: (json['channelId'] as num?)?.toInt(),
       limit: (json['limit'] as num?)?.toInt(),
@@ -1740,8 +1767,9 @@ Map<String, dynamic> _$QChatSearchMsgByPageParamToJson(
       'fromAccount': instance.fromAccount,
       'fromTime': instance.fromTime,
       'toTime': instance.toTime,
-      'msgTypes':
-          instance.msgTypes.map((e) => _$NIMMessageTypeEnumMap[e]!).toList(),
+      'msgTypes': instance.msgTypes
+          .map((e) => _$QChatNIMMessageTypeEnumMap[e]!)
+          .toList(),
       'subTypes': instance.subTypes,
       'isIncludeSelf': instance.isIncludeSelf,
       'order': instance.order,

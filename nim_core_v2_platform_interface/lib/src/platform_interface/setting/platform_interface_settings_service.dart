@@ -101,6 +101,13 @@ abstract class SettingsServicePlatform extends Service {
     throw UnimplementedError();
   }
 
+  /// 获取当桌面端在线时，移动端是否需要推送配置
+  /// 返回 桌面端在线时，移动端是否需要推送,  true： 需要， false：不需要
+  Future<NIMResult<bool>> getPushMobileOnDesktopOnline() {
+    throw UnimplementedError(
+        'getPushMobileOnDesktopOnline() is not implemented');
+  }
+
   /**
    *  设置Apns免打扰与详情显示
    *
@@ -117,6 +124,18 @@ abstract class SettingsServicePlatform extends Service {
    */
   Future<NIMResult<NIMDndConfig>> getDndConfig() async {
     throw UnimplementedError();
+  }
+
+  Future<NIMResult<void>> updateNotificationConfigAndroid(
+      NIMStatusBarNotificationConfig config) async {
+    return NIMResult(-1, null, 'Support Android platform only');
+  }
+
+  Future<NIMResult<void>> enableNotificationAndroid({
+    required bool enableRegularNotification,
+    required bool enableRevokeMessageNotification,
+  }) async {
+    return NIMResult(-1, null, 'Support Android platform only');
   }
 
   /**
@@ -136,5 +155,9 @@ abstract class SettingsServicePlatform extends Service {
    *  @param muteMode 用户免打扰模式
    */
   StreamController<P2PMuteModeChangedResult> onP2PMessageMuteModeChanged =
+      StreamController.broadcast();
+
+  ///当桌面端在线时，移动端是否需要推送，在线回调
+  StreamController<bool> onPushMobileOnDesktopOnline =
       StreamController.broadcast();
 }

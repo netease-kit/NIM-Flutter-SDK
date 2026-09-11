@@ -12,10 +12,10 @@ import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.MethodChannelSuspendResult
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.extension.toLoginOptions
+import com.netease.nimflutter.extension.toMap
+import com.netease.nimflutter.extension.toNIMLoginClient
 import com.netease.nimflutter.nimProviderTimeout
-import com.netease.nimflutter.toLoginOptions
-import com.netease.nimflutter.toMap
-import com.netease.nimflutter.toNIMLoginClient
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.V2NIMError
 import com.netease.nimlib.sdk.v2.auth.V2NIMLoginDetailListener
@@ -73,7 +73,8 @@ class FLTLoginService(
                 "getConnectStatus" to this::getConnectStatus,
                 "getDataSync" to this::getDataSync,
                 "getChatroomLinkAddress" to this::getChatroomLinkAddress,
-                "setReconnectDelayProvider" to this::setReconnectDelayProvider
+                "setReconnectDelayProvider" to this::setReconnectDelayProvider,
+                "getCurrentLoginClient" to this::getCurrentLoginClient
             )
         }
     }
@@ -256,8 +257,16 @@ class FLTLoginService(
         return suspendCancellableCoroutine { cont ->
             val optionMap = arguments["option"] as Map<String, *>?
             val option = optionMap?.toLoginOptions() ?: V2NIMLoginOption()
-            option.tokenProvider = loginTokenProvider
-            option.loginExtensionProvider = loginExtensionProvider
+            if (optionMap != null) {
+                if ((optionMap["tokenProvider"] as? Boolean) == true) {
+                    option.tokenProvider = loginTokenProvider
+                }
+                if ((optionMap["extensionProvider"] as? Boolean) == true) {
+                    option.loginExtensionProvider = loginExtensionProvider
+                }
+            }
+//            option.tokenProvider = loginTokenProvider
+//            option.loginExtensionProvider = loginExtensionProvider
             NIMClient.getService(V2NIMLoginService::class.java).login(
                 accountId,
                 token,
@@ -317,6 +326,19 @@ class FLTLoginService(
                         data = mapOf<String, Any>(
                             "loginClient" to clients.map { it.toMap() }.toList()
                         )
+                    )
+                )
+            }
+        }
+    }
+
+    private suspend fun getCurrentLoginClient(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMLoginService::class.java).currentLoginClient.let { clients ->
+                cont.resume(
+                    NimResult(
+                        0,
+                        data = clients.toMap()
                     )
                 )
             }

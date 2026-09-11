@@ -12,11 +12,16 @@ class MethodCallHandlerImpl {
   init() {
     FLTInitializeService().register(nimCore)
     FLTMessageService().register(nimCore)
-    FLTEventSubscribeService().register(nimCore)
-    FLTSystemNotificationService().register(nimCore)
+    FLTClientAntispamUtil().register(nimCore)
+    FLTChatRoomClient().register(nimCore)
+    FLTChatRoomService().register(nimCore)
+    FLTChatRoomQueueService().register(nimCore)
+    FLTChatRoomMessageCreatorService().register(nimCore)
     FLTUserService().register(nimCore)
     FLTAudioRecorderService().register(nimCore)
     FLTConversationService().register(nimCore)
+    FLTLocalConversationService().register(nimCore)
+    FLTConversationGroupService().register(nimCore)
     FLTTeamService().register(nimCore)
     FLTNOSService().register(nimCore)
     FLTPassThroughService().register(nimCore)
@@ -37,7 +42,11 @@ class MethodCallHandlerImpl {
     FLTAPNSService().register(nimCore)
     FLTConversationIdUtil().register(nimCore)
     FLTAIService().register(nimCore)
+    FLTTopicService().register(nimCore)
     FLTNotificationService().register(nimCore)
+    FLTSubscriptionService().register(nimCore)
+    FLTStatisticsService().register(nimCore)
+    FLTUtilityService().register(nimCore)
   }
 
   func onMethodCall(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
@@ -67,5 +76,11 @@ class MethodCallHandlerImpl {
     }
     safeMethodChannel = nil
     nimCore.setMethodChannel(nil)
+    nimCore.signalSemaphores()
+  }
+
+  /// 获取 APNSService 实例，用于处理 APNs Token
+  func getAPNSService() -> FLTAPNSService? {
+    nimCore.getService(ServiceType.APNSService.rawValue) as? FLTAPNSService
   }
 }

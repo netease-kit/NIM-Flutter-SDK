@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import NIMQChat
 import NIMSDK
 
 enum QChatMessageMethod: String {
@@ -503,19 +504,79 @@ class FLTQChatMessageService: FLTBaseService, FLTService {
           )
           self?.qChatMessageCallback(error, nil, resultCallback)
         } else {
-          if let res = result,
-             let msgs = res.messages {
+          if let msgs = result?.messages {
             if msgs.count > 0,
                let refMsg = msgs.first {
               NIMSDK.shared().qchatMessageExtendManager
-                .getReferMessages(refMsg, type: type) { error, result in
-                  self?.qChatMessageCallback(
-                    error,
-                    ["replyMessage": result?.toDict()?.first ?? "replyMessage is nil",
-                     "threadMessage": refMsg
-                       .toDict() ?? "threadMessage is nil"],
-                    resultCallback
-                  )
+                .getReferMessages(refMsg, type: type.rawValue) {
+                  error, result in
+                  if let err = error {
+                    print(
+                      "@@#❌qChatGetReferMessages FAILED, error: ",
+                      err
+                    )
+                    self?.errorCallBack(
+                      resultCallback,
+                      self?.paramErrorTip ?? "参数错误",
+                      self?.paramErrorCode ?? 414
+                    )
+                    return
+                  }
+                  guard let self = self else { return } // 避免循环引用，确保self可用
+
+                  // 定义最终要传递的字典（初始值设为默认值）
+                  var callbackDict: [String: Any] = [
+                    "replyMessage": "replyMessage is nil",
+                    "threadMessage": refMsg.toDict() ?? "threadMessage is nil",
+                  ]
+                  var replyMessage: NIMQChatMessage? = refMsg
+                  var threadMessage: NIMQChatMessage? = refMsg
+                  // 定义需要返回的消息变量
+                  var replyRefer: NIMQChatMessageRefer? = refMsg.replyRefer
+                  var threadRefer: NIMQChatMessageRefer? = refMsg.threadRefer
+                  let referType = type // 假设 type 就是 QChatMessageReferType 类型
+
+                  // 如果result存在，遍历处理消息列表
+                  if let messages = result?.messages {
+                    // for循环遍历每一条消息
+                    for qChatMessage in messages {
+                      let currentMsgId = qChatMessage.messageId
+                      switch referType {
+                      case .reply: // 对应 REPLAY 类型
+                        guard let replyMsgId = replyRefer?.messageId else { break }
+                        if currentMsgId == replyMsgId {
+                          replyMessage = qChatMessage
+                          break // 找到后跳出循环
+                        }
+                      case .thread: // 对应 THREAD 类型
+                        // 假设 thread 是外部已有的消息对象（需替换为实际的 thread 变量）
+                        guard let threadMsgId = threadRefer?.messageId else { break }
+                        if currentMsgId == threadMsgId {
+                          threadMessage = qChatMessage
+                          break // 找到后跳出循环
+                        }
+
+                      default: // 其他类型（同时匹配 reply 和 thread）
+                        // 匹配 reply 消息
+                        if let replyMsgId = replyRefer?.messageId, currentMsgId == replyMsgId {
+                          replyMessage = qChatMessage
+                        }
+                        // 匹配 thread 消息
+                        if let threadMsgId = threadRefer?.messageId, currentMsgId == threadMsgId {
+                          threadMessage = qChatMessage
+                        }
+                      }
+                      callbackDict = [
+                        "replyMessage": replyMessage?.toDict() ?? "replyMessage is nil",
+                        "threadMessage": threadMessage?.toDict() ?? "threadMessage is nil",
+                      ]
+                    }
+                    self.qChatMessageCallback(
+                      error,
+                      callbackDict,
+                      resultCallback
+                    )
+                  }
                 }
             } else {
               self?.errorCallBack(

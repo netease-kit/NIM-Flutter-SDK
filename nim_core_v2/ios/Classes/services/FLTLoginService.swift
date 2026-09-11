@@ -59,7 +59,7 @@ public protocol NEIMKitClientListener: NSObjectProtocol {
 }
 
 class IMKitClientDetailListenerManager: NSObject, V2NIMLoginDetailListener {
-  public static let instance = IMKitClientDetailListenerManager()
+  static let instance = IMKitClientDetailListenerManager()
   weak var delegate: IMKitClientDetailListenerManagerListener?
   override private init() {
     super.init()
@@ -74,25 +74,25 @@ class IMKitClientDetailListenerManager: NSObject, V2NIMLoginDetailListener {
   ///  - Parameter type: 数据同步类型
   ///  - Parameter state: 数据同步状态
   ///  - Parameter error: 错误信息
-  public func onDataSync(_ type: V2NIMDataSyncType, state: V2NIMDataSyncState, error: V2NIMError?) {
+  func onDataSync(_ type: V2NIMDataSyncType, state: V2NIMDataSyncState, error: V2NIMError?) {
     delegate?.onDataSync?(type, state: state, error: error)
   }
 
   /// 登录连接状态回调
   /// - Parameter status: 连接状态
-  public func onConnectStatus(_ status: V2NIMConnectStatus) {
+  func onConnectStatus(_ status: V2NIMConnectStatus) {
     delegate?.onConnectStatus?(status)
   }
 
   ///  连接失败回调
   ///  - Parameter error: 错误信息
-  public func onConnectFailed(_ error: V2NIMError?) {
+  func onConnectFailed(_ error: V2NIMError?) {
     delegate?.onConnectFailed?(error)
   }
 
   /// 断开连接回调
   /// - Parameter error: 错误信息
-  public func onDisconnected(_ error: V2NIMError?) {
+  func onDisconnected(_ error: V2NIMError?) {
     delegate?.onDisconnected?(error)
   }
 }
@@ -103,7 +103,7 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
   }
 
   func onLoginFailed(_ error: V2NIMError) {
-    notifyEvent(serviceName(), "onLoginFailed", error.toDictionary())
+    notifyEvent(serviceName(), "onLoginFailed", error.toDic())
   }
 
   func onKickedOffline(_ detail: V2NIMKickedOfflineDetail) {
@@ -118,7 +118,7 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
   }
 
   func onConnectFailed(_ error: V2NIMError?) {
-    notifyEvent(serviceName(), "onConnectFailed", error?.toDictionary())
+    notifyEvent(serviceName(), "onConnectFailed", error?.toDic())
   }
 
   func onConnectStatus(_ status: V2NIMConnectStatus) {
@@ -126,15 +126,18 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
   }
 
   func onDisconnected(_ error: V2NIMError?) {
-    notifyEvent(serviceName(), "onDisconnected", error?.toDictionary())
+    notifyEvent(serviceName(), "onDisconnected", error?.toDic())
   }
 
   func onDataSync(_ type: V2NIMDataSyncType, state: V2NIMDataSyncState, error: V2NIMError?) {
-    notifyEvent(serviceName(), "onDataSync", ["type": type.rawValue, "state": state.rawValue, "error": error?.toDictionary()])
+    notifyEvent(serviceName(), "onDataSync", ["type": type.rawValue,
+                                              "state": state.rawValue,
+                                              "error": error?.toDic() as Any])
   }
 
   func getReconnectDelay(_ delay: Int32) -> Int32 {
     let semaphore = DispatchSemaphore(value: 0)
+    nimCore?.addSemaphore(semaphore)
     var customDelay = -1
     notifyEvent(
       serviceName(),
@@ -156,6 +159,7 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
   func getLoginExtension(_ accountId: String) -> String? {
     if !accountId.isEmpty {
       let semaphore = DispatchSemaphore(value: 0)
+      nimCore?.addSemaphore(semaphore)
       var logExtension = ""
       notifyEvent(
         serviceName(),
@@ -176,6 +180,7 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
   func getToken(_ accountId: String) -> String? {
     if !accountId.isEmpty {
       let semaphore = DispatchSemaphore(value: 0)
+      nimCore?.addSemaphore(semaphore)
       var token = ""
       notifyEvent(
         serviceName(),
@@ -243,6 +248,8 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
       setReconnectDelayProvider(arguments, resultCallback)
     case "getLoginClients":
       getLoginClients(arguments, resultCallback)
+    case "getCurrentLoginClient":
+      getCurrentLoginClient(arguments, resultCallback)
     default:
       resultCallback.notImplemented()
     }
@@ -263,10 +270,15 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
     var loginOption = V2NIMLoginOption()
     if let optionDic = arguments["option"] as? [String: Any?] {
       loginOption = V2NIMLoginOption.fromDic(optionDic)
+      if let tokenProvider = optionDic["tokenProvider"] as? Bool,
+         tokenProvider == true {
+        loginOption.tokenProvider = self
+      }
+      if let extensionProvider = optionDic["extensionProvider"] as? Bool,
+         extensionProvider == true {
+        loginOption.loginExtensionProvider = self
+      }
     }
-
-    loginOption.tokenProvider = self
-    loginOption.loginExtensionProvider = self
 
     weak var weakSelf = self
     // 登录
@@ -339,6 +351,11 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
     successCallBack(resultCallback, ["loginClient": list])
   }
 
+  private func getCurrentLoginClient(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+    let loginClient = NIMSDK.shared().v2LoginService.getCurrentLoginClient()
+    successCallBack(resultCallback, loginClient?.toDictionary())
+  }
+
   private func getChatroomLinkAddress(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let roomId = arguments["roomId"] as? String else {
       errorCallBack(resultCallback, paramErrorTip, paramErrorCode)
@@ -346,7 +363,7 @@ class FLTLoginService: FLTBaseService, FLTService, V2NIMLoginListener, V2NIMToke
     }
     weak var weakSelf = self
     NIMSDK.shared().v2LoginService.getChatroomLinkAddress(roomId) { address in
-      weakSelf?.loginCallback(nil, address, resultCallback)
+      weakSelf?.loginCallback(nil, ["linkAddress": address], resultCallback)
     } failure: { error in
       weakSelf?.loginCallback(error.nserror, nil, resultCallback)
     }

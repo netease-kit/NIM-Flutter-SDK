@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -50,7 +46,6 @@
   </div>
 </header>
 <main>
-
   <div
       id="dartdoc-main-content"
       class="main-content"
@@ -62,12 +57,16 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">NIMAndroidSDKOptions</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="-param-improveSDKProcessPriority">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">improveSDKProcessPriority</span> = <span class="default-value">true</span>, </span></li>
+      <span class="name ">NIMAndroidSDKOptions</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-improveSDKProcessPriority"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">improveSDKProcessPriority</span> = <span class="default-value">true</span>, </span></li>
 <li><span class="parameter" id="-param-preLoadServers"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">preLoadServers</span> = <span class="default-value">true</span>, </span></li>
 <li><span class="parameter" id="-param-reducedIM"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reducedIM</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-checkManifestConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">checkManifestConfig</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-consoleLogEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">consoleLogEnabled</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-disableAwake"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">disableAwake</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-enabledQChatMessageCache"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enabledQChatMessageCache</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-enableServerV2FriendAddApplication"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableServerV2FriendAddApplication</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-enableServerV2TeamJoinActionInfo"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableServerV2TeamJoinActionInfo</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-searchAccountIdEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">searchAccountIdEnabled</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-databaseEncryptKey"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">databaseEncryptKey</span>, </span></li>
 <li><span class="parameter" id="-param-thumbnailSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">thumbnailSize</span> = <span class="default-value">350</span>, </span></li>
 <li><span class="parameter" id="-param-fetchServerTimeInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">fetchServerTimeInterval</span> = <span class="default-value">2000</span>, </span></li>
@@ -80,6 +79,13 @@
 <li><span class="parameter" id="-param-makeNotifyContentProvider"><span class="type-annotation"><a href="../../nim_core_v2/NIMMakeNotifyContentProvider.html">NIMMakeNotifyContentProvider</a>?</span> <span class="parameter-name">makeNotifyContentProvider</span>, </span></li>
 <li><span class="parameter" id="-param-makeTickerProvider"><span class="type-annotation"><a href="../../nim_core_v2/NIMMakeTickerProvider.html">NIMMakeTickerProvider</a>?</span> <span class="parameter-name">makeTickerProvider</span>, </span></li>
 <li><span class="parameter" id="-param-makeRevokeMsgTipProvider"><span class="type-annotation"><a href="../../nim_core_v2/NIMMakeRevokeMsgTipProvider.html">NIMMakeRevokeMsgTipProvider</a>?</span> <span class="parameter-name">makeRevokeMsgTipProvider</span>, </span></li>
+<li><span class="parameter" id="-param-makeCategoryProvider"><span class="type-annotation"><a href="../../nim_core_v2/NIMMakeCategoryProvider.html">NIMMakeCategoryProvider</a>?</span> <span class="parameter-name">makeCategoryProvider</span>, </span></li>
+<li><span class="parameter" id="-param-notificationChannelProvider"><span class="type-annotation"><a href="../../nim_core_v2/NIMNotificationChannelProvider.html">NIMNotificationChannelProvider</a>?</span> <span class="parameter-name">notificationChannelProvider</span>, </span></li>
+<li><span class="parameter" id="-param-enableV2CloudConversation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableV2CloudConversation</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-enableMessageNotifierCustomization"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableMessageNotifierCustomization</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-manualProvidePushTokenProvider"><span class="type-annotation"><a href="../../nim_core_v2/NIManualProvidePushTokenProvider.html">NIManualProvidePushTokenProvider</a>?</span> <span class="parameter-name">manualProvidePushTokenProvider</span>, </span></li>
+<li><span class="parameter" id="-param-enableUserInfoProvider"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableUserInfoProvider</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-enableNotificationChannelProvider"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableNotificationChannelProvider</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-appKey"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">appKey</span>, </span></li>
 <li><span class="parameter" id="-param-sdkRootDir"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">sdkRootDir</span>, </span></li>
 <li><span class="parameter" id="-param-cdnTrackInterval"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">cdnTrackInterval</span>, </span></li>
@@ -97,10 +103,9 @@
 <li><span class="parameter" id="-param-useAssetServerAddressConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">useAssetServerAddressConfig</span>, </span></li>
 <li><span class="parameter" id="-param-nosSceneConfig"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../nim_core_v2/NIMNosScene.html">NIMNosScene</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">nosSceneConfig</span>, </span></li>
 <li><span class="parameter" id="-param-serverConfig"><span class="type-annotation"><a href="../../nim_core_v2/NIMServerConfig-class.html">NIMServerConfig</a>?</span> <span class="parameter-name">serverConfig</span>, </span></li>
-<li><span class="parameter" id="-param-enableFcs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableFcs</span> = <span class="default-value">true</span>}</span></li>
-</ol>)
+<li><span class="parameter" id="-param-enableFcs"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">enableFcs</span> = <span class="default-value">true</span>, </span></li>
+</ol>})
     </section>
-
     
 
 
@@ -113,8 +118,12 @@
   this.preLoadServers = true,
   this.reducedIM = false,
   this.checkManifestConfig = false,
+  this.consoleLogEnabled = false,
   this.disableAwake = false,
   this.enabledQChatMessageCache = false,
+  this.enableServerV2FriendAddApplication = false,
+  this.enableServerV2TeamJoinActionInfo = false,
+  this.searchAccountIdEnabled = false,
   this.databaseEncryptKey,
   this.thumbnailSize = 350,
   this.fetchServerTimeInterval = 2000,
@@ -127,6 +136,13 @@
   this.makeNotifyContentProvider,
   this.makeTickerProvider,
   this.makeRevokeMsgTipProvider,
+  this.makeCategoryProvider,
+  this.notificationChannelProvider,
+  this.enableV2CloudConversation = false,
+  this.enableMessageNotifierCustomization = false,
+  this.manualProvidePushTokenProvider,
+  this.enableUserInfoProvider = false,
+  this.enableNotificationChannelProvider = false,
 
   &#47;&#47;&#47; common configurations
   required String appKey,
@@ -173,7 +189,6 @@
 
 
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -181,7 +196,6 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nim_core_v2</a></li>
     <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
@@ -189,33 +203,24 @@
     <li class="self-crumb">NIMAndroidSDKOptions constructor</li>
 </ol>
 
-
     <h5>NIMAndroidSDKOptions class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

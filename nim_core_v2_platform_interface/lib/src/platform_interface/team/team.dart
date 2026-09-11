@@ -68,30 +68,33 @@ class NIMTeam {
   final NIMTeamChatBannedMode chatBannedMode;
 
   /// 是否有效的群， 群存在且我在群组中
-  final bool isValidTeam;
+  bool isValidTeam;
 
-  NIMTeam({
-    required this.teamId,
-    required this.teamType,
-    required this.name,
-    required this.ownerAccountId,
-    required this.memberLimit,
-    required this.memberCount,
-    required this.createTime,
-    required this.updateTime,
-    this.intro,
-    this.announcement,
-    this.avatar,
-    this.serverExtension,
-    this.customerExtension,
-    required this.joinMode,
-    required this.agreeMode,
-    required this.inviteMode,
-    required this.updateInfoMode,
-    required this.updateExtensionMode,
-    required this.chatBannedMode,
-    required this.isValidTeam,
-  });
+  ///是否有效的群
+  bool isTeamEffective;
+
+  NIMTeam(
+      {required this.teamId,
+      required this.teamType,
+      required this.name,
+      required this.ownerAccountId,
+      required this.memberLimit,
+      required this.memberCount,
+      required this.createTime,
+      required this.updateTime,
+      this.intro,
+      this.announcement,
+      this.avatar,
+      this.serverExtension,
+      this.customerExtension,
+      required this.joinMode,
+      required this.agreeMode,
+      required this.inviteMode,
+      required this.updateInfoMode,
+      required this.updateExtensionMode,
+      required this.chatBannedMode,
+      required this.isValidTeam,
+      this.isTeamEffective = true});
 
   factory NIMTeam.fromJson(Map<String, dynamic> map) => _$NIMTeamFromJson(map);
 

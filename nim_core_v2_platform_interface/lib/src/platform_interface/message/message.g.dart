@@ -180,7 +180,7 @@ NIMMessageNotificationAttachment _$NIMMessageNotificationAttachmentFromJson(
           _$NIMMessageNotificationTypeEnumMap, json['type']),
       serverExtension: json['serverExtension'] as String?,
       targetIds: (json['targetIds'] as List<dynamic>?)
-          ?.map((e) => e as String?)
+          ?.map((e) => e as String)
           .toList(),
       chatBanned: json['chatBanned'] as bool?,
       updatedTeamInfo:
@@ -241,7 +241,7 @@ NIMMessageCallAttachment _$NIMMessageCallAttachmentFromJson(
         Map<String, dynamic> json) =>
     NIMMessageCallAttachment(
       type: (json['type'] as num?)?.toInt(),
-      channelId: json['channelId'] as String?,
+      channelId: _nullableStringFromJson(json['channelId']),
       status: (json['status'] as num?)?.toInt(),
       durations:
           _nimMessageCallDurationListFromJson(json['durations'] as List?),
@@ -299,21 +299,32 @@ NIMMessage _$NIMMessageFromJson(Map<String, dynamic> json) => NIMMessage(
       messageType:
           $enumDecodeNullable(_$NIMMessageTypeEnumMap, json['messageType']),
       subType: (json['subType'] as num?)?.toInt(),
+      subStatus: (json['subStatus'] as num?)?.toInt(),
       text: json['text'] as String?,
-      attachment: _nimMessageAttachmentFromJson(json['attachment'] as Map?),
+      attachment: nimMessageAttachmentFromJson(json['attachment'] as Map?),
       serverExtension: json['serverExtension'] as String?,
       localExtension: json['localExtension'] as String?,
       callbackExtension: json['callbackExtension'] as String?,
       messageConfig: _nimMessageConfigFromJson(json['messageConfig'] as Map?),
       pushConfig: _nimMessagePushConfigFromJson(json['pushConfig'] as Map?),
-      routeConfig: _nimMessageRouteConfigFromJson(json['routeConfig'] as Map?),
+      routeConfig: nimMessageRouteConfigFromJson(json['routeConfig'] as Map?),
       antispamConfig:
-          _nimMessageAntispamConfigFromJson(json['antispamConfig'] as Map?),
+          nimMessageAntispamConfigFromJson(json['antispamConfig'] as Map?),
       robotConfig: _nimMessageRobotConfigFromJson(json['robotConfig'] as Map?),
       threadRoot: nimMessageReferFromJson(json['threadRoot'] as Map?),
       threadReply: nimMessageReferFromJson(json['threadReply'] as Map?),
+      topicRefer: nimTopicReferFromJson(json['topicRefer'] as Map?),
       aiConfig: _nimMessageAIConfigFromJson(json['aiConfig'] as Map?),
       messageStatus: _nimMessageStatusFromJson(json['messageStatus'] as Map?),
+      serialId: (json['serialId'] as num?)?.toInt(),
+      modifyTime: (json['modifyTime'] as num?)?.toInt(),
+      modifyAccountId: json['modifyAccountId'] as String?,
+      streamConfig:
+          _v2NIMMessageStreamConfigFromJson(json['streamConfig'] as Map?),
+      messageSource: $enumDecodeNullable(
+          _$NIMMessageSourceEnumMap, json['messageSource'],
+          unknownValue: NIMMessageSource.unknown),
+      iosSerial: _nimIOSSerialFromJson(json['iosSerial'] as Map?),
     )
       ..senderId = json['senderId'] as String?
       ..receiverId = json['receiverId'] as String?
@@ -335,6 +346,8 @@ Map<String, dynamic> _$NIMMessageToJson(NIMMessage instance) =>
       'conversationId': instance.conversationId,
       'createTime': instance.createTime,
       'isSelf': instance.isSelf,
+      'serialId': instance.serialId,
+      'subStatus': instance.subStatus,
       'attachmentUploadState': _$NIMMessageAttachmentUploadStateEnumMap[
           instance.attachmentUploadState],
       'sendingState': _$NIMMessageSendingStateEnumMap[instance.sendingState],
@@ -352,8 +365,14 @@ Map<String, dynamic> _$NIMMessageToJson(NIMMessage instance) =>
       'robotConfig': instance.robotConfig?.toJson(),
       'threadRoot': instance.threadRoot?.toJson(),
       'threadReply': instance.threadReply?.toJson(),
+      'topicRefer': instance.topicRefer?.toJson(),
       'aiConfig': instance.aiConfig?.toJson(),
       'messageStatus': instance.messageStatus?.toJson(),
+      'modifyTime': instance.modifyTime,
+      'modifyAccountId': instance.modifyAccountId,
+      'streamConfig': instance.streamConfig?.toJson(),
+      'messageSource': _$NIMMessageSourceEnumMap[instance.messageSource],
+      'iosSerial': instance.iosSerial,
     };
 
 const _$NIMMessageSendingStateEnumMap = {
@@ -377,6 +396,14 @@ const _$NIMMessageTypeEnumMap = {
   NIMMessageType.robot: 11,
   NIMMessageType.call: 12,
   NIMMessageType.custom: 100,
+  NIMMessageType.chatroomNotification: 105,
+};
+
+const _$NIMMessageSourceEnumMap = {
+  NIMMessageSource.unknown: 0,
+  NIMMessageSource.online: 1,
+  NIMMessageSource.offline: 2,
+  NIMMessageSource.roaming: 3,
 };
 
 NIMSendMessageProgress _$NIMSendMessageProgressFromJson(
@@ -498,18 +525,39 @@ NIMMessageAIConfig _$NIMMessageAIConfigFromJson(Map<String, dynamic> json) =>
       accountId: json['accountId'] as String?,
       aiStatus:
           $enumDecodeNullable(_$NIMMessageAIStatusEnumMap, json['aiStatus']),
+      aiRAGs: NIMAIRAGInfoListFromJson(json['aiRAGs'] as List?),
+      aiStream: json['aiStream'] as bool? ?? false,
+      aiStreamStatus: $enumDecodeNullable(
+          _$V2NIMMessageAIStreamStatusEnumMap, json['aiStreamStatus']),
+      aiStreamLastChunk:
+          NIMMessageAIStreamChunkFromJson(json['aiStreamLastChunk'] as Map?),
     );
 
 Map<String, dynamic> _$NIMMessageAIConfigToJson(NIMMessageAIConfig instance) =>
     <String, dynamic>{
       'accountId': instance.accountId,
       'aiStatus': _$NIMMessageAIStatusEnumMap[instance.aiStatus],
+      'aiRAGs': instance.aiRAGs?.map((e) => e.toJson()).toList(),
+      'aiStream': instance.aiStream,
+      'aiStreamStatus':
+          _$V2NIMMessageAIStreamStatusEnumMap[instance.aiStreamStatus],
+      'aiStreamLastChunk': instance.aiStreamLastChunk?.toJson(),
     };
 
 const _$NIMMessageAIStatusEnumMap = {
   NIMMessageAIStatus.unknow: 0,
   NIMMessageAIStatus.at: 1,
   NIMMessageAIStatus.response: 2,
+};
+
+const _$V2NIMMessageAIStreamStatusEnumMap = {
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_STREAMING: -1,
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_NONE: 0,
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_PLACEHOLDER: 1,
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_STOPPED: 2,
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_UPDATED: 3,
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_GENERATED: 4,
+  V2NIMMessageAIStreamStatus.V2NIM_MESSAGE_AI_STREAM_STATUS_ABORTED: 5,
 };
 
 NIMMessageAIConfigParams _$NIMMessageAIConfigParamsFromJson(
@@ -521,6 +569,7 @@ NIMMessageAIConfigParams _$NIMMessageAIConfigParamsFromJson(
       promptVariables: json['promptVariables'] as String?,
       modelConfigParams:
           _nimAIModelConfigParamsFromJson(json['modelConfigParams'] as Map?),
+      aiStream: json['aiStream'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NIMMessageAIConfigParamsToJson(
@@ -531,6 +580,7 @@ Map<String, dynamic> _$NIMMessageAIConfigParamsToJson(
       'messages': instance.messages?.map((e) => e?.toJson()).toList(),
       'promptVariables': instance.promptVariables,
       'modelConfigParams': instance.modelConfigParams?.toJson(),
+      'aiStream': instance.aiStream,
     };
 
 NIMMessageStatus _$NIMMessageStatusFromJson(Map<String, dynamic> json) =>
@@ -549,14 +599,16 @@ NIMSendMessageParams _$NIMSendMessageParamsFromJson(
         Map<String, dynamic> json) =>
     NIMSendMessageParams(
       messageConfig: _nimMessageConfigFromJson(json['messageConfig'] as Map?),
-      routeConfig: _nimMessageRouteConfigFromJson(json['routeConfig'] as Map?),
+      routeConfig: nimMessageRouteConfigFromJson(json['routeConfig'] as Map?),
       pushConfig: _nimMessagePushConfigFromJson(json['pushConfig'] as Map?),
       antispamConfig:
-          _nimMessageAntispamConfigFromJson(json['antispamConfig'] as Map?),
+          nimMessageAntispamConfigFromJson(json['antispamConfig'] as Map?),
       robotConfig: _nimMessageRobotConfigFromJson(json['robotConfig'] as Map?),
       aiConfig: _nimMessageAIConfigParamsFromJson(json['aiConfig'] as Map?),
       clientAntispamEnabled: json['clientAntispamEnabled'] as bool?,
       clientAntispamReplace: json['clientAntispamReplace'] as String?,
+      targetConfig:
+          _nimMessageTargetConfigFromJson(json['targetConfig'] as Map?),
     );
 
 Map<String, dynamic> _$NIMSendMessageParamsToJson(
@@ -568,6 +620,7 @@ Map<String, dynamic> _$NIMSendMessageParamsToJson(
       'antispamConfig': instance.antispamConfig?.toJson(),
       'robotConfig': instance.robotConfig?.toJson(),
       'aiConfig': instance.aiConfig?.toJson(),
+      'targetConfig': instance.targetConfig?.toJson(),
       'clientAntispamEnabled': instance.clientAntispamEnabled,
       'clientAntispamReplace': instance.clientAntispamReplace,
     };
@@ -577,8 +630,8 @@ NIMSendMessageResult _$NIMSendMessageResultFromJson(
     NIMSendMessageResult(
       message: nimMessageFromJson(json['message'] as Map?),
       antispamResult: json['antispamResult'] as String?,
-      clientAntispamResult: _nimClientAntispamResultFromJson(
-          json['clientAntispamResult'] as Map?),
+      clientAntispamResult:
+          nimClientAntispamResultFromJson(json['clientAntispamResult'] as Map?),
     );
 
 Map<String, dynamic> _$NIMSendMessageResultToJson(
@@ -603,6 +656,7 @@ NIMMessageListOption _$NIMMessageListOptionFromJson(
       direction:
           $enumDecodeNullable(_$NIMQueryDirectionEnumMap, json['direction']),
       strictMode: json['strictMode'] as bool?,
+      onlyQueryLocal: json['onlyQueryLocal'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NIMMessageListOptionToJson(
@@ -616,6 +670,7 @@ Map<String, dynamic> _$NIMMessageListOptionToJson(
       'anchorMessage': instance.anchorMessage?.toJson(),
       'direction': _$NIMQueryDirectionEnumMap[instance.direction],
       'strictMode': instance.strictMode,
+      'onlyQueryLocal': instance.onlyQueryLocal,
     };
 
 const _$NIMQueryDirectionEnumMap = {
@@ -630,6 +685,8 @@ NIMClearHistoryMessageOption _$NIMClearHistoryMessageOptionFromJson(
       deleteRoam: json['deleteRoam'] as bool?,
       onlineSync: json['onlineSync'] as bool?,
       serverExtension: json['serverExtension'] as String?,
+      clearMode:
+          $enumDecodeNullable(_$NIMClearHistoryModeEnumMap, json['clearMode']),
     );
 
 Map<String, dynamic> _$NIMClearHistoryMessageOptionToJson(
@@ -639,7 +696,14 @@ Map<String, dynamic> _$NIMClearHistoryMessageOptionToJson(
       'deleteRoam': instance.deleteRoam,
       'onlineSync': instance.onlineSync,
       'serverExtension': instance.serverExtension,
+      'clearMode': _$NIMClearHistoryModeEnumMap[instance.clearMode],
     };
+
+const _$NIMClearHistoryModeEnumMap = {
+  NIMClearHistoryMode.V2NIM_CLEAR_HISTORY_MODE_ALL: 0,
+  NIMClearHistoryMode.V2NIM_CLEAR_HISTORY_MODE_LOCAL: 1,
+  NIMClearHistoryMode.V2NIM_CLEAR_HISTORY_MODE_LOCAL_IRREPARABLY: 2,
+};
 
 NIMClientAntispamResult _$NIMClientAntispamResultFromJson(
         Map<String, dynamic> json) =>
@@ -730,6 +794,7 @@ NIMProxyAIModelCallParams _$NIMProxyAIModelCallParamsFromJson(
           _nimAIModelConfigParamsFromJson(json['modelConfigParams'] as Map?),
       antispamConfig:
           _nimProxyAICallAntispamConfigFromJson(json['antispamConfig'] as Map?),
+      aiStream: json['aiStream'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NIMProxyAIModelCallParamsToJson(
@@ -742,6 +807,7 @@ Map<String, dynamic> _$NIMProxyAIModelCallParamsToJson(
       'promptVariables': instance.promptVariables,
       'modelConfigParams': instance.modelConfigParams?.toJson(),
       'antispamConfig': instance.antispamConfig?.toJson(),
+      'aiStream': instance.aiStream,
     };
 
 NIMAIModelConfig _$NIMAIModelConfigFromJson(Map<String, dynamic> json) =>
@@ -785,6 +851,11 @@ NIMAIModelCallResult _$NIMAIModelCallResultFromJson(
       requestId: json['requestId'] as String?,
       content: _nimAIModelCallContentFromJson(json['content'] as Map?),
       code: (json['code'] as num?)?.toInt(),
+      aiRAGs: NIMAIRAGInfoListFromJson(json['aiRAGs'] as List?),
+      timestamp: (json['timestamp'] as num?)?.toInt() ?? 0,
+      aiStream: json['aiStream'] as bool? ?? false,
+      aiStreamStatus: $enumDecodeNullable(
+          _$V2NIMAIModelStreamCallStatusEnumMap, json['aiStreamStatus']),
     );
 
 Map<String, dynamic> _$NIMAIModelCallResultToJson(
@@ -794,7 +865,19 @@ Map<String, dynamic> _$NIMAIModelCallResultToJson(
       'requestId': instance.requestId,
       'content': instance.content?.toJson(),
       'code': instance.code,
+      'aiRAGs': instance.aiRAGs?.map((e) => e.toJson()).toList(),
+      'timestamp': instance.timestamp,
+      'aiStream': instance.aiStream,
+      'aiStreamStatus':
+          _$V2NIMAIModelStreamCallStatusEnumMap[instance.aiStreamStatus],
     };
+
+const _$V2NIMAIModelStreamCallStatusEnumMap = {
+  V2NIMAIModelStreamCallStatus.V2NIM_AI_MODEL_STREAM_CALL_STATUS_NONE: 0,
+  V2NIMAIModelStreamCallStatus.V2NIM_AI_MODEL_STREAM_CALL_STATUS_STOPPED: 2,
+  V2NIMAIModelStreamCallStatus.V2NIM_AI_MODEL_STREAM_CALL_STATUS_GENERATED: 4,
+  V2NIMAIModelStreamCallStatus.V2NIM_AI_MODEL_STREAM_CALL_STATUS_ABORTED: 5,
+};
 
 NIMMessageDeletedNotification _$NIMMessageDeletedNotificationFromJson(
         Map<String, dynamic> json) =>
@@ -929,4 +1012,280 @@ Map<String, dynamic> _$NIMVoiceToTextParamsToJson(
       'sampleRate': instance.sampleRate,
       'duration': instance.duration,
       'sceneName': instance.sceneName,
+    };
+
+NIMModifyMessageResult _$NIMModifyMessageResultFromJson(
+        Map<String, dynamic> json) =>
+    NIMModifyMessageResult(
+      message: nimMessageFromJson(json['message'] as Map?),
+      antispamResult: json['antispamResult'] as String?,
+      clientAntispamResult:
+          nimClientAntispamResultFromJson(json['clientAntispamResult'] as Map?),
+      errorCode: (json['errorCode'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$NIMModifyMessageResultToJson(
+        NIMModifyMessageResult instance) =>
+    <String, dynamic>{
+      'message': instance.message?.toJson(),
+      'errorCode': instance.errorCode,
+      'antispamResult': instance.antispamResult,
+      'clientAntispamResult': instance.clientAntispamResult?.toJson(),
+    };
+
+NIMModifyMessageParams _$NIMModifyMessageParamsFromJson(
+        Map<String, dynamic> json) =>
+    NIMModifyMessageParams(
+      attachment: nimMessageAttachmentFromJson(json['attachment'] as Map?),
+      serverExtension: json['serverExtension'] as String?,
+      pushConfig: _nimMessagePushConfigFromJson(json['pushConfig'] as Map?),
+      text: json['text'] as String?,
+      antispamConfig:
+          nimMessageAntispamConfigFromJson(json['antispamConfig'] as Map?),
+      clientAntispamEnabled: json['clientAntispamEnabled'] as bool? ?? false,
+      clientAntispamReplace: json['clientAntispamReplace'] as String?,
+      routeConfig: nimMessageRouteConfigFromJson(json['routeConfig'] as Map?),
+      subType: (json['subType'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$NIMModifyMessageParamsToJson(
+        NIMModifyMessageParams instance) =>
+    <String, dynamic>{
+      'subType': instance.subType,
+      'text': instance.text,
+      'attachment': instance.attachment?.toJson(),
+      'serverExtension': instance.serverExtension,
+      'antispamConfig': instance.antispamConfig?.toJson(),
+      'routeConfig': instance.routeConfig?.toJson(),
+      'pushConfig': instance.pushConfig?.toJson(),
+      'clientAntispamEnabled': instance.clientAntispamEnabled,
+      'clientAntispamReplace': instance.clientAntispamReplace,
+    };
+
+NIMMessageTargetConfig _$NIMMessageTargetConfigFromJson(
+        Map<String, dynamic> json) =>
+    NIMMessageTargetConfig(
+      inclusive: json['inclusive'] as bool? ?? true,
+      newMemberVisible: json['newMemberVisible'] as bool? ?? false,
+      receiverIds: (json['receiverIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$NIMMessageTargetConfigToJson(
+        NIMMessageTargetConfig instance) =>
+    <String, dynamic>{
+      'inclusive': instance.inclusive,
+      'receiverIds': instance.receiverIds,
+      'newMemberVisible': instance.newMemberVisible,
+    };
+
+NIMMessageAIStreamStopParams _$NIMMessageAIStreamStopParamsFromJson(
+        Map<String, dynamic> json) =>
+    NIMMessageAIStreamStopParams(
+      operationType: $enumDecode(
+          _$V2NIMMessageAIStreamStopOpTypeEnumMap, json['operationType']),
+      updateContent: json['updateContent'] as String?,
+    );
+
+Map<String, dynamic> _$NIMMessageAIStreamStopParamsToJson(
+        NIMMessageAIStreamStopParams instance) =>
+    <String, dynamic>{
+      'operationType':
+          _$V2NIMMessageAIStreamStopOpTypeEnumMap[instance.operationType]!,
+      'updateContent': instance.updateContent,
+    };
+
+const _$V2NIMMessageAIStreamStopOpTypeEnumMap = {
+  V2NIMMessageAIStreamStopOpType.V2NIM_MESSAGE_AI_STREAM_STOP_OP_DEFAULT: 0,
+  V2NIMMessageAIStreamStopOpType.V2NIM_MESSAGE_AI_STREAM_STOP_OP_REVOKE: 1,
+  V2NIMMessageAIStreamStopOpType.V2NIM_MESSAGE_AI_STREAM_STOP_OP_UPDATE: 2,
+};
+
+NIMMessageAIRegenParams _$NIMMessageAIRegenParamsFromJson(
+        Map<String, dynamic> json) =>
+    NIMMessageAIRegenParams(
+      operationType: $enumDecode(
+          _$V2NIMMessageAIRegenOpTypeEnumMap, json['operationType']),
+    );
+
+Map<String, dynamic> _$NIMMessageAIRegenParamsToJson(
+        NIMMessageAIRegenParams instance) =>
+    <String, dynamic>{
+      'operationType':
+          _$V2NIMMessageAIRegenOpTypeEnumMap[instance.operationType]!,
+    };
+
+const _$V2NIMMessageAIRegenOpTypeEnumMap = {
+  V2NIMMessageAIRegenOpType.V2NIM_MESSAGE_AI_REGEN_OP_UPDATE: 1,
+  V2NIMMessageAIRegenOpType.V2NIM_MESSAGE_AI_REGEN_OP_NEW: 2,
+};
+
+NIMAIRAGInfo _$NIMAIRAGInfoFromJson(Map<String, dynamic> json) => NIMAIRAGInfo(
+      url: json['url'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      time: (json['time'] as num?)?.toInt() ?? 0,
+      description: json['description'] as String? ?? '',
+      icon: json['icon'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$NIMAIRAGInfoToJson(NIMAIRAGInfo instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'icon': instance.icon,
+      'title': instance.title,
+      'description': instance.description,
+      'time': instance.time,
+      'url': instance.url,
+    };
+
+NIMMessageAIStreamChunk _$NIMMessageAIStreamChunkFromJson(
+        Map<String, dynamic> json) =>
+    NIMMessageAIStreamChunk(
+      content: json['content'] as String?,
+      messageTime: (json['messageTime'] as num?)?.toInt(),
+      chunkTime: (json['chunkTime'] as num?)?.toInt(),
+      type: (json['type'] as num?)?.toInt() ?? 0,
+      index: (json['index'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$NIMMessageAIStreamChunkToJson(
+        NIMMessageAIStreamChunk instance) =>
+    <String, dynamic>{
+      'content': instance.content,
+      'messageTime': instance.messageTime,
+      'chunkTime': instance.chunkTime,
+      'type': instance.type,
+      'index': instance.index,
+    };
+
+V2NIMMessageStreamChunk _$V2NIMMessageStreamChunkFromJson(
+        Map<String, dynamic> json) =>
+    V2NIMMessageStreamChunk(
+      content: json['content'] as String?,
+      messageTime: (json['messageTime'] as num?)?.toInt(),
+      chunkTime: (json['chunkTime'] as num?)?.toInt(),
+      type: (json['type'] as num?)?.toInt() ?? 0,
+      index: (json['index'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$V2NIMMessageStreamChunkToJson(
+        V2NIMMessageStreamChunk instance) =>
+    <String, dynamic>{
+      'content': instance.content,
+      'messageTime': instance.messageTime,
+      'chunkTime': instance.chunkTime,
+      'type': instance.type,
+      'index': instance.index,
+    };
+
+V2NIMMessageStreamConfig _$V2NIMMessageStreamConfigFromJson(
+        Map<String, dynamic> json) =>
+    V2NIMMessageStreamConfig(
+      status: $enumDecodeNullable(
+          _$V2NIMMessageStreamStatusEnumMap, json['status'],
+          unknownValue:
+              V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_NONE),
+      lastChunk: _v2NIMMessageStreamChunkFromJson(json['lastChunk'] as Map?),
+      rags: _nimAIRAGInfoListFromJson(json['rags'] as List?),
+    );
+
+Map<String, dynamic> _$V2NIMMessageStreamConfigToJson(
+        V2NIMMessageStreamConfig instance) =>
+    <String, dynamic>{
+      'status': _$V2NIMMessageStreamStatusEnumMap[instance.status],
+      'lastChunk': instance.lastChunk?.toJson(),
+      'rags': instance.rags?.map((e) => e.toJson()).toList(),
+    };
+
+const _$V2NIMMessageStreamStatusEnumMap = {
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_STREAMING: -1,
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_NONE: 0,
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_PLACEHOLDER: 1,
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_STOPPED: 2,
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_UPDATED: 3,
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_GENERATED: 4,
+  V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_ABORTED: 5,
+};
+
+NIMUpdateLocalMessageParams _$NIMUpdateLocalMessageParamsFromJson(
+        Map<String, dynamic> json) =>
+    NIMUpdateLocalMessageParams(
+      subType: (json['subType'] as num?)?.toInt(),
+      text: json['text'] as String?,
+      attachment: nimMessageAttachmentFromJson(json['attachment'] as Map?),
+      localExtension: json['localExtension'] as String?,
+      sendingState: $enumDecodeNullable(
+          _$NIMMessageSendingStateEnumMap, json['sendingState']),
+    );
+
+Map<String, dynamic> _$NIMUpdateLocalMessageParamsToJson(
+        NIMUpdateLocalMessageParams instance) =>
+    <String, dynamic>{
+      'subType': instance.subType,
+      'text': instance.text,
+      'attachment': instance.attachment?.toJson(),
+      'localExtension': instance.localExtension,
+      'sendingState': _$NIMMessageSendingStateEnumMap[instance.sendingState],
+    };
+
+NIMMessageListResult _$NIMMessageListResultFromJson(
+        Map<String, dynamic> json) =>
+    NIMMessageListResult(
+      messages: _messageListFromJson(json['messages'] as List?),
+      anchorMessage: nimMessageFromJson(json['anchorMessage'] as Map?),
+    );
+
+Map<String, dynamic> _$NIMMessageListResultToJson(
+        NIMMessageListResult instance) =>
+    <String, dynamic>{
+      'messages': instance.messages?.map((e) => e.toJson()).toList(),
+      'anchorMessage': instance.anchorMessage?.toJson(),
+    };
+
+NIMClearLocalMessageParams _$NIMClearLocalMessageParamsFromJson(
+        Map<String, dynamic> json) =>
+    NIMClearLocalMessageParams(
+      anchorTime: (json['anchorTime'] as num?)?.toInt(),
+      deleteConversation: json['deleteConversation'] as bool?,
+    );
+
+Map<String, dynamic> _$NIMClearLocalMessageParamsToJson(
+        NIMClearLocalMessageParams instance) =>
+    <String, dynamic>{
+      'anchorTime': instance.anchorTime,
+      'deleteConversation': instance.deleteConversation,
+    };
+
+NIMExportMessageOption _$NIMExportMessageOptionFromJson(
+        Map<String, dynamic> json) =>
+    NIMExportMessageOption(
+      path: json['path'] as String,
+      beginTime: (json['beginTime'] as num?)?.toInt(),
+      endTime: (json['endTime'] as num?)?.toInt(),
+      conversationIds: (json['conversationIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$NIMExportMessageOptionToJson(
+        NIMExportMessageOption instance) =>
+    <String, dynamic>{
+      'path': instance.path,
+      'beginTime': instance.beginTime,
+      'endTime': instance.endTime,
+      'conversationIds': instance.conversationIds,
+    };
+
+NIMImportMessageOption _$NIMImportMessageOptionFromJson(
+        Map<String, dynamic> json) =>
+    NIMImportMessageOption(
+      path: json['path'] as String,
+    );
+
+Map<String, dynamic> _$NIMImportMessageOptionToJson(
+        NIMImportMessageOption instance) =>
+    <String, dynamic>{
+      'path': instance.path,
     };

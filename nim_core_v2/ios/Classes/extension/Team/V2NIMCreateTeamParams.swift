@@ -5,64 +5,68 @@
 import NIMSDK
 
 extension V2NIMCreateTeamParams {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(name): name,
-      #keyPath(teamType): V2TeamEnumConverterUtil.teamTypeEnumMap(teamType),
-      #keyPath(memberLimit): memberLimit,
-      #keyPath(intro): intro ?? "",
-      #keyPath(announcement): announcement ?? "",
-      #keyPath(avatar): avatar ?? "",
-      #keyPath(serverExtension): serverExtension ?? "",
-      #keyPath(joinMode): joinMode.rawValue,
-      #keyPath(agreeMode): agreeMode.rawValue,
-      #keyPath(inviteMode): inviteMode.rawValue,
-      #keyPath(updateInfoMode): updateInfoMode.rawValue,
-      #keyPath(updateExtensionMode): updateExtensionMode.rawValue,
-      #keyPath(chatBannedMode): chatBannedMode.rawValue,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(V2NIMCreateTeamParams.name)] = name
+    keyPaths[#keyPath(V2NIMCreateTeamParams.teamType)] = V2TeamEnumConverterUtil.teamTypeEnumMap(teamType)
+    keyPaths[#keyPath(V2NIMCreateTeamParams.memberLimit)] = memberLimit
+    keyPaths[#keyPath(V2NIMCreateTeamParams.intro)] = intro
+    keyPaths[#keyPath(V2NIMCreateTeamParams.announcement)] = announcement
+    keyPaths[#keyPath(V2NIMCreateTeamParams.avatar)] = avatar
+    keyPaths[#keyPath(V2NIMCreateTeamParams.serverExtension)] = serverExtension
+    keyPaths[#keyPath(V2NIMCreateTeamParams.joinMode)] = joinMode.rawValue
+    keyPaths[#keyPath(V2NIMCreateTeamParams.agreeMode)] = agreeMode.rawValue
+    keyPaths[#keyPath(V2NIMCreateTeamParams.inviteMode)] = inviteMode.rawValue
+    keyPaths[#keyPath(V2NIMCreateTeamParams.updateInfoMode)] = updateInfoMode.rawValue
+    keyPaths[#keyPath(V2NIMCreateTeamParams.updateExtensionMode)] = updateExtensionMode.rawValue
+    keyPaths[#keyPath(V2NIMCreateTeamParams.chatBannedMode)] = chatBannedMode.rawValue
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMCreateTeamParams {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMCreateTeamParams {
     let params = V2NIMCreateTeamParams()
-    if let name = dict[#keyPath(name)] as? String {
+    if let name = arguments[#keyPath(name)] as? String {
       params.name = name
     }
-    if let teamType = dict[#keyPath(teamType)] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) {
+    if let teamType = arguments[#keyPath(teamType)] as? Int, let teamType = V2NIMTeamType(rawValue: teamType) {
       params.teamType = teamType
     }
-    if let memberLimit = dict[#keyPath(memberLimit)] as? Int {
+    if let memberLimit = arguments[#keyPath(memberLimit)] as? Int {
       params.memberLimit = memberLimit
     }
-    if let intro = dict[#keyPath(intro)] as? String {
+    if let intro = arguments[#keyPath(intro)] as? String {
       params.intro = intro
     }
-    if let announcement = dict[#keyPath(announcement)] as? String {
+    if let announcement = arguments[#keyPath(announcement)] as? String {
       params.announcement = announcement
     }
-    if let avatar = dict[#keyPath(avatar)] as? String {
+    if let avatar = arguments[#keyPath(avatar)] as? String {
       params.avatar = avatar
     }
-    if let serverExtension = dict[#keyPath(serverExtension)] as? String {
+    if let serverExtension = arguments[#keyPath(serverExtension)] as? String {
       params.serverExtension = serverExtension
     }
-    if let joinMode = dict[#keyPath(joinMode)] as? Int, let joinMode = V2NIMTeamJoinMode(rawValue: joinMode) {
+    if let joinMode = arguments[#keyPath(joinMode)] as? Int, let joinMode = V2NIMTeamJoinMode(rawValue: joinMode) {
       params.joinMode = joinMode
     }
-    if let agreeMode = dict[#keyPath(agreeMode)] as? Int, let agreeMode = V2NIMTeamAgreeMode(rawValue: agreeMode) {
+    if let agreeMode = arguments[#keyPath(agreeMode)] as? Int, let agreeMode = V2NIMTeamAgreeMode(rawValue: agreeMode) {
       params.agreeMode = agreeMode
     }
-    if let inviteMode = dict[#keyPath(inviteMode)] as? Int, let inviteMode = V2NIMTeamInviteMode(rawValue: inviteMode) {
+    if let inviteMode = arguments[#keyPath(inviteMode)] as? Int, let inviteMode = V2NIMTeamInviteMode(rawValue: inviteMode) {
       params.inviteMode = inviteMode
     }
-    if let updateInfoMode = dict[#keyPath(updateInfoMode)] as? Int, let updateInfoMode = V2NIMTeamUpdateInfoMode(rawValue: updateInfoMode) {
+    if let updateInfoMode = arguments[#keyPath(updateInfoMode)] as? Int, let updateInfoMode = V2NIMTeamUpdateInfoMode(rawValue: updateInfoMode) {
       params.updateInfoMode = updateInfoMode
     }
-    if let updateExtensionMode = dict[#keyPath(updateExtensionMode)] as? Int, let updateExtensionMode = V2NIMTeamUpdateExtensionMode(rawValue: updateExtensionMode) {
+    if let updateExtensionMode = arguments[#keyPath(updateExtensionMode)] as? Int, let updateExtensionMode = V2NIMTeamUpdateExtensionMode(rawValue: updateExtensionMode) {
       params.updateExtensionMode = updateExtensionMode
     }
-    if let chatBannedMode = dict[#keyPath(chatBannedMode)] as? Int, let chatBannedMode = V2NIMTeamChatBannedMode(rawValue: chatBannedMode) {
+    if let chatBannedMode = arguments[#keyPath(chatBannedMode)] as? Int, let chatBannedMode = V2NIMTeamChatBannedMode(rawValue: chatBannedMode) {
       params.chatBannedMode = chatBannedMode
     }
     return params

@@ -4,10 +4,9 @@
 
 import 'dart:async';
 
+import 'package:nim_core_v2_platform_interface/src/platform_interface/friend/friend_models.dart';
 import 'package:nim_core_v2_platform_interface/src/platform_interface/friend/platform_interface_friend_service.dart';
 import 'package:nim_core_v2_platform_interface/src/platform_interface/nim_base.dart';
-
-import 'package:nim_core_v2_platform_interface/src/platform_interface/friend/friend_models.dart';
 
 class MethodChannelFriendService extends FriendServicePlatform {
   // ignore: close_sinks
@@ -216,6 +215,38 @@ class MethodChannelFriendService extends FriendServicePlatform {
         'setAddApplicationRead',
       ),
     );
+  }
+
+  /// 清空所有好友申请
+  Future<NIMResult<void>> clearAllAddApplication() async {
+    return NIMResult.fromMap(
+      await invokeMethod(
+        'clearAllAddApplication',
+      ),
+    );
+  }
+
+  /// 清空好友申请（扩展版）
+  /// [option] 清空申请选项，包含时间戳和类型过滤
+  @override
+  Future<NIMResult<void>> clearAllAddApplicationEx(
+      NIMFriendClearAddApplicationOption option) async {
+    return NIMResult.fromMap(
+      await invokeMethod(
+        'clearAllAddApplicationEx',
+        arguments: {'option': option.toJson()},
+      ),
+    );
+  }
+
+  /// 删除好友申请
+  /// [application] 待删除的申请
+  Future<NIMResult<void>> deleteAddApplication(
+      NIMFriendAddApplication application) async {
+    return NIMResult.fromMap(
+        await invokeMethod('deleteAddApplication', arguments: {
+      'application': application.toJson(),
+    }));
   }
 
   /// 根据关键字搜索好友信息

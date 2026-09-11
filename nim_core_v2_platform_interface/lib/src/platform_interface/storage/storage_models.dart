@@ -78,13 +78,16 @@ class NIMUploadFileParams {
 
 ///文件上传回调
 class NIMUploadFileProgress {
+  ///聊天室实例Id
+  int? instanceId;
+
   ///id
   String? taskId;
 
   ///进度
   int? progress;
 
-  NIMUploadFileProgress({this.taskId, this.progress});
+  NIMUploadFileProgress({this.taskId, this.progress, this.instanceId});
 
   factory NIMUploadFileProgress.fromJson(Map<String, dynamic> json) =>
       _$NIMUploadFileProgressFromJson(json);
@@ -94,13 +97,16 @@ class NIMUploadFileProgress {
 
 @JsonSerializable(explicitToJson: true)
 class NIMDownloadFileProgress {
+  ///聊天室实例Id
+  int? instanceId;
+
   ///url
   String? url;
 
   ///进度
   int? progress;
 
-  NIMDownloadFileProgress({this.url, this.progress});
+  NIMDownloadFileProgress({this.url, this.progress, this.instanceId});
 
   factory NIMDownloadFileProgress.fromJson(Map<String, dynamic> json) =>
       _$NIMDownloadFileProgressFromJson(json);
@@ -110,6 +116,9 @@ class NIMDownloadFileProgress {
 
 @JsonSerializable(explicitToJson: true)
 class NIMDownloadMessageAttachmentProgress {
+  ///聊天室实例Id
+  int? instanceId;
+
   ///消息附件下载参数
   @JsonKey(fromJson: _nimDownloadMessageAttachmentParamsFromJson)
   NIMDownloadMessageAttachmentParams? downloadParam;
@@ -117,7 +126,8 @@ class NIMDownloadMessageAttachmentProgress {
   ///进度
   int? progress;
 
-  NIMDownloadMessageAttachmentProgress({this.downloadParam, this.progress});
+  NIMDownloadMessageAttachmentProgress(
+      {this.downloadParam, this.progress, this.instanceId});
 
   factory NIMDownloadMessageAttachmentProgress.fromJson(
           Map<String, dynamic> json) =>

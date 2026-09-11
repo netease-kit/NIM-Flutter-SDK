@@ -31,7 +31,7 @@ class NimCore {
 
   InvokeMehtodCallback invokeCallback;
 
-  void regService();
+  void regService(bool enableCloudConversation);
 
   void cleanService();
 

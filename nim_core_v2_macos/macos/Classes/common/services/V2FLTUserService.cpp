@@ -67,6 +67,8 @@ void V2FLTUserService::onMethodCalled(
     getUserListFromCloud(arguments, result);
   } else if (method == "searchUserByOption") {
     searchUserByOption(arguments, result);
+  } else if (method == "checkBlock") {
+    checkBlock(arguments, result);
   } else {
     result->NotImplemented();
   }
@@ -189,7 +191,8 @@ void V2FLTUserService::updateSelfUserProfile(
   auto iterArgument = arguments->begin();
   for (iterArgument; iterArgument != arguments->end(); ++iterArgument) {
     if (iterArgument->second.IsNull()) continue;
-    if (iterArgument->first == flutter::EncodableValue("updateParam")) {
+    if (iterArgument->first == flutter::EncodableValue("updateParam") &&
+        !iterArgument->second.IsNull()) {
       updateMapData = std::get<flutter::EncodableMap>(iterArgument->second);
     }
   }
@@ -371,6 +374,49 @@ void V2FLTUserService::searchUserByOption(
               "", "",
               NimResult::getErrorResult(199414, "searchUserByOption failed!"));
         }
+      },
+      [result](v2::V2NIMError error) {
+        result->Error("", error.desc,
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTUserService::checkBlock(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  if (!arguments) {
+    result->Error(
+        "", "",
+        NimResult::getErrorResult(199414, "searchUserByOption params error!"));
+    return;
+  }
+  std::vector<std::string> accountIds;
+  auto iter = arguments->begin();
+  for (iter; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("accountIds")) {
+      auto params = std::get<flutter::EncodableList>(iter->second);
+      for (auto accountId : params) {
+        accountIds.emplace_back(std::get<std::string>(accountId));
+      }
+    }
+  }
+
+  auto& client = v2::V2NIMClient::get();
+  auto& userService = client.getUserService();
+  userService.checkBlock(
+      accountIds,
+      [result](const nstd::map<nstd::string, bool>& resultMap) {
+        flutter::EncodableMap result_map;
+        for (const auto& pair : resultMap) {
+          // 将 std::string 类型的键和 bool 类型的值
+          // 转换为 flutter::EncodableValue 并插入到新 map 中
+          result_map[flutter::EncodableValue(pair.first)] =
+              flutter::EncodableValue(pair.second);
+        }
+        result->Success(NimResult::getSuccessResult(result_map));
       },
       [result](v2::V2NIMError error) {
         result->Error("", error.desc,

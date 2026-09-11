@@ -6,19 +6,23 @@ import Foundation
 import NIMSDK
 
 extension V2NIMDndConfig {
-  func toDictionary() -> [String: Any] {
-    var dict: [String: Any] = [
-      #keyPath(showDetail): showDetail,
-      #keyPath(dndOn): dndOn,
-      #keyPath(fromH): fromH,
-      #keyPath(fromM): fromM,
-      #keyPath(toH): toH,
-      #keyPath(toM): toM,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  public func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(V2NIMDndConfig.showDetail)] = showDetail
+    keyPaths[#keyPath(V2NIMDndConfig.dndOn)] = dndOn
+    keyPaths[#keyPath(V2NIMDndConfig.fromH)] = fromH
+    keyPaths[#keyPath(V2NIMDndConfig.fromM)] = fromM
+    keyPaths[#keyPath(V2NIMDndConfig.toH)] = toH
+    keyPaths[#keyPath(V2NIMDndConfig.toM)] = toM
+
+    return keyPaths
   }
 
-  static func fromDitionary(_ arguments: [String: Any]) -> V2NIMDndConfig {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMDndConfig {
     let config = V2NIMDndConfig()
     if let showDetail = arguments[#keyPath(showDetail)] as? Bool {
       config.showDetail = showDetail

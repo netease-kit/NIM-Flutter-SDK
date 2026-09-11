@@ -73,6 +73,19 @@ class MessageService {
   Stream<List<NIMClearHistoryNotification>> get onClearHistoryNotifications =>
       MessageServicePlatform.instance.onClearHistoryNotifications.stream;
 
+  /// 消息更新通知
+  @HawkApi(ignore: true)
+  Stream<List<NIMMessage>> get onReceiveMessagesModified =>
+      MessageServicePlatform.instance.onReceiveMessagesModified.stream;
+
+  /// 是否过滤消息
+  /// [message] 当前接收到的消息体内容
+  /// 返回 true 表示需要过滤掉该消息，返回 false 表示不过滤
+  /// 请使用[setMessageFilter] 设置，设置成功后可以使用
+  /// 此过滤器不支持Flutter 多引擎
+  @HawkApi(ignore: true)
+  NIMMessageFilter? get shouldIgnore => _platform.shouldIgnore;
+
   /// 查询历史消息，分页接口，每次默认50条，可以根据参数组合查询各种类型
   /// - Parameters:
   ///   - option: 查询消息配置选项
@@ -145,6 +158,16 @@ class MessageService {
         conversationId: conversationId,
         senderId: senderId,
         createTime: createTime);
+  }
+
+  /// 插入一条本地消息（扩展版），该消息不会发送，不会多端同步，仅本端显示
+  /// - Parameters:
+  ///   - message: 需要插入的消息体
+  ///   - params: 相关插入参数
+  Future<NIMResult<NIMMessage>> insertMessageToLocalEx(
+      {required NIMMessage message,
+      required V2NIMMessageInsertParams params}) async {
+    return _platform.insertMessageToLocalEx(message: message, params: params);
   }
 
   /// 更新消息本地扩展字段
@@ -417,5 +440,116 @@ class MessageService {
   Future<NIMResult<void>> cancelMessageAttachmentUpload(
       {required NIMMessage message}) async {
     return _platform.cancelMessageAttachmentUpload(message: message);
+  }
+
+  /// 消息序列化为字符串
+  /// [message] 消对象
+  /// 返回序列化后的字符串
+  Future<NIMResult<String>> messageSerialization(NIMMessage message) {
+    return _platform.messageSerialization(message);
+  }
+
+  /// 字符串反序列化为消息对象
+  /// [msg]  messageSerialization方法序列化后的字符串
+  /// 反序列化后的消息对象
+  Future<NIMResult<NIMMessage>> messageDeserialization(String msg) {
+    return _platform.messageDeserialization(msg);
+  }
+
+  ///更新消息
+  /// [message] 需要更新的消息
+  /// [params] 更新参数
+  Future<NIMResult<NIMModifyMessageResult>> modifyMessage(
+      NIMMessage message, NIMModifyMessageParams params) {
+    return _platform.modifyMessage(message, params);
+  }
+
+  ///重新输出数字人消息
+  /// [message] 需要重新输出的消息体
+  ///  [params] 重新输出的配置参数，确定重新输出的操作类型
+  Future<NIMResult<void>> regenAIMessage(
+      NIMMessage message, NIMMessageAIRegenParams params) {
+    return _platform.regenAIMessage(message, params);
+  }
+
+  ///停止流式消息输出
+  /// [message] 需要停止的消息体
+  ///  [params] 停止AI流式消息相关参数
+  Future<NIMResult<void>> stopAIStreamMessage(
+      NIMMessage message, NIMMessageAIStreamStopParams params) {
+    return _platform.stopAIStreamMessage(message, params);
+  }
+
+  ///安装消息过滤器
+  ///云端会话的最后一条消息不受该过滤器控制
+  ///[filter] 消息过滤器,传null 则取消消息过滤
+  @HawkApi(ignore: true)
+  Future<NIMResult<void>> setMessageFilter(NIMMessageFilter? filter) {
+    return _platform.setMessageFilter(filter);
+  }
+
+  /// 搜索云端消息
+  /// [params]  消息检索参数
+  Future<NIMResult<NIMMessageSearchResult>> searchCloudMessagesEx(
+      NIMMessageSearchExParams params) {
+    return _platform.searchCloudMessagesEx(params);
+  }
+
+  /// 检索本地消息
+  /// [params]  消息检索参数
+  Future<NIMResult<NIMMessageSearchResult>> searchLocalMessages(
+      NIMMessageSearchExParams params) {
+    return _platform.searchLocalMessages(params);
+  }
+
+  ///查询历史消息
+  /// 分页接口，每次默认50条，可以根据参数组合查询各种类型
+  /// [option] 查询消息配置选项
+  Future<NIMResult<NIMMessageListResult>> getMessageListEx(
+      NIMMessageListOption option) {
+    return _platform.getMessageListEx(option);
+  }
+
+  ///按条件分页获取收藏信息。回调结果包含总条数
+  /// [option] 查询参数
+  Future<NIMResult<NIMCollectionListResult>> getCollectionListExByOption(
+      NIMCollectionOption option) {
+    return _platform.getCollectionListExByOption(option);
+  }
+
+  ///更新本地插入的消息
+  ///  serverid为0的消息
+  /// 云端消息请调用modifyMessage接口
+  /// [message] 需要被更新的消息体
+  /// [params] 需要更新的数据字段
+  Future<NIMResult<NIMMessage>> updateLocalMessage(
+      NIMMessage message, NIMUpdateLocalMessageParams params) {
+    return _platform.updateLocalMessage(message, params);
+  }
+
+  /// 仅清空会话漫游消息， 单次传递最多50个会话ID
+  /// [conversationIds] 需要清理的会话ID
+  Future<NIMResult<void>> clearRoamingMessage(
+      {required List<String> conversationIds}) {
+    return _platform.clearRoamingMessage(conversationIds: conversationIds);
+  }
+
+  /// 清理本地消息
+  ///
+  /// [params] 清理参数，包含时间戳锚点和是否同时删除会话；为 null 则清理所有本地消息
+  Future<NIMResult<void>> clearLocalMessage(
+      NIMClearLocalMessageParams? params) {
+    return _platform.clearLocalMessage(params);
+  }
+
+  /// 翻译文本 @since v10.9.75
+  ///
+  /// [params] 翻译参数，包含待翻译文本、源语言和目标语言
+  /// [config] 翻译器配置，可选，默认开启严格模式
+  Future<NIMResult<NIMTextTranslationResult>> translateText({
+    required NIMTextTranslateParams params,
+    NIMTranslatorConfig? config,
+  }) {
+    return _platform.translateText(params: params, config: config);
   }
 }

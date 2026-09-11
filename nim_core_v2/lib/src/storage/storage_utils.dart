@@ -32,9 +32,12 @@ class StorageUtil {
   /// 生成视频封面图链接
   ///  [url] 视频原始链接
   ///  [offset] 从第几秒开始截
+  ///  [thumbSize] 封面尺寸，单位像素（仅对PC有效）
+  ///  [type] 封面类型，如 png，jpeg（仅对PC有效）
   ///  返回视频封面图链接
   /// web 端不支持
-  Future<NIMResult<String>> videoCoverUrl(String url, int offset) {
-    return _platform.videoCoverUrl(url, offset);
+  Future<NIMResult<String>> videoCoverUrl(String url, int offset,
+      {int? thumbSize, String? type}) {
+    return _platform.videoCoverUrl(url, offset, thumbSize, type);
   }
 }

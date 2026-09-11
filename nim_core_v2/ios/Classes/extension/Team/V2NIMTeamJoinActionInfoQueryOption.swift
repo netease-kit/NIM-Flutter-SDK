@@ -6,28 +6,32 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamJoinActionInfoQueryOption {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(types): types ?? [],
-      #keyPath(offset): offset,
-      #keyPath(limit): limit,
-      #keyPath(status): status ?? [],
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(types)] = types
+    keyPaths[#keyPath(offset)] = offset
+    keyPaths[#keyPath(limit)] = limit
+    keyPaths[#keyPath(status)] = status
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMTeamJoinActionInfoQueryOption {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamJoinActionInfoQueryOption {
     let option = V2NIMTeamJoinActionInfoQueryOption()
-    if let types = dict[#keyPath(types)] as? [NSNumber] {
+    if let types = arguments[#keyPath(types)] as? [NSNumber] {
       option.types = types
     }
-    if let offset = dict[#keyPath(offset)] as? Int {
+    if let offset = arguments[#keyPath(offset)] as? Int {
       option.offset = offset
     }
-    if let limit = dict[#keyPath(limit)] as? Int {
+    if let limit = arguments[#keyPath(limit)] as? Int {
       option.limit = limit
     }
-    if let status = dict[#keyPath(status)] as? [NSNumber] {
+    if let status = arguments[#keyPath(status)] as? [NSNumber] {
       option.status = status
     }
     return option

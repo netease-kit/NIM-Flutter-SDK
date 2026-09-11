@@ -79,11 +79,23 @@ class NIMBasicOption {
   /// 是否使用 httpdns
   bool useHttpdns = true;
 
+  /// 是否使用云端会话和会话分组服务
+  bool enableCloudConversation = false;
+
+  /// 是否使用云端好友申请托管服务 @since v10.9.6
+  bool enableCloudFriendAddApplication = false;
+
+  /// 是否使用云端群申请托管服务 @since v10.9.7
+  bool enableCloudTeamJoinActionInfo = false;
+
   /// 自定义客户端类型
   int? customClientType;
 
   /// 登录自定义信息, 最大 32 个字符
   String? customTag;
+
+  /// 日志文件大小上限, 单位字节，当文件超过最大文件大小时，SDK 会将已有日志文件对半裁剪，默认 50MB @since v10.9.6
+  int? logMaxSize;
 
   /// 日志保留天数
   int? logReserveDays = 30;
@@ -91,17 +103,49 @@ class NIMBasicOption {
   /// SDK日志级别
   NIMSDKLogLevel sdkLogLevel = NIMSDKLogLevel.nimSdkLogLevelApp;
 
+  /// 自定义日志收集目录，当需要上报日志时可单独指定一个目录，SDK 会主动收集该目录下的所有文件 @since v10.9.6
+  String? customizeLogCollectionDirectory;
+
   /// 是否禁用 macOS 下的 App Nap 功能
   bool disableAppNap = true;
+
+  /// 云信指南针数据上报开关
+  bool enableCompass = true;
+
+  /// 群通知类消息是否计入未读数，默认以消息为准
+  bool? teamNotificationBadge;
+
+  /// 收到撤回消息通知时是否减少指定会话的未读计数
+  bool reduceUnreadOnMessageRecall = false;
+
+  /// 查询会话时是否仅返回会话快照信息。设置为 true 有助于加快会话查询速度，减少构建完整会话信息耗时 @since v10.9.20
+  bool conversationSnapshot = true;
+
+  /// 云信指南针数据上报地址，为空则使用默认地址
+  String? compassDataEndpoint;
+
+  /// 云信 A/B Test 策略获取地址，为空则使用默认地址 @since v10.9.60
+  String? abTestEndpoint;
 
   NIMBasicOption({
     this.useHttps = true,
     this.useHttpdns = true,
+    this.enableCloudConversation = false,
+    this.enableCloudFriendAddApplication = false,
+    this.enableCloudTeamJoinActionInfo = false,
     this.customClientType,
     this.customTag,
+    this.logMaxSize,
     this.logReserveDays = 30,
     this.sdkLogLevel = NIMSDKLogLevel.nimSdkLogLevelApp,
+    this.customizeLogCollectionDirectory,
     this.disableAppNap = true,
+    this.enableCompass = true,
+    this.teamNotificationBadge,
+    this.reduceUnreadOnMessageRecall = false,
+    this.conversationSnapshot = true,
+    this.compassDataEndpoint,
+    this.abTestEndpoint,
   });
 
   Map<String, dynamic> toJson() => _$NIMBasicOptionToJson(this);

@@ -16,40 +16,32 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../nim_core_v2/">nim_core.dart</a></li>
     <li class="self-crumb">QChatServerService class</li>
   </ol>
   <div class="self-name">QChatServerService</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -67,14 +59,33 @@
 </section>
 
 
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+        
+
+
+        
+        
+  <dt>Annotations</dt>
+  <dd>
+    <ul class="annotation-list clazz-relationships">
+        <li>@<a href="https://pub.dev/documentation/hawk_meta/0.0.1/hawk_meta/HawkEntryPoint-class.html">HawkEntryPoint</a>()</li>
+    </ul>
+  </dd>
+
+
+      </dl>
+    </section>
 
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="QChatServerService" class="callable">
-          <span class="name"><a href="../nim_core_v2/QChatServerService/QChatServerService.html">QChatServerService</a></span><span class="signature">()</span>
+        <dt id="QChatServerService.new" class="callable">
+          <span class="name"><a href="../nim_core_v2/QChatServerService/QChatServerService.html">QChatServerService.new</a></span><span class="signature">()</span>
         </dt>
         <dd>
           
@@ -114,6 +125,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -121,8 +133,8 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="acceptServerApply" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/acceptServerApply.html">acceptServerApply</a></span><span class="signature">(<wbr><span class="parameter" id="acceptServerApply-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAcceptServerApplyParam-class.html">QChatAcceptServerApplyParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/acceptServerApply.html">acceptServerApply</a></span><span class="signature">(<wbr><span class="parameter" id="acceptServerApply-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAcceptServerApplyParam-class.html">QChatAcceptServerApplyParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -134,8 +146,8 @@
 </dd>
 
         <dt id="acceptServerInvite" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/acceptServerInvite.html">acceptServerInvite</a></span><span class="signature">(<wbr><span class="parameter" id="acceptServerInvite-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatAcceptServerInviteParam-class.html">QChatAcceptServerInviteParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/acceptServerInvite.html">acceptServerInvite</a></span><span class="signature">(<wbr><span class="parameter" id="acceptServerInvite-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatAcceptServerInviteParam-class.html">QChatAcceptServerInviteParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -147,8 +159,8 @@
 </dd>
 
         <dt id="applyServerJoin" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/applyServerJoin.html">applyServerJoin</a></span><span class="signature">(<wbr><span class="parameter" id="applyServerJoin-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatApplyServerJoinParam-class.html">QChatApplyServerJoinParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatApplyServerJoinResult-class.html">QChatApplyServerJoinResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/applyServerJoin.html">applyServerJoin</a></span><span class="signature">(<wbr><span class="parameter" id="applyServerJoin-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatApplyServerJoinParam-class.html">QChatApplyServerJoinParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatApplyServerJoinResult-class.html">QChatApplyServerJoinResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -160,8 +172,8 @@
 </dd>
 
         <dt id="banServerMember" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/banServerMember.html">banServerMember</a></span><span class="signature">(<wbr><span class="parameter" id="banServerMember-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatBanServerMemberParam-class.html">QChatBanServerMemberParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/banServerMember.html">banServerMember</a></span><span class="signature">(<wbr><span class="parameter" id="banServerMember-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatBanServerMemberParam-class.html">QChatBanServerMemberParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -173,8 +185,8 @@
 </dd>
 
         <dt id="createServer" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/createServer.html">createServer</a></span><span class="signature">(<wbr><span class="parameter" id="createServer-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatCreateServerParam-class.html">QChatCreateServerParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatCreateServerResult-class.html">QChatCreateServerResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/createServer.html">createServer</a></span><span class="signature">(<wbr><span class="parameter" id="createServer-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCreateServerParam-class.html">QChatCreateServerParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatCreateServerResult-class.html">QChatCreateServerResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -186,8 +198,8 @@
 </dd>
 
         <dt id="deleteServer" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/deleteServer.html">deleteServer</a></span><span class="signature">(<wbr><span class="parameter" id="deleteServer-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatDeleteServerParam-class.html">QChatDeleteServerParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/deleteServer.html">deleteServer</a></span><span class="signature">(<wbr><span class="parameter" id="deleteServer-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatDeleteServerParam-class.html">QChatDeleteServerParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -199,8 +211,8 @@
 </dd>
 
         <dt id="enterAsVisitor" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/enterAsVisitor.html">enterAsVisitor</a></span><span class="signature">(<wbr><span class="parameter" id="enterAsVisitor-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatEnterServerAsVisitorParam-class.html">QChatEnterServerAsVisitorParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatEnterServerAsVisitorResult-class.html">QChatEnterServerAsVisitorResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/enterAsVisitor.html">enterAsVisitor</a></span><span class="signature">(<wbr><span class="parameter" id="enterAsVisitor-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatEnterServerAsVisitorParam-class.html">QChatEnterServerAsVisitorParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatEnterServerAsVisitorResult-class.html">QChatEnterServerAsVisitorResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -212,8 +224,8 @@
 </dd>
 
         <dt id="generateInviteCode" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/generateInviteCode.html">generateInviteCode</a></span><span class="signature">(<wbr><span class="parameter" id="generateInviteCode-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGenerateInviteCodeParam-class.html">QChatGenerateInviteCodeParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGenerateInviteCodeResult-class.html">QChatGenerateInviteCodeResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/generateInviteCode.html">generateInviteCode</a></span><span class="signature">(<wbr><span class="parameter" id="generateInviteCode-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGenerateInviteCodeParam-class.html">QChatGenerateInviteCodeParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGenerateInviteCodeResult-class.html">QChatGenerateInviteCodeResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -225,8 +237,8 @@
 </dd>
 
         <dt id="getBannedServerMembersByPage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/getBannedServerMembersByPage.html">getBannedServerMembersByPage</a></span><span class="signature">(<wbr><span class="parameter" id="getBannedServerMembersByPage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetBannedServerMembersByPageParam-class.html">QChatGetBannedServerMembersByPageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetBannedServerMembersByPageResult-class.html">QChatGetBannedServerMembersByPageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/getBannedServerMembersByPage.html">getBannedServerMembersByPage</a></span><span class="signature">(<wbr><span class="parameter" id="getBannedServerMembersByPage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetBannedServerMembersByPageParam-class.html">QChatGetBannedServerMembersByPageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetBannedServerMembersByPageResult-class.html">QChatGetBannedServerMembersByPageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -238,8 +250,8 @@
 </dd>
 
         <dt id="getServerMembers" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/getServerMembers.html">getServerMembers</a></span><span class="signature">(<wbr><span class="parameter" id="getServerMembers-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetServerMembersParam-class.html">QChatGetServerMembersParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetServerMembersResult-class.html">QChatGetServerMembersResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/getServerMembers.html">getServerMembers</a></span><span class="signature">(<wbr><span class="parameter" id="getServerMembers-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerMembersParam-class.html">QChatGetServerMembersParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerMembersResult-class.html">QChatGetServerMembersResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -251,8 +263,8 @@
 </dd>
 
         <dt id="getServerMembersByPage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/getServerMembersByPage.html">getServerMembersByPage</a></span><span class="signature">(<wbr><span class="parameter" id="getServerMembersByPage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetServerMembersByPageParam-class.html">QChatGetServerMembersByPageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetServerMembersByPageResult-class.html">QChatGetServerMembersByPageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/getServerMembersByPage.html">getServerMembersByPage</a></span><span class="signature">(<wbr><span class="parameter" id="getServerMembersByPage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerMembersByPageParam-class.html">QChatGetServerMembersByPageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServerMembersByPageResult-class.html">QChatGetServerMembersByPageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -264,8 +276,8 @@
 </dd>
 
         <dt id="getServers" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/getServers.html">getServers</a></span><span class="signature">(<wbr><span class="parameter" id="getServers-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetServersParam-class.html">QChatGetServersParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetServersResult-class.html">QChatGetServersResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/getServers.html">getServers</a></span><span class="signature">(<wbr><span class="parameter" id="getServers-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServersParam-class.html">QChatGetServersParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServersResult-class.html">QChatGetServersResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -277,8 +289,8 @@
 </dd>
 
         <dt id="getServersByPage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/getServersByPage.html">getServersByPage</a></span><span class="signature">(<wbr><span class="parameter" id="getServersByPage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetServersByPageParam-class.html">QChatGetServersByPageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetServersByPageResult-class.html">QChatGetServersByPageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/getServersByPage.html">getServersByPage</a></span><span class="signature">(<wbr><span class="parameter" id="getServersByPage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServersByPageParam-class.html">QChatGetServersByPageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetServersByPageResult-class.html">QChatGetServersByPageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -290,8 +302,8 @@
 </dd>
 
         <dt id="getUserServerPushConfigs" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/getUserServerPushConfigs.html">getUserServerPushConfigs</a></span><span class="signature">(<wbr><span class="parameter" id="getUserServerPushConfigs-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatGetUserServerPushConfigsParam-class.html">QChatGetUserServerPushConfigsParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatGetUserPushConfigsResult-class.html">QChatGetUserPushConfigsResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/getUserServerPushConfigs.html">getUserServerPushConfigs</a></span><span class="signature">(<wbr><span class="parameter" id="getUserServerPushConfigs-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetUserServerPushConfigsParam-class.html">QChatGetUserServerPushConfigsParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatGetUserPushConfigsResult-class.html">QChatGetUserPushConfigsResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -303,8 +315,8 @@
 </dd>
 
         <dt id="inviteServerMembers" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/inviteServerMembers.html">inviteServerMembers</a></span><span class="signature">(<wbr><span class="parameter" id="inviteServerMembers-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatInviteServerMembersParam-class.html">QChatInviteServerMembersParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatInviteServerMembersResult-class.html">QChatInviteServerMembersResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/inviteServerMembers.html">inviteServerMembers</a></span><span class="signature">(<wbr><span class="parameter" id="inviteServerMembers-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatInviteServerMembersParam-class.html">QChatInviteServerMembersParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatInviteServerMembersResult-class.html">QChatInviteServerMembersResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -316,8 +328,8 @@
 </dd>
 
         <dt id="joinByInviteCode" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/joinByInviteCode.html">joinByInviteCode</a></span><span class="signature">(<wbr><span class="parameter" id="joinByInviteCode-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatJoinByInviteCodeParam-class.html">QChatJoinByInviteCodeParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/joinByInviteCode.html">joinByInviteCode</a></span><span class="signature">(<wbr><span class="parameter" id="joinByInviteCode-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatJoinByInviteCodeParam-class.html">QChatJoinByInviteCodeParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -329,8 +341,8 @@
 </dd>
 
         <dt id="kickServerMembers" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/kickServerMembers.html">kickServerMembers</a></span><span class="signature">(<wbr><span class="parameter" id="kickServerMembers-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatKickServerMembersParam-class.html">QChatKickServerMembersParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/kickServerMembers.html">kickServerMembers</a></span><span class="signature">(<wbr><span class="parameter" id="kickServerMembers-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatKickServerMembersParam-class.html">QChatKickServerMembersParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -342,8 +354,8 @@
 </dd>
 
         <dt id="leaveAsVisitor" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/leaveAsVisitor.html">leaveAsVisitor</a></span><span class="signature">(<wbr><span class="parameter" id="leaveAsVisitor-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatLeaveServerAsVisitorParam-class.html">QChatLeaveServerAsVisitorParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatLeaveServerAsVisitorResult-class.html">QChatLeaveServerAsVisitorResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/leaveAsVisitor.html">leaveAsVisitor</a></span><span class="signature">(<wbr><span class="parameter" id="leaveAsVisitor-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatLeaveServerAsVisitorParam-class.html">QChatLeaveServerAsVisitorParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatLeaveServerAsVisitorResult-class.html">QChatLeaveServerAsVisitorResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -355,8 +367,8 @@
 </dd>
 
         <dt id="leaveServer" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/leaveServer.html">leaveServer</a></span><span class="signature">(<wbr><span class="parameter" id="leaveServer-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatLeaveServerParam-class.html">QChatLeaveServerParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/leaveServer.html">leaveServer</a></span><span class="signature">(<wbr><span class="parameter" id="leaveServer-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatLeaveServerParam-class.html">QChatLeaveServerParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -368,8 +380,8 @@
 </dd>
 
         <dt id="markRead" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/markRead.html">markRead</a></span><span class="signature">(<wbr><span class="parameter" id="markRead-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatServerMarkReadParam-class.html">QChatServerMarkReadParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatServerMarkReadResult-class.html">QChatServerMarkReadResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/markRead.html">markRead</a></span><span class="signature">(<wbr><span class="parameter" id="markRead-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatServerMarkReadParam-class.html">QChatServerMarkReadParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatServerMarkReadResult-class.html">QChatServerMarkReadResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -394,8 +406,8 @@
 </dd>
 
         <dt id="rejectServerApply" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/rejectServerApply.html">rejectServerApply</a></span><span class="signature">(<wbr><span class="parameter" id="rejectServerApply-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRejectServerApplyParam-class.html">QChatRejectServerApplyParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/rejectServerApply.html">rejectServerApply</a></span><span class="signature">(<wbr><span class="parameter" id="rejectServerApply-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRejectServerApplyParam-class.html">QChatRejectServerApplyParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -407,8 +419,8 @@
 </dd>
 
         <dt id="rejectServerInvite" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/rejectServerInvite.html">rejectServerInvite</a></span><span class="signature">(<wbr><span class="parameter" id="rejectServerInvite-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatRejectServerInviteParam-class.html">QChatRejectServerInviteParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/rejectServerInvite.html">rejectServerInvite</a></span><span class="signature">(<wbr><span class="parameter" id="rejectServerInvite-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatRejectServerInviteParam-class.html">QChatRejectServerInviteParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -420,8 +432,8 @@
 </dd>
 
         <dt id="searchServerByPage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/searchServerByPage.html">searchServerByPage</a></span><span class="signature">(<wbr><span class="parameter" id="searchServerByPage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSearchServerByPageParam-class.html">QChatSearchServerByPageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSearchServerByPageResult-class.html">QChatSearchServerByPageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/searchServerByPage.html">searchServerByPage</a></span><span class="signature">(<wbr><span class="parameter" id="searchServerByPage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSearchServerByPageParam-class.html">QChatSearchServerByPageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSearchServerByPageResult-class.html">QChatSearchServerByPageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -433,8 +445,8 @@
 </dd>
 
         <dt id="searchServerMemberByPage" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/searchServerMemberByPage.html">searchServerMemberByPage</a></span><span class="signature">(<wbr><span class="parameter" id="searchServerMemberByPage-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSearchServerMemberByPageParam-class.html">QChatSearchServerMemberByPageParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSearchServerMemberByPageResult-class.html">QChatSearchServerMemberByPageResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/searchServerMemberByPage.html">searchServerMemberByPage</a></span><span class="signature">(<wbr><span class="parameter" id="searchServerMemberByPage-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSearchServerMemberByPageParam-class.html">QChatSearchServerMemberByPageParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSearchServerMemberByPageResult-class.html">QChatSearchServerMemberByPageResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -446,8 +458,8 @@
 </dd>
 
         <dt id="subscribeAllChannel" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/subscribeAllChannel.html">subscribeAllChannel</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeAllChannel-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSubscribeAllChannelParam-class.html">QChatSubscribeAllChannelParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSubscribeAllChannelResult-class.html">QChatSubscribeAllChannelResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/subscribeAllChannel.html">subscribeAllChannel</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeAllChannel-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSubscribeAllChannelParam-class.html">QChatSubscribeAllChannelParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSubscribeAllChannelResult-class.html">QChatSubscribeAllChannelResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -459,8 +471,8 @@
 </dd>
 
         <dt id="subscribeAsVisitor" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/subscribeAsVisitor.html">subscribeAsVisitor</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeAsVisitor-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSubscribeServerAsVisitorParam-class.html">QChatSubscribeServerAsVisitorParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSubscribeServerAsVisitorResult-class.html">QChatSubscribeServerAsVisitorResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/subscribeAsVisitor.html">subscribeAsVisitor</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeAsVisitor-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSubscribeServerAsVisitorParam-class.html">QChatSubscribeServerAsVisitorParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSubscribeServerAsVisitorResult-class.html">QChatSubscribeServerAsVisitorResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -472,8 +484,8 @@
 </dd>
 
         <dt id="subscribeServer" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/subscribeServer.html">subscribeServer</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeServer-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatSubscribeServerParam-class.html">QChatSubscribeServerParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatSubscribeServerResult-class.html">QChatSubscribeServerResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/subscribeServer.html">subscribeServer</a></span><span class="signature">(<wbr><span class="parameter" id="subscribeServer-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSubscribeServerParam-class.html">QChatSubscribeServerParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatSubscribeServerResult-class.html">QChatSubscribeServerResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -500,8 +512,8 @@
 </dd>
 
         <dt id="unbanServerMember" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/unbanServerMember.html">unbanServerMember</a></span><span class="signature">(<wbr><span class="parameter" id="unbanServerMember-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUnbanServerMemberParam-class.html">QChatUnbanServerMemberParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/unbanServerMember.html">unbanServerMember</a></span><span class="signature">(<wbr><span class="parameter" id="unbanServerMember-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUnbanServerMemberParam-class.html">QChatUnbanServerMemberParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -513,8 +525,8 @@
 </dd>
 
         <dt id="updateMyMemberInfo" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/updateMyMemberInfo.html">updateMyMemberInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateMyMemberInfo-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateMyMemberInfoParam-class.html">QChatUpdateMyMemberInfoParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateMyMemberInfoResult-class.html">QChatUpdateMyMemberInfoResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/updateMyMemberInfo.html">updateMyMemberInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateMyMemberInfo-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateMyMemberInfoParam-class.html">QChatUpdateMyMemberInfoParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateMyMemberInfoResult-class.html">QChatUpdateMyMemberInfoResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -526,8 +538,8 @@
 </dd>
 
         <dt id="updateServer" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/updateServer.html">updateServer</a></span><span class="signature">(<wbr><span class="parameter" id="updateServer-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateServerParam-class.html">QChatUpdateServerParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateServerResult-class.html">QChatUpdateServerResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/updateServer.html">updateServer</a></span><span class="signature">(<wbr><span class="parameter" id="updateServer-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerParam-class.html">QChatUpdateServerParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerResult-class.html">QChatUpdateServerResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -539,8 +551,8 @@
 </dd>
 
         <dt id="updateServerMemberInfo" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/updateServerMemberInfo.html">updateServerMemberInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateServerMemberInfo-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateServerMemberInfoParam-class.html">QChatUpdateServerMemberInfoParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/QChatUpdateServerMemberInfoResult-class.html">QChatUpdateServerMemberInfoResult</a></span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/updateServerMemberInfo.html">updateServerMemberInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateServerMemberInfo-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerMemberInfoParam-class.html">QChatUpdateServerMemberInfoParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateServerMemberInfoResult-class.html">QChatUpdateServerMemberInfoResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -552,8 +564,8 @@
 </dd>
 
         <dt id="updateUserServerPushConfig" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatServerService/updateUserServerPushConfig.html">updateUserServerPushConfig</a></span><span class="signature">(<wbr><span class="parameter" id="updateUserServerPushConfig-param-param"><span class="type-annotation"><a href="../nim_core_v2/QChatUpdateUserServerPushConfigParam-class.html">QChatUpdateUserServerPushConfigParam</a></span> <span class="parameter-name">param</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/QChatServerService/updateUserServerPushConfig.html">updateUserServerPushConfig</a></span><span class="signature">(<wbr><span class="parameter" id="updateUserServerPushConfig-param-param"><span class="type-annotation"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/QChatUpdateUserServerPushConfigParam-class.html">QChatUpdateUserServerPushConfigParam</a></span> <span class="parameter-name">param</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/nim_core_v2_platform_interface/10.9.80/nim_core_v2_platform_interface/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -591,9 +603,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -601,40 +611,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
-    <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../nim_core_v2/">nim_core_v2</a></li>
     <li class="self-crumb">QChatServerService class</li>
 </ol>
-
 
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

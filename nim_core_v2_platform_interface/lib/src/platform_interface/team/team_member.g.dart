@@ -1,7 +1,3 @@
-// Copyright (c) 2022 NetEase, Inc. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'team_member.dart';
@@ -40,6 +36,10 @@ NIMTeamMember _$NIMTeamMemberFromJson(Map<String, dynamic> json) =>
       updateTime: (json['updateTime'] as num?)?.toInt(),
       inTeam: json['inTeam'] as bool,
       chatBanned: json['chatBanned'] as bool?,
+      invitorAccountId: json['invitorAccountId'] as String?,
+      followAccountIds: (json['followAccountIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$NIMTeamMemberToJson(NIMTeamMember instance) =>
@@ -54,6 +54,8 @@ Map<String, dynamic> _$NIMTeamMemberToJson(NIMTeamMember instance) =>
       'updateTime': instance.updateTime,
       'inTeam': instance.inTeam,
       'chatBanned': instance.chatBanned,
+      'invitorAccountId': instance.invitorAccountId,
+      'followAccountIds': instance.followAccountIds,
     };
 
 const _$NIMTeamTypeEnumMap = {

@@ -121,3 +121,26 @@ class NIMAddCollectionParams {
 
   Map<String, dynamic> toJson() => _$NIMAddCollectionParamsToJson(this);
 }
+
+List<NIMCollection>? nimCollectionListFromJson(List<dynamic>? collectionList) {
+  return collectionList
+      ?.map((e) => NIMCollection.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMCollectionListResult {
+  ///总收藏条数
+  int? totalCount;
+
+  ///本次分页查询返回的收藏列表
+  @JsonKey(fromJson: nimCollectionListFromJson)
+  List<NIMCollection>? collectionList;
+
+  NIMCollectionListResult({this.totalCount, this.collectionList});
+
+  factory NIMCollectionListResult.fromJson(Map<String, dynamic> map) =>
+      _$NIMCollectionListResultFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMCollectionListResultToJson(this);
+}

@@ -10,15 +10,15 @@ part of 'auth_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NIMLoginInfo _$NIMLoginInfoFromJson(Map<String, dynamic> json) {
-  return NIMLoginInfo(
-    account: json['account'] as String,
-    token: json['token'] as String,
-    authType: _authTypeFromValue(json['authType'] as int?),
-    loginExt: json['loginExt'] as String?,
-    customClientType: json['customClientType'] as int?,
-  );
-}
+NIMLoginInfo _$NIMLoginInfoFromJson(Map<String, dynamic> json) => NIMLoginInfo(
+      account: json['account'] as String,
+      token: json['token'] as String,
+      authType: json['authType'] == null
+          ? NIMAuthType.authTypeDefault
+          : _authTypeFromValue((json['authType'] as num?)?.toInt()),
+      loginExt: json['loginExt'] as String?,
+      customClientType: (json['customClientType'] as num?)?.toInt(),
+    );
 
 Map<String, dynamic> _$NIMLoginInfoToJson(NIMLoginInfo instance) =>
     <String, dynamic>{
@@ -29,49 +29,22 @@ Map<String, dynamic> _$NIMLoginInfoToJson(NIMLoginInfo instance) =>
       'customClientType': instance.customClientType,
     };
 
-NIMOnlineClient _$NIMOnlineClientFromJson(Map<String, dynamic> json) {
-  return NIMOnlineClient(
-    os: json['os'] as String,
-    clientType: _$enumDecode(_$NIMClientTypeEnumMap, json['clientType'],
-        unknownValue: NIMClientType.unknown),
-    loginTime: json['loginTime'] as int,
-    customTag: json['customTag'] as String?,
-  );
-}
+NIMOnlineClient _$NIMOnlineClientFromJson(Map<String, dynamic> json) =>
+    NIMOnlineClient(
+      os: json['os'] as String,
+      clientType: $enumDecode(_$NIMClientTypeEnumMap, json['clientType'],
+          unknownValue: NIMClientType.unknown),
+      loginTime: (json['loginTime'] as num).toInt(),
+      customTag: json['customTag'] as String?,
+    );
 
 Map<String, dynamic> _$NIMOnlineClientToJson(NIMOnlineClient instance) =>
     <String, dynamic>{
       'os': instance.os,
-      'clientType': _$NIMClientTypeEnumMap[instance.clientType],
+      'clientType': _$NIMClientTypeEnumMap[instance.clientType]!,
       'loginTime': instance.loginTime,
       'customTag': instance.customTag,
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$NIMClientTypeEnumMap = {
   NIMClientType.unknown: 'unknown',

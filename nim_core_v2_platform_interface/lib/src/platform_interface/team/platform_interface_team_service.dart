@@ -5,8 +5,8 @@
 import 'dart:async';
 
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:nim_core_v2_platform_interface/src/method_channel/method_channel_team_service.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 abstract class TeamServicePlatform extends Service {
   TeamServicePlatform() : super(token: _token);
@@ -352,6 +352,96 @@ abstract class TeamServicePlatform extends Service {
   Future<NIMResult<NIMTeamMemberListResult>> searchTeamMembers(
       NIMTeamMemberSearchOption searchOption) async {
     throw UnimplementedError('searchTeamMembers() is not implemented');
+  }
+
+  ///添加群组成员关注
+  ///[teamId] 群组id,群组 ID 为空报错 191004 参数错误
+  ///[teamType] 群组类型,群组类型不是高级群或超级群，报错 191004 参数错误
+  ///[accountIds] 账号id列表, size==0，返回 191004 参数错误
+  Future<NIMResult<void>> addTeamMembersFollow(
+      String teamId, NIMTeamType teamType, List<String> accountIds) async {
+    throw UnimplementedError('addTeamMembersFollow() is not implemented');
+  }
+
+  ///移除群组成员关注
+  ///[teamId] 群组id,群组 ID 为空报错 191004 参数错误
+  ///[teamType] 群组类型,群组类型不是高级群或超级群，报错 191004 参数错误
+  ///[accountIds] 账号id列表, size==0，返回 191004 参数错误
+  Future<NIMResult<void>> removeTeamMembersFollow(
+      String teamId, NIMTeamType teamType, List<String> accountIds) async {
+    throw UnimplementedError('removeTeamMembersFollow() is not implemented');
+  }
+
+  ///清空所有群申请
+  Future<NIMResult<void>> clearAllTeamJoinActionInfo() async {
+    throw UnimplementedError('clearAllTeamJoinActionInfo() is not implemented');
+  }
+
+  ///清空所有群申请（扩展版），支持按群类型过滤
+  ///[option] 清理条件，为 null 时清理所有申请
+  Future<NIMResult<void>> clearAllTeamJoinActionInfoEx(
+      NIMTeamClearJoinActionInfoOption? option) async {
+    throw UnimplementedError(
+        'clearAllTeamJoinActionInfoEx() is not implemented');
+  }
+
+  ///删除群申请
+  ///[application]需要删除的群申请
+  Future<NIMResult<void>> deleteTeamJoinActionInfo(
+      NIMTeamJoinActionInfo application) async {
+    throw UnimplementedError('deleteTeamJoinActionInfo() is not implemented');
+  }
+
+  ///邀请成员加入群组
+  ///[teamId] 群组id
+  ///[teamType] 群组类型
+  ///[inviteeParams] 被邀请加入群的参数
+  Future<NIMResult<List<String>>> inviteMemberEx(String teamId,
+      NIMTeamType teamType, NIMTeamInviteParams inviteeParams) async {
+    throw UnimplementedError('inviteMemberEx() is not implemented');
+  }
+
+  ///获取当前自己的群组列表
+  ///返回群组按群组创建时间升序排序
+  /// 需要判断群组是否有效且自己在群中
+  /// 只查本地
+  /// [teamTypes] 群组类型列表，如果为null，或者列表为empty， 表示查询所有所有群类型,否则按输入群类型进行查询
+  Future<NIMResult<List<NIMTeam>>> getOwnerTeamList(
+      {List<NIMTeamType>? teamTypes}) {
+    throw UnimplementedError('getOwnerTeamList() is not implemented');
+  }
+
+  /// 获取当前自己管理的群组列表（群主 + 管理员）
+  /// 返回群组按群组创建时间升序排序
+  /// 只查本地
+  /// [teamTypes] 群组类型列表，如果为null，或者列表为empty，表示查询所有群类型，否则按输入群类型进行查询
+  Future<NIMResult<List<NIMTeam>>> getManagerTeamList(
+      {List<NIMTeamType>? teamTypes}) {
+    throw UnimplementedError('getManagerTeamList() is not implemented');
+  }
+
+  /// 从云端查询群组信息
+  /// [teamId] 群组ID
+  /// [teamType] 群组类型
+  Future<NIMResult<NIMTeam>> getTeamInfoFromCloud(
+      {required String teamId, required NIMTeamType teamType}) {
+    throw UnimplementedError('getTeamInfoFromCloud() is not implemented');
+  }
+
+  /// 本地全文搜索群信息
+  /// [searchParams] 搜索参数，包含关键词、群类型、搜索字段等
+  /// 返回匹配的 [NIMTeam] 列表
+  Future<NIMResult<List<NIMTeam>>> searchTeams(
+      NIMTeamSearchParams searchParams) async {
+    throw UnimplementedError('searchTeams() is not implemented');
+  }
+
+  /// 本地搜索群成员（扩展，支持跨多个群）
+  /// [searchParams] 搜索参数，包含关键词、群引用列表、分页 token 等
+  /// 返回以 [NIMTeamRefer] 为 key、匹配成员列表为 value 的 Map
+  Future<NIMResult<Map<NIMTeamRefer, List<NIMTeamMember>>>> searchTeamMembersEx(
+      NIMSearchTeamMemberParams searchParams) async {
+    throw UnimplementedError('searchTeamMembersEx() is not implemented');
   }
 
   // 下面是回调，用stream 实现

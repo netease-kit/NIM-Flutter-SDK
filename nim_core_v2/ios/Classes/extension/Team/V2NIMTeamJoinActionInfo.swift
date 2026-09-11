@@ -6,47 +6,57 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamJoinActionInfo {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(actionType): actionType.rawValue,
-      #keyPath(teamId): teamId,
-      #keyPath(teamType): teamType.rawValue,
-      #keyPath(operatorAccountId): operatorAccountId,
-      #keyPath(postscript): postscript,
-      #keyPath(timestamp): timestamp * 1000,
-      #keyPath(actionStatus): actionStatus.rawValue,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(actionType)] = actionType.rawValue
+    keyPaths[#keyPath(teamId)] = teamId
+    keyPaths[#keyPath(teamType)] = teamType.rawValue
+    keyPaths[#keyPath(operatorAccountId)] = operatorAccountId
+    keyPaths[#keyPath(postscript)] = postscript
+    keyPaths[#keyPath(timestamp)] = timestamp * 1000
+    keyPaths[#keyPath(actionStatus)] = actionStatus.rawValue
+    keyPaths[#keyPath(serverExtension)] = serverExtension
+    keyPaths["read"] = read
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dictionary: [String: Any]) -> V2NIMTeamJoinActionInfo {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamJoinActionInfo {
     let info = V2NIMTeamJoinActionInfo()
-    if let actionType = dictionary[#keyPath(actionType)] as? Int {
+    if let actionType = arguments[#keyPath(actionType)] as? Int {
       info.setValue(NSNumber(integerLiteral: actionType), forKey: #keyPath(V2NIMTeamJoinActionInfo.actionType))
     }
 
-    if let teamId = dictionary[#keyPath(teamId)] as? String {
+    if let teamId = arguments[#keyPath(teamId)] as? String {
       info.setValue(teamId, forKey: #keyPath(V2NIMTeamJoinActionInfo.teamId))
     }
 
-    if let teamType = dictionary[#keyPath(teamType)] as? Int {
+    if let teamType = arguments[#keyPath(teamType)] as? Int {
       info.setValue(NSNumber(integerLiteral: teamType), forKey: #keyPath(V2NIMTeamJoinActionInfo.teamType))
     }
 
-    if let operatorAccountId = dictionary[#keyPath(operatorAccountId)] as? String {
+    if let operatorAccountId = arguments[#keyPath(operatorAccountId)] as? String {
       info.setValue(operatorAccountId, forKey: #keyPath(V2NIMTeamJoinActionInfo.operatorAccountId))
     }
 
-    if let postscript = dictionary[#keyPath(postscript)] as? String {
+    if let postscript = arguments[#keyPath(postscript)] as? String {
       info.setValue(postscript, forKey: #keyPath(V2NIMTeamJoinActionInfo.postscript))
     }
 
-    if let timestamp = dictionary[#keyPath(timestamp)] as? Double {
+    if let timestamp = arguments[#keyPath(timestamp)] as? Double {
       info.setValue(timestamp / 1000, forKey: #keyPath(V2NIMTeamJoinActionInfo.timestamp))
     }
 
-    if let actionStatus = dictionary[#keyPath(actionStatus)] as? Int {
+    if let actionStatus = arguments[#keyPath(actionStatus)] as? Int {
       info.setValue(NSNumber(integerLiteral: actionStatus), forKey: #keyPath(V2NIMTeamJoinActionInfo.actionStatus))
+    }
+
+    if let serverExtension = arguments[#keyPath(serverExtension)] as? String {
+      info.setValue(serverExtension, forKey: #keyPath(V2NIMTeamJoinActionInfo.serverExtension))
     }
 
     return info

@@ -4,6 +4,24 @@ project(${PROJECT_NAME} LANGUAGES CXX)
 
 set(PLUGIN_NAME "${PROJECT_NAME}_plugin")
 
+# Define apply_standard_settings function within the plugin itself.
+# This ensures the plugin is self-contained and does not depend on external
+# function definitions from the host application's CMakeLists.txt.
+#
+# This function applies standard compilation settings required for the NIM SDK:
+# - C++17 standard
+# - Warning level 4 with specific warnings disabled (wd4100: unreferenced formal parameter)
+# - /WX- : Treat warnings as warnings (not errors) - required for NIM SDK headers
+# - /EHsc : Standard C++ exception handling
+# - _HAS_EXCEPTIONS=0 : Disable C++ exceptions in STL (for compatibility)
+function(APPLY_STANDARD_SETTINGS TARGET)
+  target_compile_features(${TARGET} PUBLIC cxx_std_17)
+  target_compile_options(${TARGET} PRIVATE /W4 /WX- /wd"4100")
+  target_compile_options(${TARGET} PRIVATE /EHsc)
+  target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
+  target_compile_definitions(${TARGET} PRIVATE "$<$<CONFIG:Debug>:_DEBUG>")
+endfunction()
+
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /Zc:threadSafeInit-")
   SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Gm- /Zi")
@@ -19,7 +37,11 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/include")
 link_directories("${CMAKE_CURRENT_SOURCE_DIR}/../third_party/alog/lib/x64/${CMAKE_BUILD_TYPE}")
 
 # nim_sdk
-set(NIM_SDK_URL "https://yx-nosdn.chatnos.com/package/1724219651040/nim-win32-x64-10-4-0-2924-build-2659156.tar.gz?download=nim-win32-x64-10-4-0-2924-build-2659156.tar.gz")
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(NIM_SDK_URL "https://yx-web-nosdn.netease.im/package/1781089890155/nim-win32-x64-10-10-0-4946-build-3590310.tar.gz?download=nim-win32-x64-10-10-0-4946-build-3590310.tar.gz")
+else()
+    set(NIM_SDK_URL "https://yx-web-nosdn.netease.im/package/1781089886938/nim-win32-ia32-10-10-0-4946-build-3590310.tar.gz?download=nim-win32-ia32-10-10-0-4946-build-3590310.tar.gz")
+endif()
 set(SPLIT "download=")
 string(LENGTH ${SPLIT} SPLIT_LENGTH)
 string(LENGTH ${NIM_SDK_URL} NIM_SDK_URL_LENGTH)
@@ -111,9 +133,29 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)
 if(${CMAKE_BUILD_TYPE} MATCHES Debug)
   set_target_properties(${PLUGIN_NAME} PROPERTIES LINK_FLAGS "/INCREMENTAL:YES")
 endif()
-# List of absolute paths to libraries that should be bundled with the plugin
-set(nim_core_windows_bundled_libraries
-    "${CMAKE_CURRENT_SOURCE_DIR}/../nim_sdk/bin/"
+
+# List of absolute paths to libraries that should be bundled with the plugin.
+# The NIM SDK is downloaded and extracted during CMake configure phase (see above),
+# so the DLL files should exist at this point.
+#
+# Collect all DLL files from nim_sdk/bin directory.
+# These DLLs will be automatically copied to the application's output directory
+# by Flutter's build system through the PLUGIN_BUNDLED_LIBRARIES mechanism.
+file(GLOB NIM_SDK_DLLS "${CMAKE_CURRENT_SOURCE_DIR}/../nim_sdk/bin/*.dll")
+
+# Debug: Print the found DLLs during configuration
+message(STATUS "[nim_core_v2_windows] Found ${CMAKE_CURRENT_SOURCE_DIR}/../nim_sdk/bin/*.dll:")
+foreach(DLL ${NIM_SDK_DLLS})
+  message(STATUS "  - ${DLL}")
+endforeach()
+
+# Set the bundled libraries variable with the correct plugin name.
+# IMPORTANT: The variable name MUST match the pattern ${plugin}_bundled_libraries
+# where ${plugin} is the plugin name defined in pubspec.yaml (nim_core_v2_windows).
+# This variable is read by Flutter's generated_plugins.cmake to populate
+# PLUGIN_BUNDLED_LIBRARIES, which is then installed to the output directory.
+set(nim_core_v2_windows_bundled_libraries
+  ${NIM_SDK_DLLS}
   PARENT_SCOPE
 )
 

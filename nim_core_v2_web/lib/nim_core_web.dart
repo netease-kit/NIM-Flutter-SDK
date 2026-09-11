@@ -2,94 +2,101 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
-// import 'dart:html' as html;
-import 'dart:async';
-import 'dart:js';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
 
-class NimCoreWebPlugin extends PlatformMethodCallHandler {
-  NimCoreWebPlugin() {
-    // injectCssAndJSLibraries();
-    initEmit();
-  }
+import 'src/services/web_ai_service.dart';
+import 'src/services/web_client_antispam_util.dart';
+import 'src/services/web_conversation_group_service.dart';
+import 'src/services/web_conversation_id_util.dart';
+import 'src/services/web_conversation_service.dart';
+import 'src/services/web_friend_service.dart';
+import 'src/services/web_initialize_service.dart';
+import 'src/services/web_local_conversation_service.dart';
+import 'src/services/web_login_service.dart';
+import 'src/services/web_message_creator_service.dart';
+import 'src/services/web_message_service.dart';
+import 'src/services/web_notification_service.dart';
+import 'src/services/web_settings_service.dart';
+import 'src/services/web_signalling_service.dart';
+import 'src/services/web_statistics_service.dart';
+import 'src/services/web_storage_service.dart';
+import 'src/services/web_subscription_service.dart';
+import 'src/services/web_team_service.dart';
+import 'src/services/web_topic_service.dart';
+import 'src/services/web_user_service.dart';
+import 'src/services/web_utility_service.dart';
 
-  void initEmit() {
-    context["__yx_emit__"] = allowInterop(handleOnEvent);
-  }
-
-  static NimCoreWebPlugin _instance = NimCoreWebPlugin();
-
-  static NimCoreWebPlugin get instance => _instance;
-
-  static set instance(instance) {
-    _instance = instance;
-  }
-
+/// NIM Core Web Plugin
+///
+/// 通过 dart:js_interop 直接调用 NIM Web SDK，
+/// 替代旧的 MethodChannel + TypeScript 中间层模式。
+class NimCoreWebPlugin {
   static void registerWith(Registrar registrar) {
-    // registrar: Instance of 'PluginRegistry'
-    PlatformMethodCallHandler.instance = instance;
+    // 替换 InitializeService
+    InitializeServicePlatform.instance = WebInitializeService();
+
+    // 替换 LoginService
+    LoginServicePlatform.instance = WebLoginService();
+
+    // 替换 MessageCreatorService
+    final messageCreatorService = WebMessageCreatorService();
+    MessageCreatorServicePlatform.instance = messageCreatorService;
+
+    // 替换 MessageService
+    final messageService = WebMessageService();
+    messageService.setCreatorService(messageCreatorService);
+    MessageServicePlatform.instance = messageService;
+
+    // 替换 V2NIMClientAntispamUtil
+    V2NIMClientAntispamUtilPlatform.instance = WebV2NIMClientAntispamUtil();
+
+    // 替换 ConversationService
+    ConversationServicePlatform.instance = WebConversationService();
+
+    // 替换 TeamService
+    TeamServicePlatform.instance = WebTeamService();
+
+    // 替换 FriendService
+    FriendServicePlatform.instance = WebFriendService();
+
+    // 替换 UserService
+    UserServicePlatform.instance = WebUserService();
+
+    // 替换 SettingsService
+    SettingsServicePlatform.instance = WebSettingsService();
+
+    // 替换 StorageService
+    StorageServicePlatform.instance = WebStorageService();
+
+    // 替换 NotificationService
+    NotificationServicePlatform.instance = WebNotificationService();
+
+    // 替换 AIService
+    AIServicePlatform.instance = WebAIService();
+
+    // 替换 V2NIMTopicService
+    V2NIMTopicServicePlatform.instance = WebV2NIMTopicService();
+
+    // 替换 SubscriptionService
+    SubscriptionServicePlatform.instance = WebSubscriptionService();
+
+    // 替换 SignallingService
+    SignallingServicePlatform.instance = WebSignallingService();
+
+    // 替换 StatisticsService
+    StatisticsServicePlatform.instance = WebStatisticsService();
+
+    // 替换 LocalConversationService
+    LocalConversationServicePlatform.instance = WebLocalConversationService();
+
+    // 替换 ConversationGroupService
+    ConversationServiceGroupPlatform.instance = WebConversationGroupService();
+
+    // 替换 ConversationIdUtil
+    ConversationIdUtilPlatform.instance = WebConversationIdUtil();
+
+    // 替换 UtilityService
+    V2NIMUtilityServicePlatform.instance = WebUtilityService();
   }
-
-  Future<dynamic> handleOnEvent(
-      String serviceName, String method, JsObject params) async {
-    params['serviceName'] = serviceName;
-    var res = await handlePlatformMethod(MethodCall(
-        method, jsonDecode(context['JSON'].callMethod('stringify', [params]))));
-
-    print(
-        'flutter handleOnEvent res: $res serviceName: $serviceName method: $method');
-    params['__yx_result__'] = res;
-  }
-
-  Future<Map<String, dynamic>?> invokePlatformMethod(
-    String serviceName,
-    String method, {
-    Map<String, dynamic>? arguments,
-  }) async {
-    Completer<Map<String, dynamic>> completer = Completer();
-    final Map<String, dynamic> callInfoMap = {
-      'serviceName': serviceName,
-      'method': method,
-      'params': JsObject.jsify(arguments!),
-      'successCallback': allowInterop((res) {
-        Map<String, dynamic> map =
-            jsonDecode(context['JSON'].callMethod('stringify', [res]));
-        completer.complete(map);
-      }),
-      'errorCallback': allowInterop((err) {
-        Map<String, dynamic> map =
-            jsonDecode(context['JSON'].callMethod('stringify', [err]));
-        completer.complete(map);
-        // completer.completeError(err);
-      })
-    };
-
-    context.callMethod('dartCallNativeJs', [JsObject.jsify(callInfoMap)]);
-    return completer.future;
-  }
-
-  // Future<void> injectCssAndJSLibraries() async {
-  //   final List<Future<void>> loading = <Future<void>>[];
-  //   final List<html.HtmlElement> tags = <html.HtmlElement>[];
-  //   List paths = [
-  //     // 'assets/packages/nim_core_web/assets/sdk/NIM_Web_SDK_v9.1.2.js',
-  //     'assets/packages/nim_core_web/assets/main.js',
-  //     // 'assets/packages/nim_core_web/assets/utils.js',
-  //   ];
-
-  //   for (var i = 0; i < paths.length; i++) {
-  //     final html.ScriptElement script = html.ScriptElement()
-  //       // ..defer = true
-  //       ..src = '${paths[i]}';
-  //     // loading.add(script.onLoad.first);
-  //     tags.add(script);
-  //   }
-  //   html
-  //       .querySelector('head')!
-  //       .insertAllBefore(tags, html.querySelector('head')!.children[0]);
-  //   await Future.wait(loading);
-  // }
 }

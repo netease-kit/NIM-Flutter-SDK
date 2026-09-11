@@ -63,7 +63,7 @@ V2FLTTeamService::V2FLTTeamService() {
     result_map.insert(std::make_pair("isKicked", isKicked));
     notifyEvent("onTeamLeft", result_map);
   };
-  listener.onTeamInfoUpdated = [=](v2::V2NIMTeam team) {
+  listener.onTeamInfoUpdated = [=](const v2::V2NIMTeam& team) {
     // team info updated
     flutter::EncodableMap teamMap;
     convertV2NIMTeamToMap(teamMap, team);
@@ -185,7 +185,8 @@ void V2FLTTeamService::createTeam(
 
   auto antispamConfigIter =
       arguments->find(flutter::EncodableValue("antispamConfig"));
-  if (antispamConfigIter != arguments->end()) {
+  if (antispamConfigIter != arguments->end() &&
+      !antispamConfigIter->second.IsNull()) {
     auto antispamConfigParam =
         std::get<flutter::EncodableMap>(antispamConfigIter->second);
 
@@ -331,7 +332,7 @@ void V2FLTTeamService::searchTeamByKeyword(
 void V2FLTTeamService::dismissTeam(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   std::string teamId;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -403,7 +404,7 @@ void V2FLTTeamService::getTeamMemberInvitor(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   nstd::vector<nstd::string> accountIds;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -492,7 +493,7 @@ void V2FLTTeamService::getTeamMemberListByIds(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   nstd::vector<nstd::string> accountIds;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -535,7 +536,7 @@ void V2FLTTeamService::getTeamInfoByIds(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   nstd::vector<nstd::string> teamIds;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   auto iter = arguments->find(flutter::EncodableValue("teamIds"));
   if (iter != arguments->end()) {
     auto teamIdsParam = std::get<flutter::EncodableList>(iter->second);
@@ -574,7 +575,7 @@ void V2FLTTeamService::getTeamInfo(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
     teamId = std::get<std::string>(iter->second);
@@ -604,7 +605,7 @@ void V2FLTTeamService::leaveTeam(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
     teamId = std::get<std::string>(iter->second);
@@ -627,7 +628,7 @@ void V2FLTTeamService::updateTeam(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   v2::V2NIMUpdateTeamInfoParams updateTeamParams;
   v2::V2NIMAntispamConfig antispamConfig;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
@@ -702,7 +703,7 @@ void V2FLTTeamService::updateTeam(
     }
   }
   auto iter4 = arguments->find(flutter::EncodableValue("antispamConfig"));
-  if (iter4 != arguments->end()) {
+  if (iter4 != arguments->end() && !iter4->second.IsNull()) {
     auto antispamConfigParam = std::get<flutter::EncodableMap>(iter4->second);
     auto antispamConfigIter = antispamConfigParam.begin();
     for (antispamConfigIter; antispamConfigIter != antispamConfigParam.end();
@@ -731,7 +732,7 @@ void V2FLTTeamService::inviteMember(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   nstd::vector<nstd::string> inviteeAccountIds;
   std::string postscript;
 
@@ -753,7 +754,9 @@ void V2FLTTeamService::inviteMember(
   }
   auto iter4 = arguments->find(flutter::EncodableValue("postscript"));
   if (iter4 != arguments->end()) {
-    postscript = std::get<std::string>(iter4->second);
+    if (!iter4->second.IsNull()) {
+      postscript = std::get<std::string>(iter4->second);
+    }
   }
 
   auto& client = v2::V2NIMClient::get();
@@ -875,7 +878,7 @@ void V2FLTTeamService::rejectInvitation(
     }
   }
   auto iter2 = arguments->find(flutter::EncodableValue("postscript"));
-  if (iter2 != arguments->end()) {
+  if (iter2 != arguments->end() && !iter2->second.IsNull()) {
     postscript = std::get<std::string>(iter2->second);
   }
   auto& client = v2::V2NIMClient::get();
@@ -894,7 +897,7 @@ void V2FLTTeamService::kickMember(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   nstd::vector<nstd::string> memberAccountIds;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -928,7 +931,7 @@ void V2FLTTeamService::applyJoinTeam(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   std::string postscript;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -939,7 +942,7 @@ void V2FLTTeamService::applyJoinTeam(
     teamType = static_cast<v2::V2NIMTeamType>(std::get<int>(iter2->second));
   }
   auto iter3 = arguments->find(flutter::EncodableValue("postscript"));
-  if (iter3 != arguments->end()) {
+  if (iter3 != arguments->end() && !iter3->second.IsNull()) {
     postscript = std::get<std::string>(iter3->second);
   }
   auto& client = v2::V2NIMClient::get();
@@ -1035,7 +1038,7 @@ void V2FLTTeamService::rejectJoinApplication(
     }
   }
   auto iter2 = arguments->find(flutter::EncodableValue("postscript"));
-  if (iter2 != arguments->end()) {
+  if (iter2 != arguments->end() && !iter2->second.IsNull()) {
     postscript = std::get<std::string>(iter2->second);
   }
   auto& client = v2::V2NIMClient::get();
@@ -1053,7 +1056,7 @@ void V2FLTTeamService::updateTeamMemberRole(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   nstd::vector<nstd::string> memberAccountIds;
   v2::V2NIMTeamMemberRole memberRole;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
@@ -1091,7 +1094,7 @@ void V2FLTTeamService::transferTeamOwner(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   std::string accountId;
   bool isLeave;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
@@ -1125,7 +1128,7 @@ void V2FLTTeamService::updateSelfTeamMemberInfo(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   v2::V2NIMUpdateSelfMemberInfoParams updateTeamMemberInfoParams;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -1171,7 +1174,7 @@ void V2FLTTeamService::updateTeamMemberNick(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   std::string accountId;
   std::string teamNick;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
@@ -1207,7 +1210,7 @@ void V2FLTTeamService::setTeamChatBannedMode(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   v2::V2NIMTeamChatBannedMode chatBannedMode;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -1237,7 +1240,7 @@ void V2FLTTeamService::setTeamMemberChatBannedStatus(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   std::string accountId;
   bool chatBanned;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
@@ -1320,7 +1323,7 @@ void V2FLTTeamService::getTeamMemberList(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string teamId;
-  v2::V2NIMTeamType teamType;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
   v2::V2NIMTeamMemberQueryOption queryOption;
   auto iter = arguments->find(flutter::EncodableValue("teamId"));
   if (iter != arguments->end()) {
@@ -1364,6 +1367,359 @@ void V2FLTTeamService::getTeamMemberList(
         flutter::EncodableMap result_map;
         convertV2NIMTeamMemberListResultToMap(result_map, memberListrResult);
         result->Success(NimResult::getSuccessResult(result_map));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::addTeamMembersFollow(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  std::string teamId;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
+  nstd::vector<nstd::string> accountIds;
+  auto iter = arguments->find(flutter::EncodableValue("teamId"));
+  if (iter != arguments->end()) {
+    teamId = std::get<std::string>(iter->second);
+  }
+  auto iter2 = arguments->find(flutter::EncodableValue("teamType"));
+  if (iter2 != arguments->end()) {
+    teamType = static_cast<v2::V2NIMTeamType>(std::get<int>(iter2->second));
+  }
+  auto iter3 = arguments->find(flutter::EncodableValue("accountIds"));
+  if (iter3 != arguments->end()) {
+    auto accountIdsParam = std::get<flutter::EncodableList>(iter3->second);
+    for (auto& accountId : accountIdsParam) {
+      accountIds.push_back(std::get<std::string>(accountId));
+    }
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.addTeamMembersFollow(
+      teamId, teamType, accountIds,
+      [=] { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::removeTeamMembersFollow(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  std::string teamId;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
+  nstd::vector<nstd::string> accountIds;
+  auto iter = arguments->find(flutter::EncodableValue("teamId"));
+  if (iter != arguments->end()) {
+    teamId = std::get<std::string>(iter->second);
+  }
+  auto iter2 = arguments->find(flutter::EncodableValue("teamType"));
+  if (iter2 != arguments->end()) {
+    teamType = static_cast<v2::V2NIMTeamType>(std::get<int>(iter2->second));
+  }
+  auto iter3 = arguments->find(flutter::EncodableValue("accountIds"));
+  if (iter3 != arguments->end()) {
+    auto accountIdsParam = std::get<flutter::EncodableList>(iter3->second);
+    for (auto& accountId : accountIdsParam) {
+      accountIds.push_back(std::get<std::string>(accountId));
+    }
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.removeTeamMembersFollow(
+      teamId, teamType, accountIds,
+      [=] { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::clearAllTeamJoinActionInfo(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.clearAllTeamJoinActionInfo(
+      [=] { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::clearAllTeamJoinActionInfoEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  // C++ SDK does not have clearAllTeamJoinActionInfoEx with option parameter
+  // yet. Fall back to clearAllTeamJoinActionInfo (ignore option).
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.clearAllTeamJoinActionInfo(
+      [=] { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::deleteTeamJoinActionInfo(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  v2::V2NIMTeamJoinActionInfo application;
+  auto iter = arguments->find(flutter::EncodableValue("application"));
+  if (iter != arguments->end()) {
+    auto invitationInfoParam = std::get<flutter::EncodableMap>(iter->second);
+    application = getTeamJoinActionInfo(&invitationInfoParam);
+  }
+
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.deleteTeamJoinActionInfo(
+      application, [=] { result->Success(NimResult::getSuccessResult()); },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::inviteMemberEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  std::string teamId;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
+  v2::V2NIMTeamInviteParams inviteParams;
+  auto iter = arguments->find(flutter::EncodableValue("teamId"));
+  if (iter != arguments->end()) {
+    teamId = std::get<std::string>(iter->second);
+  }
+  auto iter2 = arguments->find(flutter::EncodableValue("teamType"));
+  if (iter2 != arguments->end()) {
+    teamType = static_cast<v2::V2NIMTeamType>(std::get<int>(iter2->second));
+  }
+  auto iter3 = arguments->find(flutter::EncodableValue("inviteeParams"));
+  if (iter3 != arguments->end()) {
+    auto inviteParamsParam = std::get<flutter::EncodableMap>(iter3->second);
+    convertMapToV2NIMTeamInviteParams(inviteParamsParam, inviteParams);
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.inviteMemberEx(
+      teamId, teamType, inviteParams,
+      [=](nstd::vector<nstd::string> accIds) {
+        flutter::EncodableList accountIds;
+        for (auto& accId : accIds) {
+          accountIds.emplace_back(accId);
+        }
+        flutter::EncodableMap result_map;
+        result_map.insert(std::make_pair("failedList", accountIds));
+        result->Success(NimResult::getSuccessResult(result_map));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::searchTeams(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  v2::V2NIMTeamSearchParams params;
+  auto iter = arguments->find(flutter::EncodableValue("searchParams"));
+  if (iter != arguments->end()) {
+    auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+
+    // keywordList
+    auto iterKw = paramsMap.find(flutter::EncodableValue("keywordList"));
+    if (iterKw != paramsMap.end() && !iterKw->second.IsNull()) {
+      if (auto* kwList = std::get_if<flutter::EncodableList>(&iterKw->second)) {
+        for (auto& kw : *kwList) {
+          if (auto* kwStr = std::get_if<std::string>(&kw)) {
+            params.keywordList.push_back(*kwStr);
+          }
+        }
+      }
+    }
+
+    // keywordMatchType
+    auto iterMt = paramsMap.find(flutter::EncodableValue("matchType"));
+    if (iterMt != paramsMap.end()) {
+      params.keywordMatchType = static_cast<v2::V2NIMSearchKeywordMathType>(
+          std::get<int>(iterMt->second));
+    }
+
+    // teamTypes
+    auto iterTt = paramsMap.find(flutter::EncodableValue("teamTypes"));
+    if (iterTt != paramsMap.end() && !iterTt->second.IsNull()) {
+      if (auto* ttList = std::get_if<flutter::EncodableList>(&iterTt->second)) {
+        nstd::vector<v2::V2NIMTeamType> teamTypes;
+        for (auto& tt : *ttList) {
+          if (auto* ttVal = std::get_if<int>(&tt)) {
+            teamTypes.push_back(static_cast<v2::V2NIMTeamType>(*ttVal));
+          }
+        }
+        params.teamTypes = teamTypes;
+      }
+    }
+
+    // limit
+    auto iterLimit = paramsMap.find(flutter::EncodableValue("limit"));
+    if (iterLimit != paramsMap.end() && !iterLimit->second.IsNull()) {
+      if (auto* v = std::get_if<int32_t>(&iterLimit->second)) {
+        params.limit = static_cast<uint32_t>(*v);
+      }
+    }
+
+    // nextToken
+    auto iterToken = paramsMap.find(flutter::EncodableValue("nextToken"));
+    if (iterToken != paramsMap.end() && !iterToken->second.IsNull()) {
+      if (auto* v = std::get_if<std::string>(&iterToken->second)) {
+        params.nextToken = *v;
+      }
+    }
+  }
+
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.searchTeams(
+      params,
+      [=](const nstd::vector<v2::V2NIMTeam>& teams) {
+        flutter::EncodableList teamList;
+        for (auto& team : teams) {
+          flutter::EncodableMap teamMap;
+          convertV2NIMTeamToMap(teamMap, team);
+          teamList.emplace_back(teamMap);
+        }
+        flutter::EncodableMap resultMap;
+        resultMap.insert(std::make_pair("teamList", teamList));
+        result->Success(NimResult::getSuccessResult(resultMap));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::searchTeamMembersEx(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  v2::V2NIMSearchTeamMemberParams params;
+  auto iter = arguments->find(flutter::EncodableValue("searchParams"));
+  if (iter != arguments->end()) {
+    auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
+
+    // keywordList
+    auto iterKw = paramsMap.find(flutter::EncodableValue("keywordList"));
+    if (iterKw != paramsMap.end() && !iterKw->second.IsNull()) {
+      if (auto* kwList = std::get_if<flutter::EncodableList>(&iterKw->second)) {
+        for (auto& kw : *kwList) {
+          if (auto* kwStr = std::get_if<std::string>(&kw)) {
+            params.keywordList.push_back(*kwStr);
+          }
+        }
+      }
+    }
+
+    // keywordMatchType
+    auto iterMt = paramsMap.find(flutter::EncodableValue("matchType"));
+    if (iterMt != paramsMap.end() && !iterMt->second.IsNull()) {
+      if (auto* v = std::get_if<int>(&iterMt->second)) {
+        params.keywordMatchType =
+            static_cast<v2::V2NIMSearchKeywordMathType>(*v);
+      }
+    }
+
+    // teamRefers
+    auto iterTr = paramsMap.find(flutter::EncodableValue("teamRefers"));
+    if (iterTr != paramsMap.end() && !iterTr->second.IsNull()) {
+      if (auto* trList = std::get_if<flutter::EncodableList>(&iterTr->second)) {
+        nstd::vector<v2::V2NIMTeamRefer> teamRefers;
+        for (auto& trItem : *trList) {
+          if (auto* trMap = std::get_if<flutter::EncodableMap>(&trItem)) {
+            v2::V2NIMTeamRefer refer;
+            auto idIter = trMap->find(flutter::EncodableValue("teamId"));
+            if (idIter != trMap->end() && !idIter->second.IsNull()) {
+              if (auto* idStr = std::get_if<std::string>(&idIter->second)) {
+                refer.teamId = *idStr;
+              }
+            }
+            auto typeIter = trMap->find(flutter::EncodableValue("teamType"));
+            if (typeIter != trMap->end() && !typeIter->second.IsNull()) {
+              if (auto* typeVal = std::get_if<int>(&typeIter->second)) {
+                refer.teamType = static_cast<v2::V2NIMTeamType>(*typeVal);
+              }
+            }
+            teamRefers.push_back(refer);
+          }
+        }
+        params.teamRefers = teamRefers;
+      }
+    }
+
+    // searchAccountId
+    auto iterSa = paramsMap.find(flutter::EncodableValue("searchAccountId"));
+    if (iterSa != paramsMap.end() && !iterSa->second.IsNull()) {
+      if (auto* v = std::get_if<bool>(&iterSa->second)) {
+        params.searchAccountId = *v;
+      }
+    }
+
+    // searchTeamNick
+    auto iterSn = paramsMap.find(flutter::EncodableValue("searchTeamNick"));
+    if (iterSn != paramsMap.end() && !iterSn->second.IsNull()) {
+      if (auto* v = std::get_if<bool>(&iterSn->second)) {
+        params.searchTeamNick = *v;
+      }
+    }
+
+    // limit
+    auto iterLimit = paramsMap.find(flutter::EncodableValue("limit"));
+    if (iterLimit != paramsMap.end() && !iterLimit->second.IsNull()) {
+      if (auto* v = std::get_if<int32_t>(&iterLimit->second)) {
+        params.limit = static_cast<uint32_t>(*v);
+      }
+    }
+
+    // nextToken
+    auto iterToken = paramsMap.find(flutter::EncodableValue("nextToken"));
+    if (iterToken != paramsMap.end() && !iterToken->second.IsNull()) {
+      if (auto* v = std::get_if<std::string>(&iterToken->second)) {
+        params.nextToken = *v;
+      }
+    }
+  }
+
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.searchTeamMembersEx(
+      params,
+      [=](const nstd::map<v2::V2NIMTeamRefer,
+                          nstd::vector<v2::V2NIMTeamMember>>& resultMap) {
+        flutter::EncodableList resultList;
+        for (auto& entry : resultMap) {
+          flutter::EncodableMap itemMap;
+          // teamRefer
+          flutter::EncodableMap teamReferMap;
+          teamReferMap.insert(std::make_pair("teamId", entry.first.teamId));
+          teamReferMap.insert(std::make_pair(
+              "teamType", static_cast<int>(entry.first.teamType)));
+          itemMap.insert(std::make_pair("teamRefer", teamReferMap));
+          // members
+          flutter::EncodableList members;
+          for (auto& member : entry.second) {
+            flutter::EncodableMap memberMap;
+            convertV2NIMTeamMemberToMap(memberMap, member);
+            members.emplace_back(memberMap);
+          }
+          itemMap.insert(std::make_pair("members", members));
+          resultList.emplace_back(itemMap);
+        }
+        flutter::EncodableMap resultOut;
+        resultOut.insert(std::make_pair("resultList", resultList));
+        result->Success(NimResult::getSuccessResult(resultOut));
       },
       [=](v2::V2NIMError error) {
         result->Error("", "",
@@ -1428,6 +1784,28 @@ void V2FLTTeamService::onMethodCalled(
     searchTeamByKeyword(arguments, result);
   } else if (method == "searchTeamMembers") {
     searchTeamMembers(arguments, result);
+  } else if (method == "addTeamMembersFollow") {
+    addTeamMembersFollow(arguments, result);
+  } else if (method == "removeTeamMembersFollow") {
+    removeTeamMembersFollow(arguments, result);
+  } else if (method == "clearAllTeamJoinActionInfo") {
+    clearAllTeamJoinActionInfo(arguments, result);
+  } else if (method == "clearAllTeamJoinActionInfoEx") {
+    clearAllTeamJoinActionInfoEx(arguments, result);
+  } else if (method == "deleteTeamJoinActionInfo") {
+    deleteTeamJoinActionInfo(arguments, result);
+  } else if (method == "inviteMemberEx") {
+    inviteMemberEx(arguments, result);
+  } else if (method == "searchTeams") {
+    searchTeams(arguments, result);
+  } else if (method == "searchTeamMembersEx") {
+    searchTeamMembersEx(arguments, result);
+  } else if (method == "getOwnerTeamList") {
+    getOwnerTeamList(arguments, result);
+  } else if (method == "getManagerTeamList") {
+    getManagerTeamList(arguments, result);
+  } else if (method == "getTeamInfoFromCloud") {
+    getTeamInfoFromCloud(arguments, result);
   } else {
     result->NotImplemented();
   }
@@ -1466,6 +1844,106 @@ void V2FLTTeamService::convertV2NIMTeamToMap(flutter::EncodableMap& argments,
   argments.insert(
       std::make_pair("agreeMode", static_cast<int>(team.agreeMode)));
   argments.insert(std::make_pair("isValidTeam", team.isValidTeam));
+}
+
+void V2FLTTeamService::getOwnerTeamList(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  nstd::vector<v2::V2NIMTeamType> teamTypes;
+  auto iter = arguments->find(flutter::EncodableValue("teamTypes"));
+  if (iter != arguments->end() &&
+      std::holds_alternative<flutter::EncodableList>(iter->second)) {
+    auto& list = std::get<flutter::EncodableList>(iter->second);
+    for (auto& item : list) {
+      if (std::holds_alternative<int>(item)) {
+        teamTypes.push_back(
+            static_cast<v2::V2NIMTeamType>(std::get<int>(item)));
+      }
+    }
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.getOwnerTeamList(
+      teamTypes,
+      [=](nstd::vector<v2::V2NIMTeam> teams) {
+        flutter::EncodableList result_list;
+        flutter::EncodableMap result_map;
+        for (auto& team : teams) {
+          flutter::EncodableMap team_map;
+          convertV2NIMTeamToMap(team_map, team);
+          result_list.emplace_back(team_map);
+        }
+        result_map.insert(std::make_pair("teamList", result_list));
+        result->Success(NimResult::getSuccessResult(result_map));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::getManagerTeamList(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  nstd::vector<v2::V2NIMTeamType> teamTypes;
+  auto iter = arguments->find(flutter::EncodableValue("teamTypes"));
+  if (iter != arguments->end() &&
+      std::holds_alternative<flutter::EncodableList>(iter->second)) {
+    auto& list = std::get<flutter::EncodableList>(iter->second);
+    for (auto& item : list) {
+      if (std::holds_alternative<int>(item)) {
+        teamTypes.push_back(
+            static_cast<v2::V2NIMTeamType>(std::get<int>(item)));
+      }
+    }
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.getManagerTeamList(
+      teamTypes,
+      [=](nstd::vector<v2::V2NIMTeam> teams) {
+        flutter::EncodableList result_list;
+        flutter::EncodableMap result_map;
+        for (auto& team : teams) {
+          flutter::EncodableMap team_map;
+          convertV2NIMTeamToMap(team_map, team);
+          result_list.emplace_back(team_map);
+        }
+        result_map.insert(std::make_pair("teamList", result_list));
+        result->Success(NimResult::getSuccessResult(result_map));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
+}
+
+void V2FLTTeamService::getTeamInfoFromCloud(
+    const flutter::EncodableMap* arguments,
+    std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
+  std::string teamId;
+  v2::V2NIMTeamType teamType = v2::V2NIMTeamType::V2NIM_TEAM_TYPE_NORMAL;
+  auto iter = arguments->find(flutter::EncodableValue("teamId"));
+  if (iter != arguments->end()) {
+    teamId = std::get<std::string>(iter->second);
+  }
+  auto iter2 = arguments->find(flutter::EncodableValue("teamType"));
+  if (iter2 != arguments->end()) {
+    teamType = static_cast<v2::V2NIMTeamType>(std::get<int>(iter2->second));
+  }
+  auto& client = v2::V2NIMClient::get();
+  auto& teamService = client.getTeamService();
+  teamService.getTeamInfoFromCloud(
+      teamId, teamType,
+      [=](v2::V2NIMTeam team) {
+        flutter::EncodableMap result_map;
+        convertV2NIMTeamToMap(result_map, team);
+        result->Success(NimResult::getSuccessResult(result_map));
+      },
+      [=](v2::V2NIMError error) {
+        result->Error("", "",
+                      NimResult::getErrorResult(error.code, error.desc));
+      });
 }
 
 void V2FLTTeamService::convertMapToV2NIMTeam(
@@ -1636,8 +2114,13 @@ void V2FLTTeamService::convertV2NIMTeamMemberToMap(
   arguments.insert(std::make_pair("teamNick", member.teamNick.value()));
   arguments.insert(
       std::make_pair("serverExtension", member.serverExtension.value()));
-  arguments.insert(std::make_pair("memberRole",
-                                  static_cast<int>(member.memberRole.value())));
+  if (member.memberRole.has_value()) {
+    arguments.insert(std::make_pair(
+        "memberRole", static_cast<int>(member.memberRole.value())));
+  } else {
+    arguments.insert(std::make_pair("memberRole", 0));
+  }
+
   arguments.insert(
       std::make_pair("invitorAccountId", member.invitorAccountId.value()));
   arguments.insert(std::make_pair("inTeam", member.inTeam.value()));
@@ -1646,6 +2129,11 @@ void V2FLTTeamService::convertV2NIMTeamMemberToMap(
       "updateTime", static_cast<int64_t>(member.updateTime.value())));
   arguments.insert(std::make_pair(
       "joinTime", static_cast<int64_t>(member.joinTime.value())));
+  flutter::EncodableList followAccountIds;
+  for (auto accountId : member.followAccountIds) {
+    followAccountIds.emplace_back(accountId);
+  }
+  arguments.insert(std::make_pair("followAccountIds", followAccountIds));
 }
 
 void V2FLTTeamService::convertMapToV2NIMTeamMember(
@@ -1752,6 +2240,11 @@ void V2FLTTeamService::convertV2NIMTeamJoinActionInfoToMap(
 
   arguments.insert(
       std::make_pair("timestamp", static_cast<int64_t>(info.timestamp)));
+  if (info.serverExtension.has_value()) {
+    arguments.insert(
+        std::make_pair("serverExtension", info.serverExtension.value()));
+  }
+  arguments.insert(std::make_pair("read", info.read));
 }
 
 void V2FLTTeamService::convertMapToV2NIMTeamJoinActionInfo(
@@ -1786,5 +2279,66 @@ void V2FLTTeamService::convertMapToV2NIMTeamJoinActionInfo(
   auto iter7 = arguments.find(flutter::EncodableValue("timestamp"));
   if (iter7 != arguments.end()) {
     info.timestamp = iter7->second.LongValue();
+  }
+}
+
+v2::V2NIMTeamJoinActionInfo V2FLTTeamService::getTeamJoinActionInfo(
+    const flutter::EncodableMap* arguments) {
+  v2::V2NIMTeamJoinActionInfo invitationInfo;
+  auto invitationInfoIter = arguments->begin();
+  for (invitationInfoIter; invitationInfoIter != arguments->end();
+       ++invitationInfoIter) {
+    if (invitationInfoIter->second.IsNull()) continue;
+    if (invitationInfoIter->first == flutter::EncodableValue("teamId")) {
+      invitationInfo.teamId = std::get<std::string>(invitationInfoIter->second);
+    } else if (invitationInfoIter->first ==
+               flutter::EncodableValue("teamType")) {
+      invitationInfo.teamType = static_cast<v2::V2NIMTeamType>(
+          std::get<int>(invitationInfoIter->second));
+    } else if (invitationInfoIter->first ==
+               flutter::EncodableValue("operatorAccountId")) {
+      invitationInfo.operatorAccountId =
+          std::get<std::string>(invitationInfoIter->second);
+    } else if (invitationInfoIter->first ==
+               flutter::EncodableValue("postscript")) {
+      invitationInfo.postscript =
+          std::get<std::string>(invitationInfoIter->second);
+    } else if (invitationInfoIter->first ==
+               flutter::EncodableValue("actionStatus")) {
+      invitationInfo.actionStatus = static_cast<v2::V2NIMTeamJoinActionStatus>(
+          std::get<int>(invitationInfoIter->second));
+    } else if (invitationInfoIter->first ==
+               flutter::EncodableValue("actionType")) {
+      invitationInfo.actionType = static_cast<v2::V2NIMTeamJoinActionType>(
+          std::get<int>(invitationInfoIter->second));
+    } else if (invitationInfoIter->first ==
+               flutter::EncodableValue("timestamp")) {
+      invitationInfo.timestamp = invitationInfoIter->second.LongValue();
+    }
+  }
+  return invitationInfo;
+}
+
+void V2FLTTeamService::convertMapToV2NIMTeamInviteParams(
+    const flutter::EncodableMap& arguments, v2::V2NIMTeamInviteParams& params) {
+  auto iter = arguments.find(flutter::EncodableValue("postscript"));
+  if (iter != arguments.end() && !iter->second.IsNull()) {
+    params.postscript = std::get<std::string>(iter->second);
+  }
+
+  auto iter2 = arguments.find(flutter::EncodableValue("inviteeAccountIds"));
+  if (iter2 != arguments.end() && !iter2->second.IsNull()) {
+    auto inviteeAccountIdsParam =
+        std::get<flutter::EncodableList>(iter2->second);
+    nstd::vector<nstd::string> inviteeAccountIdList;
+    for (auto& accountId : inviteeAccountIdsParam) {
+      inviteeAccountIdList.push_back(std::get<std::string>(accountId));
+    }
+    params.inviteeAccountIds = inviteeAccountIdList;
+  }
+
+  auto iter3 = arguments.find(flutter::EncodableValue("serverExtension"));
+  if (iter3 != arguments.end() && !iter3->second.IsNull()) {
+    params.serverExtension = std::get<std::string>(iter3->second);
   }
 }

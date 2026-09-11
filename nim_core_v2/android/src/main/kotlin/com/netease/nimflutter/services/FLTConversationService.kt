@@ -11,8 +11,8 @@ import com.netease.nimflutter.FLTConstant
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.convertV2NIMConversationUpdate
-import com.netease.nimflutter.toMap
+import com.netease.nimflutter.extension.convertV2NIMConversationUpdate
+import com.netease.nimflutter.extension.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.V2NIMError
 import com.netease.nimlib.sdk.v2.conversation.V2NIMConversationListener
@@ -79,7 +79,11 @@ class FLTConversationService(
             // 获取会话已读时间戳
             "getConversationReadTime" to ::getConversationReadTime,
             // 标记会话已读时间戳
-            "markConversationRead" to ::markConversationRead
+            "markConversationRead" to ::markConversationRead,
+            // 查询当前全量置顶的会话列表 排序方式：倒序
+            "getStickTopConversationList" to ::getStickTopConversationList,
+            // 设置当前聊天账号
+            "setCurrentConversation" to ::setCurrentConversation
         )
     }
 
@@ -94,7 +98,9 @@ class FLTConversationService(
     ): NimResult<Map<String, Any?>?> {
         return suspendCancellableCoroutine { cont ->
             val offset =
-                if (arguments["offset"] as? Long == null) 0 else arguments["offset"] as Long
+                if (arguments["offset"] as? Int != null) {
+                    (arguments["offset"] as Int).toLong()
+                } else if (arguments["offset"] as? Long == null) 0 else arguments["offset"] as Long
             val limit = if (arguments["limit"] as? Int == null) 100 else arguments["limit"] as Int
             NIMClient.getService(V2NIMConversationService::class.java)
                 .getConversationList(
@@ -129,6 +135,40 @@ class FLTConversationService(
     }
 
     /**
+     * 查询当前全量置顶的会话列表 排序方式：倒序
+     */
+    private suspend fun getStickTopConversationList(
+        arguments: Map<String, *>
+    ): NimResult<Map<String, Any?>?> {
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMConversationService::class.java)
+                .getStickTopConversationList(
+                    { result ->
+                        cont.resume(
+                            NimResult(
+                                code = 0,
+                                data = mutableMapOf(
+                                    "conversationList" to
+                                        result.map { it.toMap() }
+                                            .toList()
+                                )
+                            )
+                        )
+                    },
+                    { error ->
+                        cont.resume(
+                            if (error != null) {
+                                NimResult(code = error.code, errorDetails = error.desc)
+                            } else {
+                                NimResult(code = -1, errorDetails = "getStickTopConversationList failed!")
+                            }
+                        )
+                    }
+                )
+        }
+    }
+
+    /**
      * 根据查询参数获取会话列表
      * Params:
      * offset – 分页偏移，首次传0，后续拉取采用上一次返回的offset
@@ -140,7 +180,9 @@ class FLTConversationService(
     ): NimResult<Map<String, Any?>?> {
         return suspendCancellableCoroutine { cont ->
             val offset =
-                if (arguments["offset"] as? Long == null) 0 else arguments["offset"] as Long
+                if (arguments["offset"] as? Int != null) {
+                    (arguments["offset"] as Int).toLong()
+                } else if (arguments["offset"] as? Long == null) 0 else arguments["offset"] as Long
             val limit = if (arguments["limit"] as? Int == null) 100 else arguments["limit"] as Int
             val option = arguments["option"] as? Map<String, *>
             var conversationOption: V2NIMConversationOption? = null
@@ -930,6 +972,41 @@ class FLTConversationService(
         }
     }
 
+    /**
+     * 设置当前聊天账号
+     * Params:
+     * conversationId – 当前聊天会话id 如果为空字符串， null， 均表示不设置， 不在聊天界面 否则表示为具体的聊天界面:当前账号下， 不触发未读变更， 不触发在线通知，包括：P2P, TEAM, SUPERTEAM
+     * Returns:
+     * 是否设置成功,失败返回V2NIMError
+     */
+    private suspend fun setCurrentConversation(arguments: Map<String, *>): NimResult<Nothing> {
+        return suspendCancellableCoroutine { cont ->
+            val conversationId = arguments["conversationId"] as? String
+            if (conversationId == null) {
+                cont.resume(
+                    NimResult(
+                        code = FLTConstant.paramErrorCode,
+                        errorDetails = "setCurrentConversation param is null"
+                    )
+                )
+            } else {
+                val result = NIMClient.getService(V2NIMConversationService::class.java)
+                    .setCurrentConversation(conversationId)
+                if (result.isSuccess) {
+                    cont.resume(NimResult.SUCCESS)
+                } else {
+                    cont.resume(
+                        if (result.error != null) {
+                            NimResult(code = result.error.code, errorDetails = result.error.desc)
+                        } else {
+                            NimResult(code = -1, errorDetails = "markConversationRead failed!")
+                        }
+                    )
+                }
+            }
+        }
+    }
+
     private val conversationListener =
         object : V2NIMConversationListener {
             override fun onSyncStarted() {
@@ -1002,7 +1079,9 @@ class FLTConversationService(
     private fun createConversationOptionFromMap(option: Map<String, Any?>): V2NIMConversationOption {
         val onlyRead =
             if (option["onlyUnread"] as? Boolean == null) false else option["onlyUnread"] as Boolean
-        val conversationGroupIds = option["conversationGroupIdList"] as? List<String>
+        val conversationGroupIds =
+            (option["conversationGroupIds"] as? List<String>)
+                ?: (option["conversationGroupIdList"] as? List<String>)
         val conversationTypes = option["conversationTypes"] as? List<Int>
         val conversationTypeList = mutableListOf<V2NIMConversationType>()
         if (conversationTypes != null) {

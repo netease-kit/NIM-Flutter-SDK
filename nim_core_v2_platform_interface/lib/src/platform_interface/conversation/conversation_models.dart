@@ -11,43 +11,46 @@ class NIMConversation {
   /// 会话ID
   String conversationId;
 
-  // 会话类型
+  /// 会话类型
   NIMConversationType type;
 
-  // 会话名字
+  /// 会话名字
   String? name;
 
-  // 会话头像
+  /// 会话头像
   String? avatar;
 
-  // 会话否免打扰 true表示免打扰，false表示非免打扰
+  /// 会话否免打扰 true表示免打扰，false表示非免打扰
   bool mute;
 
-  // 会话是否置顶 true表示置顶，false表示非置顶
+  /// 会话是否置顶 true表示置顶，false表示非置顶
   bool stickTop;
 
-  // 获取会话分组id
+  /// 获取会话分组id
   List<String>? groupIds;
 
-  // 本地扩展字段
+  /// 本地扩展字段
   String? localExtension;
 
-  //获取服务端扩展信息,最大1024字节
+  /// 获取服务端扩展信息,最大1024字节（云端会话特有）
   String? serverExtension;
 
-  //获取会话中最新的消息
-  @JsonKey(fromJson: _nimLastMessageFromJson)
+  /// 获取会话中最新的消息
+  @JsonKey(fromJson: nimLastMessageFromJson)
   NIMLastMessage? lastMessage;
 
-// 会话的未读消息计数
+  ///  会话的未读消息计数
   int? unreadCount;
+
+  /// 会话最后已读时间，单位为毫秒，仅对云端会话生效
+  int? lastReadTime;
 
   int? sortOrder;
 
-  // 会话创建时间
+  /// 会话创建时间
   int createTime;
 
-  // 会话更新时间
+  /// 会话更新时间
   int updateTime;
 
   NIMConversation(
@@ -62,6 +65,7 @@ class NIMConversation {
       this.serverExtension,
       this.lastMessage,
       this.unreadCount,
+      this.lastReadTime,
       this.sortOrder,
       required this.createTime,
       required this.updateTime});
@@ -71,7 +75,7 @@ class NIMConversation {
       _$NIMConversationFromJson(map);
 }
 
-NIMLastMessage? _nimLastMessageFromJson(Map? map) {
+NIMLastMessage? nimLastMessageFromJson(Map? map) {
   if (map != null) {
     return NIMLastMessage.fromJson(map.cast<String, dynamic>());
   }
@@ -80,42 +84,42 @@ NIMLastMessage? _nimLastMessageFromJson(Map? map) {
 
 @JsonSerializable(explicitToJson: true)
 class NIMLastMessage {
-  //会话最新一条消息状态
+  /// 会话最新一条消息状态
   NIMLastMessageState? lastMessageState;
 
-  // 最后一条消息的引用
-  @JsonKey(fromJson: _nimMessageReferFromJson)
+  ///  最后一条消息的引用
+  @JsonKey(fromJson: nimMessageReferFromJson)
   NIMMessageRefer? messageRefer;
 
-  //消息类型，状态为消息时有效
+  /// 消息类型，状态为消息时有效
   NIMMessageType? messageType;
 
-  //消息子类型，0：表示没有子类型，状态为消息时有效
+  /// 消息子类型，0：表示没有子类型，状态为消息时有效
   int? subType;
 
-  // 消息发送状态，状态为消息时有效
+  ///  消息发送状态，状态为消息时有效
   NIMMessageSendingState? sendingState;
 
-  //撤回时为撤回附言 消息时消息文本内容
+  /// 撤回时为撤回附言 消息时消息文本内容
   String? text;
 
-//消息附件，状态为消息时有效
-  @JsonKey(fromJson: _nimMessageAttachmentFromJson)
+  /// 消息附件，状态为消息时有效
+  @JsonKey(fromJson: nimMessageAttachmentFromJson)
   NIMMessageAttachment? attachment;
 
-// 消息撤回者账号，状态为撤回时有效
+  ///  消息撤回者账号，状态为撤回时有效
   String? revokeAccountId;
 
-  //消息撤回类型，状态为撤回时有效
+  /// 消息撤回类型，状态为撤回时有效
   NIMMessageRevokeType? revokeType;
 
-  //消息服务端扩展
+  /// 消息服务端扩展
   String? serverExtension;
 
-  //第三方回调扩展字段， 透传字段
+  /// 第三方回调扩展字段， 透传字段
   String? callbackExtension;
 
-// 消息发送者名称
+  ///  消息发送者名称
   String? senderName;
 
   NIMLastMessage(
@@ -135,22 +139,6 @@ class NIMLastMessage {
   Map<String, dynamic> toJson() => _$NIMLastMessageToJson(this);
   factory NIMLastMessage.fromJson(Map<String, dynamic> map) =>
       _$NIMLastMessageFromJson(map);
-}
-
-NIMMessageRefer? _nimMessageReferFromJson(Map? map) {
-  if (map != null) {
-    return NIMMessageRefer.fromJson(map.cast<String, dynamic>());
-  } else {
-    return null;
-  }
-}
-
-NIMMessageAttachment? _nimMessageAttachmentFromJson(Map? map) {
-  if (map != null) {
-    return NIMMessageAttachment.fromJson(map.cast<String, dynamic>());
-  } else {
-    return null;
-  }
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -176,6 +164,8 @@ List<NIMConversation>? _conversationListFromJson(List? list) {
 @JsonSerializable(explicitToJson: true)
 class NIMConversationFilter {
   List<NIMConversationType>? conversationTypes;
+
+  /// 会话分组ID（云端会话特有）
   String? conversationGroupId;
   bool? ignoreMuted;
   NIMConversationFilter(
@@ -261,13 +251,15 @@ class NIMConversationTypeClass {
 }
 
 enum NIMLastMessageState {
-  //默认
+  /// 默认
   @JsonValue(0)
   defaultState,
-  //已撤回
+
+  /// 已撤回
   @JsonValue(1)
   revoke,
-  //客户端填充消息
+
+  /// 客户端填充消息
   @JsonValue(2)
   clientFill
 }
@@ -293,12 +285,14 @@ enum NIMConversationType {
 class NIMConversationOption {
   List<NIMConversationType> conversationTypes;
   bool onlyUnread;
-  List<String> conversationGroupIds;
+
+  /// 会话分组ID（仅支持云端会话）
+  List<String>? conversationGroupIds;
 
   NIMConversationOption(
       {required this.conversationTypes,
       required this.onlyUnread,
-      required this.conversationGroupIds});
+      this.conversationGroupIds});
   Map<String, dynamic> toJson() => _$NIMConversationOptionToJson(this);
   factory NIMConversationOption.fromJson(Map<String, dynamic> map) =>
       _$NIMConversationOptionFromJson(map);

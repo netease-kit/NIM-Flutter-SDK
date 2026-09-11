@@ -6,33 +6,31 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamMemberListResult {
-  func toDictionary() -> [String: Any] {
-    var dict: [String: Any] = [
-      #keyPath(finished): finished,
-      #keyPath(nextToken): nextToken ?? "",
-    ]
-    var listJsonObject = [[String: Any]]()
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(V2NIMTeamMemberListResult.finished)] = finished
+    keyPaths[#keyPath(V2NIMTeamMemberListResult.nextToken)] = nextToken
+    keyPaths[#keyPath(V2NIMTeamMemberListResult.memberList)] = memberList?.map { $0.toDic() }
 
-    memberList?.forEach { member in
-      listJsonObject.append(member.toDictionary())
-    }
-    dict[#keyPath(memberList)] = listJsonObject
-
-    return dict
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMTeamMemberListResult {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamMemberListResult {
     let result = V2NIMTeamMemberListResult()
-    if let finished = dict[#keyPath(finished)] as? Bool {
+    if let finished = arguments[#keyPath(finished)] as? Bool {
       result.setValue(finished, forKey: #keyPath(V2NIMTeamMemberListResult.finished))
     }
-    if let nextToken = dict[#keyPath(nextToken)] as? String {
+    if let nextToken = arguments[#keyPath(nextToken)] as? String {
       result.setValue(nextToken, forKey: #keyPath(V2NIMTeamMemberListResult.nextToken))
     }
-    if let memberListJsonObect = dict[#keyPath(memberList)] as? [[String: Any]] {
+    if let memberListJsonObect = arguments[#keyPath(memberList)] as? [[String: Any]] {
       var memberList = [V2NIMTeamMember]()
       for member in memberListJsonObect {
-        memberList.append(V2NIMTeamMember.fromDictionary(member))
+        memberList.append(V2NIMTeamMember.fromDic(member))
       }
       result.setValue(memberList, forKey: #keyPath(V2NIMTeamMemberListResult.memberList))
     }

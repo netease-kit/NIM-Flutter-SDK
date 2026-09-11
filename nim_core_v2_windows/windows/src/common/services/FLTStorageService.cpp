@@ -77,12 +77,12 @@ void FLTStorageService::onMethodCalled(
     case "cancelUploadFile"_hash:
       cancelUploadFile(arguments, result);
       return;
-      //    case "downloadFile"_hash:
-      //      downloadFile(arguments, result);
-      //      return;
-      //    case "downloadAttachment"_hash:
-      //      downloadAttachment(arguments, result);
-      //      return;
+    case "downloadFile"_hash:
+      downloadFile(arguments, result);
+      return;
+    case "downloadAttachment"_hash:
+      downloadAttachment(arguments, result);
+      return;
     case "shortUrlToLong"_hash:
       shortUrlToLong(arguments, result);
       return;
@@ -98,7 +98,6 @@ void FLTStorageService::onMethodCalled(
     case "videoCoverUrl"_hash:
       videoCoverUrl(arguments, result);
       return;
-
     default:
       break;
   }
@@ -115,6 +114,8 @@ void FLTStorageService::addCustomStorageScene(
   std::string sceneName = "";
   std::int64_t expireTime = 0;
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -127,13 +128,23 @@ void FLTStorageService::addCustomStorageScene(
     } else if (iter->first == flutter::EncodableValue("expireTime")) {
       expireTime = iter->second.LongValue();
       std::cout << "expireTime: " << expireTime << std::endl;
+    } else if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
     }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.addCustomStorageScene(sceneName, expireTime);
-  result->Success(NimResult::getSuccessResult());
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.addCustomStorageScene(sceneName, expireTime);
+    result->Success(NimResult::getSuccessResult());
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.addCustomStorageScene(sceneName, expireTime);
+    result->Success(NimResult::getSuccessResult());
+  }
 }
 
 void FLTStorageService::getStorageSceneList(
@@ -143,10 +154,29 @@ void FLTStorageService::getStorageSceneList(
     return;
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  std::vector<v2::V2NIMStorageScene> storageSceneList =
-      storageService.getStorageSceneList();
+  std::vector<v2::V2NIMStorageScene> storageSceneList;
+
+  int32_t instanceId = -1;
+  auto iter = arguments->begin();
+  for (iter; iter != arguments->end(); ++iter) {
+    if (iter->second.IsNull()) {
+      continue;
+    }
+    if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
+    }
+  }
+
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageSceneList = storageService.getStorageSceneList();
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageSceneList = storageService.getStorageSceneList();
+  }
 
   flutter::EncodableList storageSceneListMap;
   for (auto storageScene : storageSceneList) {
@@ -166,6 +196,8 @@ void FLTStorageService::createUploadFileTask(
 
   v2::V2NIMUploadFileParams fileParams;
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -176,12 +208,23 @@ void FLTStorageService::createUploadFileTask(
       auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
       fileParams = getUploadFileParams(&paramsMap);
     }
+    if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
+    }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  v2::V2NIMUploadFileTask task =
-      storageService.createUploadFileTask(fileParams);
+  v2::V2NIMUploadFileTask task;
+
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    task = storageService.createUploadFileTask(fileParams);
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    task = storageService.createUploadFileTask(fileParams);
+  }
 
   flutter::EncodableMap resultMap = convertUploadFileTask(task);
   result->Success(NimResult::getSuccessResult(resultMap));
@@ -195,6 +238,7 @@ void FLTStorageService::uploadFile(
   }
 
   v2::V2NIMUploadFileTask fileTask;
+  int32_t instanceId = -1;
 
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
@@ -206,26 +250,51 @@ void FLTStorageService::uploadFile(
       auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
       fileTask = getUploadFileTask(&paramsMap);
     }
+    if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
+    }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.uploadFile(
-      fileTask,
-      [result](std::string url) {
-        result->Success(NimResult::getSuccessResult(url));
-      },
-      [result](v2::V2NIMError error) {
-        result->Error("", error.desc,
-                      NimResult::getErrorResult(error.code, error.desc));
-      },
-      [=](uint32_t progress) {
-        NIMUploadFileProgress fileProgress;
-        fileProgress.taskId = fileTask.taskId;
-        fileProgress.progress = progress;
-        flutter::EncodableMap ret = convertUploadFileProgress(fileProgress);
-        notifyEvent("onFileUploadProgress", ret);
-      });
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.uploadFile(
+        fileTask,
+        [result](std::string url) {
+          result->Success(NimResult::getSuccessResult(url));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        },
+        [=](uint32_t progress) {
+          NIMUploadFileProgress fileProgress;
+          fileProgress.taskId = fileTask.taskId;
+          fileProgress.progress = progress;
+          flutter::EncodableMap ret = convertUploadFileProgress(fileProgress);
+          notifyEvent("onFileUploadProgress", ret);
+        });
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.uploadFile(
+        fileTask,
+        [result](std::string url) {
+          result->Success(NimResult::getSuccessResult(url));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        },
+        [=](uint32_t progress) {
+          NIMUploadFileProgress fileProgress;
+          fileProgress.taskId = fileTask.taskId;
+          fileProgress.progress = progress;
+          flutter::EncodableMap ret = convertUploadFileProgress(fileProgress);
+          notifyEvent("onFileUploadProgress", ret);
+        });
+  }
 }
 
 void FLTStorageService::cancelUploadFile(
@@ -237,6 +306,8 @@ void FLTStorageService::cancelUploadFile(
 
   v2::V2NIMUploadFileTask fileTask;
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -247,16 +318,34 @@ void FLTStorageService::cancelUploadFile(
       auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
       fileTask = getUploadFileTask(&paramsMap);
     }
+
+    if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
+    }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.cancelUploadFile(
-      fileTask, [result]() { result->Success(NimResult::getSuccessResult()); },
-      [result](v2::V2NIMError error) {
-        result->Error("", error.desc,
-                      NimResult::getErrorResult(error.code, error.desc));
-      });
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.cancelUploadFile(
+        fileTask,
+        [result]() { result->Success(NimResult::getSuccessResult()); },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.cancelUploadFile(
+        fileTask,
+        [result]() { result->Success(NimResult::getSuccessResult()); },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  }
 }
 
 void FLTStorageService::downloadFile(
@@ -268,6 +357,8 @@ void FLTStorageService::downloadFile(
 
   std::string url = "";
   std::string filePath = "";
+
+  int32_t instanceId = -1;
 
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
@@ -281,28 +372,54 @@ void FLTStorageService::downloadFile(
     } else if (iter->first == flutter::EncodableValue("filePath")) {
       filePath = std::get<std::string>(iter->second);
       std::cout << "filePath: " << filePath << std::endl;
+    } else if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
     }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.downloadFile(
-      url, filePath,
-      [result](nstd::string path) {
-        std::string pathStr = path;
-        result->Success(NimResult::getSuccessResult(pathStr));
-      },
-      [result](v2::V2NIMError error) {
-        result->Error("", error.desc,
-                      NimResult::getErrorResult(error.code, error.desc));
-      },
-      [=](uint32_t progress) {
-        NIMDownloadFileProgress fileProgress;
-        fileProgress.url = url;
-        fileProgress.progress = progress;
-        flutter::EncodableMap ret = convertDownloadFileProgress(fileProgress);
-        notifyEvent("onFileDownloadProgress", ret);
-      });
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.downloadFile(
+        url, filePath,
+        [result](nstd::string path) {
+          std::string pathStr = path;
+          result->Success(NimResult::getSuccessResult(pathStr));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        },
+        [=](uint32_t progress) {
+          NIMDownloadFileProgress fileProgress;
+          fileProgress.url = url;
+          fileProgress.progress = progress;
+          flutter::EncodableMap ret = convertDownloadFileProgress(fileProgress);
+          ret.insert(std::make_pair("instanceId", instanceId));
+          notifyEvent("onFileDownloadProgress", ret);
+        });
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.downloadFile(
+        url, filePath,
+        [result](nstd::string path) {
+          std::string pathStr = path;
+          result->Success(NimResult::getSuccessResult(pathStr));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        },
+        [=](uint32_t progress) {
+          NIMDownloadFileProgress fileProgress;
+          fileProgress.url = url;
+          fileProgress.progress = progress;
+          flutter::EncodableMap ret = convertDownloadFileProgress(fileProgress);
+          notifyEvent("onFileDownloadProgress", ret);
+        });
+  }
 }
 
 void FLTStorageService::downloadAttachment(
@@ -314,6 +431,8 @@ void FLTStorageService::downloadAttachment(
 
   v2::V2NIMDownloadMessageAttachmentParams downloadParam;
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -323,7 +442,36 @@ void FLTStorageService::downloadAttachment(
     if (iter->first == flutter::EncodableValue("downloadParam")) {
       auto paramsMap = std::get<flutter::EncodableMap>(iter->second);
       downloadParam = getDownloadMessageAttachmentParams(&paramsMap);
+    } else if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
     }
+  }
+
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.downloadAttachment(
+        downloadParam,
+        [result](std::string filePath) {
+          result->Success(NimResult::getSuccessResult(filePath));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        },
+        [=](uint32_t progress) {
+          NIMDownloadMessageAttachmentProgress
+              downloadMessageAttachmentProgress;
+          downloadMessageAttachmentProgress.downloadParam = downloadParam;
+          downloadMessageAttachmentProgress.progress = progress;
+
+          flutter::EncodableMap ret = convertDownloadMessageAttachmentProgress(
+              downloadMessageAttachmentProgress);
+          ret.insert(std::make_pair("instanceId", instanceId));
+
+          notifyEvent("onMessageAttachmentDownloadProgress", ret);
+        });
   }
 
   auto& instance = v2::V2NIMClient::get();
@@ -357,6 +505,8 @@ void FLTStorageService::shortUrlToLong(
 
   std::string url = "";
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -366,20 +516,37 @@ void FLTStorageService::shortUrlToLong(
     if (iter->first == flutter::EncodableValue("url")) {
       url = std::get<std::string>(iter->second);
       std::cout << "url: " << url << std::endl;
+    } else if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
     }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.shortUrlToLong(
-      url,
-      [result](std::string url) {
-        result->Success(NimResult::getSuccessResult(url));
-      },
-      [result](v2::V2NIMError error) {
-        result->Error("", error.desc,
-                      NimResult::getErrorResult(error.code, error.desc));
-      });
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.shortUrlToLong(
+        url,
+        [result](std::string url) {
+          result->Success(NimResult::getSuccessResult(url));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.shortUrlToLong(
+        url,
+        [result](std::string url) {
+          result->Success(NimResult::getSuccessResult(url));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  }
 }
 
 void FLTStorageService::getImageThumbUrl(
@@ -392,6 +559,8 @@ void FLTStorageService::getImageThumbUrl(
   v2::V2NIMSize thumbSize;
   nstd::shared_ptr<v2::V2NIMMessageAttachment> attachment;
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -404,22 +573,41 @@ void FLTStorageService::getImageThumbUrl(
     } else if (iter->first == flutter::EncodableValue("attachment")) {
       auto attachmentMap = std::get<flutter::EncodableMap>(iter->second);
       attachment = getMessageAttachment(&attachmentMap);
+    } else if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
     }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.getImageThumbUrl(
-      attachment, thumbSize,
-      [result](v2::V2NIMGetMediaResourceInfoResult infoResult) {
-        flutter::EncodableMap resultMap =
-            convertGetMediaResourceInfoResult(infoResult);
-        result->Success(NimResult::getSuccessResult(resultMap));
-      },
-      [result](v2::V2NIMError error) {
-        result->Error("", error.desc,
-                      NimResult::getErrorResult(error.code, error.desc));
-      });
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.getImageThumbUrl(
+        attachment, thumbSize,
+        [result](v2::V2NIMGetMediaResourceInfoResult infoResult) {
+          flutter::EncodableMap resultMap =
+              convertGetMediaResourceInfoResult(infoResult);
+          result->Success(NimResult::getSuccessResult(resultMap));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.getImageThumbUrl(
+        attachment, thumbSize,
+        [result](v2::V2NIMGetMediaResourceInfoResult infoResult) {
+          flutter::EncodableMap resultMap =
+              convertGetMediaResourceInfoResult(infoResult);
+          result->Success(NimResult::getSuccessResult(resultMap));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  }
 }
 
 void FLTStorageService::getVideoCoverUrl(
@@ -432,6 +620,8 @@ void FLTStorageService::getVideoCoverUrl(
   v2::V2NIMSize thumbSize;
   nstd::shared_ptr<v2::V2NIMMessageAttachment> attachment;
 
+  int32_t instanceId = -1;
+
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
@@ -444,22 +634,41 @@ void FLTStorageService::getVideoCoverUrl(
     } else if (iter->first == flutter::EncodableValue("attachment")) {
       auto attachmentMap = std::get<flutter::EncodableMap>(iter->second);
       attachment = getMessageAttachment(&attachmentMap);
+    } else if (iter->first == flutter::EncodableValue("instanceId")) {
+      instanceId = std::get<std::int32_t>(iter->second);
     }
   }
 
-  auto& instance = v2::V2NIMClient::get();
-  auto& storageService = instance.getStorageService();
-  storageService.getVideoCoverUrl(
-      attachment, thumbSize,
-      [result](v2::V2NIMGetMediaResourceInfoResult infoResult) {
-        flutter::EncodableMap resultMap =
-            convertGetMediaResourceInfoResult(infoResult);
-        result->Success(NimResult::getSuccessResult(resultMap));
-      },
-      [result](v2::V2NIMError error) {
-        result->Error("", error.desc,
-                      NimResult::getErrorResult(error.code, error.desc));
-      });
+  if (instanceId >= 0) {
+    auto instance =
+        v2::V2NIMChatroomClient::getInstance(static_cast<uint32_t>(instanceId));
+    auto& storageService = instance->getStorageService();
+    storageService.getVideoCoverUrl(
+        attachment, thumbSize,
+        [result](v2::V2NIMGetMediaResourceInfoResult infoResult) {
+          flutter::EncodableMap resultMap =
+              convertGetMediaResourceInfoResult(infoResult);
+          result->Success(NimResult::getSuccessResult(resultMap));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  } else {
+    auto& instance = v2::V2NIMClient::get();
+    auto& storageService = instance.getStorageService();
+    storageService.getVideoCoverUrl(
+        attachment, thumbSize,
+        [result](v2::V2NIMGetMediaResourceInfoResult infoResult) {
+          flutter::EncodableMap resultMap =
+              convertGetMediaResourceInfoResult(infoResult);
+          result->Success(NimResult::getSuccessResult(resultMap));
+        },
+        [result](v2::V2NIMError error) {
+          result->Error("", error.desc,
+                        NimResult::getErrorResult(error.code, error.desc));
+        });
+  }
 }
 
 void FLTStorageService::imageThumbUrl(
@@ -501,8 +710,8 @@ void FLTStorageService::videoCoverUrl(
 
   std::string url;
   int32_t offset;
-  int32_t thumbSize;
-  std::string type;
+  nstd::optional<int32_t> thumbSize = nullptr;
+  nstd::optional<std::string> type = nullptr;
 
   auto iter = arguments->begin();
   for (iter; iter != arguments->end(); ++iter) {
@@ -525,8 +734,21 @@ void FLTStorageService::videoCoverUrl(
     }
   }
 
-  auto videoCoverUrl =
-      v2::V2NIMStorageUtil::videoCoverUrl(url, offset, thumbSize, type);
+  if (!thumbSize.has_value()) {
+    result->Error(
+        "", "",
+        NimResult::getErrorResult(199414, "thumbSize params required!"));
+    return;
+  }
+
+  if (!type.has_value()) {
+    result->Error("", "",
+                  NimResult::getErrorResult(199414, "type params required!"));
+    return;
+  }
+
+  auto videoCoverUrl = v2::V2NIMStorageUtil::videoCoverUrl(
+      url, offset, thumbSize.value(), type.value());
   std::string converUrl = videoCoverUrl;
   result->Success(NimResult::getSuccessResult(converUrl));
 }
@@ -711,11 +933,10 @@ flutter::EncodableMap convertDownloadMessageAttachmentParams(
     const v2::V2NIMDownloadMessageAttachmentParams object) {
   flutter::EncodableMap resultMap;
 
-  if (object.attachment) {
-    flutter::EncodableMap attachment =
-        convertMessageAttachment(object.attachment);
-    resultMap.insert(std::make_pair("attachment", attachment));
-  }
+  flutter::EncodableMap attachment =
+      convertMessageAttachment(object.attachment);
+  resultMap.insert(std::make_pair("attachment", attachment));
+
   resultMap.insert(std::make_pair("type", object.type));
 
   if (object.thumbSize.has_value()) {

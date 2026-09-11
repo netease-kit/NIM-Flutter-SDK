@@ -6,31 +6,30 @@ import Foundation
 import NIMSDK
 
 extension V2NIMTeamMemberSearchResult {
-  func toDictionary() -> [String: Any] {
-    var dict: [String: Any] = [
-      #keyPath(nextToken): nextToken,
-      #keyPath(finished): finished,
-    ]
-    var memberListJsonObect = [[String: Any]]()
-    memberList?.forEach { member in
-      memberListJsonObect.append(member.toDictionary())
-    }
-    dict[#keyPath(memberList)] = memberListJsonObect
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(V2NIMTeamMemberSearchResult.nextToken)] = nextToken
+    keyPaths[#keyPath(V2NIMTeamMemberSearchResult.finished)] = finished
+    keyPaths[#keyPath(V2NIMTeamMemberSearchResult.memberList)] = memberList?.map { $0.toDic() }
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMTeamMemberSearchResult {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMTeamMemberSearchResult {
     let result = V2NIMTeamMemberSearchResult()
-    if let nextToken = dict[#keyPath(nextToken)] as? String {
+    if let nextToken = arguments[#keyPath(nextToken)] as? String {
       result.setValue(nextToken, forKey: #keyPath(V2NIMTeamMemberSearchResult.nextToken))
     }
-    if let finished = dict[#keyPath(finished)] as? Bool {
+    if let finished = arguments[#keyPath(finished)] as? Bool {
       result.setValue(finished, forKey: #keyPath(V2NIMTeamMemberSearchResult.finished))
     }
-    if let memberListJsonObect = dict[#keyPath(memberList)] as? [[String: Any]] {
+    if let memberListJsonObect = arguments[#keyPath(memberList)] as? [[String: Any]] {
       var memberList = [V2NIMTeamMember]()
       for member in memberListJsonObect {
-        memberList.append(V2NIMTeamMember.fromDictionary(member))
+        memberList.append(V2NIMTeamMember.fromDic(member))
       }
       result.setValue(memberList, forKey: #keyPath(V2NIMTeamMemberSearchResult.memberList))
     }

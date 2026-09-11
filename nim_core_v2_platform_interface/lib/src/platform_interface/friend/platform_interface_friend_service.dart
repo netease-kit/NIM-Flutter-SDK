@@ -124,6 +124,25 @@ abstract class FriendServicePlatform extends Service {
     throw UnimplementedError('setAddApplicationRead() is not implemented');
   }
 
+  /// 清空所有好友申请
+  Future<NIMResult<void>> clearAllAddApplication() async {
+    throw UnimplementedError('clearAllAddApplication() is not implemented');
+  }
+
+  /// 清空好友申请（扩展版）
+  /// [option] 清空申请选项，包含时间戳和类型过滤
+  Future<NIMResult<void>> clearAllAddApplicationEx(
+      NIMFriendClearAddApplicationOption option) async {
+    throw UnimplementedError('clearAllAddApplicationEx() is not implemented');
+  }
+
+  /// 删除好友申请
+  /// [application] 待删除的申请
+  Future<NIMResult<void>> deleteAddApplication(
+      NIMFriendAddApplication application) async {
+    throw UnimplementedError('deleteAddApplication() is not implemented');
+  }
+
   /// 根据关键字搜索好友信息
   Future<NIMResult<List<NIMFriend>>> searchFriendByOption(
       NIMFriendSearchOption friendSearchOption) async {

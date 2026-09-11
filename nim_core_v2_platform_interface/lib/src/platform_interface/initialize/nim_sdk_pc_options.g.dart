@@ -44,24 +44,53 @@ NIMBasicOption _$NIMBasicOptionFromJson(Map<String, dynamic> json) =>
     NIMBasicOption(
       useHttps: json['useHttps'] as bool? ?? true,
       useHttpdns: json['useHttpdns'] as bool? ?? true,
+      enableCloudConversation:
+          json['enableCloudConversation'] as bool? ?? false,
+      enableCloudFriendAddApplication:
+          json['enableCloudFriendAddApplication'] as bool? ?? false,
+      enableCloudTeamJoinActionInfo:
+          json['enableCloudTeamJoinActionInfo'] as bool? ?? false,
       customClientType: (json['customClientType'] as num?)?.toInt(),
       customTag: json['customTag'] as String?,
+      logMaxSize: (json['logMaxSize'] as num?)?.toInt(),
       logReserveDays: (json['logReserveDays'] as num?)?.toInt() ?? 30,
       sdkLogLevel:
           $enumDecodeNullable(_$NIMSDKLogLevelEnumMap, json['sdkLogLevel']) ??
               NIMSDKLogLevel.nimSdkLogLevelApp,
+      customizeLogCollectionDirectory:
+          json['customizeLogCollectionDirectory'] as String?,
       disableAppNap: json['disableAppNap'] as bool? ?? true,
+      enableCompass: json['enableCompass'] as bool? ?? true,
+      teamNotificationBadge: json['teamNotificationBadge'] as bool?,
+      reduceUnreadOnMessageRecall:
+          json['reduceUnreadOnMessageRecall'] as bool? ?? false,
+      conversationSnapshot: json['conversationSnapshot'] as bool? ?? true,
+      compassDataEndpoint: json['compassDataEndpoint'] as String?,
+      abTestEndpoint: json['abTestEndpoint'] as String?,
     );
 
 Map<String, dynamic> _$NIMBasicOptionToJson(NIMBasicOption instance) =>
     <String, dynamic>{
       'useHttps': instance.useHttps,
       'useHttpdns': instance.useHttpdns,
+      'enableCloudConversation': instance.enableCloudConversation,
+      'enableCloudFriendAddApplication':
+          instance.enableCloudFriendAddApplication,
+      'enableCloudTeamJoinActionInfo': instance.enableCloudTeamJoinActionInfo,
       'customClientType': instance.customClientType,
       'customTag': instance.customTag,
+      'logMaxSize': instance.logMaxSize,
       'logReserveDays': instance.logReserveDays,
       'sdkLogLevel': _$NIMSDKLogLevelEnumMap[instance.sdkLogLevel]!,
+      'customizeLogCollectionDirectory':
+          instance.customizeLogCollectionDirectory,
       'disableAppNap': instance.disableAppNap,
+      'enableCompass': instance.enableCompass,
+      'teamNotificationBadge': instance.teamNotificationBadge,
+      'reduceUnreadOnMessageRecall': instance.reduceUnreadOnMessageRecall,
+      'conversationSnapshot': instance.conversationSnapshot,
+      'compassDataEndpoint': instance.compassDataEndpoint,
+      'abTestEndpoint': instance.abTestEndpoint,
     };
 
 const _$NIMSDKLogLevelEnumMap = {

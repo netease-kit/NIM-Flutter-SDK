@@ -16,20 +16,16 @@
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">nim_core_v2</a></li>
-    <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core.dart</a></li>
+    <li><a href="../../nim_core_v2/">nim_core.dart</a></li>
     <li><a href="../../nim_core_v2/LoginService-class.html">LoginService</a></li>
     <li class="self-crumb">tokenProvider property</li>
   </ol>
@@ -37,20 +33,16 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button" title="Toggle brightness">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span id="dark-theme-button" class="material-symbols-outlined">
-        dark_mode
-      </span>
-      <span id="light-theme-button" class="material-symbols-outlined">
-        light_mode
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -60,10 +52,11 @@
 <h1><span class="kind-property">tokenProvider</span> property 
 </h1></div>
 
+    
 
+    
         
   <section id="getter">
-
     <section class="multi-line-signature">
       
   <div>
@@ -72,11 +65,11 @@
     </ol>
   </div>
       <span class="returntype">dynamic</span>
+      get
       <span class="name ">tokenProvider</span>
       
 
     </section>
-
     
 <section class="desc markdown">
   <p>获取动态登录token提供者</p>
@@ -94,7 +87,6 @@ get tokenProvider =&gt; _platform.tokenProvider;</code></pre>
 
         
   <section id="setter">
-
     <section class="multi-line-signature">
       
   <div>
@@ -102,15 +94,16 @@ get tokenProvider =&gt; _platform.tokenProvider;</code></pre>
         <li>@<a href="https://pub.dev/documentation/hawk_meta/0.0.1/hawk_meta/HawkApi-class.html">HawkApi</a>(ignore: true)</li>
     </ol>
   </div>
-      <span class="returntype">void</span>
-      <span class="name ">tokenProvider=</span><span class="signature">(<wbr><span class="parameter" id="tokenProvider=-param-tokenProvider"><span class="type-annotation">dynamic</span> <span class="parameter-name">tokenProvider</span></span>)</span>
+      set
+      <span class="name ">tokenProvider</span>
+      <span class="signature">(<wbr><span class="parameter" id="tokenProvider=-param-tokenProvider"><span class="type-annotation">dynamic</span> <span class="parameter-name">tokenProvider</span></span>)</span>
       
 
     </section>
-
     
 <section class="desc markdown">
-  <p>设置动态登录token提供者</p>
+  <p>设置动态登录token提供者
+<a href="../../nim_core_v2/LoginService/login.html">login</a> 调用前设置有效</p>
 </section>
 
     
@@ -123,7 +116,6 @@ set tokenProvider(tokenProvider) =&gt; _platform.tokenProvider = tokenProvider;<
   </section>
 
 </div> <!-- /.main-content -->
-
 <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
   <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -131,41 +123,31 @@ set tokenProvider(tokenProvider) =&gt; _platform.tokenProvider = tokenProvider;<
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nim_core_v2</a></li>
-    <li><a href="../../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
+    <li><a href="../../nim_core_v2/">nim_core_v2</a></li>
     <li><a href="../../nim_core_v2/LoginService-class.html">LoginService</a></li>
     <li class="self-crumb">tokenProvider property</li>
 </ol>
 
-
   <h5>LoginService class</h5>
   <div id="dartdoc-sidebar-left-content"></div>
 </div><!--/.sidebar-offcanvas-->
-
 <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
 </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.8
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

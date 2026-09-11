@@ -10,22 +10,22 @@ part of 'robot_message_attachment.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NIMRobotAttachment _$NIMRobotAttachmentFromJson(Map<String, dynamic> json) {
-  return NIMRobotAttachment(
-    isRobotSend: json['isRobotSend'] as bool,
-    fromRobotAccount: json['fromRobotAccount'] as String,
-    responseForMessageId: json['responseForMessageId'] as String?,
-    response: json['response'] as String?,
-    requestType:
-        _$enumDecodeNullable(_$NIMRobotMessageTypeEnumMap, json['requestType']),
-    requestContent: json['requestContent'] as String?,
-    requestTarget: json['requestTarget'] as String?,
-    requestParams: json['requestParams'] as String?,
-  );
-}
+NIMRobotAttachment _$NIMRobotAttachmentFromJson(Map<String, dynamic> json) =>
+    NIMRobotAttachment(
+      isRobotSend: json['isRobotSend'] as bool? ?? true,
+      fromRobotAccount: json['fromRobotAccount'] as String,
+      responseForMessageId: json['responseForMessageId'] as String?,
+      response: json['response'] as String?,
+      requestType: $enumDecodeNullable(
+          _$NIMRobotMessageTypeEnumMap, json['requestType']),
+      requestContent: json['requestContent'] as String?,
+      requestTarget: json['requestTarget'] as String?,
+      requestParams: json['requestParams'] as String?,
+    )..raw = json['raw'] as String?;
 
 Map<String, dynamic> _$NIMRobotAttachmentToJson(NIMRobotAttachment instance) =>
     <String, dynamic>{
+      'raw': instance.raw,
       'isRobotSend': instance.isRobotSend,
       'fromRobotAccount': instance.fromRobotAccount,
       'responseForMessageId': instance.responseForMessageId,

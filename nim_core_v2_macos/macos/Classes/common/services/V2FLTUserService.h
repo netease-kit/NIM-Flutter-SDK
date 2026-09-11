@@ -46,6 +46,9 @@ class V2FLTUserService : public FLTService {
   void searchUserByOption(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void checkBlock(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
  private:
   v2::V2NIMUserListener userListener;

@@ -63,6 +63,12 @@ class NIMTeamMember {
   /// 聊天是否被禁言，YES 被禁言，NO 未禁言
   bool? chatBanned;
 
+  ///入群邀请人，入群邀请人，主动入群该字段为空
+  String? invitorAccountId;
+
+  ///特别关注成员列表
+  List<String>? followAccountIds;
+
   /// 构造函数
   NIMTeamMember({
     required this.teamId,
@@ -75,6 +81,8 @@ class NIMTeamMember {
     this.updateTime,
     required this.inTeam,
     this.chatBanned,
+    this.invitorAccountId,
+    this.followAccountIds,
   });
 
   factory NIMTeamMember.fromJson(Map<String, dynamic> map) =>

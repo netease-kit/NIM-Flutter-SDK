@@ -101,7 +101,7 @@ bool Convert::convertJson2Map(
         map[key] = mapTmp;
       }
     } else {
-      YXLOG(Warn) << "parse failed, it:" << it << YXLOGEnd;
+      //      YXLOG(Warn) << "parse failed, it:" << it << YXLOGEnd;
       continue;
     }
   }
@@ -143,8 +143,8 @@ bool Convert::convertJson2List(
       }
       list.emplace_back(mapTmp);
     } else {
-      YXLOG(Warn) << "parse failed, valueTmp type: " << valueTmp.type()
-                  << YXLOGEnd;
+      //      YXLOG(Warn) << "parse failed, valueTmp type: " << valueTmp.type()
+      //                  << YXLOGEnd;
       return false;
     }
   }
@@ -202,7 +202,7 @@ bool Convert::convertMap2Json(const flutter::EncodableMap* arguments,
     } else if (auto second9 = std::get_if<EncodableList>(&it.second); second9) {
       nim_cpp_wrapper_util::Json::Value listTmp;
       if (!convertList2Json(second9, listTmp)) {
-        YXLOG(Warn) << "convertList2Json failed." << YXLOGEnd;
+        //        YXLOG(Warn) << "convertList2Json failed." << YXLOGEnd;
         return false;
       }
       value[key] = listTmp;
@@ -210,7 +210,7 @@ bool Convert::convertMap2Json(const flutter::EncodableMap* arguments,
                second10) {
       nim_cpp_wrapper_util::Json::Value mapTmp;
       if (!convertMap2Json(second10, mapTmp)) {
-        YXLOG(Warn) << "convertMap2Json failed." << YXLOGEnd;
+        //        YXLOG(Warn) << "convertMap2Json failed." << YXLOGEnd;
         return false;
       }
       value[key] = mapTmp;
@@ -277,4 +277,30 @@ bool Convert::convertList2Json(const flutter::EncodableList* arguments,
     }
   }
   return true;
+}
+
+template <typename T>
+T GetValueOrDefault(const flutter::EncodableMap* map, const std::string& key,
+                    const T& defaultValue) {
+  if (!map) return defaultValue;
+
+  auto iter = map->find(flutter::EncodableValue(key));
+  if (iter == map->end() || iter->second.IsNull()) {
+    return defaultValue;
+  }
+
+  // 根据类型进行不同的处理
+  if constexpr (std::is_same_v<T, std::string>) {
+    return std::get<std::string>(iter->second);
+  } else if constexpr (std::is_same_v<T, int32_t> ||
+                       std::is_same_v<T, int64_t> ||
+                       std::is_same_v<T, uint32_t>) {
+    return static_cast<T>(std::get<int64_t>(iter->second));
+  } else if constexpr (std::is_same_v<T, bool>) {
+    return std::get<bool>(iter->second);
+  } else if constexpr (std::is_same_v<T, double>) {
+    return std::get<double>(iter->second);
+  } else {
+    return defaultValue;
+  }
 }

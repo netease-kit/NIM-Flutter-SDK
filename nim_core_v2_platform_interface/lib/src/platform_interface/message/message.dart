@@ -2,6 +2,7 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nim_core_v2_platform_interface/nim_core_v2_platform_interface.dart';
 
@@ -36,6 +37,8 @@ class NIMMessageAttachment {
         return NIMMessageNotificationAttachment.fromJson(map);
       case NIMMessageType.call:
         return NIMMessageCallAttachment.fromJson(map);
+      case NIMMessageType.chatroomNotification:
+        return V2NIMChatroomNotificationAttachment.fromJson(map);
       default:
         return _$NIMMessageAttachmentFromJson(map);
     }
@@ -185,7 +188,7 @@ class NIMMessageNotificationAttachment extends NIMMessageAttachment {
   String? serverExtension;
 
   /// 被操作者ID列表
-  List<String?>? targetIds;
+  List<String>? targetIds;
 
   /// 群成员是否被禁言
   bool? chatBanned;
@@ -248,6 +251,7 @@ class NIMMessageCallAttachment extends NIMMessageAttachment {
   int? type;
 
   /// 话单频道ID， 内容不校验
+  @JsonKey(fromJson: _nullableStringFromJson)
   String? channelId;
 
   /**
@@ -284,6 +288,8 @@ List<NIMMessageCallDuration>? _nimMessageCallDurationListFromJson(
           NIMMessageCallDuration.fromJson((e as Map).cast<String, dynamic>()))
       .toList();
 }
+
+String? _nullableStringFromJson(Object? value) => value?.toString();
 
 @JsonSerializable(explicitToJson: true)
 class NIMMessageRefer {
@@ -329,6 +335,13 @@ class NIMMessage extends NIMMessageRefer {
   /// 消息发送者是否是自己
   bool? isSelf;
 
+  /// 序列化
+  /// 内部使用，不对外开放
+  int? serialId;
+
+  /// 子状态
+  int? subStatus;
+
   /// 附件上传状态
   @JsonKey(unknownEnumValue: NIMMessageAttachmentUploadState.unknown)
   NIMMessageAttachmentUploadState? attachmentUploadState;
@@ -346,7 +359,7 @@ class NIMMessage extends NIMMessageRefer {
   String? text;
 
   /// 附件
-  @JsonKey(fromJson: _nimMessageAttachmentFromJson)
+  @JsonKey(fromJson: nimMessageAttachmentFromJson)
   NIMMessageAttachment? attachment;
 
   /// 服务端扩展信息，必须是Json 字符串，要不然会解析失败。
@@ -360,18 +373,18 @@ class NIMMessage extends NIMMessageRefer {
 
   /// 消息相关配置，具体参见每一个字段定义
   @JsonKey(fromJson: _nimMessageConfigFromJson)
-  final NIMMessageConfig? messageConfig;
+  NIMMessageConfig? messageConfig;
 
   /// 推送设置
   @JsonKey(fromJson: _nimMessagePushConfigFromJson)
-  final NIMMessagePushConfig? pushConfig;
+  NIMMessagePushConfig? pushConfig;
 
   /// 路由抄送相关配置
-  @JsonKey(fromJson: _nimMessageRouteConfigFromJson)
+  @JsonKey(fromJson: nimMessageRouteConfigFromJson)
   NIMMessageRouteConfig? routeConfig;
 
   /// 反垃圾相关
-  @JsonKey(fromJson: _nimMessageAntispamConfigFromJson)
+  @JsonKey(fromJson: nimMessageAntispamConfigFromJson)
   NIMMessageAntispamConfig? antispamConfig;
 
   /// 机器人相关配置
@@ -386,6 +399,10 @@ class NIMMessage extends NIMMessageRefer {
   @JsonKey(fromJson: nimMessageReferFromJson)
   NIMMessageRefer? threadReply;
 
+  /// 话题引用
+  @JsonKey(fromJson: nimTopicReferFromJson)
+  V2NIMTopicRefer? topicRefer;
+
   /// AI数字人相关信息
   @JsonKey(fromJson: _nimMessageAIConfigFromJson)
   NIMMessageAIConfig? aiConfig;
@@ -394,12 +411,32 @@ class NIMMessage extends NIMMessageRefer {
   @JsonKey(fromJson: _nimMessageStatusFromJson)
   NIMMessageStatus? messageStatus;
 
+  ///消息修改时间
+  int? modifyTime;
+
+  ///消息修改者账号
+  String? modifyAccountId;
+
+  /// 流式消息相关配置
+  @JsonKey(fromJson: _v2NIMMessageStreamConfigFromJson)
+  V2NIMMessageStreamConfig? streamConfig;
+
+  /// 消息来源，标识消息通过哪种方式获取
+  @JsonKey(unknownEnumValue: NIMMessageSource.unknown)
+  NIMMessageSource? messageSource;
+
+  /// iOS 原生消息隐藏字段序列化数据
+  /// 内部使用，不对外开放
+  @JsonKey(fromJson: _nimIOSSerialFromJson)
+  Map<String, dynamic>? iosSerial;
+
   NIMMessage(
       {this.isSelf,
       this.attachmentUploadState,
       this.sendingState,
       this.messageType,
       this.subType,
+      this.subStatus,
       this.text,
       this.attachment,
       this.serverExtension,
@@ -412,8 +449,15 @@ class NIMMessage extends NIMMessageRefer {
       this.robotConfig,
       this.threadRoot,
       this.threadReply,
+      this.topicRefer,
       this.aiConfig,
-      this.messageStatus});
+      this.messageStatus,
+      this.serialId,
+      this.modifyTime,
+      this.modifyAccountId,
+      this.streamConfig,
+      this.messageSource,
+      this.iosSerial});
 
   @override
   factory NIMMessage.fromJson(Map<String, dynamic> map) =>
@@ -423,11 +467,15 @@ class NIMMessage extends NIMMessageRefer {
   Map<String, dynamic> toJson() => _$NIMMessageToJson(this);
 }
 
-NIMMessageAttachment? _nimMessageAttachmentFromJson(Map? map) {
+NIMMessageAttachment? nimMessageAttachmentFromJson(Map? map) {
   if (map != null) {
     return NIMMessageAttachment.fromJson(map.cast<String, dynamic>());
   }
   return null;
+}
+
+Map<String, dynamic>? _nimIOSSerialFromJson(Map? map) {
+  return map?.cast<String, dynamic>();
 }
 
 NIMMessageConfig? _nimMessageConfigFromJson(Map? map) {
@@ -444,14 +492,14 @@ NIMMessagePushConfig? _nimMessagePushConfigFromJson(Map? map) {
   return null;
 }
 
-NIMMessageRouteConfig? _nimMessageRouteConfigFromJson(Map? map) {
+NIMMessageRouteConfig? nimMessageRouteConfigFromJson(Map? map) {
   if (map != null) {
     return NIMMessageRouteConfig.fromJson(map.cast<String, dynamic>());
   }
   return null;
 }
 
-NIMMessageAntispamConfig? _nimMessageAntispamConfigFromJson(Map? map) {
+NIMMessageAntispamConfig? nimMessageAntispamConfigFromJson(Map? map) {
   if (map != null) {
     return NIMMessageAntispamConfig.fromJson(map.cast<String, dynamic>());
   }
@@ -545,7 +593,7 @@ class NIMMessagePushConfig {
 /// 消息配置
 @JsonSerializable(explicitToJson: true)
 class NIMMessageConfig {
-  /// 是否不需要群消息已读回执信息。YES：需要，NO：不需要，默认为NO
+  /// 是否需要群消息已读回执信息。YES：需要，NO：不需要，默认为NO
   bool? readReceiptEnabled;
 
   /// 是否需要更新消息所属的会话信息。YES：需要，NO：不需要，默认为NO
@@ -667,7 +715,28 @@ class NIMMessageAIConfig {
   /// 响应回参
   NIMMessageAIStatus? aiStatus;
 
-  NIMMessageAIConfig({this.accountId, this.aiStatus});
+  ///数字人回复内容引用资源列表
+  @JsonKey(fromJson: NIMAIRAGInfoListFromJson)
+  List<NIMAIRAGInfo>? aiRAGs;
+
+  ///是否是流式响应，默认值为false
+  bool aiStream = false;
+
+  ///数字人流式消息状态
+  V2NIMMessageAIStreamStatus? aiStreamStatus;
+
+  ///数字人流式消息最近一个分片
+  ///注意：流式过程中的消息text是将接收到的分片组装好之后
+  @JsonKey(fromJson: NIMMessageAIStreamChunkFromJson)
+  NIMMessageAIStreamChunk? aiStreamLastChunk;
+
+  NIMMessageAIConfig(
+      {this.accountId,
+      this.aiStatus,
+      this.aiRAGs,
+      this.aiStream = false,
+      this.aiStreamStatus,
+      this.aiStreamLastChunk});
 
   factory NIMMessageAIConfig.fromJson(Map<String, dynamic> map) =>
       _$NIMMessageAIConfigFromJson(map);
@@ -698,12 +767,16 @@ class NIMMessageAIConfigParams {
   @JsonKey(fromJson: _nimAIModelConfigParamsFromJson)
   NIMAIModelConfigParams? modelConfigParams;
 
+  ///是否是流式响应，默认false
+  bool aiStream = false;
+
   NIMMessageAIConfigParams(
       {this.accountId,
       this.content,
       this.messages,
       this.promptVariables,
-      this.modelConfigParams});
+      this.modelConfigParams,
+      this.aiStream = false});
 
   factory NIMMessageAIConfigParams.fromJson(Map<String, dynamic> map) =>
       _$NIMMessageAIConfigParamsFromJson(map);
@@ -762,7 +835,7 @@ class NIMSendMessageParams {
   NIMMessageConfig? messageConfig;
 
   /// 路由抄送相关配置
-  @JsonKey(fromJson: _nimMessageRouteConfigFromJson)
+  @JsonKey(fromJson: nimMessageRouteConfigFromJson)
   NIMMessageRouteConfig? routeConfig;
 
   /// 推送相关配置
@@ -770,7 +843,7 @@ class NIMSendMessageParams {
   NIMMessagePushConfig? pushConfig;
 
   /// 反垃圾相关配置
-  @JsonKey(fromJson: _nimMessageAntispamConfigFromJson)
+  @JsonKey(fromJson: nimMessageAntispamConfigFromJson)
   NIMMessageAntispamConfig? antispamConfig;
 
   /// 机器人相关配置
@@ -780,6 +853,11 @@ class NIMSendMessageParams {
   /// 请求大模型的相关参数
   @JsonKey(fromJson: _nimMessageAIConfigParamsFromJson)
   NIMMessageAIConfigParams? aiConfig;
+
+  /// 定向消息相关配置
+  /// 用以控制在发送群组消息时，消息是否发送给指定的群组成员
+  @JsonKey(fromJson: _nimMessageTargetConfigFromJson)
+  NIMMessageTargetConfig? targetConfig;
 
   ///是否启用本地反垃圾
   ///只针对文本消息生效
@@ -801,7 +879,8 @@ class NIMSendMessageParams {
       this.robotConfig,
       this.aiConfig,
       this.clientAntispamEnabled,
-      this.clientAntispamReplace});
+      this.clientAntispamReplace,
+      this.targetConfig});
 
   factory NIMSendMessageParams.fromJson(Map<String, dynamic> map) =>
       _$NIMSendMessageParamsFromJson(map);
@@ -827,7 +906,7 @@ class NIMSendMessageResult {
   String? antispamResult;
 
   /// 客户端本地反垃圾结果
-  @JsonKey(fromJson: _nimClientAntispamResultFromJson)
+  @JsonKey(fromJson: nimClientAntispamResultFromJson)
   NIMClientAntispamResult? clientAntispamResult;
 
   NIMSendMessageResult(
@@ -846,7 +925,7 @@ NIMMessage? nimMessageFromJson(Map? map) {
   return null;
 }
 
-NIMClientAntispamResult? _nimClientAntispamResultFromJson(Map? map) {
+NIMClientAntispamResult? nimClientAntispamResultFromJson(Map? map) {
   if (map != null) {
     return NIMClientAntispamResult.fromJson(map.cast<String, dynamic>());
   }
@@ -886,6 +965,9 @@ class NIMMessageListOption {
   /// false：如果无法确定消息完整性，从数据库中查询并返回
   bool? strictMode;
 
+  ///是否只查询本地消息
+  bool onlyQueryLocal = false;
+
   NIMMessageListOption(
       {this.conversationId,
       this.messageTypes,
@@ -894,7 +976,8 @@ class NIMMessageListOption {
       this.limit,
       this.anchorMessage,
       this.direction,
-      this.strictMode});
+      this.strictMode,
+      this.onlyQueryLocal = false});
 
   factory NIMMessageListOption.fromJson(Map<String, dynamic> map) =>
       _$NIMMessageListOptionFromJson(map);
@@ -917,11 +1000,15 @@ class NIMClearHistoryMessageOption {
   /// 扩展字段，多端同步时会同步到其它端
   String? serverExtension;
 
+  ///  清除模式，默认为 V2NIM_CLEAR_HISTORY_MODE_ALL ， 表示删除云端和本地
+  NIMClearHistoryMode? clearMode;
+
   NIMClearHistoryMessageOption(
       {this.conversationId,
       this.deleteRoam,
       this.onlineSync,
-      this.serverExtension});
+      this.serverExtension,
+      this.clearMode});
 
   factory NIMClearHistoryMessageOption.fromJson(Map<String, dynamic> map) =>
       _$NIMClearHistoryMessageOptionFromJson(map);
@@ -975,10 +1062,30 @@ class NIMAIModelCallMessage {
 
   NIMAIModelCallMessage({this.role, this.msg, required this.type});
 
-  factory NIMAIModelCallMessage.fromJson(Map<String, dynamic> map) =>
-      _$NIMAIModelCallMessageFromJson(map);
+  factory NIMAIModelCallMessage.fromJson(Map<String, dynamic> map) {
+    // Web 端 role 为字符串，其他端为 int，统一转换为 int 后再走生成代码逻辑
+    final role = map['role'];
+    if (role is String) {
+      const _webRoleMap = {
+        'system': 0,
+        'user': 1,
+        'assistant': 2,
+      };
+      map = Map<String, dynamic>.from(map);
+      map['role'] = _webRoleMap[role];
+    }
+    return _$NIMAIModelCallMessageFromJson(map);
+  }
 
-  Map<String, dynamic> toJson() => _$NIMAIModelCallMessageToJson(this);
+  Map<String, dynamic> toJson() {
+    final json = _$NIMAIModelCallMessageToJson(this);
+    // Web 端 role 需要序列化为字符串
+    if (kIsWeb && json['role'] is int) {
+      const webRoleMap = {0: 'system', 1: 'user', 2: 'assistant'};
+      json['role'] = webRoleMap[json['role']];
+    }
+    return json;
+  }
 }
 
 /// Ai 大模型配置覆盖， 配置了该字段， 则默认覆盖控制台相关配置
@@ -1044,6 +1151,9 @@ class NIMProxyAIModelCallParams {
   @JsonKey(fromJson: _nimProxyAICallAntispamConfigFromJson)
   NIMProxyAICallAntispamConfig? antispamConfig;
 
+  ///是否是流式响应，默认false
+  bool aiStream = false;
+
   NIMProxyAIModelCallParams(
       {this.accountId,
       this.requestId,
@@ -1051,7 +1161,8 @@ class NIMProxyAIModelCallParams {
       this.messages,
       this.promptVariables,
       this.modelConfigParams,
-      this.antispamConfig});
+      this.antispamConfig,
+      this.aiStream = false});
 
   factory NIMProxyAIModelCallParams.fromJson(Map<String, dynamic> map) =>
       _$NIMProxyAIModelCallParamsFromJson(map);
@@ -1147,8 +1258,27 @@ class NIMAIModelCallResult {
   /// AI响应的状态码
   int? code;
 
+  ///数字人回复内容引用资源列表
+  @JsonKey(fromJson: NIMAIRAGInfoListFromJson)
+  List<NIMAIRAGInfo>? aiRAGs;
+
+  ///回复时间戳
+  int timestamp = 0;
+
+  ///获取是否是流式响应，默认值为false
+  bool aiStream = false;
+
+  V2NIMAIModelStreamCallStatus? aiStreamStatus;
+
   NIMAIModelCallResult(
-      {this.accountId, this.requestId, this.content, this.code});
+      {this.accountId,
+      this.requestId,
+      this.content,
+      this.code,
+      this.aiRAGs,
+      this.timestamp = 0,
+      this.aiStream = false,
+      this.aiStreamStatus});
 
   factory NIMAIModelCallResult.fromJson(Map<String, dynamic> map) =>
       _$NIMAIModelCallResultFromJson(map);
@@ -1332,4 +1462,486 @@ class NIMVoiceToTextParams {
       _$NIMVoiceToTextParamsFromJson(map);
 
   Map<String, dynamic> toJson() => _$NIMVoiceToTextParamsToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMModifyMessageResult {
+  /// 返回修改成功后的消息体，命中云端反垃圾时，此消息体返回为null
+  @JsonKey(fromJson: nimMessageFromJson)
+  NIMMessage? message;
+
+  /// 协议成功，但是修改失败时的错误码，如果此错误码为非200，表示修改消息失败（比如触发了云端反垃圾），此时修改成功后的消息体返回为null
+  int? errorCode;
+
+  /// 云端反垃圾文本命中结果
+  /// 返回云端反垃圾返回的结果
+  String? antispamResult;
+
+  /// 返回客户端本地反垃圾结果
+  /// 客户端本地反垃圾结果
+  @JsonKey(fromJson: nimClientAntispamResultFromJson)
+  NIMClientAntispamResult? clientAntispamResult;
+
+  NIMModifyMessageResult(
+      {this.message,
+      this.antispamResult,
+      this.clientAntispamResult,
+      this.errorCode});
+
+  factory NIMModifyMessageResult.fromJson(Map<String, dynamic> map) =>
+      _$NIMModifyMessageResultFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMModifyMessageResultToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMModifyMessageParams {
+  /// 消息子类型
+  int? subType;
+
+  /// 消息内容
+  String? text;
+
+  /// 消息附属附件，根据消息类型继承实现
+  @JsonKey(fromJson: nimMessageAttachmentFromJson)
+  NIMMessageAttachment? attachment;
+
+  /// 消息服务端扩展，请使用 Json 字符串
+  String? serverExtension;
+
+  /// 反垃圾相关配置
+  @JsonKey(fromJson: nimMessageAntispamConfigFromJson)
+  NIMMessageAntispamConfig? antispamConfig;
+
+  /// 路由抄送相关配置
+  @JsonKey(fromJson: nimMessageRouteConfigFromJson)
+  NIMMessageRouteConfig? routeConfig;
+
+  /// 推送相关配置
+  @JsonKey(fromJson: _nimMessagePushConfigFromJson)
+  NIMMessagePushConfig? pushConfig;
+
+  /// 是否启用本地反垃圾
+  /// 只针对文本消息生效
+  /// 发送消息时候，如果该字段为true，文本消息则走本地反垃圾检测，检测后返回V2NIMClientAntispamOperateType，
+  /// 返回0，直接发送该消息
+  /// 返回1，发送替换后的文本消息
+  /// 返回2，消息发送失败， 返回本地错误码
+  /// 返回3，消息正常发送，由服务端拦截
+  bool clientAntispamEnabled = false;
+
+  /// 反垃圾命中后替换的文本
+  String? clientAntispamReplace = "";
+
+  NIMModifyMessageParams(
+      {this.attachment,
+      this.serverExtension,
+      this.pushConfig,
+      this.text,
+      this.antispamConfig,
+      this.clientAntispamEnabled = false,
+      this.clientAntispamReplace,
+      this.routeConfig,
+      this.subType});
+
+  factory NIMModifyMessageParams.fromJson(Map<String, dynamic> map) =>
+      _$NIMModifyMessageParamsFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMModifyMessageParamsToJson(this);
+}
+
+NIMMessageTargetConfig? _nimMessageTargetConfigFromJson(Map? map) {
+  if (map != null) {
+    return NIMMessageTargetConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMMessageTargetConfig {
+  /// true 表示消息发送到群组中 receiverIds 对应的成员， false 表示消息发送到群组中排除 receiverIds 以外的所有成员。
+  /// 当发送的消息会话类型为超级群时不允许设置该字段为 false
+
+  bool inclusive = true;
+
+  /// 消息接收者ID列表
+  List<String>? receiverIds;
+
+  /// 新成员是否可以查看该定向消息
+  bool newMemberVisible = false;
+
+  NIMMessageTargetConfig({
+    this.inclusive = true,
+    this.newMemberVisible = false,
+    this.receiverIds,
+  });
+
+  factory NIMMessageTargetConfig.fromJson(Map<String, dynamic> map) =>
+      _$NIMMessageTargetConfigFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMMessageTargetConfigToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMMessageAIStreamStopParams {
+  ///停止流式消息的操作类型
+  V2NIMMessageAIStreamStopOpType operationType;
+
+  /// 更新的消息内容
+  /// 仅当operationType设置为NIM_MESSAGE_AI_STREAM_STOP_OP_UPDATE时有效
+  String? updateContent;
+
+  NIMMessageAIStreamStopParams({
+    required this.operationType,
+    this.updateContent,
+  });
+
+  factory NIMMessageAIStreamStopParams.fromJson(Map<String, dynamic> map) =>
+      _$NIMMessageAIStreamStopParamsFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMMessageAIStreamStopParamsToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class NIMMessageAIRegenParams {
+  /// 重新输出数字人消息操作类型
+  V2NIMMessageAIRegenOpType operationType;
+
+  NIMMessageAIRegenParams({
+    required this.operationType,
+  });
+
+  factory NIMMessageAIRegenParams.fromJson(Map<String, dynamic> map) =>
+      _$NIMMessageAIRegenParamsFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMMessageAIRegenParamsToJson(this);
+}
+
+List<NIMAIRAGInfo>? NIMAIRAGInfoListFromJson(List<dynamic>? applicationList) {
+  return applicationList
+      ?.map((e) => NIMAIRAGInfo.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+///用于表示RAG(检索增强生成)信息，存储与引用资源相关的数据。
+@JsonSerializable(explicitToJson: true)
+class NIMAIRAGInfo {
+  String name = "";
+
+  String icon = "";
+
+  /// 引用资源的标题
+  ///
+  /// 该字段存储引用资源的标题信息，必须存在。
+  String title = "";
+
+  /// 引用资源的描述
+  ///
+  /// 该字段存储引用资源的描述信息，必须存在。
+  /// 默认值为空字符串("")。
+  String description = "";
+
+  /// 引用资源的时间戳
+  ///
+  /// 该字段表示引用资源的时间信息，以毫秒为单位，必须存在。
+  int time = 0;
+
+  /// 引用资源的URL链接
+  ///
+  /// 该字段存储引用资源的网络地址，必须存在。
+  String url = "";
+
+  NIMAIRAGInfo(
+      {this.url = '',
+      this.name = '',
+      this.time = 0,
+      this.description = '',
+      this.icon = '',
+      this.title = ''});
+
+  factory NIMAIRAGInfo.fromJson(Map<String, dynamic> map) =>
+      _$NIMAIRAGInfoFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMAIRAGInfoToJson(this);
+}
+
+NIMMessageAIStreamChunk? NIMMessageAIStreamChunkFromJson(Map? map) {
+  if (map != null) {
+    return NIMMessageAIStreamChunk.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+///该类表示流式消息分片信息，用于数字人流式回复的分片文本数据。
+@JsonSerializable(explicitToJson: true)
+class NIMMessageAIStreamChunk {
+  /// 数字人回复分片文本
+  String? content;
+
+  /// 数字人流式消息时间，即占位消息时间
+  int? messageTime;
+
+  /// 数字人流式消息当前分片时间
+  /// 注意：chunkTime >= msgTime
+  int? chunkTime;
+
+  /// 类型，当前仅支持0表示文本
+  int type = 0;
+
+  /// 分片序号，从0开始
+  int? index;
+
+  NIMMessageAIStreamChunk(
+      {this.content,
+      this.messageTime,
+      this.chunkTime,
+      this.type = 0,
+      this.index});
+
+  factory NIMMessageAIStreamChunk.fromJson(Map<String, dynamic> map) =>
+      _$NIMMessageAIStreamChunkFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMMessageAIStreamChunkToJson(this);
+}
+
+/// 流式消息分片信息
+/// 该类表示流式消息分片信息，用于流式回复的分片文本数据。
+@JsonSerializable(explicitToJson: true)
+class V2NIMMessageStreamChunk {
+  /// 流式回复分片文本
+  String? content;
+
+  /// 流式消息时间，即占位消息时间
+  int? messageTime;
+
+  /// 流式消息当前分片时间
+  /// 注意：chunkTime >= msgTime
+  int? chunkTime;
+
+  /// 类型，当前仅支持0表示文本
+  int type = 0;
+
+  /// 分片序号，从0开始
+  int? index;
+
+  V2NIMMessageStreamChunk(
+      {this.content,
+      this.messageTime,
+      this.chunkTime,
+      this.type = 0,
+      this.index});
+
+  factory V2NIMMessageStreamChunk.fromJson(Map<String, dynamic> map) =>
+      _$V2NIMMessageStreamChunkFromJson(map);
+
+  Map<String, dynamic> toJson() => _$V2NIMMessageStreamChunkToJson(this);
+}
+
+V2NIMMessageStreamChunk? _v2NIMMessageStreamChunkFromJson(Map? map) {
+  if (map != null) {
+    return V2NIMMessageStreamChunk.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+List<NIMAIRAGInfo>? _nimAIRAGInfoListFromJson(List<dynamic>? list) {
+  return list
+      ?.map((e) => NIMAIRAGInfo.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+/// 消息体当中的流式相关配置字段
+/// 该类表示流式消息的配置信息，包括状态、最近分片和引用资源列表。
+@JsonSerializable(explicitToJson: true)
+class V2NIMMessageStreamConfig {
+  /// 流式消息状态
+  @JsonKey(
+      unknownEnumValue:
+          V2NIMMessageStreamStatus.V2NIM_MESSAGE_STREAM_STATUS_NONE)
+  V2NIMMessageStreamStatus? status;
+
+  /// 流式消息最近一个分片
+  @JsonKey(fromJson: _v2NIMMessageStreamChunkFromJson)
+  V2NIMMessageStreamChunk? lastChunk;
+
+  /// 流式消息引用资源列表
+  @JsonKey(fromJson: _nimAIRAGInfoListFromJson)
+  List<NIMAIRAGInfo>? rags;
+
+  V2NIMMessageStreamConfig({
+    this.status,
+    this.lastChunk,
+    this.rags,
+  });
+
+  factory V2NIMMessageStreamConfig.fromJson(Map<String, dynamic> map) =>
+      _$V2NIMMessageStreamConfigFromJson(map);
+
+  Map<String, dynamic> toJson() => _$V2NIMMessageStreamConfigToJson(this);
+}
+
+V2NIMMessageStreamConfig? _v2NIMMessageStreamConfigFromJson(Map? map) {
+  if (map != null) {
+    return V2NIMMessageStreamConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}
+
+///本地消息更新参数类
+@JsonSerializable(explicitToJson: true)
+class NIMUpdateLocalMessageParams {
+  /// 消息子类型，需要 >= 0
+  int? subType;
+
+  /// 消息内容
+  String? text;
+
+  /// 消息附属附件，附件类型需要和原始消息附件类型保持一致
+  @JsonKey(fromJson: nimMessageAttachmentFromJson)
+  NIMMessageAttachment? attachment;
+
+  /// 消息本地扩展字段
+  String? localExtension;
+
+  /// 消息发送状态
+  /// 仅支持成功和失败， 其它状态返回参数报错
+  NIMMessageSendingState? sendingState;
+
+  NIMUpdateLocalMessageParams(
+      {this.subType,
+      this.text,
+      this.attachment,
+      this.localExtension,
+      this.sendingState});
+
+  factory NIMUpdateLocalMessageParams.fromJson(Map<String, dynamic> map) =>
+      _$NIMUpdateLocalMessageParamsFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMUpdateLocalMessageParamsToJson(this);
+}
+
+List<NIMMessage>? _messageListFromJson(List<dynamic>? applicationList) {
+  return applicationList
+      ?.map((e) => NIMMessage.fromJson((e as Map).cast<String, dynamic>()))
+      .toList();
+}
+
+///消息列表返回结果
+@JsonSerializable(explicitToJson: true)
+class NIMMessageListResult {
+  /// 消息列表
+  @JsonKey(fromJson: _messageListFromJson)
+  List<NIMMessage>? messages;
+
+  /// 消息列表的总数
+  @JsonKey(fromJson: nimMessageFromJson)
+  NIMMessage? anchorMessage;
+
+  NIMMessageListResult({
+    this.messages,
+    this.anchorMessage,
+  });
+
+  factory NIMMessageListResult.fromJson(Map<String, dynamic> map) =>
+      _$NIMMessageListResultFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMMessageListResultToJson(this);
+}
+
+/// 消息来源类型
+/// 标识消息是通过哪种方式获取的
+enum NIMMessageSource {
+  /// 未知来源
+  @JsonValue(0)
+  unknown,
+
+  /// 在线消息
+  @JsonValue(1)
+  online,
+
+  /// 离线消息
+  @JsonValue(2)
+  offline,
+
+  /// 漫游消息
+  @JsonValue(3)
+  roaming,
+}
+
+/// 清理本地消息参数
+@JsonSerializable(explicitToJson: true)
+class NIMClearLocalMessageParams {
+  /// 清理本地消息时间戳锚点（毫秒），将清理该时间戳之前的消息
+  /// 为 null 时清理所有本地消息
+  int? anchorTime;
+
+  /// 是否同时删除会话
+  bool? deleteConversation;
+
+  NIMClearLocalMessageParams({
+    this.anchorTime,
+    this.deleteConversation,
+  });
+
+  factory NIMClearLocalMessageParams.fromJson(Map<String, dynamic> map) =>
+      _$NIMClearLocalMessageParamsFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMClearLocalMessageParamsToJson(this);
+}
+
+/// 消息导出选项 @since v10.9.75
+@JsonSerializable(explicitToJson: true)
+class NIMExportMessageOption {
+  /// 导出文件路径，不能为空
+  String path;
+
+  /// 导出消息的开始时间（毫秒），为 null 则从最早消息开始
+  int? beginTime;
+
+  /// 导出消息的结束时间（毫秒），为 null 则到最新消息结束
+  int? endTime;
+
+  /// 会话 ID 列表，为 null 或空则导出所有会话消息
+  List<String>? conversationIds;
+
+  NIMExportMessageOption({
+    required this.path,
+    this.beginTime,
+    this.endTime,
+    this.conversationIds,
+  });
+
+  factory NIMExportMessageOption.fromJson(Map<String, dynamic> map) =>
+      _$NIMExportMessageOptionFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMExportMessageOptionToJson(this);
+}
+
+/// 消息导入选项 @since v10.9.75
+@JsonSerializable(explicitToJson: true)
+class NIMImportMessageOption {
+  /// 导入文件路径，不能为空
+  String path;
+
+  NIMImportMessageOption({required this.path});
+
+  factory NIMImportMessageOption.fromJson(Map<String, dynamic> map) =>
+      _$NIMImportMessageOptionFromJson(map);
+
+  Map<String, dynamic> toJson() => _$NIMImportMessageOptionToJson(this);
+}
+
+class V2NIMMessageTypeConverter with EnumConverter<NIMMessageType, int> {
+  final NIMMessageType? messageType;
+
+  V2NIMMessageTypeConverter({this.messageType});
+
+  NIMMessageType fromValue(int value, {NIMMessageType? defaultType}) {
+    return enumFromValue(_$NIMMessageTypeEnumMap, value,
+        defaultEnum: defaultType);
+  }
+
+  int toValue() {
+    return super.enumToValue(_$NIMMessageTypeEnumMap, messageType!);
+  }
 }

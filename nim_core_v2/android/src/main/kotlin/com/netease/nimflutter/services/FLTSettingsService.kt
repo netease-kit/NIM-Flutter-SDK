@@ -10,6 +10,8 @@ import android.content.Context
 import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
+import com.netease.nimflutter.convertToStatusBarNotificationConfig
+import com.netease.nimflutter.extension.toMap
 import com.netease.nimflutter.toMap
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.setting.V2NIMDndConfig.V2NIMDndConfigBuilder
@@ -45,7 +47,10 @@ class FLTSettingsService(
             "setDndConfig" to this::setDndConfig,
             "setP2PMessageMuteMode" to this::setP2PMessageMuteMode,
             "setPushMobileOnDesktopOnline" to this::setPushMobileOnDesktopOnline,
-            "setTeamMessageMuteMode" to this::setTeamMessageMuteMode
+            "setTeamMessageMuteMode" to this::setTeamMessageMuteMode,
+            "enableNotification" to ::enableNotification,
+            "updateNotificationConfig" to ::updateNotificationConfig,
+            "getPushMobileOnDesktopOnline" to ::getPushMobileOnDesktopOnline
         )
     }
 
@@ -145,6 +150,19 @@ class FLTSettingsService(
                 )
             }
         }
+    }
+
+    private suspend fun updateNotificationConfig(arguments: Map<String, *>): NimResult<Nothing> {
+        NIMClient.updateStatusBarNotificationConfig(convertToStatusBarNotificationConfig(arguments))
+        return NimResult.SUCCESS
+    }
+
+    private suspend fun enableNotification(arguments: Map<String, *>): NimResult<Nothing> {
+        val enableRegularNotification: Boolean by arguments
+        val enableRevokeMessageNotification: Boolean by arguments
+        NIMClient.toggleNotification(enableRegularNotification)
+        NIMClient.toggleRevokeMessageNotification(enableRevokeMessageNotification)
+        return NimResult.SUCCESS
     }
 
     // 设置P2P消息免打扰模式
@@ -328,6 +346,21 @@ class FLTSettingsService(
         }
     }
 
+    // 获取Apns免打扰与详情显示
+    // Returns:
+    // 免打扰与详情配置参数
+    private suspend fun getPushMobileOnDesktopOnline(arguments: Map<String, *>): NimResult<Boolean> {
+        return suspendCancellableCoroutine { cont ->
+            val need = settingService.pushMobileOnDesktopOnline
+            cont.resume(
+                NimResult(
+                    code = 0,
+                    data = need
+                )
+            )
+        }
+    }
+
     private val settingListener =
         object : V2NIMSettingListener {
             override fun onTeamMessageMuteModeChanged(
@@ -359,6 +392,15 @@ class FLTSettingsService(
                     mapOf(
                         "accountId" to accountId,
                         "muteMode" to muteMode?.value
+                    )
+                )
+            }
+
+            override fun onPushMobileOnDesktopOnline(need: Boolean) {
+                notifyEvent(
+                    "onPushMobileOnDesktopOnline",
+                    mapOf(
+                        "need" to need
                     )
                 )
             }

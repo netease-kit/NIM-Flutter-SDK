@@ -6,56 +6,60 @@ import Foundation
 import NIMSDK
 
 extension V2NIMUpdateTeamInfoParams {
-  func toDictionary() -> [String: Any] {
-    let dict: [String: Any] = [
-      #keyPath(name): name ?? "",
-      #keyPath(memberLimit): memberLimit,
-      #keyPath(intro): intro ?? "",
-      #keyPath(announcement): announcement ?? "",
-      #keyPath(avatar): avatar ?? "",
-      #keyPath(serverExtension): serverExtension ?? "",
-      #keyPath(joinMode): joinMode.rawValue,
-      #keyPath(agreeMode): agreeMode.rawValue,
-      #keyPath(inviteMode): inviteMode.rawValue,
-      #keyPath(updateInfoMode): updateInfoMode.rawValue,
-      #keyPath(updateExtensionMode): updateExtensionMode.rawValue,
-    ]
-    return dict
+  /// 转换为字典， 用keypath 取属性作为 key 值
+  /// - Returns: 字典
+  func toDic() -> [String: Any] {
+    var keyPaths = [String: Any]()
+    keyPaths[#keyPath(name)] = name
+    keyPaths[#keyPath(memberLimit)] = memberLimit
+    keyPaths[#keyPath(intro)] = intro
+    keyPaths[#keyPath(announcement)] = announcement
+    keyPaths[#keyPath(avatar)] = avatar
+    keyPaths[#keyPath(serverExtension)] = serverExtension
+    keyPaths[#keyPath(joinMode)] = joinMode.rawValue
+    keyPaths[#keyPath(agreeMode)] = agreeMode.rawValue
+    keyPaths[#keyPath(inviteMode)] = inviteMode.rawValue
+    keyPaths[#keyPath(updateInfoMode)] = updateInfoMode.rawValue
+    keyPaths[#keyPath(updateExtensionMode)] = updateExtensionMode.rawValue
+
+    return keyPaths
   }
 
-  static func fromDictionary(_ dict: [String: Any]) -> V2NIMUpdateTeamInfoParams {
+  /// 转换为对象， 用keypath 取属性作为 key 值
+  /// - Returns: 对象
+  static func fromDic(_ arguments: [String: Any]) -> V2NIMUpdateTeamInfoParams {
     let params = V2NIMUpdateTeamInfoParams()
-    if let name = dict[#keyPath(name)] as? String {
+    if let name = arguments[#keyPath(name)] as? String {
       params.name = name
     }
-    if let memberLimit = dict[#keyPath(memberLimit)] as? Int {
+    if let memberLimit = arguments[#keyPath(memberLimit)] as? Int {
       params.memberLimit = memberLimit
     }
-    if let intro = dict[#keyPath(intro)] as? String {
+    if let intro = arguments[#keyPath(intro)] as? String {
       params.intro = intro
     }
-    if let announcement = dict[#keyPath(announcement)] as? String {
+    if let announcement = arguments[#keyPath(announcement)] as? String {
       params.announcement = announcement
     }
-    if let avatar = dict[#keyPath(avatar)] as? String {
+    if let avatar = arguments[#keyPath(avatar)] as? String {
       params.avatar = avatar
     }
-    if let serverExtension = dict[#keyPath(serverExtension)] as? String {
+    if let serverExtension = arguments[#keyPath(serverExtension)] as? String {
       params.serverExtension = serverExtension
     }
-    if let joinMode = dict[#keyPath(joinMode)] as? Int, let joinMode = V2NIMTeamJoinMode(rawValue: joinMode) {
+    if let joinMode = arguments[#keyPath(joinMode)] as? Int, let joinMode = V2NIMTeamJoinMode(rawValue: joinMode) {
       params.joinMode = joinMode
     }
-    if let agreeMode = dict[#keyPath(agreeMode)] as? Int, let agreeMode = V2NIMTeamAgreeMode(rawValue: agreeMode) {
+    if let agreeMode = arguments[#keyPath(agreeMode)] as? Int, let agreeMode = V2NIMTeamAgreeMode(rawValue: agreeMode) {
       params.agreeMode = agreeMode
     }
-    if let inviteMode = dict[#keyPath(inviteMode)] as? Int, let inviteMode = V2NIMTeamInviteMode(rawValue: inviteMode) {
+    if let inviteMode = arguments[#keyPath(inviteMode)] as? Int, let inviteMode = V2NIMTeamInviteMode(rawValue: inviteMode) {
       params.inviteMode = inviteMode
     }
-    if let updateInfoMode = dict[#keyPath(updateInfoMode)] as? Int, let updateInfoMode = V2NIMTeamUpdateInfoMode(rawValue: updateInfoMode) {
+    if let updateInfoMode = arguments[#keyPath(updateInfoMode)] as? Int, let updateInfoMode = V2NIMTeamUpdateInfoMode(rawValue: updateInfoMode) {
       params.updateInfoMode = updateInfoMode
     }
-    if let updateExtensionMode = dict[#keyPath(updateExtensionMode)] as? Int, let updateExtensionMode = V2NIMTeamUpdateExtensionMode(rawValue: updateExtensionMode) {
+    if let updateExtensionMode = arguments[#keyPath(updateExtensionMode)] as? Int, let updateExtensionMode = V2NIMTeamUpdateExtensionMode(rawValue: updateExtensionMode) {
       params.updateExtensionMode = updateExtensionMode
     }
     return params

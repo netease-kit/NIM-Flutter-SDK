@@ -100,6 +100,39 @@ class V2FLTTeamService : public FLTService {
   void searchTeamMembers(
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void addTeamMembersFollow(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void removeTeamMembersFollow(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void clearAllTeamJoinActionInfo(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void clearAllTeamJoinActionInfoEx(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void deleteTeamJoinActionInfo(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void inviteMemberEx(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void searchTeams(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void searchTeamMembersEx(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getOwnerTeamList(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getManagerTeamList(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+  void getTeamInfoFromCloud(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
   // 开始监听
   void startTeamEventListening();
@@ -141,6 +174,12 @@ class V2FLTTeamService : public FLTService {
   void convertMapToV2NIMTeamJoinActionInfo(
       const flutter::EncodableMap& arguments,
       v2::V2NIMTeamJoinActionInfo& info);
+
+  v2::V2NIMTeamJoinActionInfo getTeamJoinActionInfo(
+      const flutter::EncodableMap* arguments);
+
+  void convertMapToV2NIMTeamInviteParams(const flutter::EncodableMap& arguments,
+                                         v2::V2NIMTeamInviteParams& info);
 
  private:
   v2::V2NIMTeamListener listener;

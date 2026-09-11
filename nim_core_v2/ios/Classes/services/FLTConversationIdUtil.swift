@@ -43,14 +43,14 @@ class FLTConversationIdUtil: FLTBaseService, FLTService {
     nimCore.addService(self)
   }
 
-  public func conversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  func conversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let conversationId = arguments["conversationId"] as? String, let conversationTypeInt = arguments["conversationType"] as? Int, let conversationType = V2NIMConversationType(rawValue: conversationTypeInt) else {
       parameterError(resultCallback)
       return
     }
   }
 
-  public func p2pConversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  func p2pConversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let accountId = arguments["accountId"] as? String else {
       parameterError(resultCallback)
       return
@@ -59,7 +59,7 @@ class FLTConversationIdUtil: FLTBaseService, FLTService {
     successCallBack(resultCallback, covnersationId)
   }
 
-  public func teamConversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  func teamConversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let teamId = arguments["teamId"] as? String else {
       parameterError(resultCallback)
       return
@@ -68,7 +68,7 @@ class FLTConversationIdUtil: FLTBaseService, FLTService {
     successCallBack(resultCallback, covnersationId)
   }
 
-  public func superTeamConversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  func superTeamConversationId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let superTeamId = arguments["superTeamId"] as? String else {
       parameterError(resultCallback)
       return
@@ -77,7 +77,7 @@ class FLTConversationIdUtil: FLTBaseService, FLTService {
     successCallBack(resultCallback, covnersationId)
   }
 
-  public func conversationType(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  func conversationType(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -86,7 +86,7 @@ class FLTConversationIdUtil: FLTBaseService, FLTService {
     successCallBack(resultCallback, ["conversationType": covnersationType.rawValue])
   }
 
-  public func conversationTargetId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
+  func conversationTargetId(_ arguments: [String: Any], _ resultCallback: ResultCallback) {
     guard let conversationId = arguments["conversationId"] as? String else {
       parameterError(resultCallback)
       return
@@ -95,7 +95,7 @@ class FLTConversationIdUtil: FLTBaseService, FLTService {
     successCallBack(resultCallback, covnersationTargetId)
   }
 
-  public func isConversationIdValid(_ arguments: [String: Any], _ resultCallback: ResultCallback) {}
+  func isConversationIdValid(_ arguments: [String: Any], _ resultCallback: ResultCallback) {}
 
-  public func sessionTypeV1(_ arguments: [String: Any], _ resultCallback: ResultCallback) {}
+  func sessionTypeV1(_ arguments: [String: Any], _ resultCallback: ResultCallback) {}
 }

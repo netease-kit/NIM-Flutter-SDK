@@ -22,3 +22,10 @@ class NIMAntispamConfig {
 
   Map<String, dynamic> toJson() => _$NIMAntispamConfigToJson(this);
 }
+
+NIMAntispamConfig? NIMAntispamConfigFromJson(Map? map) {
+  if (map != null) {
+    return NIMAntispamConfig.fromJson(map.cast<String, dynamic>());
+  }
+  return null;
+}

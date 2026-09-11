@@ -37,6 +37,18 @@ class MethodChannelUserService extends UserServicePlatform {
 
   Future<NIMResult<void>> updateSelfUserProfile(
       NIMUserUpdateParam param) async {
+    // 检查参数
+    if (param.avatar == null &&
+        param.birthday == null &&
+        param.email == null &&
+        param.gender == null &&
+        param.name == null &&
+        param.mobile == null &&
+        param.serverExtension == null &&
+        param.sign == null) {
+      return NIMResult(NIMClientCode.paramError, null,
+          'updateSelfUserProfile params error!');
+    }
     return NIMResult.fromMap(await invokeMethod('updateSelfUserProfile',
         arguments: {'updateParam': param.toJson()}));
   }
@@ -81,6 +93,16 @@ class MethodChannelUserService extends UserServicePlatform {
           ?.map((e) => NIMUserInfo.fromJson(Map<String, dynamic>.from(e)))
           .toList();
     });
+  }
+
+  /// 查看是否在黑名单
+  /// [accountIds] 检查黑名单状态的账号ID列表
+  /// 在黑名单列表的check返回为true，其它的账号不存在，不在黑名单， 账号格式错误均统一返回false
+  Future<NIMResult<Map<String, bool>>> checkBlock(
+      List<String> accountIds) async {
+    return NIMResult.fromMap(
+        await invokeMethod('checkBlock', arguments: {'accountIds': accountIds}),
+        convert: (map) => Map<String, bool>.from(map));
   }
 
   // 监听事件

@@ -52,7 +52,7 @@ void FLTMessageCreator::createTextMessage(
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string text;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -82,7 +82,7 @@ void FLTMessageCreator::createImageMessage(
   int width;
   int height;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -120,7 +120,7 @@ void FLTMessageCreator::createAudioMessage(
   std::string sceneName;
   int duration;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -157,7 +157,7 @@ void FLTMessageCreator::createVideoMessage(
   int height;
   int duration;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -195,7 +195,7 @@ void FLTMessageCreator::createFileMessage(
   std::string name;
   std::string sceneName;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -227,7 +227,7 @@ void FLTMessageCreator::createLocationMessage(
   double longitude;
   std::string address;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -258,7 +258,7 @@ void FLTMessageCreator::createCustomMessage(
   std::string text;
   std::string rawAttachment;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -286,7 +286,7 @@ void FLTMessageCreator::createTipsMessage(
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   std::string text;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -311,7 +311,7 @@ void FLTMessageCreator::createForwardMessage(
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
   v2::V2NIMMessage forwardMessage;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }
@@ -336,13 +336,13 @@ void FLTMessageCreator::createForwardMessage(
 void FLTMessageCreator::createCallMessage(
     const flutter::EncodableMap* arguments,
     std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-  int type;
+  int type = 0;
   std::string channelId;
-  int status;
+  int status = 0;
   std::string text;
   std::vector<v2::V2NIMMessageCallDuration> durations;
   auto iter = arguments->begin();
-  for (iter; iter != arguments->end(); ++iter) {
+  for (; iter != arguments->end(); ++iter) {
     if (iter->second.IsNull()) {
       continue;
     }

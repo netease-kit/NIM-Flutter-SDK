@@ -11,23 +11,31 @@ import com.netease.nimflutter.FLTService
 import com.netease.nimflutter.LocalError.paramErrorCode
 import com.netease.nimflutter.NimCore
 import com.netease.nimflutter.NimResult
-import com.netease.nimflutter.toAddCollectionParams
-import com.netease.nimflutter.toClearHistoryMessageOption
-import com.netease.nimflutter.toCollection
-import com.netease.nimflutter.toCollectionOption
+import com.netease.nimflutter.extension.toAddCollectionParams
+import com.netease.nimflutter.extension.toClearHistoryMessageOption
+import com.netease.nimflutter.extension.toCollection
+import com.netease.nimflutter.extension.toCollectionOption
+import com.netease.nimflutter.extension.toMap
+import com.netease.nimflutter.extension.toMessage
+import com.netease.nimflutter.extension.toMessageListOption
+import com.netease.nimflutter.extension.toMessageQuickCommentPushConfig
+import com.netease.nimflutter.extension.toMessageRefer
+import com.netease.nimflutter.extension.toMessageRevokeParams
+import com.netease.nimflutter.extension.toMessageSearchParams
+import com.netease.nimflutter.extension.toModifyMessageParams
+import com.netease.nimflutter.extension.toNIMMessageAIRegenParams
+import com.netease.nimflutter.extension.toNIMMessageAIStreamStopParams
+import com.netease.nimflutter.extension.toNIMMessageSearchExParams
+import com.netease.nimflutter.extension.toNIMUpdateLocalMessageParams
+import com.netease.nimflutter.extension.toSendMessageParams
+import com.netease.nimflutter.extension.toThreadMessageListOption
+import com.netease.nimflutter.extension.toVoiceToTextParams
+import com.netease.nimflutter.impl.MessageFilterImpl
 import com.netease.nimflutter.toMap
-import com.netease.nimflutter.toMessage
-import com.netease.nimflutter.toMessageListOption
-import com.netease.nimflutter.toMessageQuickCommentPushConfig
-import com.netease.nimflutter.toMessageRefer
-import com.netease.nimflutter.toMessageRevokeParams
-import com.netease.nimflutter.toMessageSearchParams
-import com.netease.nimflutter.toSendMessageParams
-import com.netease.nimflutter.toThreadMessageListOption
-import com.netease.nimflutter.toVoiceToTextParams
 import com.netease.nimlib.sdk.NIMClient
 import com.netease.nimlib.sdk.v2.message.V2NIMClearHistoryNotification
 import com.netease.nimlib.sdk.v2.message.V2NIMMessage
+import com.netease.nimlib.sdk.v2.message.V2NIMMessageConverter
 import com.netease.nimlib.sdk.v2.message.V2NIMMessageDeletedNotification
 import com.netease.nimlib.sdk.v2.message.V2NIMMessageListener
 import com.netease.nimlib.sdk.v2.message.V2NIMMessagePinNotification
@@ -36,6 +44,10 @@ import com.netease.nimlib.sdk.v2.message.V2NIMMessageRevokeNotification
 import com.netease.nimlib.sdk.v2.message.V2NIMMessageService
 import com.netease.nimlib.sdk.v2.message.V2NIMP2PMessageReadReceipt
 import com.netease.nimlib.sdk.v2.message.V2NIMTeamMessageReadReceipt
+import com.netease.nimlib.sdk.v2.message.model.V2NIMMessageFilter
+import com.netease.nimlib.sdk.v2.message.params.V2NIMClearLocalMessageParams
+import com.netease.nimlib.sdk.v2.message.params.V2NIMMessageInsertParams
+import com.netease.nimlib.sdk.v2.message.params.V2NIMTextTranslateParams
 import com.netease.yunxin.kit.alog.ALog
 import kotlin.coroutines.resume
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -62,6 +74,8 @@ class FLTMessageService(
 
     override val serviceName = "MessageService"
 
+    private var messageFilter: V2NIMMessageFilter? = null
+
     init {
         nimCore.onInitialized {
             messageListener()
@@ -77,6 +91,7 @@ class FLTMessageService(
                 "clearHistoryMessage" to ::clearHistoryMessage,
                 "updateMessageLocalExtension" to ::updateMessageLocalExtension,
                 "insertMessageToLocal" to ::insertMessageToLocal,
+                "insertMessageToLocalEx" to ::insertMessageToLocalEx,
                 "pinMessage" to ::pinMessage,
                 "unpinMessage" to ::unpinMessage,
                 "updatePinMessage" to ::updatePinMessage,
@@ -98,7 +113,21 @@ class FLTMessageService(
                 "cancelMessageAttachmentUpload" to ::cancelMessageAttachmentUpload,
                 "searchCloudMessages" to ::searchCloudMessages,
                 "getLocalThreadMessageList" to ::getLocalThreadMessageList,
-                "getThreadMessageList" to ::getThreadMessageList
+                "getThreadMessageList" to ::getThreadMessageList,
+                "modifyMessage" to ::modifyMessage,
+                "messageSerialization" to ::messageSerialization,
+                "messageDeserialization" to ::messageDeserialization,
+                "regenAIMessage" to ::regenAIMessage,
+                "stopAIStreamMessage" to ::stopAIStreamMessage,
+                "setMessageFilter" to ::setMessageFilter,
+                "searchCloudMessagesEx" to ::searchCloudMessagesEx,
+                "searchLocalMessages" to ::searchLocalMessages,
+                "getMessageListEx" to ::getMessageListEx,
+                "getCollectionListExByOption" to ::getCollectionListExByOption,
+                "updateLocalMessage" to ::updateLocalMessage,
+                "clearRoamingMessage" to ::clearRoamingMessage,
+                "clearLocalMessage" to ::clearLocalMessage,
+                "translateText" to ::translateText
             )
         }
     }
@@ -134,7 +163,7 @@ class FLTMessageService(
                         )
                         trySend(
                             Pair<String, Map<String, Any?>>(
-                                "onReceiveMessageModified",
+                                "onReceiveMessagesModified",
                                 mapOf(
                                     "messages" to messages?.map { it.toMap() }
                                 )
@@ -386,7 +415,7 @@ class FLTMessageService(
             return NimResult(code = paramErrorCode, errorDetails = "message is empty")
         }
 
-        val paramsMap = arguments["params"] as Map<String, *>?
+        val paramsMap = arguments["revokeParams"] as Map<String, *>?
         return suspendCancellableCoroutine { cont ->
             NIMClient.getService(V2NIMMessageService::class.java).revokeMessage(
                 messageMap?.toMessage(),
@@ -537,15 +566,17 @@ class FLTMessageService(
 
     private suspend fun updateMessageLocalExtension(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
         val messageMap = arguments["message"] as Map<String, *>?
-        if (messageMap?.isEmpty() == true) {
+        if (messageMap?.isNotEmpty() != true) {
             return NimResult(code = paramErrorCode, errorDetails = "message is empty")
         }
 
         val localExtension = arguments["localExtension"] as String? ?: return NimResult(code = paramErrorCode, errorDetails = "localExtension is null")
 
+        val message = messageMap.toMessage()
+
         return suspendCancellableCoroutine { cont ->
             NIMClient.getService(V2NIMMessageService::class.java).updateMessageLocalExtension(
-                messageMap?.toMessage(),
+                message,
                 localExtension,
                 {
                     cont.resume(NimResult(0, data = it?.toMap()))
@@ -573,6 +604,40 @@ class FLTMessageService(
                 conversationId,
                 senderId,
                 createTime,
+                {
+                    cont.resume(NimResult(0, data = it?.toMap()))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun insertMessageToLocalEx(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val messageMap = arguments["message"] as Map<String, *>?
+        if (messageMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "message is empty")
+        }
+
+        val paramsMap = arguments["params"] as Map<String, *>?
+        if (paramsMap == null || paramsMap.isEmpty()) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+
+        val conversationId = paramsMap["conversationId"] as String?
+            ?: return NimResult(code = paramErrorCode, errorDetails = "conversationId is empty")
+
+        val senderId = paramsMap["senderId"] as String?
+        val createTime = (paramsMap["createTime"] as? Number)?.toLong() ?: 0L
+        val lastMessageUpdateEnabled = paramsMap["lastMessageUpdateEnabled"] as? Boolean ?: true
+
+        val insertParams = V2NIMMessageInsertParams(conversationId, senderId, createTime, lastMessageUpdateEnabled)
+
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).insertMessageToLocalEx(
+                messageMap?.toMessage(),
+                insertParams,
                 {
                     cont.resume(NimResult(0, data = it?.toMap()))
                 },
@@ -1041,6 +1106,293 @@ class FLTMessageService(
                 },
                 {
                     cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun modifyMessage(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val messageMap = arguments["message"] as Map<String, *>?
+        if (messageMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "message is empty")
+        }
+
+        val message = messageMap?.toMessage()
+        val paramsMap = arguments["params"] as Map<String, *>?
+        val params = paramsMap?.toModifyMessageParams()
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).modifyMessage(
+                message,
+                params,
+                {
+                    cont.resume(NimResult(0, data = it?.toMap()))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun messageSerialization(arguments: Map<String, *>): NimResult<String> {
+        val message = arguments["message"] as Map<String, *>?
+        if (message?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+
+        return suspendCancellableCoroutine { cont ->
+            val msg = V2NIMMessageConverter.messageSerialization(message?.toMessage())
+            cont.resume(NimResult(0, data = msg))
+        }
+    }
+
+    private suspend fun messageDeserialization(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val message = arguments["msg"] as String?
+        if (message?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+
+        return suspendCancellableCoroutine { cont ->
+            val msg = V2NIMMessageConverter.messageDeserialization(message)
+            cont.resume(NimResult(0, data = msg.toMap()))
+        }
+    }
+
+    private suspend fun regenAIMessage(arguments: Map<String, *>): NimResult<Void> {
+        val messageMap = arguments["message"] as Map<String, *>?
+        if (messageMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "message is empty")
+        }
+
+        val paramsMap = arguments["params"] as Map<String, *>?
+        if (paramsMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).regenAIMessage(
+                messageMap?.toMessage(),
+                paramsMap?.toNIMMessageAIRegenParams(),
+                {
+                    cont.resume(NimResult(0, data = null))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun stopAIStreamMessage(arguments: Map<String, *>): NimResult<Void> {
+        val messageMap = arguments["message"] as Map<String, *>?
+        if (messageMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "message is empty")
+        }
+
+        val paramsMap = arguments["params"] as Map<String, *>?
+        if (paramsMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).stopAIStreamMessage(
+                messageMap?.toMessage(),
+                paramsMap?.toNIMMessageAIStreamStopParams(),
+                {
+                    cont.resume(NimResult(0, data = null))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun setMessageFilter(arguments: Map<String, *>): NimResult<Nothing> {
+        val filter = arguments["filter"] as? Boolean? ?: false
+        if (filter) {
+            if (messageFilter == null) {
+                messageFilter = MessageFilterImpl(serviceName, nimCore)
+            }
+            NIMClient.getService(V2NIMMessageService::class.java).setMessageFilter(messageFilter)
+        } else {
+            messageFilter = null
+            NIMClient.getService(V2NIMMessageService::class.java).setMessageFilter(null)
+        }
+        return NimResult.SUCCESS
+    }
+
+    private suspend fun searchCloudMessagesEx(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val paramsMap = arguments["params"] as Map<String, *>?
+        if (paramsMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).searchCloudMessagesEx(
+                paramsMap?.toNIMMessageSearchExParams(),
+                {
+                    cont.resume(NimResult(0, data = it.toMap()))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun searchLocalMessages(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val paramsMap = arguments["params"] as Map<String, *>?
+        if (paramsMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "params is empty")
+        }
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).searchLocalMessages(
+                paramsMap?.toNIMMessageSearchExParams(),
+                {
+                    cont.resume(NimResult(0, data = it.toMap()))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun getMessageListEx(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val optionMap = arguments["option"] as Map<String, *>?
+        if (optionMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "option is empty")
+        }
+
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).getMessageListEx(
+                optionMap?.toMessageListOption(),
+                { result ->
+                    cont.resume(
+                        NimResult(
+                            0,
+                            data = result.toMap()
+                        )
+                    )
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun getCollectionListExByOption(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val optionMap = arguments["option"] as Map<String, *>?
+        if (optionMap?.isEmpty() == true) {
+            return NimResult(code = paramErrorCode, errorDetails = "option is empty")
+        }
+
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).getCollectionListExByOption(
+                optionMap?.toCollectionOption(),
+                { result ->
+                    cont.resume(
+                        NimResult(
+                            0,
+                            data = result.toMap()
+                        )
+                    )
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun updateLocalMessage(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val paramsMap = arguments["params"] as Map<String, *>?
+        val messageMap = arguments["message"] as Map<String, *>?
+        if (paramsMap?.isNotEmpty() != true ||
+            messageMap?.isNotEmpty() != true
+        ) {
+            return NimResult(code = paramErrorCode, errorDetails = "message or params is empty")
+        }
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).updateLocalMessage(
+                messageMap.toMessage(),
+                paramsMap.toNIMUpdateLocalMessageParams(),
+                {
+                    cont.resume(NimResult(0, data = it.toMap()))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun clearRoamingMessage(arguments: Map<String, *>): NimResult<Void> {
+        val conversationIds = arguments["conversationIds"] as List<String>?
+//        if (conversationIds?.isEmpty() == true) {
+//            return NimResult(code = paramErrorCode, errorDetails = "conversationIds is empty")
+//        }
+        return suspendCancellableCoroutine { cont ->
+            NIMClient.getService(V2NIMMessageService::class.java).clearRoamingMessage(
+                conversationIds,
+                {
+                    cont.resume(NimResult(0, data = null))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun clearLocalMessage(arguments: Map<String, *>): NimResult<Void> {
+        return suspendCancellableCoroutine { cont ->
+            val paramsMap = arguments["params"] as? Map<String, *>
+            val anchorTime = paramsMap?.let {
+                (it["anchorTime"] as? Long) ?: (it["anchorTime"] as? Int)?.toLong() ?: 0L
+            } ?: 0L
+            val deleteConversation = paramsMap?.get("deleteConversation") as? Boolean ?: false
+            val params = V2NIMClearLocalMessageParams(anchorTime, deleteConversation)
+            NIMClient.getService(V2NIMMessageService::class.java).clearLocalMessage(
+                params,
+                {
+                    cont.resume(NimResult(0, data = null))
+                },
+                {
+                    cont.resume(NimResult(it.code, errorDetails = it.desc))
+                }
+            )
+        }
+    }
+
+    private suspend fun translateText(arguments: Map<String, *>): NimResult<Map<String, Any?>?> {
+        val paramsMap = arguments["params"] as? Map<String, *>
+            ?: return NimResult(paramErrorCode, errorDetails = "params is required")
+        val text = paramsMap["text"] as? String
+            ?: return NimResult(paramErrorCode, errorDetails = "text is required")
+        val targetLanguage = paramsMap["targetLanguage"] as? String
+            ?: return NimResult(paramErrorCode, errorDetails = "targetLanguage is required")
+        val sourceLanguage = paramsMap["sourceLanguage"] as? String
+
+        return suspendCancellableCoroutine { cont ->
+            val translateParams = V2NIMTextTranslateParams(text, sourceLanguage ?: V2NIMTextTranslateParams.DEFAULT_SOURCE_LANGUAGE, targetLanguage)
+            NIMClient.getService(V2NIMMessageService::class.java).translateText(
+                translateParams,
+                { result ->
+                    cont.resume(
+                        NimResult(
+                            0,
+                            data = mapOf(
+                                "translatedText" to result.translatedText,
+                                "sourceLanguage" to result.sourceLanguage,
+                                "targetLanguage" to result.targetLanguage
+                            )
+                        )
+                    )
+                },
+                { error ->
+                    cont.resume(NimResult(error.code, errorDetails = error.desc))
                 }
             )
         }

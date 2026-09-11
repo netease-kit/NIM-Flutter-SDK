@@ -48,10 +48,10 @@ NIMTeamMessageReadReceiptDetail _$NIMTeamMessageReadReceiptDetailFromJson(
       readReceipt:
           _nimTeamMessageReadReceiptFromJson(json['readReceipt'] as Map?),
       readAccountList: (json['readAccountList'] as List<dynamic>?)
-          ?.map((e) => e as String?)
+          ?.map((e) => e as String)
           .toList(),
       unreadAccountList: (json['unreadAccountList'] as List<dynamic>?)
-          ?.map((e) => e as String?)
+          ?.map((e) => e as String)
           .toList(),
     );
 

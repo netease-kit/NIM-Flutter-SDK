@@ -13,8 +13,11 @@ NIMLoginOption _$NIMLoginOptionFromJson(Map<String, dynamic> json) =>
       authType:
           $enumDecodeNullable(_$NIMLoginAuthTypeEnumMap, json['authType']),
       forceMode: json['forceMode'] as bool?,
+      offlineMode: json['offlineMode'] as bool?,
       syncLevel:
           $enumDecodeNullable(_$NIMDataSyncLevelEnumMap, json['syncLevel']),
+      extensionProvider: json['extensionProvider'] as bool? ?? false,
+      tokenProvider: json['tokenProvider'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$NIMLoginOptionToJson(NIMLoginOption instance) =>
@@ -22,8 +25,11 @@ Map<String, dynamic> _$NIMLoginOptionToJson(NIMLoginOption instance) =>
       'retryCount': instance.retryCount,
       'timeout': instance.timeout,
       'forceMode': instance.forceMode,
+      'offlineMode': instance.offlineMode,
       'authType': _$NIMLoginAuthTypeEnumMap[instance.authType],
       'syncLevel': _$NIMDataSyncLevelEnumMap[instance.syncLevel],
+      'extensionProvider': instance.extensionProvider,
+      'tokenProvider': instance.tokenProvider,
     };
 
 const _$NIMLoginAuthTypeEnumMap = {
@@ -63,6 +69,7 @@ NIMLoginClient _$NIMLoginClientFromJson(Map<String, dynamic> json) =>
       customClientType: (json['customClientType'] as num?)?.toInt(),
       customTag: json['customTag'] as String?,
       timestamp: (json['timestamp'] as num?)?.toInt(),
+      clientIP: json['clientIP'] as String?,
     );
 
 Map<String, dynamic> _$NIMLoginClientToJson(NIMLoginClient instance) =>
@@ -73,6 +80,7 @@ Map<String, dynamic> _$NIMLoginClientToJson(NIMLoginClient instance) =>
       'customTag': instance.customTag,
       'customClientType': instance.customClientType,
       'clientId': instance.clientId,
+      'clientIP': instance.clientIP,
     };
 
 const _$NIMLoginClientTypeEnumMap = {

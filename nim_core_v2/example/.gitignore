@@ -33,7 +33,8 @@
 pubspec.lock
 
 # Web related
-lib/generated_plugin_registrant.dart
+# NIM Web SDK 本地文件（通过 web/download_nim_sdk.sh 下载，无需入库）
+web/NIM_BROWSER_SDK.js
 
 # Symbolication related
 app.*.symbols
@@ -49,4 +50,7 @@ app.*.map.json
 # example app macos
 /macos/Flutter/GenertedPluginRegistrant.swift
 /macos/Flutter/ephemeral/
+
+# example app android
+/android/app/.cxx
 

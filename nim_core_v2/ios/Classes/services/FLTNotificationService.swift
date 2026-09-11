@@ -216,8 +216,9 @@ extension V2NIMCustomNotification {
     if let receiverId = dictionary[#keyPath(receiverId)] as? String {
       notification.setValue(receiverId, forKey: #keyPath(V2NIMCustomNotification.receiverId))
     }
-    if let conversationType = dictionary[#keyPath(conversationType)] as? Int, let conversationType = NIMSessionType(rawValue: conversationType) {
-      notification.setValue(conversationType, forKey: #keyPath(V2NIMCustomNotification.conversationType))
+    if let conversationType = dictionary[#keyPath(conversationType)] as? Int,
+       let conversationType = NIMSessionType(rawValue: conversationType) {
+      notification.setValue(conversationType.rawValue, forKey: #keyPath(V2NIMCustomNotification.conversationType))
     }
     if let timestamp = dictionary[#keyPath(timestamp)] as? Double {
       notification.setValue(timestamp / 1000, forKey: #keyPath(V2NIMCustomNotification.timestamp))

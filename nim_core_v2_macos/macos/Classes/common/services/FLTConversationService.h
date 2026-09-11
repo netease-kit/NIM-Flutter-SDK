@@ -110,6 +110,10 @@ class FLTConversationService : public FLTService {
       const flutter::EncodableMap* arguments,
       std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
 
+  void getStickTopConversationList(
+      const flutter::EncodableMap* arguments,
+      std::shared_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
  private:
   v2::V2NIMConversationListener conversationListener;
 };

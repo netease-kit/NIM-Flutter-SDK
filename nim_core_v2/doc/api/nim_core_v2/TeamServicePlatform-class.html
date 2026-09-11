@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -49,7 +45,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -71,7 +66,7 @@
   <dd>
     <ul class="gt-separated dark clazz-relationships">
       <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
-        <li><a href="https://pub.dev/documentation/plugin_platform_interface/2.1.8/plugin_platform_interface/PlatformInterface-class.html">PlatformInterface</a></li>
+        <li>PlatformInterface</li>
       <li>TeamServicePlatform</li>
     </ul>
   </dd>
@@ -80,7 +75,7 @@
         
 
 
-
+        
         
 
 
@@ -90,7 +85,6 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
         <dt id="TeamServicePlatform" class="callable">
           <span class="name"><a href="../nim_core_v2/TeamServicePlatform/TeamServicePlatform.html">TeamServicePlatform</a></span><span class="signature">()</span>
@@ -302,6 +296,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -310,7 +305,7 @@
     <dl class="callables">
         <dt id="acceptInvitation" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/acceptInvitation.html">acceptInvitation</a></span><span class="signature">(<wbr><span class="parameter" id="acceptInvitation-param-invitationInfo"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamJoinActionInfo-class.html">NIMTeamJoinActionInfo</a></span> <span class="parameter-name">invitationInfo</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -323,7 +318,7 @@
 
         <dt id="acceptJoinApplication" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/acceptJoinApplication.html">acceptJoinApplication</a></span><span class="signature">(<wbr><span class="parameter" id="acceptJoinApplication-param-applicationInfo"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamJoinActionInfo-class.html">NIMTeamJoinActionInfo</a></span> <span class="parameter-name">applicationInfo</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -334,9 +329,25 @@
 
 </dd>
 
+        <dt id="addTeamMembersFollow" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/addTeamMembersFollow.html">addTeamMembersFollow</a></span><span class="signature">(<wbr><span class="parameter" id="addTeamMembersFollow-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="addTeamMembersFollow-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="addTeamMembersFollow-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  添加群组成员关注
+<code>teamId</code> 群组id,群组 ID 为空报错 191004 参数错误
+<code>teamType</code> 群组类型,群组类型不是高级群或超级群，报错 191004 参数错误
+<code>accountIds</code> 账号id列表, size==0，返回 191004 参数错误
+  
+
+</dd>
+
         <dt id="applyJoinTeam" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/applyJoinTeam.html">applyJoinTeam</a></span><span class="signature">(<wbr><span class="parameter" id="applyJoinTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="applyJoinTeam-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="applyJoinTeam-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">postscript</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -347,9 +358,36 @@
 
 </dd>
 
+        <dt id="clearAllTeamJoinActionInfo" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/clearAllTeamJoinActionInfo.html">clearAllTeamJoinActionInfo</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清空所有群申请
+  
+
+</dd>
+
+        <dt id="clearAllTeamJoinActionInfoEx" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/clearAllTeamJoinActionInfoEx.html">clearAllTeamJoinActionInfoEx</a></span><span class="signature">(<wbr><span class="parameter" id="clearAllTeamJoinActionInfoEx-param-option"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamClearJoinActionInfoOption-class.html">NIMTeamClearJoinActionInfoOption</a>?</span> <span class="parameter-name">option</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  清空所有群申请（扩展版），支持按群类型过滤
+<code>option</code> 清理条件，为 null 时清理所有申请
+  
+
+</dd>
+
         <dt id="createTeam" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/createTeam.html">createTeam</a></span><span class="signature">(<wbr><span class="parameter" id="createTeam-param-createTeamParams"><span class="type-annotation"><a href="../nim_core_v2/NIMCreateTeamParams-class.html">NIMCreateTeamParams</a></span> <span class="parameter-name">createTeamParams</span>, </span><span class="parameter" id="createTeam-param-inviteeAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">inviteeAccountIds</span>, </span><span class="parameter" id="createTeam-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">postscript</span>, </span><span class="parameter" id="createTeam-param-antispamConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMAntispamConfig-class.html">NIMAntispamConfig</a>?</span> <span class="parameter-name">antispamConfig</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCreateTeamResult-class.html">NIMCreateTeamResult</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMCreateTeamResult-class.html">NIMCreateTeamResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -360,9 +398,23 @@
 
 </dd>
 
+        <dt id="deleteTeamJoinActionInfo" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/deleteTeamJoinActionInfo.html">deleteTeamJoinActionInfo</a></span><span class="signature">(<wbr><span class="parameter" id="deleteTeamJoinActionInfo-param-application"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamJoinActionInfo-class.html">NIMTeamJoinActionInfo</a></span> <span class="parameter-name">application</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  删除群申请
+<code>application</code>需要删除的群申请
+  
+
+</dd>
+
         <dt id="dismissTeam" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/dismissTeam.html">dismissTeam</a></span><span class="signature">(<wbr><span class="parameter" id="dismissTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="dismissTeam-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -375,7 +427,7 @@
 
         <dt id="getJoinedTeamCount" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getJoinedTeamCount.html">getJoinedTeamCount</a></span><span class="signature">(<wbr><span class="parameter" id="getJoinedTeamCount-param-teamTypes"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span>&gt;</span></span> <span class="parameter-name">teamTypes</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -388,7 +440,7 @@
 
         <dt id="getJoinedTeamList" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getJoinedTeamList.html">getJoinedTeamList</a></span><span class="signature">(<wbr><span class="parameter" id="getJoinedTeamList-param-teamTypes"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span>&gt;</span></span> <span class="parameter-name">teamTypes</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -399,9 +451,42 @@
 
 </dd>
 
+        <dt id="getManagerTeamList" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getManagerTeamList.html">getManagerTeamList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getManagerTeamList-param-teamTypes"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span>&gt;</span>?</span> <span class="parameter-name">teamTypes</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取当前自己管理的群组列表（群主 + 管理员）
+返回群组按群组创建时间升序排序
+只查本地
+<code>teamTypes</code> 群组类型列表，如果为null，或者列表为empty，表示查询所有群类型，否则按输入群类型进行查询
+  
+
+</dd>
+
+        <dt id="getOwnerTeamList" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getOwnerTeamList.html">getOwnerTeamList</a></span><span class="signature">(<wbr>{<span class="parameter" id="getOwnerTeamList-param-teamTypes"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span>&gt;</span>?</span> <span class="parameter-name">teamTypes</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  获取当前自己的群组列表
+返回群组按群组创建时间升序排序
+需要判断群组是否有效且自己在群中
+只查本地
+<code>teamTypes</code> 群组类型列表，如果为null，或者列表为empty， 表示查询所有所有群类型,否则按输入群类型进行查询
+  
+
+</dd>
+
         <dt id="getTeamInfo" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamInfo.html">getTeamInfo</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamInfo-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="getTeamInfo-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -414,7 +499,7 @@
 
         <dt id="getTeamInfoByIds" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamInfoByIds.html">getTeamInfoByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamInfoByIds-param-teamIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">teamIds</span>, </span><span class="parameter" id="getTeamInfoByIds-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -425,9 +510,24 @@
 
 </dd>
 
+        <dt id="getTeamInfoFromCloud" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamInfoFromCloud.html">getTeamInfoFromCloud</a></span><span class="signature">(<wbr>{<span class="parameter" id="getTeamInfoFromCloud-param-teamId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="getTeamInfoFromCloud-param-teamType"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  从云端查询群组信息
+<code>teamId</code> 群组ID
+<code>teamType</code> 群组类型
+  
+
+</dd>
+
         <dt id="getTeamJoinActionInfoList" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamJoinActionInfoList.html">getTeamJoinActionInfoList</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamJoinActionInfoList-param-queryOption"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamJoinActionInfoQueryOption-class.html">NIMTeamJoinActionInfoQueryOption</a></span> <span class="parameter-name">queryOption</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamJoinActionInfoResult-class.html">NIMTeamJoinActionInfoResult</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamJoinActionInfoResult-class.html">NIMTeamJoinActionInfoResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -440,7 +540,7 @@
 
         <dt id="getTeamMemberInvitor" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamMemberInvitor.html">getTeamMemberInvitor</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamMemberInvitor-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="getTeamMemberInvitor-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="getTeamMemberInvitor-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -453,7 +553,7 @@
 
         <dt id="getTeamMemberList" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamMemberList.html">getTeamMemberList</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamMemberList-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="getTeamMemberList-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="getTeamMemberList-param-queryOption"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamMemberQueryOption-class.html">NIMTeamMemberQueryOption</a></span> <span class="parameter-name">queryOption</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMemberListResult-class.html">NIMTeamMemberListResult</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMemberListResult-class.html">NIMTeamMemberListResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -466,7 +566,7 @@
 
         <dt id="getTeamMemberListByIds" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/getTeamMemberListByIds.html">getTeamMemberListByIds</a></span><span class="signature">(<wbr><span class="parameter" id="getTeamMemberListByIds-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="getTeamMemberListByIds-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="getTeamMemberListByIds-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -479,7 +579,7 @@
 
         <dt id="handleMethodCall" class="callable inherited">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/handleMethodCall.html">handleMethodCall</a></span><span class="signature">(<wbr><span class="parameter" id="handleMethodCall-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="handleMethodCall-param-arguments"><span class="type-annotation">dynamic</span> <span class="parameter-name">arguments</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a></span>
   </span>
   
 
@@ -492,7 +592,7 @@
 
         <dt id="inviteMember" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/inviteMember.html">inviteMember</a></span><span class="signature">(<wbr><span class="parameter" id="inviteMember-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="inviteMember-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="inviteMember-param-inviteeAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">inviteeAccountIds</span>, </span><span class="parameter" id="inviteMember-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">postscript</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -503,9 +603,25 @@
 
 </dd>
 
+        <dt id="inviteMemberEx" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/inviteMemberEx.html">inviteMemberEx</a></span><span class="signature">(<wbr><span class="parameter" id="inviteMemberEx-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="inviteMemberEx-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="inviteMemberEx-param-inviteeParams"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamInviteParams-class.html">NIMTeamInviteParams</a></span> <span class="parameter-name">inviteeParams</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  邀请成员加入群组
+<code>teamId</code> 群组id
+<code>teamType</code> 群组类型
+<code>inviteeParams</code> 被邀请加入群的参数
+  
+
+</dd>
+
         <dt id="invokeMethod" class="callable inherited">
-  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/invokeMethod.html">invokeMethod</a></span><span class="signature">(<wbr><span class="parameter" id="invokeMethod-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="invokeMethod-param-arguments">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">arguments</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/invokeMethod.html">invokeMethod</a></span><span class="signature">(<wbr><span class="parameter" id="invokeMethod-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, {</span><span class="parameter" id="invokeMethod-param-arguments"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">arguments</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -518,7 +634,7 @@
 
         <dt id="kickMember" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/kickMember.html">kickMember</a></span><span class="signature">(<wbr><span class="parameter" id="kickMember-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="kickMember-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="kickMember-param-memberAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">memberAccountIds</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -531,7 +647,7 @@
 
         <dt id="leaveTeam" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/leaveTeam.html">leaveTeam</a></span><span class="signature">(<wbr><span class="parameter" id="leaveTeam-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="leaveTeam-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -557,7 +673,7 @@
 
         <dt id="onEvent" class="callable inherited">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/onEvent.html">onEvent</a></span><span class="signature">(<wbr><span class="parameter" id="onEvent-param-method"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="onEvent-param-arguments"><span class="type-annotation">dynamic</span> <span class="parameter-name">arguments</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a></span>
   </span>
   
 
@@ -583,7 +699,7 @@
 
         <dt id="rejectInvitation" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/rejectInvitation.html">rejectInvitation</a></span><span class="signature">(<wbr><span class="parameter" id="rejectInvitation-param-invitationInfo"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamJoinActionInfo-class.html">NIMTeamJoinActionInfo</a></span> <span class="parameter-name">invitationInfo</span>, </span><span class="parameter" id="rejectInvitation-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">postscript</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -596,7 +712,7 @@
 
         <dt id="rejectJoinApplication" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/rejectJoinApplication.html">rejectJoinApplication</a></span><span class="signature">(<wbr><span class="parameter" id="rejectJoinApplication-param-applicationInfo"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamJoinActionInfo-class.html">NIMTeamJoinActionInfo</a></span> <span class="parameter-name">applicationInfo</span>, </span><span class="parameter" id="rejectJoinApplication-param-postscript"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">postscript</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -607,9 +723,25 @@
 
 </dd>
 
+        <dt id="removeTeamMembersFollow" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/removeTeamMembersFollow.html">removeTeamMembersFollow</a></span><span class="signature">(<wbr><span class="parameter" id="removeTeamMembersFollow-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="removeTeamMembersFollow-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="removeTeamMembersFollow-param-accountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">accountIds</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  移除群组成员关注
+<code>teamId</code> 群组id,群组 ID 为空报错 191004 参数错误
+<code>teamType</code> 群组类型,群组类型不是高级群或超级群，报错 191004 参数错误
+<code>accountIds</code> 账号id列表, size==0，返回 191004 参数错误
+  
+
+</dd>
+
         <dt id="searchTeamByKeyword" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/searchTeamByKeyword.html">searchTeamByKeyword</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeamByKeyword-param-keyword"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">keyword</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -622,7 +754,7 @@
 
         <dt id="searchTeamMembers" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/searchTeamMembers.html">searchTeamMembers</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeamMembers-param-searchOption"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamMemberSearchOption-class.html">NIMTeamMemberSearchOption</a></span> <span class="parameter-name">searchOption</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMemberListResult-class.html">NIMTeamMemberListResult</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMemberListResult-class.html">NIMTeamMemberListResult</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -633,9 +765,39 @@
 
 </dd>
 
+        <dt id="searchTeamMembersEx" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/searchTeamMembersEx.html">searchTeamMembersEx</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeamMembersEx-param-searchParams"><span class="type-annotation"><a href="../nim_core_v2/NIMSearchTeamMemberParams-class.html">NIMSearchTeamMemberParams</a></span> <span class="parameter-name">searchParams</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamRefer-class.html">NIMTeamRefer</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeamMember-class.html">NIMTeamMember</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  本地搜索群成员（扩展，支持跨多个群）
+<code>searchParams</code> 搜索参数，包含关键词、群引用列表、分页 token 等
+返回以 <a href="../nim_core_v2/NIMTeamRefer-class.html">NIMTeamRefer</a> 为 key、匹配成员列表为 value 的 Map
+  
+
+</dd>
+
+        <dt id="searchTeams" class="callable">
+  <span class="name"><a href="../nim_core_v2/TeamServicePlatform/searchTeams.html">searchTeams</a></span><span class="signature">(<wbr><span class="parameter" id="searchTeams-param-searchParams"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamSearchParams-class.html">NIMTeamSearchParams</a></span> <span class="parameter-name">searchParams</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a></span>&gt;</span></span>&gt;</span></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  本地全文搜索群信息
+<code>searchParams</code> 搜索参数，包含关键词、群类型、搜索字段等
+返回匹配的 <a href="../nim_core_v2/NIMTeam-class.html">NIMTeam</a> 列表
+  
+
+</dd>
+
         <dt id="setTeamChatBannedMode" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/setTeamChatBannedMode.html">setTeamChatBannedMode</a></span><span class="signature">(<wbr><span class="parameter" id="setTeamChatBannedMode-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="setTeamChatBannedMode-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="setTeamChatBannedMode-param-chatBannedMode"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamChatBannedMode.html">NIMTeamChatBannedMode</a></span> <span class="parameter-name">chatBannedMode</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -648,7 +810,7 @@
 
         <dt id="setTeamMemberChatBannedStatus" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/setTeamMemberChatBannedStatus.html">setTeamMemberChatBannedStatus</a></span><span class="signature">(<wbr><span class="parameter" id="setTeamMemberChatBannedStatus-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="setTeamMemberChatBannedStatus-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="setTeamMemberChatBannedStatus-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="setTeamMemberChatBannedStatus-param-chatBanned"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">chatBanned</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -674,7 +836,7 @@
 
         <dt id="transferTeamOwner" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/transferTeamOwner.html">transferTeamOwner</a></span><span class="signature">(<wbr><span class="parameter" id="transferTeamOwner-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="transferTeamOwner-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="transferTeamOwner-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="transferTeamOwner-param-leave"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">leave</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -687,7 +849,7 @@
 
         <dt id="updateSelfTeamMemberInfo" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/updateSelfTeamMemberInfo.html">updateSelfTeamMemberInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateSelfTeamMemberInfo-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateSelfTeamMemberInfo-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="updateSelfTeamMemberInfo-param-memberInfoParams"><span class="type-annotation"><a href="../nim_core_v2/NIMUpdateSelfMemberInfoParams-class.html">NIMUpdateSelfMemberInfoParams</a></span> <span class="parameter-name">memberInfoParams</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -700,7 +862,7 @@
 
         <dt id="updateTeamInfo" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/updateTeamInfo.html">updateTeamInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateTeamInfo-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateTeamInfo-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="updateTeamInfo-param-updateTeamInfoParams"><span class="type-annotation"><a href="../nim_core_v2/NIMUpdateTeamInfoParams-class.html">NIMUpdateTeamInfoParams</a></span> <span class="parameter-name">updateTeamInfoParams</span>, </span><span class="parameter" id="updateTeamInfo-param-antispamConfig"><span class="type-annotation"><a href="../nim_core_v2/NIMAntispamConfig-class.html">NIMAntispamConfig</a>?</span> <span class="parameter-name">antispamConfig</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -713,7 +875,7 @@
 
         <dt id="updateTeamMemberNick" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/updateTeamMemberNick.html">updateTeamMemberNick</a></span><span class="signature">(<wbr><span class="parameter" id="updateTeamMemberNick-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateTeamMemberNick-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="updateTeamMemberNick-param-accountId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">accountId</span>, </span><span class="parameter" id="updateTeamMemberNick-param-teamNick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamNick</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -726,7 +888,7 @@
 
         <dt id="updateTeamMemberRole" class="callable">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/updateTeamMemberRole.html">updateTeamMemberRole</a></span><span class="signature">(<wbr><span class="parameter" id="updateTeamMemberRole-param-teamId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">teamId</span>, </span><span class="parameter" id="updateTeamMemberRole-param-teamType"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamType.html">NIMTeamType</a></span> <span class="parameter-name">teamType</span>, </span><span class="parameter" id="updateTeamMemberRole-param-memberAccountIds"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">memberAccountIds</span>, </span><span class="parameter" id="updateTeamMemberRole-param-memberRole"><span class="type-annotation"><a href="../nim_core_v2/NIMTeamMemberRole.html">NIMTeamMemberRole</a></span> <span class="parameter-name">memberRole</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nim_core_v2/NIMResult-class.html">NIMResult</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -763,7 +925,6 @@
     
   <section class="summary offset-anchor" id="static-properties">
     <h2>Static Properties</h2>
-
     <dl class="properties">
         <dt id="instance" class="property">
   <span class="name"><a href="../nim_core_v2/TeamServicePlatform/instance.html">instance</a></span>
@@ -782,9 +943,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -792,40 +951,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
     <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
     <li class="self-crumb">TeamServicePlatform class</li>
 </ol>
 
-
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

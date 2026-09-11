@@ -16,15 +16,11 @@
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
@@ -49,7 +45,6 @@
   </div>
 </header>
 <main>
-
 <div
     id="dartdoc-main-content"
     class="main-content"
@@ -71,12 +66,12 @@
         
 
 
-
+        
         
   <dt>Annotations</dt>
   <dd>
     <ul class="annotation-list clazz-relationships">
-        <li>@<a href="https://pub.dev/documentation/json_annotation/4.9.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>(explicitToJson: true)</li>
+        <li>@JsonSerializable(explicitToJson: true)</li>
     </ul>
   </dd>
 
@@ -87,10 +82,9 @@
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
         <dt id="QChatSendMessageParam" class="callable">
-          <span class="name"><a href="../nim_core_v2/QChatSendMessageParam/QChatSendMessageParam.html">QChatSendMessageParam</a></span><span class="signature">(<span class="parameter" id="-param-channelId">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="-param-serverId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">serverId</span>, </span><span class="parameter" id="-param-type"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/NIMMessageType.html">NIMMessageType</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="-param-extension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">extension</span>, </span><span class="parameter" id="-param-antiSpamOption"><span class="type-annotation"><a href="../nim_core_v2/QChatMessageAntiSpamOption-class.html">QChatMessageAntiSpamOption</a>?</span> <span class="parameter-name">antiSpamOption</span>, </span><span class="parameter" id="-param-attach"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">attach</span>, </span><span class="parameter" id="-param-body"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">body</span>, </span><span class="parameter" id="-param-env"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">env</span>, </span><span class="parameter" id="-param-historyEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">historyEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-isRouteEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isRouteEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-mentionedAccidList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">mentionedAccidList</span>, </span><span class="parameter" id="-param-mentionedAll"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mentionedAll</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-mentionedRoleIdList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">mentionedRoleIdList</span>, </span><span class="parameter" id="-param-needBadge"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needBadge</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-needPushNick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needPushNick</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-pushContent"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">pushContent</span>, </span><span class="parameter" id="-param-pushEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">pushEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-pushPayload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">pushPayload</span>, </span><span class="parameter" id="-param-subType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">subType</span>}</span>)</span>
+          <span class="name"><a href="../nim_core_v2/QChatSendMessageParam/QChatSendMessageParam.html">QChatSendMessageParam</a></span><span class="signature">({<span class="parameter" id="-param-channelId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">channelId</span>, </span><span class="parameter" id="-param-serverId"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">serverId</span>, </span><span class="parameter" id="-param-type"><span>required</span> <span class="type-annotation"><a href="../nim_core_v2/QChatNIMMessageType.html">QChatNIMMessageType</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="-param-extension"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">extension</span>, </span><span class="parameter" id="-param-antiSpamOption"><span class="type-annotation"><a href="../nim_core_v2/QChatMessageAntiSpamOption-class.html">QChatMessageAntiSpamOption</a>?</span> <span class="parameter-name">antiSpamOption</span>, </span><span class="parameter" id="-param-attach"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">attach</span>, </span><span class="parameter" id="-param-body"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">body</span>, </span><span class="parameter" id="-param-env"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">env</span>, </span><span class="parameter" id="-param-historyEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">historyEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-isRouteEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isRouteEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-mentionedAccidList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">mentionedAccidList</span>, </span><span class="parameter" id="-param-mentionedAll"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">mentionedAll</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-mentionedRoleIdList"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span>?</span> <span class="parameter-name">mentionedRoleIdList</span>, </span><span class="parameter" id="-param-needBadge"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needBadge</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-needPushNick"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">needPushNick</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-pushContent"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">pushContent</span>, </span><span class="parameter" id="-param-pushEnable"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">pushEnable</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-pushPayload"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">pushPayload</span>, </span><span class="parameter" id="-param-subType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">subType</span></span>})</span>
         </dt>
         <dd>
           
@@ -352,7 +346,7 @@
 
         <dt id="type" class="property">
   <span class="name"><a href="../nim_core_v2/QChatSendMessageParam/type.html">type</a></span>
-  <span class="signature">&#8594; <a href="../nim_core_v2/NIMMessageType.html">NIMMessageType</a></span>
+  <span class="signature">&#8594; <a href="../nim_core_v2/QChatNIMMessageType.html">QChatNIMMessageType</a></span>
   
 
 </dt>
@@ -364,6 +358,7 @@
 
     </dl>
   </section>
+
     
   <section
       class="summary offset-anchor"
@@ -384,7 +379,7 @@
 </dd>
 
         <dt id="setAttachment" class="callable">
-  <span class="name"><a href="../nim_core_v2/QChatSendMessageParam/setAttachment.html">setAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="setAttachment-param-attachment"><span class="type-annotation">QChatNIMMessageAttachment</span> <span class="parameter-name">attachment</span></span>)
+  <span class="name"><a href="../nim_core_v2/QChatSendMessageParam/setAttachment.html">setAttachment</a></span><span class="signature">(<wbr><span class="parameter" id="setAttachment-param-attachment"><span class="type-annotation"><a href="../nim_core_v2/QChatNIMMessageAttachment-class.html">QChatNIMMessageAttachment</a></span> <span class="parameter-name">attachment</span></span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -449,9 +444,7 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
     <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
@@ -459,40 +452,30 @@
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nim_core_v2</a></li>
     <li><a href="../nim_core_v2/nim_core_v2-library.html">nim_core_v2</a></li>
     <li class="self-crumb">QChatSendMessageParam class</li>
 </ol>
 
-
     <h5>nim_core_v2 library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     nim_core_v2
-      10.3.0
+      10.9.7
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

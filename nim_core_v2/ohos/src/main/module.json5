@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "nim_core_v2",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

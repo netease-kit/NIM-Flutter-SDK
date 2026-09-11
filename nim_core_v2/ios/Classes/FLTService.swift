@@ -6,22 +6,26 @@ import Foundation
 
 enum ServiceType: String {
   case MessageService
+  case ClientAntispamUtil = "V2NIMClientAntispamUtil"
+  case ChatRoomClient = "V2NIMChatroomClient"
+  case ChatRoomService = "V2NIMChatroomService"
+  case ChatRoomQueueService = "V2NIMChatroomQueueService"
   case LifeCycleService = "InitializeService"
   case UserService
   case EventSubscribeService
   case ConversationService
+  case LocalConversationService = "V2NIMLocalConversationService"
+  case ConversationGroupService = "V2NIMConversationGroupService"
   case SystemNotificationService = "SystemMessageService"
   case AudioRecordService = "AudioRecorderService"
   case AuthService
-  case SessionService
   case TeamService
-  case ChatroomService
   case NOSService
   case ChatExtendService
   case PassThroughService
   case SettingService = "SettingsService"
   case SuperTeamService
-  case AvSignallingService
+  case SignallingService
   case QChatObserver
   case QChatService
   case QChatServerService
@@ -32,10 +36,15 @@ enum ServiceType: String {
   case LoginService
   case FriendService
   case MessageCreatorService
+  case ChatRoomMessageCreatorService = "V2NIMChatroomMessageCreator"
   case StorageService
   case APNSService
   case ConversationIdUtil
   case AIService
+  case TopicService
+  case SubscriptionService
+  case StatisticsService
+  case UtilityService
 }
 
 protocol FLTService {

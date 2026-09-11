@@ -31,10 +31,10 @@
 #include "utils/stringHash.hpp"
 
 // third parties
-#include "alog.h"
-#define YXLOGEnd ALOGEnd
-#define YXLOG(level) ALOG_DIY("nim_core_plugin", LogNormal, level)
-#define YXLOG_API(level) ALOG_DIY("nim_core_plugin", LogApi, level)
+// #include "alog.h"
+// #define YXLOGEnd ALOGEnd
+// #define YXLOG(level) ALOG_DIY("nim_core_plugin", LogNormal, level)
+// #define YXLOG_API(level) ALOG_DIY("nim_core_plugin", LogApi, level)
 
 #endif
 

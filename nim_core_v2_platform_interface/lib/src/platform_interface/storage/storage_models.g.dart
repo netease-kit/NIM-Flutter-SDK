@@ -48,11 +48,13 @@ NIMUploadFileProgress _$NIMUploadFileProgressFromJson(
     NIMUploadFileProgress(
       taskId: json['taskId'] as String?,
       progress: (json['progress'] as num?)?.toInt(),
+      instanceId: (json['instanceId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$NIMUploadFileProgressToJson(
         NIMUploadFileProgress instance) =>
     <String, dynamic>{
+      'instanceId': instance.instanceId,
       'taskId': instance.taskId,
       'progress': instance.progress,
     };
@@ -62,11 +64,13 @@ NIMDownloadFileProgress _$NIMDownloadFileProgressFromJson(
     NIMDownloadFileProgress(
       url: json['url'] as String?,
       progress: (json['progress'] as num?)?.toInt(),
+      instanceId: (json['instanceId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$NIMDownloadFileProgressToJson(
         NIMDownloadFileProgress instance) =>
     <String, dynamic>{
+      'instanceId': instance.instanceId,
       'url': instance.url,
       'progress': instance.progress,
     };
@@ -77,11 +81,13 @@ NIMDownloadMessageAttachmentProgress
           downloadParam: _nimDownloadMessageAttachmentParamsFromJson(
               json['downloadParam'] as Map?),
           progress: (json['progress'] as num?)?.toInt(),
+          instanceId: (json['instanceId'] as num?)?.toInt(),
         );
 
 Map<String, dynamic> _$NIMDownloadMessageAttachmentProgressToJson(
         NIMDownloadMessageAttachmentProgress instance) =>
     <String, dynamic>{
+      'instanceId': instance.instanceId,
       'downloadParam': instance.downloadParam?.toJson(),
       'progress': instance.progress,
     };

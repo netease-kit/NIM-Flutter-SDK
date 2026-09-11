@@ -1,7 +1,3 @@
-// Copyright (c) 2022 NetEase, Inc. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'team.dart';
@@ -34,6 +30,7 @@ NIMTeam _$NIMTeamFromJson(Map<String, dynamic> json) => NIMTeam(
       chatBannedMode:
           $enumDecode(_$NIMTeamChatBannedModeEnumMap, json['chatBannedMode']),
       isValidTeam: json['isValidTeam'] as bool,
+      isTeamEffective: json['isTeamEffective'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$NIMTeamToJson(NIMTeam instance) => <String, dynamic>{
@@ -60,6 +57,7 @@ Map<String, dynamic> _$NIMTeamToJson(NIMTeam instance) => <String, dynamic>{
       'chatBannedMode':
           _$NIMTeamChatBannedModeEnumMap[instance.chatBannedMode]!,
       'isValidTeam': instance.isValidTeam,
+      'isTeamEffective': instance.isTeamEffective,
     };
 
 const _$NIMTeamTypeEnumMap = {
@@ -69,35 +67,41 @@ const _$NIMTeamTypeEnumMap = {
 };
 
 const _$NIMTeamJoinModeEnumMap = {
+  NIMTeamJoinMode.unknown: -1,
   NIMTeamJoinMode.joinModeFree: 0,
   NIMTeamJoinMode.joinModeApply: 1,
   NIMTeamJoinMode.joinModeInvite: 2,
 };
 
 const _$NIMTeamAgreeModeEnumMap = {
+  NIMTeamAgreeMode.unknown: -1,
   NIMTeamAgreeMode.agreeModeAuth: 0,
   NIMTeamAgreeMode.agreeModeNoAuth: 1,
 };
 
 const _$NIMTeamInviteModeEnumMap = {
+  NIMTeamInviteMode.unknown: -1,
   NIMTeamInviteMode.inviteModeManager: 0,
   NIMTeamInviteMode.inviteModeAll: 1,
 };
 
 const _$NIMTeamUpdateInfoModeEnumMap = {
+  NIMTeamUpdateInfoMode.unknown: -1,
   NIMTeamUpdateInfoMode.updateInfoModeManager: 0,
   NIMTeamUpdateInfoMode.updateInfoModeAll: 1,
 };
 
 const _$NIMTeamUpdateExtensionModeEnumMap = {
+  NIMTeamUpdateExtensionMode.unknown: -1,
   NIMTeamUpdateExtensionMode.updateExtensionModeManager: 0,
   NIMTeamUpdateExtensionMode.updateExtensionModeAll: 1,
 };
 
 const _$NIMTeamChatBannedModeEnumMap = {
+  NIMTeamChatBannedMode.unknown: -1,
   NIMTeamChatBannedMode.chatBannedModeNone: 0,
   NIMTeamChatBannedMode.chatBannedModeBannedNormal: 1,
-  NIMTeamChatBannedMode.chatBannedModeBannedAll: 2,
+  NIMTeamChatBannedMode.chatBannedModeBannedAll: 3,
 };
 
 TeamLeftReuslt _$TeamLeftReusltFromJson(Map<String, dynamic> json) =>

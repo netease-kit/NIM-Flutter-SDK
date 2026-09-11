@@ -22,6 +22,8 @@ abstract class MessageServicePlatform extends Service {
     _instance = instance;
   }
 
+  NIMMessageFilter? shouldIgnore;
+
   /// 本端发送消息状态回调
   final StreamController<NIMMessage> onSendMessage =
       StreamController<NIMMessage>.broadcast();
@@ -32,6 +34,10 @@ abstract class MessageServicePlatform extends Service {
 
   /// 消息接收
   final StreamController<List<NIMMessage>> onReceiveMessages =
+      StreamController<List<NIMMessage>>.broadcast();
+
+  /// 消息更新监听
+  final StreamController<List<NIMMessage>> onReceiveMessagesModified =
       StreamController<List<NIMMessage>>.broadcast();
 
   /// 点对点已读回执
@@ -132,6 +138,16 @@ abstract class MessageServicePlatform extends Service {
       String? senderId,
       int? createTime}) async {
     throw UnimplementedError('insertMessageToLocal() is not implemented');
+  }
+
+  /// 插入一条本地消息（扩展版），该消息不会发送，不会多端同步，仅本端显示
+  /// - Parameters:
+  ///   - message: 需要插入的消息体
+  ///   - params: 相关插入参数
+  Future<NIMResult<NIMMessage>> insertMessageToLocalEx(
+      {required NIMMessage message,
+      required V2NIMMessageInsertParams params}) async {
+    throw UnimplementedError('insertMessageToLocalEx() is not implemented');
   }
 
   /// 更新消息本地扩展字段
@@ -385,4 +401,119 @@ abstract class MessageServicePlatform extends Service {
     throw UnimplementedError(
         'cancelMessageAttachmentUpload() is not implemented');
   }
+
+  /// 消息序列化为字符串
+  /// [message] 消对象
+  /// 返回序列化后的字符串
+  Future<NIMResult<String>> messageSerialization(NIMMessage message) {
+    throw UnimplementedError('messageSerialization() is not implemented');
+  }
+
+  /// 字符串反序列化为消息对象
+  /// [msg]  messageSerialization方法序列化后的字符串
+  /// 反序列化后的消息对象
+  Future<NIMResult<NIMMessage>> messageDeserialization(String msg) {
+    throw UnimplementedError('messageDeserialization() is not implemented');
+  }
+
+  ///更新消息
+  /// [message] 需要更新的消息
+  ///  [params] 更新参数
+  Future<NIMResult<NIMModifyMessageResult>> modifyMessage(
+      NIMMessage message, NIMModifyMessageParams params) {
+    throw UnimplementedError('messageDeserialization() is not implemented');
+  }
+
+  ///重新输出数字人消息
+  /// [message] 需要重新输出的消息体
+  ///  [params] 重新输出的配置参数，确定重新输出的操作类型
+  Future<NIMResult<void>> regenAIMessage(
+      NIMMessage message, NIMMessageAIRegenParams params) {
+    throw UnimplementedError('regenAIMessage() is not implemented');
+  }
+
+  ///停止流式消息输出
+  /// [message] 需要停止的消息体
+  ///  [params] 停止AI流式消息相关参数
+  Future<NIMResult<void>> stopAIStreamMessage(
+      NIMMessage message, NIMMessageAIStreamStopParams params) {
+    throw UnimplementedError('stopAIStreamMessage() is not implemented');
+  }
+
+  ///安装消息过滤器
+  ///云端会话的最后一条消息不受该过滤器控制
+  ///[add] 是否添加，false 则表示删除
+  Future<NIMResult<void>> setMessageFilter(NIMMessageFilter? filter) {
+    throw UnimplementedError('setMessageFilter() is not implemented');
+  }
+
+  /// 搜索云端消息
+  /// [params]  消息检索参数
+  Future<NIMResult<NIMMessageSearchResult>> searchCloudMessagesEx(
+      NIMMessageSearchExParams params) {
+    throw UnimplementedError('searchCloudMessagesEx() is not implemented');
+  }
+
+  /// 检索本地消息
+  /// [params]  消息检索参数
+  Future<NIMResult<NIMMessageSearchResult>> searchLocalMessages(
+      NIMMessageSearchExParams params) {
+    throw UnimplementedError('searchLocalMessages() is not implemented');
+  }
+
+  ///查询历史消息
+  /// 分页接口，每次默认50条，可以根据参数组合查询各种类型
+  /// [option] 查询消息配置选项
+  Future<NIMResult<NIMMessageListResult>> getMessageListEx(
+      NIMMessageListOption option) {
+    throw UnimplementedError('getMessageListEx() is not implemented');
+  }
+
+  ///按条件分页获取收藏信息。回调结果包含总条数
+  /// [option] 查询参数
+  Future<NIMResult<NIMCollectionListResult>> getCollectionListExByOption(
+      NIMCollectionOption option) {
+    throw UnimplementedError(
+        'getCollectionListExByOption() is not implemented');
+  }
+
+  ///更新本地插入的消息
+  ///  serverid为0的消息
+  /// 云端消息请调用modifyMessage接口
+  /// [message] 需要被更新的消息体
+  /// [params] 需要更新的数据字段
+  Future<NIMResult<NIMMessage>> updateLocalMessage(
+      NIMMessage message, NIMUpdateLocalMessageParams params) {
+    throw UnimplementedError('updateLocalMessage() is not implemented');
+  }
+
+  /// 仅清空会话漫游消息， 单次传递最多50个会话ID
+  /// [conversationIds] 需要清理的会话ID
+  Future<NIMResult<void>> clearRoamingMessage(
+      {required List<String> conversationIds}) {
+    throw UnimplementedError('clearRoamingMessage() is not implemented');
+  }
+
+  /// 清理本地消息
+  /// [params] 清理参数，包含时间戳锚点和是否同时删除会话
+  Future<NIMResult<void>> clearLocalMessage(
+      NIMClearLocalMessageParams? params) {
+    throw UnimplementedError('clearLocalMessage() is not implemented');
+  }
+
+  /// 翻译文本 @since v10.9.75
+  ///
+  /// [params] 翻译参数，包含待翻译文本、源语言和目标语言
+  /// [config] 翻译器配置，可选，默认开启严格模式
+  Future<NIMResult<NIMTextTranslationResult>> translateText({
+    required NIMTextTranslateParams params,
+    NIMTranslatorConfig? config,
+  }) {
+    throw UnimplementedError('translateText() is not implemented');
+  }
 }
+
+/// 是否过滤消息
+/// [message] 当前接收到的消息体内容
+/// 返回 true 表示需要过滤掉该消息，返回 false 表示不过滤
+typedef NIMMessageFilter = Future<bool> Function(NIMMessage message);
