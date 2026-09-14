@@ -81,8 +81,4 @@ dependencies {
     implementation "com.netease.nimlib:superteam:$nimLibVer"
     // 信令
     implementation "com.netease.nimlib:avsignalling:$nimLibVer"
-    //圈组
-    implementation "com.netease.nimlib:qchat:$nimLibVer"
-    //检索
-    implementation "com.netease.nimlib:lucene:$nimLibVer"
 }

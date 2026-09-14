@@ -473,7 +473,6 @@ fun SDKOptions.configureWithMap(configurations: Map<String, *>) =
         customPushContentType = configurations["customPushContentType"] as String?
         databaseEncryptKey = configurations["databaseEncryptKey"] as String?
         thumbnailSize = (configurations.getOrElse("thumbnailSize") { 350 } as Number).toInt()
-        enabledQChatMessageCache = configurations.getOrElse("enabledQChatMessageCache") { false } as Boolean
         enableV2CloudConversation = configurations.getOrElse("enableV2CloudConversation") { false } as Boolean
 
         val mixPushConfig: Map<String, *>? by args
