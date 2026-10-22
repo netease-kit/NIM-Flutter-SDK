@@ -8,6 +8,7 @@ import ObjectiveC.runtime
 private let nimMessageIOSSerialKey = "iosSerial"
 private let nimMessageIOSSerialLegacyCacheKey = "_iosMessageCacheKey"
 private let nimMessageIOSSerialTopicReferKey = "_topicRefer"
+private let nimMessageIOSSerialSendAIConfigKeys = ["sendAIConfig", "_sendAIConfig"]
 
 private func nimSetObjectValue(_ value: AnyObject?,
                                forIvarNames ivarNames: [String],
@@ -33,8 +34,22 @@ private func nimApplyIOSSerial(_ value: Any?, to message: V2NIMMessage) {
   var serialValues = iosSerial
   serialValues.removeValue(forKey: nimMessageIOSSerialLegacyCacheKey)
   serialValues.removeValue(forKey: nimMessageIOSSerialTopicReferKey)
+  var sendAIConfigDic: [String: Any]?
+  for key in nimMessageIOSSerialSendAIConfigKeys {
+    if sendAIConfigDic == nil {
+      sendAIConfigDic = serialValues[key] as? [String: Any]
+    }
+    serialValues.removeValue(forKey: key)
+  }
   if !serialValues.isEmpty {
     _ = message.yx_modelSet(with: serialValues)
+  }
+
+  if let sendAIConfigDic {
+    let sendAIConfig = V2NIMMessageAIConfigParams.fromDic(sendAIConfigDic)
+    _ = nimSetObjectValue(sendAIConfig,
+                          forIvarNames: ["_sendAIConfig", "sendAIConfig"],
+                          object: message)
   }
 
   if let topicReferDic = iosSerial[nimMessageIOSSerialTopicReferKey] as? [String: Any] {
