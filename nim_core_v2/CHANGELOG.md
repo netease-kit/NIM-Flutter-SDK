@@ -1,3 +1,16 @@
+## 10.9.92(Oct 22, 2026)
+
+### Bug Fixes
+* 修复 Android 端聊天室队列移除监听器方法名注册错误导致 `removeQueueListener` 调用失败的问题
+* 修复 iOS 端 `V2NIMChatroomClient.getInstance` 未接入方法分发导致调用失败的问题
+* 修复 Android 端 `MixPushService` 缺少 `unregisterManuallyProvidePushTokenCallback` 实现导致取消手动提供推送 Token 回调失败的问题
+
+## 10.9.91(Sep 16, 2026)
+
+### Bug Fixes
+* 解决iOS 端AI消息错误的问题
+* PC端补齐云端会话的`lastReadTime`
+
 ## 10.9.90(Aug 26, 2026)
 
 ### New Features

@@ -33,12 +33,14 @@ class FLTMixPushService(
 
     override val serviceName = "MixPushService"
 
-    // / 标记是否已注册手动提供 Token 的回调
+    // / 标记手动提供 Token 的回调是否处于启用状态
+    @Volatile
     private var isManualCallbackRegistered = false
 
     init {
         registerFlutterMethodCalls(
-            "registerManuallyProvidePushTokenCallback" to ::registerManuallyProvidePushTokenCallback
+            "registerManuallyProvidePushTokenCallback" to ::registerManuallyProvidePushTokenCallback,
+            "unregisterManuallyProvidePushTokenCallback" to ::unregisterManuallyProvidePushTokenCallback
         )
 
         // SDK 初始化后注册推送 Token 变化监听
@@ -65,6 +67,10 @@ class FLTMixPushService(
     private val manualProvidePushTokenCallback =
         object : IManualProvidePushTokenCallback {
             override fun onToken(suggestedPushType: MixPushTypeEnum?): Pair<MixPushTypeEnum, String>? {
+                if (!isManualCallbackRegistered) {
+                    ALog.d(tag, "onToken ignored, manual callback has been unregistered")
+                    return null
+                }
                 ALog.d(tag, "onToken called with suggestedPushType: $suggestedPushType")
 
                 // 使用 CountDownLatch 来等待 Flutter 返回结果
@@ -138,6 +144,16 @@ class FLTMixPushService(
         NIMPushClient.registerManuallyProvidePushTokenCallback(manualProvidePushTokenCallback)
     }
 
+    // / 实际执行反注册手动提供 Token 回调
+    // / NIMPushClient 只提供了注册接口（本质是给静态字段赋值），没有反注册接口；
+    // / 传 null 虽然能清空，但 SDK 在 manualProvidePushToken 模式下登录后会走异常兜底分支，
+    // / 为避免依赖该内部行为，这里复用同一个回调对象，由 isManualCallbackRegistered 标记
+    // / 让 onToken 直接返回 null，效果等同于反注册。
+    private fun doUnregisterManuallyProvidePushTokenCallback() {
+        ALog.d(tag, "doUnregisterManuallyProvidePushTokenCallback")
+        NIMPushClient.registerManuallyProvidePushTokenCallback(manualProvidePushTokenCallback)
+    }
+
     private suspend fun registerManuallyProvidePushTokenCallback(
         arguments: Map<String, *>
     ): NimResult<Nothing> {
@@ -148,6 +164,21 @@ class FLTMixPushService(
         // 如果 SDK 已初始化，立即注册；否则在 onInitialized 回调中注册
         if (nimCore.isInitialized) {
             doRegisterManuallyProvidePushTokenCallback()
+        }
+
+        return NimResult(code = 0, data = null)
+    }
+
+    private suspend fun unregisterManuallyProvidePushTokenCallback(
+        arguments: Map<String, *>
+    ): NimResult<Nothing> {
+        ALog.d(tag, "unregisterManuallyProvidePushTokenCallback called, isInitialized: ${nimCore.isInitialized}")
+
+        isManualCallbackRegistered = false
+
+        // 如果 SDK 已初始化，立即停用；否则未注册的回调在 onInitialized 中也不会再注册
+        if (nimCore.isInitialized) {
+            doUnregisterManuallyProvidePushTokenCallback()
         }
 
         return NimResult(code = 0, data = null)
