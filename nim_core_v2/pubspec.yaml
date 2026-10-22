@@ -1,6 +1,6 @@
 name: nim_core_v2
 description: A Flutter plugin for NetEase IM SDK on Android, iOS and Windows.
-version: 10.9.90
+version: 10.9.92
 homepage: https://github.com/netease-kit/NIM-Flutter-SDK
 # remove before publish
 #publish_to: none
@@ -13,16 +13,16 @@ dependencies:
   flutter:
     sdk: flutter
   nim_core_v2_platform_interface:
-#    '>=10.9.90 <10.10.0'
+#    '>=10.9.91 <10.10.0'
     path: ../nim_core_v2_platform_interface
   nim_core_v2_windows:
-#    '>=10.9.90 <10.10.0'
+#    '>=10.9.91 <10.10.0'
     path: ../nim_core_v2_windows
   nim_core_v2_macos:
-#    '>=10.9.90 <10.10.0'
+#    '>=10.9.91 <10.10.0'
     path: ../nim_core_v2_macos
   nim_core_v2_web:
-#    '>=10.9.90 <10.10.0'
+#    '>=10.9.91 <10.10.0'
      path: ../nim_core_v2_web
   path_provider: ^2.0.2
   # yunxin_base: ^0.1.0-rc.0

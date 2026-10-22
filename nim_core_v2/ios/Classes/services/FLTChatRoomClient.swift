@@ -8,6 +8,7 @@ import YXAlog_iOS
 
 enum ChatRoomClientAPIType: String {
   case newInstance
+  case getInstance
   case destroyInstance
   case getInstanceList
   case destroyAll
@@ -37,6 +38,8 @@ class FLTChatRoomClient: FLTBaseService, FLTService {
     switch method {
     case ChatRoomClientAPIType.newInstance.rawValue:
       newInstance(arguments, resultCallback)
+    case ChatRoomClientAPIType.getInstance.rawValue:
+      getInstance(arguments, resultCallback)
     case ChatRoomClientAPIType.destroyInstance.rawValue:
       destroyInstance(arguments, resultCallback)
     case ChatRoomClientAPIType.getInstanceList.rawValue:

@@ -33,7 +33,7 @@ class FLTChatroomQueueService(
         nimCore.onInitialized {
             registerFlutterMethodCalls(
                 "addQueueListener" to ::addQueueListener,
-                "removeChatroomListener" to ::removeQueueListener,
+                "removeQueueListener" to ::removeQueueListener,
                 "queueOffer" to ::queueOffer,
                 "queuePoll" to ::queuePoll,
                 "queueList" to ::queueList,
